@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>023465439</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>StudentSolver.cpp</CENTER></H3><HR>
+<PRE>
+
+
+
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;iostream&gt;
+#include &quot;StudentSolver.h&quot;
+using namespace std;
+
+void print_vector_b(vector&lt;bool&gt; v) {
+    cout &lt;&lt; endl;
+    for (int i = 0; i &lt; v.size(); i++) {
+        cout &lt;&lt; v[i] &lt;&lt; &quot; &quot;;
+    }
+    cout &lt;&lt; endl;
+}
+
+int find_m(vector&lt;vector&lt;int&gt;&gt;&amp; m) {
+    int max = 0;
+    vector&lt;int&gt; nums;
+<A NAME="0"></A>    for (int i = 0; i &lt; m.size(); i++) {
+        for (int j = 0; j &lt; 3; j++) {
+            nums.push_back(m[i][j]);
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match53-0.html#0',2,'match53-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>        }
+    }
+    for (int i = 0; i &lt; nums.size(); i++) {
+        if (max &lt; abs(nums[i])) {
+            max = abs(nums[i]);
+        }
+    }</B></FONT>
+    return max;
+}
+
+
+vector&lt;bool&gt; StudentSolver :: solve(vector&lt;vector&lt;int&gt;&gt; bulbs) {
+    int M = find_m(bulbs);
+
+    vector&lt;bool&gt; wire_out;
+    for (int i = 0; i &lt; M; i++) {
+        wire_out.push_back(false);
+    }
+
+    int N = bulbs.size();
+    int sum;
+    vector &lt; bool &gt; sum_row;
+    for (int i = 0; i &lt; N; i++) {
+        sum = 0;
+        for (int j = 0; j &lt; 3; j++) {
+            if (bulbs[i][j] &lt; 0) {
+                sum--;
+            }
+            else
+            {
+                sum++;
+            }
+        }
+        if (sum == 3) {
+            sum_row.push_back(false);
+        }
+        else {
+            sum_row.push_back(true);
+        }
+    }
+    int count = 0;
+    while (count &lt; N) {
+        if (sum_row[count] == true) {
+            count++;
+        }
+        else
+        {
+            int num_set;
+            for (int i = 0; i &lt; 3; i++) {
+                if (bulbs[count][i] &gt; 0) {
+                    num_set = bulbs[count][i];
+                    if (wire_out[num_set - 1] == false) {
+                        wire_out[num_set - 1] = true;
+                        sum_row[count] = true;
+                        break;
+                    }
+                    else
+                    {
+                        wire_out[num_set - 1] = true;
+                        sum_row[count] = true;
+                        break;
+                    }
+
+                }
+            }
+            count = 0;
+        }
+    }
+
+    return wire_out;
+}
+
+/*int main() {
+    vector&lt;vector&lt;int&gt;&gt; test{ { 4, 4, 1 },
+                             { 13, 9, 14},
+                             { 4, -7, -2},
+                             { -2, 6, 3},
+                             { -6, -8, 11},
+                             { -4, -3, -6},
+                             { 7, 11, -10},
+                             { 4, -7, 6},
+                             { 5, 6, 4},
+                             { 10, 14, -9} };
+    print_vector_b(solve(test));
+}*/
+
+</PRE>
+</BODY>
+</HTML>

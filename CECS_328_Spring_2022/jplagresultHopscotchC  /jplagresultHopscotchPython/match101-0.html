@@ -1,0 +1,347 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>981430584</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+import math
+import copy
+
+
+# first value: 0 = bottom, 1 = top
+# second value: the index of starting column
+# the rest: 0 = right, 1 = up right, -1 = down right (n - 1 movement)
+
+def solve(grid):  # Example is 5 x 6 matrix
+
+    # print(grid)
+    # print(len(grid)) # 5 using current example
+    # print(len(grid[0])) # return 6 (accurate)
+    solution = []
+    # singleRow = False # MIGHT NOT NEED
+
+    # row and indexes
+    topStart = 0
+    topIndex = 0
+
+    botStart = 0
+    botIndex = 0
+
+    singleCol = False
+    if (len(grid[0]) == 1):
+        singleCol = True
+
+    lastRowIndex = len(grid) - 1  # -1 cuz of index start at 0. Index of last row = 4 (checked)
+    print(lastRowIndex)
+
+    # This loop mark the FIRST largest value for starting.
+    # index start at 0
+    for topRow in range(len(grid[0])):  # topRow mean current index of first row's column
+        # print(topRow)
+        if grid[0][topRow] &gt; topStart:
+            topStart = grid[0][topRow]
+<A NAME="0"></A>            # topStart = grid[0].index(grid[0][topRow])
+            topIndex = topRow
+
+    <FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match101-1.html#0',3,'match101-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>for botRow in range(len(grid[0])):
+        if grid[lastRowIndex][botRow] &gt; botStart:
+            botStart = grid[lastRowIndex][botRow]
+            # botStart = grid[lastRowIndex].index(grid[lastRowIndex][botRow])
+            botIndex = botRow
+
+    # # Now, topStart and botStart get their value turn into their index
+    # topStart = grid[0].index(topStart)
+    # botStart = grid[lastRowIndex].index(botStart)
+
+    # print(topStart, botStart)
+
+    # print(topIndex, botIndex) # print the index of the chosen value in row
+
+    currentRow =</B></FONT> 0  # by index. Row after determined if start at top or bot
+
+    # Select larger value to be top or bot start (SELECT THEIR INDEX)
+    currentPos = 0  # position of current hopper (index)
+    if topStart &gt; botStart:
+        currentPos = grid[0].index(topStart)
+        solution.append(1)
+        solution.append(topIndex)
+        currentRow = 0
+    else:
+        currentPos = grid[lastRowIndex].index(botStart)
+        solution.append(0)
+        solution.append(botIndex)
+        currentRow = lastRowIndex
+
+    if (singleCol == True):
+        solution.clear()
+        return solution
+
+    # set endIndex to starting column index
+    endIndex = solution[1]  # endIndex = index before the starting column index
+    if (endIndex == 0):
+        endIndex = len(grid[0]) - 1
+    else:
+        endIndex = endIndex - 1
+
+    print(&quot;endIndex =&quot;, endIndex)
+    # Begin of traversing codes
+
+    # once finish determine whether to start bot or bottom, start traverse
+    # while traverse, need to calculate the amoount of move left before hitting the starting
+    # coloum so that it can exit either up or down
+
+    # value of indexes of movement (index start at 0) ?
+    upRight = 0
+    downRight = 0
+    moveRight = 0
+
+    # print(len(grid[0]) - 1) # = 5
+    # (n - 1) movement left
+    for currHop in range(len(grid[0]) - 1):  # if len(grid[0]) = 6 then remainHop = 0-5 (6 loops)
+        print(&quot;currHop =&quot;, currHop)
+
+        # Finding the next position (nextPos)
+        nextPos = currentPos
+        if nextPos != len(grid[0]) - 1:
+            nextPos += 1  # update currentPos at the end of the loop
+        else:
+            nextPos = 0
+
+        print(&quot;nextPos =&quot;, nextPos)
+
+        specialPos = False  # signal if special position is found (at the edges)
+        # if row is at bottem CORNER
+        if currentRow == lastRowIndex and currentPos == len(grid[0]) - 1:  # need check grid len !!!
+            downRight = grid[0][0]
+            moveRight = grid[lastRowIndex][0]
+            upRight = grid[lastRowIndex - 1][0]
+            print(&quot;at bottom corner&quot;)
+            specialPos = True
+
+        # if row is top CORNER
+        if currentRow == 0 and currentPos == len(grid[0]) - 1:
+            downRight = grid[1][0]  # row number 2, column 1
+            moveRight = [0][0]
+            upRight = grid[lastRowIndex][0]
+            print(&quot;at top corner&quot;)
+            specialPos = True
+
+        # Use only if position is at the edge that are not at the corners (NEED FIX, POSSIBLE WRONG?)
+        if currentPos == len(grid[0]) - 1 and currentRow != 0 and currentRow != lastRowIndex:
+            downRight = grid[currentRow + 1][0]
+            moveRight = grid[currentRow][0]
+            upRight = grid[currentRow - 1][0]
+            print(&quot;Not at any edge&quot;)
+            specialPos = True
+
+        # Use if position is Top but not at corner
+        if currentRow == 0 and currentRow != lastRowIndex and currentPos != len(grid[0]) - 1:
+            downRight = grid[currentRow + 1][currentPos + 1]
+            moveRight = grid[currentRow][currentPos + 1]
+            upRight = grid[lastRowIndex][currentPos + 1]
+            print(&quot;Top edge&quot;)
+            specialPos = True
+
+        # Use if position is Bottom but not corner
+        if currentRow == lastRowIndex and currentRow != 0 and currentPos != len(grid[0]) - 1:
+            downRight = grid[0][currentPos + 1]
+            moveRight = grid[lastRowIndex][currentPos + 1]
+            upRight = grid[lastRowIndex - 1][currentPos + 1]
+            print(&quot;Bottom edge&quot;)
+            specialPos = True
+
+        # Use if no edge(special) case has been FOUND
+        if specialPos == False:
+            downRight = grid[currentRow + 1][currentPos + 1]
+            moveRight = grid[currentRow][currentPos + 1]
+            upRight = grid[currentRow - 1][currentPos + 1]
+
+        # Testing
+        # print(&quot;Pass&quot;)
+        print(&quot;\nCurrent location&quot;)
+        print(&quot;currentRow =&quot;, currentRow, &quot;| currentPos =&quot;, currentPos)
+        print(&quot;downRight =&quot;, downRight, &quot;| moveRight =&quot;, moveRight, &quot;| upRight =&quot;, upRight)
+
+        # Start of &quot;Exiting Strat&quot; (BEFORE hopping in current loop)
+        # !!this strat may need coin flip if currRow is at the middle
+
+        n = len(grid[0]) - 1  # n - 1 traverse (n - 1 = 5)
+        remainHop = n - currHop  # start at value 5,
+        # count at the beginning where no hop took place yet
+
+        print(&quot;remainHop =&quot;, remainHop)
+
+        exitDistTop = currentRow  # how many move to reach top (not yet hop in curr loop)
+        exitDistBot = lastRowIndex - currentRow  # how many move to reach bot
+
+        print(&quot;exitDistTop =&quot;, exitDistTop)
+        print(&quot;exitDistBot =&quot;, exitDistBot)
+        # Which direction the hopper allow to go (when still within escape possible)
+
+        exitTop = False
+        exitBot = False
+        if remainHop &gt;= exitDistTop:  # if going top is possible (5 &gt;= 4)
+            exitTop = True
+        if remainHop &gt;= exitDistBot:  # if going bottom is possible
+            exitBot = True
+
+        # ! need to think about moving in direction that is still within &quot;recoverable exit&quot; step
+        recoverTop = False
+        recoverBot = False
+
+        # move up ok if hopper can still escape to the bottom after
+        if exitTop == False and nextPos != endIndex:
+            if remainHop &gt;= exitDistBot + 1:
+                recoverTop = True
+
+        # move down ok if hopper can still escape to the Top after
+        if exitBot == False and nextPos != endIndex:
+            if remainHop &gt;= exitDistTop + 1:
+                recoverBot = True
+
+        print(&quot;exitTop =&quot;, exitTop, &quot;| exitBot =&quot;, exitBot)
+        print(&quot;recoverTop =&quot;, recoverTop, &quot;| recoverBot =&quot;, recoverBot)
+        # now do the mutator for currPos and currRow
+
+        traversed = False
+        while (traversed == False):
+            # if traverse up and down not restricted due to remaining hop
+            if (exitTop == True and exitBot == True):
+                # moving down right
+                if downRight &gt;= moveRight and downRight &gt;= upRight:
+                    solution.append(-1)
+                    if currentRow == lastRowIndex:  # loop to top if bottom
+                        currentRow = 0
+                    else:
+                        currentRow += 1
+                    break
+
+                # moving right
+                if moveRight &gt;= downRight and moveRight &gt;= upRight:
+                    solution.append(0)
+                    break
+
+                # moving up right
+                if upRight &gt;= downRight and upRight &gt;= moveRight:
+                    solution.append(1)
+                    if currentRow == 0:  # loop to bottom if at top
+                        currentRow = lastRowIndex
+                    else:
+                        currentRow -= 1
+
+                break
+
+            # if traverse up is ok and down not ok (except if recoverBot == True)
+            if (exitTop == True and exitBot == False):
+
+                # only allow to go bottom if recoverBot == True
+                if recoverBot == True:
+                    if downRight &gt;= moveRight and downRight &gt;= upRight:
+                        solution.append(-1)
+                        if currentRow == lastRowIndex:  # loop to top if bottom
+                            currentRow = 0
+                        else:
+                            currentRow += 1
+                        break
+
+                # moving right (fixing)
+                if moveRight &gt;= upRight:
+                    if (nextPos == endIndex):
+                        if (currentRow == 0 or currentRow == lastRowIndex):
+                            solution.append(0)
+                            break
+                    elif (nextPos != endIndex):
+                        solution.append(0)
+                        break
+
+                # moving up right
+                if upRight &gt;= moveRight or nextPos == endIndex:  # upRight &gt;= downRight and
+                    solution.append(1)
+                    if currentRow == 0:  # loop to bottom if at top
+                        currentRow = lastRowIndex
+                    else:
+                        currentRow -= 1
+
+                break
+
+            # if traverse up is not ok and down is ok (except if recoverBot == True)
+            if (exitTop == False and exitBot == True):
+                # only allow to go top if recoverTop == True
+                if recoverTop == True:
+                    # moving up right
+                    if upRight &gt;= downRight and upRight &gt;= moveRight:
+                        solution.append(1)
+                        if currentRow == 0:  # loop to bottom if at top
+                            currentRow = lastRowIndex
+                        else:
+                            currentRow -= 1
+                        break
+
+                # moving right (fixing)
+                if moveRight &gt;= upRight:
+                    if (nextPos == endIndex):
+                        if (currentRow == 0 or currentRow == lastRowIndex):
+                            solution.append(0)
+                            break
+                    elif (nextPos != endIndex):
+                        solution.append(0)
+                        break
+
+                # moving down right
+                if downRight &gt;= moveRight or nextPos == endIndex:
+                    solution.append(-1)
+                    if currentRow == lastRowIndex:  # loop to top if bottom
+                        currentRow = 0
+                    else:
+                        currentRow += 1
+                    break
+
+            # this case shouldn't execute but if it does it shouldn't do anything
+            if (exitTop == False and exitBot == False):
+                break
+        # print(&quot;Not out&quot;)
+        # print(solution)
+
+        if currentPos != len(grid[0]) - 1:
+            currentPos += 1  # update currentPos at the end of the loop
+        else:
+            currentPos = 0
+
+        print(solution)
+
+        print(&quot;\nNew location&quot;)
+        print(&quot;currentRow =&quot;, currentRow, &quot;| currentPos =&quot;, currentPos)
+
+        print(&quot;downRight =&quot;, downRight, &quot;| moveRight =&quot;, moveRight, &quot;| upRight =&quot;, upRight)
+
+        print(&quot;----------------New Hop-------------------&quot;)
+
+    # !!!! final step, check calculation of exiting strats
+
+    return solution
+
+
+# prompt example
+# testList1 = [[3,4,1,2,8,6], [6,1,8,2,7,4], [5,4,3,9,9,5], [5,9,8,3,2,6], [8,7,2,9,6,4]]
+# testList1 = [[945], [938], [129], [625], [38], [836], [691], [745], [886], [569]]
+# testList1 = [[496, 218], [200, 947], [400, 646], [378, 95], [160, 59], [887, 17], [705, 618], [605, 366], [722, 892], [270, 375]]
+# testList1 = [[7, 8, 2, 8, 7], [4, 2, 8, 3, 5], [1, 3, 3, 3, 8], [8, 4, 2, 5, 1]]
+#
+# print(solve(testList1))
+</PRE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>974211469</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>StudentSolver.cpp</CENTER></H3><HR>
+<PRE>
+#include &quot;StudentSolver.h&quot;
+
+std::vector&lt;int&gt; StudentSolver::solve(std::vector&lt;std::vector&lt;int&gt;&gt; grid)
+<A NAME="0"></A>{
+	std::vector&lt;int&gt; result(grid[0].size() + 2), v(grid[0].size() + 2);
+	int max = 0;
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match82-1.html#0',3,'match82-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>	v[0] = 1;
+	for (int c = 0; c &lt; grid[0].size(); c++)
+	{
+		v[1] = c;
+		solveHelper(grid, 0, c, v, result, max, 0, 2);
+	}
+	v[0] = 0;
+	for (int c = 0; c &lt; grid[0].size(); c++)
+	{</B></FONT>
+		v[1] = c;
+		solveHelper(grid, grid.size() - 1, c, v, result, max, 0, 2);
+	}
+	result.pop_back();
+	return result;
+}
+
+void StudentSolver::solveHelper(std::vector&lt;std::vector&lt;int&gt;&gt; grid, int r, int c, std::vector&lt;int&gt; v, std::vector&lt;int&gt;&amp; result, int&amp; max, int sum, int size)
+{
+	if (size - 2 == grid[0].size())
+	{
+		if (max &lt; sum &amp;&amp; (r == -v[size - 1] || r == grid.size() - 1 - v[size - 1]))
+		{
+			max = sum;
+			result = v;
+		}
+		return;
+	}
+
+	sum += grid[r][c];
+	c = (c + 1) % grid[0].size();
+	
+	int rr = (r + 1) % grid.size();
+	if (rr - v.size() + size &lt;= -2 || rr + v.size() - size &gt;= grid.size())
+	{
+		v[size] = -1;
+		solveHelper(grid, rr, c, v, result, max, sum, size + 1);
+	}
+
+	rr = r;
+	if (rr - v.size() + size &lt;= -2 || rr + v.size() - size &gt;= grid.size()) 
+	{
+		v[size] = 0;
+		solveHelper(grid, rr, c, v, result, max, sum, size + 1);
+	}
+
+	rr = (r - 1 + grid.size()) % grid.size();
+	
+	if (rr - v.size() + size &lt;= -2 || rr + v.size() - size &gt;= grid.size())
+	{
+		v[size] = 1;
+		solveHelper(grid, rr, c, v, result, max, sum, size + 1);
+	}
+}
+
+
+</PRE>
+</BODY>
+</HTML>

@@ -1,0 +1,992 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>570142240</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>StudentSolver.cpp</CENTER></H3><HR>
+<PRE>
+
+#include &lt;vector&gt;
+#include &lt;iostream&gt;
+#include &lt;cmath&gt;
+#include &lt;map&gt;
+#include &lt;algorithm&gt;
+
+#include &quot;StudentSolver.h&quot;
+#include &lt;set&gt;
+<A NAME="0"></A>
+using namespace std;
+
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match8-1.html#0',3,'match8-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>vector&lt;int&gt; StudentSolver::solve(vector&lt;vector&lt;int&gt;&gt; grid)
+{
+	int numOfRows = grid.size(); 
+	int lastRowIndex = numOfRows - 1;
+	int numOfCols = grid[0].size();
+	int numOfMoves = numOfCols - 1; 
+	vector&lt;int&gt; result;</B></FONT>
+	int sum = 0; 
+	cout &lt;&lt; endl &lt;&lt; endl;
+	for (auto i : grid)
+	{
+		for (auto j : i)
+		{
+			std::cout &lt;&lt; j &lt;&lt; &quot;,&quot;;
+		}
+		std::cout &lt;&lt; endl;
+	}
+	std::cout &lt;&lt; endl &lt;&lt; endl;
+
+	if (numOfMoves == 0)
+	{
+		if (grid[0][0] &gt; grid[lastRowIndex][0])
+		{
+			result.push_back(1);
+			result.push_back(0);
+
+		}
+		else
+		{
+			result.push_back(0);
+			result.push_back(0);
+		}
+	}
+	else
+	{
+		vector&lt;pair&lt;int, int&gt;&gt; listOfStarts;
+		pair&lt;int, int&gt; tempPairPos;
+		for (int i = 0; i &lt; numOfCols; i++)
+		{
+			tempPairPos.first = 0;
+			tempPairPos.second = i;
+			listOfStarts.push_back(tempPairPos);
+			tempPairPos.first = lastRowIndex;
+			tempPairPos.second = i;
+			listOfStarts.push_back(tempPairPos);
+		}
+		vector&lt;set&lt;pair&lt;int, int&gt;&gt;&gt; invalidGroups = invalidPos(grid, listOfStarts);
+
+		vector&lt;vector&lt;pair&lt;int, int&gt;&gt;&gt; pathways = differentPaths(grid, invalidGroups, listOfStarts);
+
+		vector&lt;pair&lt;int, int&gt;&gt; optimalPath = largestSum(pathways, grid, result, listOfStarts);
+
+		vector&lt;int&gt; resultPath = convertToResult(grid, optimalPath);
+
+		for (auto e : resultPath)
+			result.push_back(e);
+	}
+
+	for (auto e : result)
+	{
+		cout &lt;&lt; e &lt;&lt; &quot; &quot;;
+	}
+	return result;
+}
+
+vector&lt;vector&lt;pair&lt;int, int&gt;&gt;&gt; StudentSolver::differentPaths(vector&lt;vector&lt;int&gt;&gt; grid, vector&lt;set&lt;pair&lt;int, int&gt;&gt;&gt; invalidGroups, vector&lt;pair&lt;int, int&gt;&gt; listOfStarts)
+{
+
+	vector&lt;vector&lt;pair&lt;int, int&gt;&gt;&gt; result;
+	vector&lt;pair&lt;int, int&gt;&gt; tempResult;
+	int size = invalidGroups.size();
+	for (int i = 0; i &lt; size; ++i)
+	{
+		tempResult = pathFinder(grid, listOfStarts.at(i), invalidGroups.at(i));
+		result.push_back(tempResult);
+	}
+	return result;
+}
+
+vector&lt;pair&lt;int, int&gt;&gt; StudentSolver::pathFinder(vector&lt;vector&lt;int&gt;&gt; grid, pair&lt;int, int&gt; tempResultPair, set&lt;pair&lt;int, int&gt;&gt; invalidValues)
+{
+	vector&lt;pair&lt;int, int&gt;&gt; result, tempVecPair;
+	pair&lt;int, int&gt; tempPair;
+
+	int numOfMoves = grid[0].size() - 1;
+	while (numOfMoves &gt; 0)
+	{
+		if (numOfMoves == 3) 
+		{
+			tempVecPair = getNextThree(grid, tempResultPair, numOfMoves, invalidValues);
+
+			tempPair = tempVecPair.at(0);
+			result.push_back(tempPair);
+
+			tempPair = tempVecPair.at(1);
+			result.push_back(tempPair);
+
+			tempPair = tempVecPair.at(2);
+			result.push_back(tempPair);
+
+			tempPair = tempVecPair.at(3);
+			result.push_back(tempPair);
+			break;
+		}
+		else
+		{
+			tempVecPair = getNextThree(grid, tempResultPair, numOfMoves, invalidValues); 
+
+			tempPair = tempVecPair.at(0);
+			result.push_back(tempPair); 
+			tempPair = tempVecPair.at(1);
+			tempResultPair = tempPair;
+		}
+
+	}
+	return result;
+}
+
+int StudentSolver::checkPosOne(vector&lt;vector&lt;int&gt;&gt; grid, vector&lt;int&gt;&amp; tempResult)
+{
+	int result = 0;
+	int startRow = tempResult.at(0);
+	int startCol = tempResult.at(1);
+	int lastRow = grid.size() - 1;
+	if ((startCol + 1) == grid[0].size() &amp;&amp; (startRow == 0))
+	{
+		result = grid[lastRow][0];
+	}
+	else if ((startCol + 1) == grid[0].size())
+	{
+		result = grid[startRow - 1][0];
+	}
+	else if (startRow == 0)
+	{
+		result = grid[lastRow][startCol + 1];
+	}
+	else
+	{
+		result = grid[startRow - 1][startCol + 1];
+	}
+
+	
+	return result;
+}
+
+int StudentSolver::checkZero(vector&lt;vector&lt;int&gt;&gt; grid, vector&lt;int&gt;&amp; tempResult)
+{
+	int result = 0;
+	int startRow = tempResult.at(0);
+	int startCol = tempResult.at(1);
+	if ((startCol + 1) == grid[0].size())
+	{
+		result = grid[startRow][0];
+	}
+	else
+	{
+		result = grid[startRow][startCol + 1];
+	}
+
+	
+	return result;
+}
+
+int StudentSolver::checkNegOne(vector&lt;vector&lt;int&gt;&gt; grid, vector&lt;int&gt;&amp; tempResult)
+{
+	int result = 0;
+	int startRow = tempResult.at(0);
+	int startCol = tempResult.at(1);
+	int lastRow = grid.size() - 1;
+	if ((startRow + 1) == grid.size() &amp;&amp; (startCol + 1) == grid[0].size())
+	{
+		result = grid[0][0];
+	}
+	else if ((startRow + 1) == grid.size())
+	{
+		result = grid[0][startCol + 1];
+	}
+	else if ((startCol + 1) == grid[0].size())
+	{
+		result = grid[startRow + 1][0];
+	}
+	else
+	{
+		result = grid[startRow + 1][startCol + 1];
+	}
+
+	
+	return result;
+}
+
+pair&lt;int, int&gt; StudentSolver::getNextPos(vector&lt;vector&lt;int&gt;&gt; grid, pair&lt;int, int&gt; tempResult)
+{
+	pair&lt;int, int&gt; result;
+	int startRow = tempResult.first;
+	int startCol = tempResult.second;
+	int lastRow = grid.size() - 1;
+	if ((startCol + 1) == grid[0].size() &amp;&amp; (startRow == 0))
+	{
+		result.first = lastRow;
+		result.second = 0;
+	}
+	else if ((startCol + 1) == grid[0].size())
+	{
+		result.first = startRow - 1;
+		result.second = 0;
+	}
+	else if (startRow == 0)
+	{
+		result.first = lastRow;
+		result.second = startCol + 1;
+	}
+	else
+	{
+		result.first = startRow - 1;
+		result.second = startCol + 1;
+	}
+	
+	return result;
+}
+
+pair&lt;int, int&gt; StudentSolver::getNextZero(vector&lt;vector&lt;int&gt;&gt; grid, pair&lt;int, int&gt; tempResult)
+{
+	pair&lt;int, int&gt; result;
+	int startRow = tempResult.first;
+	int startCol = tempResult.second;
+	if ((startCol + 1) == grid[0].size())
+	{
+		result.first = startRow;
+		result.second = 0;
+	}
+	else
+	{
+		result.first = startRow;
+		result.second = startCol + 1;
+	}
+	
+	return result;
+}
+
+pair&lt;int, int&gt; StudentSolver::getNextNeg(vector&lt;vector&lt;int&gt;&gt; grid, pair&lt;int, int&gt; tempResult)
+{
+	pair&lt;int, int&gt; result;
+	int startRow = tempResult.first;
+	int startCol = tempResult.second;
+	int lastRow = grid.size() - 1;
+	if ((startRow + 1) == grid.size() &amp;&amp; (startCol + 1) == grid[0].size())
+	{
+		result.first = 0;
+		result.second = 0;
+	}
+	else if ((startRow + 1) == grid.size())
+	{
+		result.first = 0;
+		result.second = startCol + 1;
+	}
+	else if ((startCol + 1) == grid[0].size())
+	{
+		result.first = startRow + 1;
+		result.second = 0;
+	}
+	else
+	{
+		result.first = startRow + 1;
+		result.second = startCol + 1;
+	}
+	
+	return result;
+}
+
+vector&lt;pair&lt;int,int&gt;&gt; StudentSolver::getNextThree(vector&lt;vector&lt;int&gt;&gt; grid, pair&lt;int, int&gt; tempResult, int&amp; movesLeft, set&lt;pair&lt;int, int&gt;&gt; invalidGrid)
+{
+	vector&lt;pair&lt;int,int&gt;&gt; result;
+	int curPosVal = grid[tempResult.first][tempResult.second];
+	pair&lt;int, int&gt; nextPos = getNextPos(grid, tempResult);
+	pair&lt;int, int&gt; nextZero = getNextZero(grid, tempResult);
+	pair&lt;int, int&gt; nextNeg = getNextNeg(grid, tempResult);
+	int nextPosVal = grid[nextPos.first][nextPos.second];
+	int nextZeroVal = grid[nextPos.first][nextPos.second];
+	int nextNegVal = grid[nextNeg.first][nextNeg.second];
+	pair&lt;vector&lt;pair&lt;int, int&gt;&gt;, int&gt; sums;
+	vector&lt;pair&lt;vector&lt;pair&lt;int, int&gt;&gt;, int&gt;&gt; sumOfSomes;
+	int curPosition = tempResult.first, largest = 0;
+	bool flag = false;
+	if (movesLeft &gt;= 3) 
+	{
+		int tempSum = 0;
+		vector &lt;pair&lt;int, int&gt;&gt; tempVec;
+
+
+		pair&lt;int, int&gt; nextPosNextPos = getNextPos(grid, nextPos);
+
+		
+		pair&lt;int, int&gt; nextPosNextPosNextPos = getNextPos(grid, nextPosNextPos);
+		if (isValidDir(nextPosNextPosNextPos, invalidGrid))
+		{
+			tempSum += grid[nextPosNextPosNextPos.first][nextPosNextPosNextPos.second];
+			tempSum += grid[nextPosNextPos.first][nextPosNextPos.second];
+			tempSum += grid[nextPos.first][nextPos.second];
+			tempSum += curPosVal;
+			tempVec.push_back(tempResult);
+			tempVec.push_back(nextPos);
+			tempVec.push_back(nextPosNextPos);
+			tempVec.push_back(nextPosNextPosNextPos);
+			sums.first = tempVec;
+			sums.second = tempSum;
+			sumOfSomes.push_back(sums);
+			tempVec.clear();
+			tempSum = 0;
+		}
+
+		
+		pair&lt;int, int&gt; nextPosNextPosNextZero = getNextZero(grid, nextPosNextPos);
+		if (isValidDir(nextPosNextPosNextZero, invalidGrid))
+		{
+			tempSum += grid[nextPosNextPosNextZero.first][nextPosNextPosNextZero.second];
+			tempSum += grid[nextPosNextPos.first][nextPosNextPos.second];
+			tempSum += grid[nextPos.first][nextPos.second];
+			tempSum += curPosVal;
+			tempVec.push_back(tempResult);
+			tempVec.push_back(nextPos);
+			tempVec.push_back(nextPosNextPos);
+			tempVec.push_back(nextPosNextPosNextZero);
+			sums.first = tempVec;
+			sums.second = tempSum;
+			sumOfSomes.push_back(sums);
+			tempVec.clear();
+			tempSum = 0;
+		}
+
+		
+		pair&lt;int, int&gt; nextPosNextPosNextNeg = getNextNeg(grid, nextPosNextPos);
+		if (isValidDir(nextPosNextPosNextNeg, invalidGrid))
+		{
+			tempSum += grid[nextPosNextPosNextNeg.first][nextPosNextPosNextNeg.second];
+			tempSum += grid[nextPosNextPos.first][nextPosNextPos.second];
+			tempSum += grid[nextPos.first][nextPos.second];
+			tempSum += curPosVal;
+			tempVec.push_back(tempResult);
+			tempVec.push_back(nextPos);
+			tempVec.push_back(nextPosNextPos);
+			tempVec.push_back(nextPosNextPosNextNeg);
+			sums.first = tempVec;
+			sums.second = tempSum;
+			sumOfSomes.push_back(sums);
+			tempVec.clear();
+			tempSum = 0;
+		}
+
+		pair&lt;int, int&gt; nextPosNextZero = getNextZero(grid, nextPos);
+
+		
+		pair&lt;int, int&gt; nextPosNextZeroNextPos = getNextPos(grid, nextPosNextZero);
+		if (isValidDir(nextPosNextZeroNextPos, invalidGrid))
+		{
+			tempSum += grid[nextPosNextZeroNextPos.first][nextPosNextZeroNextPos.second];
+			tempSum += grid[nextPosNextZero.first][nextPosNextZero.second];
+			tempSum += grid[nextPos.first][nextPos.second];
+			tempSum += curPosVal;
+			tempVec.push_back(tempResult);
+			tempVec.push_back(nextPos);
+			tempVec.push_back(nextPosNextZero);
+			tempVec.push_back(nextPosNextZeroNextPos);
+			sums.first = tempVec;
+			sums.second = tempSum;
+			sumOfSomes.push_back(sums);
+			tempVec.clear();
+			tempSum = 0;
+		}
+
+		
+		pair&lt;int, int&gt; nextPosNextZeroNextZero = getNextZero(grid, nextPosNextZero);
+		if (isValidDir(nextPosNextZeroNextZero, invalidGrid))
+		{
+			tempSum += grid[nextPosNextZeroNextZero.first][nextPosNextZeroNextZero.second];
+			tempSum += grid[nextPosNextZero.first][nextPosNextZero.second];
+			tempSum += grid[nextPos.first][nextPos.second];
+			tempSum += curPosVal;
+			tempVec.push_back(tempResult);
+			tempVec.push_back(nextPos);
+			tempVec.push_back(nextPosNextZero);
+			tempVec.push_back(nextPosNextZeroNextZero);
+			sums.first = tempVec;
+			sums.second = tempSum;
+			sumOfSomes.push_back(sums);
+			tempVec.clear();
+			tempSum = 0;
+		}
+		
+		
+		pair&lt;int, int&gt; nextPosNextZeroNextNeg = getNextNeg(grid, nextPosNextZero);
+		if (isValidDir(nextPosNextZeroNextNeg, invalidGrid))
+		{
+			tempSum += grid[nextPosNextZeroNextNeg.first][nextPosNextZeroNextNeg.second];
+			tempSum += grid[nextPosNextZero.first][nextPosNextZero.second];
+			tempSum += grid[nextPos.first][nextPos.second];
+			tempSum += curPosVal;
+			tempVec.push_back(tempResult);
+			tempVec.push_back(nextPos);
+			tempVec.push_back(nextPosNextZero);
+			tempVec.push_back(nextPosNextZeroNextNeg);
+			sums.first = tempVec;
+			sums.second = tempSum;
+			sumOfSomes.push_back(sums);
+			tempVec.clear();
+			tempSum = 0;
+		}
+
+		pair&lt;int, int&gt; nextPosNextNeg = getNextNeg(grid, nextPos);
+
+		
+		pair&lt;int, int&gt; nextPosNextNegNextPos = getNextPos(grid, nextPosNextNeg);
+		if (isValidDir(nextPosNextNegNextPos, invalidGrid))
+		{
+			tempSum += grid[nextPosNextNegNextPos.first][nextPosNextNegNextPos.second];
+			tempSum += grid[nextPosNextNeg.first][nextPosNextNeg.second];
+			tempSum += grid[nextPos.first][nextPos.second];
+			tempSum += curPosVal;
+			tempVec.push_back(tempResult);
+			tempVec.push_back(nextPos);
+			tempVec.push_back(nextPosNextNeg);
+			tempVec.push_back(nextPosNextNegNextPos);
+			sums.first = tempVec;
+			sums.second = tempSum;
+			sumOfSomes.push_back(sums);
+			tempVec.clear();
+			tempSum = 0;
+		}
+
+		
+		pair&lt;int, int&gt; nextPosNextNegNextZero = getNextZero(grid, nextPosNextNeg);
+		if (isValidDir(nextPosNextNegNextZero, invalidGrid))
+		{
+			tempSum += grid[nextPosNextNegNextZero.first][nextPosNextNegNextZero.second];
+			tempSum += grid[nextPosNextNeg.first][nextPosNextNeg.second];
+			tempSum += grid[nextPos.first][nextPos.second];
+			tempSum += curPosVal;
+			tempVec.push_back(tempResult);
+			tempVec.push_back(nextPos);
+			tempVec.push_back(nextPosNextNeg);
+			tempVec.push_back(nextPosNextNegNextZero);
+			sums.first = tempVec;
+			sums.second = tempSum;
+			sumOfSomes.push_back(sums);
+			tempVec.clear();
+			tempSum = 0;
+		}
+
+		
+		pair&lt;int, int&gt; nextPosNextNegNextNeg = getNextNeg(grid, nextPosNextNeg);
+		if (isValidDir(nextPosNextNegNextNeg, invalidGrid))
+		{
+			tempSum += grid[nextPosNextNegNextNeg.first][nextPosNextNegNextNeg.second];
+			tempSum += grid[nextPosNextNeg.first][nextPosNextNeg.second];
+			tempSum += grid[nextPos.first][nextPos.second];
+			tempSum += curPosVal;
+			tempVec.push_back(tempResult);
+			tempVec.push_back(nextPos);
+			tempVec.push_back(nextPosNextNeg);
+			tempVec.push_back(nextPosNextNegNextNeg);
+			sums.first = tempVec;
+			sums.second = tempSum;
+			sumOfSomes.push_back(sums);
+			tempVec.clear();
+			tempSum = 0;
+		}
+
+		pair&lt;int, int&gt; nextZeroNextPos = getNextPos(grid, nextZero);
+
+		
+		pair&lt;int, int&gt; nextZeroNextPosNextPos = getNextPos(grid, nextZeroNextPos);
+		if (isValidDir(nextZeroNextPosNextPos, invalidGrid))
+		{
+			tempSum += grid[nextZeroNextPosNextPos.first][nextZeroNextPosNextPos.second];
+			tempSum += grid[nextZeroNextPos.first][nextZeroNextPos.second];
+			tempSum += grid[nextZero.first][nextZero.second];
+			tempSum += curPosVal;
+			tempVec.push_back(tempResult);
+			tempVec.push_back(nextZero);
+			tempVec.push_back(nextZeroNextPos);
+			tempVec.push_back(nextZeroNextPosNextPos);
+			sums.first = tempVec;
+			sums.second = tempSum;
+			sumOfSomes.push_back(sums);
+			tempVec.clear();
+			tempSum = 0;
+		}
+
+		
+		pair&lt;int, int&gt; nextZeroNextPosNextZero = getNextZero(grid, nextZeroNextPos);
+		if (isValidDir(nextZeroNextPosNextZero, invalidGrid))
+		{
+			tempSum += grid[nextZeroNextPosNextZero.first][nextZeroNextPosNextZero.second];
+			tempSum += grid[nextZeroNextPos.first][nextZeroNextPos.second];
+			tempSum += grid[nextZero.first][nextZero.second];
+			tempSum += curPosVal;
+			tempVec.push_back(tempResult);
+			tempVec.push_back(nextZero);
+			tempVec.push_back(nextZeroNextPos);
+			tempVec.push_back(nextZeroNextPosNextZero);
+			sums.first = tempVec;
+			sums.second = tempSum;
+			sumOfSomes.push_back(sums);
+			tempVec.clear();
+			tempSum = 0;
+		}
+
+		
+		pair&lt;int, int&gt; nextZeroNextPosNextNeg = getNextNeg(grid, nextZeroNextPos);
+		if (isValidDir(nextZeroNextPosNextNeg, invalidGrid))
+		{
+			tempSum += grid[nextZeroNextPosNextNeg.first][nextZeroNextPosNextNeg.second];
+			tempSum += grid[nextZeroNextPos.first][nextZeroNextPos.second];
+			tempSum += grid[nextZero.first][nextZero.second];
+			tempSum += curPosVal;
+			tempVec.push_back(tempResult);
+			tempVec.push_back(nextZero);
+			tempVec.push_back(nextZeroNextPos);
+			tempVec.push_back(nextZeroNextPosNextNeg);
+			sums.first = tempVec;
+			sums.second = tempSum;
+			sumOfSomes.push_back(sums);
+			tempVec.clear();
+			tempSum = 0;
+		}
+
+		pair&lt;int, int&gt; nextZeroNextZero = getNextZero(grid, nextZero);
+
+		
+		pair&lt;int, int&gt; nextZeroNextZeroNextPos = getNextPos(grid, nextZeroNextZero);
+		if (isValidDir(nextZeroNextZeroNextPos, invalidGrid))
+		{
+			tempSum += grid[nextZeroNextZeroNextPos.first][nextZeroNextZeroNextPos.second];
+			tempSum += grid[nextZeroNextZero.first][nextZeroNextZero.second];
+			tempSum += grid[nextZero.first][nextZero.second];
+			tempSum += curPosVal;
+			tempVec.push_back(tempResult);
+			tempVec.push_back(nextZero);
+			tempVec.push_back(nextZeroNextZero);
+			tempVec.push_back(nextZeroNextZeroNextPos);
+			sums.first = tempVec;
+			sums.second = tempSum;
+			sumOfSomes.push_back(sums);
+			tempVec.clear();
+			tempSum = 0;
+		}
+
+		
+		pair&lt;int, int&gt; nextZeroNextZeroNextZero = getNextZero(grid, nextZeroNextZero);
+		if (isValidDir(nextZeroNextZeroNextZero, invalidGrid))
+		{
+			tempSum += grid[nextZeroNextZeroNextZero.first][nextZeroNextZeroNextZero.second];
+			tempSum += grid[nextZeroNextZero.first][nextZeroNextZero.second];
+			tempSum += grid[nextZero.first][nextZero.second];
+			tempSum += curPosVal;
+			tempVec.push_back(tempResult);
+			tempVec.push_back(nextZero);
+			tempVec.push_back(nextZeroNextZero);
+			tempVec.push_back(nextZeroNextZeroNextZero);
+			sums.first = tempVec;
+			sums.second = tempSum;
+			sumOfSomes.push_back(sums);
+			tempVec.clear();
+			tempSum = 0;
+		}
+
+		
+		pair&lt;int, int&gt; nextZeroNextZeroNextNeg = getNextNeg(grid, nextZeroNextZero);
+		if (isValidDir(nextZeroNextZeroNextNeg, invalidGrid))
+		{
+			tempSum += grid[nextZeroNextZeroNextNeg.first][nextZeroNextZeroNextNeg.second];
+			tempSum += grid[nextZeroNextZero.first][nextZeroNextZero.second];
+			tempSum += grid[nextZero.first][nextZero.second];
+			tempSum += curPosVal;
+			tempVec.push_back(tempResult);
+			tempVec.push_back(nextZero);
+			tempVec.push_back(nextZeroNextZero);
+			tempVec.push_back(nextZeroNextZeroNextNeg);
+			sums.first = tempVec;
+			sums.second = tempSum;
+			sumOfSomes.push_back(sums);
+			tempVec.clear();
+			tempSum = 0;
+		}
+
+		pair&lt;int, int&gt; nextZeroNextNeg = getNextNeg(grid, nextZero);
+
+		
+		pair&lt;int, int&gt; nextZeroNextNegNextPos = getNextPos(grid, nextZeroNextNeg);
+		if (isValidDir(nextZeroNextNegNextPos, invalidGrid))
+		{
+			tempSum += grid[nextZeroNextNegNextPos.first][nextZeroNextNegNextPos.second];
+			tempSum += grid[nextZeroNextNeg.first][nextZeroNextNeg.second];
+			tempSum += grid[nextZero.first][nextZero.second];
+			tempSum += curPosVal;
+			tempVec.push_back(tempResult);
+			tempVec.push_back(nextZero);
+			tempVec.push_back(nextZeroNextNeg);
+			tempVec.push_back(nextZeroNextNegNextPos);
+			sums.first = tempVec;
+			sums.second = tempSum;
+			sumOfSomes.push_back(sums);
+			tempVec.clear();
+			tempSum = 0;
+		}
+		
+		
+		pair&lt;int, int&gt; nextZeroNextNegNextZero = getNextZero(grid, nextZeroNextNeg);
+		if (isValidDir(nextZeroNextNegNextZero, invalidGrid))
+		{
+			tempSum += grid[nextZeroNextNegNextZero.first][nextZeroNextNegNextZero.second];
+			tempSum += grid[nextZeroNextNeg.first][nextZeroNextNeg.second];
+			tempSum += grid[nextZero.first][nextZero.second];
+			tempSum += curPosVal;
+			tempVec.push_back(tempResult);
+			tempVec.push_back(nextZero);
+			tempVec.push_back(nextZeroNextNeg);
+			tempVec.push_back(nextZeroNextNegNextZero);
+			sums.first = tempVec;
+			sums.second = tempSum;
+			sumOfSomes.push_back(sums);
+			tempVec.clear();
+			tempSum = 0;
+		}
+		
+		
+		pair&lt;int, int&gt; nextZeroNextNegNextNeg = getNextNeg(grid, nextZeroNextNeg);
+		if (isValidDir(nextZeroNextNegNextNeg, invalidGrid))
+		{
+			tempSum += grid[nextZeroNextNegNextNeg.first][nextZeroNextNegNextNeg.second];
+			tempSum += grid[nextZeroNextNeg.first][nextZeroNextNeg.second];
+			tempSum += grid[nextZero.first][nextZero.second];
+			tempSum += curPosVal;
+			tempVec.push_back(tempResult);
+			tempVec.push_back(nextZero);
+			tempVec.push_back(nextZeroNextNeg);
+			tempVec.push_back(nextZeroNextNegNextNeg);
+			sums.first = tempVec;
+			sums.second = tempSum;
+			sumOfSomes.push_back(sums);
+			tempVec.clear();
+			tempSum = 0;
+		}
+		
+		pair&lt;int, int&gt; nextNegNextPos = getNextPos(grid, nextNeg);
+
+		
+		pair&lt;int, int&gt; nextNegNextPosNextPos = getNextPos(grid, nextNegNextPos);
+		if (isValidDir(nextNegNextPosNextPos, invalidGrid))
+		{
+			tempSum += grid[nextNegNextPosNextPos.first][nextNegNextPosNextPos.second];
+			tempSum += grid[nextNegNextPos.first][nextNegNextPos.second];
+			tempSum += grid[nextNeg.first][nextNeg.second];
+			tempSum += curPosVal;
+			tempVec.push_back(tempResult);
+			tempVec.push_back(nextNeg);
+			tempVec.push_back(nextNegNextPos);
+			tempVec.push_back(nextNegNextPosNextPos);
+			sums.first = tempVec;
+			sums.second = tempSum;
+			sumOfSomes.push_back(sums);
+			tempVec.clear();
+			tempSum = 0;
+		}
+		
+		
+		pair&lt;int, int&gt; nextNegNextPosNextZero = getNextZero(grid, nextNegNextPos);
+		if (isValidDir(nextNegNextPosNextZero, invalidGrid))
+		{
+			tempSum += grid[nextNegNextPosNextZero.first][nextNegNextPosNextZero.second];
+			tempSum += grid[nextNegNextPos.first][nextNegNextPos.second];
+			tempSum += grid[nextNeg.first][nextNeg.second];
+			tempSum += curPosVal;
+			tempVec.push_back(tempResult);
+			tempVec.push_back(nextNeg);
+			tempVec.push_back(nextNegNextPos);
+			tempVec.push_back(nextNegNextPosNextZero);
+			sums.first = tempVec;
+			sums.second = tempSum;
+			sumOfSomes.push_back(sums);
+			tempVec.clear();
+			tempSum = 0;
+		}
+		
+		
+		pair&lt;int, int&gt; nextNegNextPosNextNeg = getNextNeg(grid, nextNegNextPos);
+		if (isValidDir(nextNegNextPosNextNeg, invalidGrid))
+		{
+			tempSum += grid[nextNegNextPosNextNeg.first][nextNegNextPosNextNeg.second];
+			tempSum += grid[nextNegNextPos.first][nextNegNextPos.second];
+			tempSum += grid[nextNeg.first][nextNeg.second];
+			tempSum += curPosVal;
+			tempVec.push_back(tempResult);
+			tempVec.push_back(nextNeg);
+			tempVec.push_back(nextNegNextPos);
+			tempVec.push_back(nextNegNextPosNextNeg);
+			sums.first = tempVec;
+			sums.second = tempSum;
+			sumOfSomes.push_back(sums);
+			tempVec.clear();
+			tempSum = 0;
+		}
+		
+		pair&lt;int, int&gt; nextNegNextZero = getNextZero(grid, nextNeg);
+
+		
+		pair&lt;int, int&gt; nextNegNextZeroNextPos = getNextPos(grid, nextNegNextZero);
+		if (isValidDir(nextNegNextZeroNextPos, invalidGrid))
+		{
+			tempSum += grid[nextNegNextZeroNextPos.first][nextNegNextZeroNextPos.second];
+			tempSum += grid[nextNegNextZero.first][nextNegNextZero.second];
+			tempSum += grid[nextNeg.first][nextNeg.second];
+			tempSum += curPosVal;
+			tempVec.push_back(tempResult);
+			tempVec.push_back(nextNeg);
+			tempVec.push_back(nextNegNextZero);
+			tempVec.push_back(nextNegNextZeroNextPos);
+			sums.first = tempVec;
+			sums.second = tempSum;
+			sumOfSomes.push_back(sums);
+			tempVec.clear();
+			tempSum = 0;
+		}
+		
+		
+		pair&lt;int, int&gt; nextNegNextZeroNextZero = getNextZero(grid, nextNegNextZero);
+		if (isValidDir(nextNegNextZeroNextZero, invalidGrid))
+		{
+			tempSum += grid[nextNegNextZeroNextZero.first][nextNegNextZeroNextZero.second];
+			tempSum += grid[nextNegNextZero.first][nextNegNextZero.second];
+			tempSum += grid[nextNeg.first][nextNeg.second];
+			tempSum += curPosVal;
+			tempVec.push_back(tempResult);
+			tempVec.push_back(nextNeg);
+			tempVec.push_back(nextNegNextZero);
+			tempVec.push_back(nextNegNextZeroNextZero);
+			sums.first = tempVec;
+			sums.second = tempSum;
+			sumOfSomes.push_back(sums);
+			tempVec.clear();
+			tempSum = 0;
+		}
+		
+		
+		pair&lt;int, int&gt; nextNegNextZeroNextNeg = getNextNeg(grid, nextNegNextZero);
+		if (isValidDir(nextNegNextZeroNextNeg, invalidGrid))
+		{
+			tempSum += grid[nextNegNextZeroNextNeg.first][nextNegNextZeroNextNeg.second];
+			tempSum += grid[nextNegNextZero.first][nextNegNextZero.second];
+			tempSum += grid[nextNeg.first][nextNeg.second];
+			tempSum += curPosVal;
+			tempVec.push_back(tempResult);
+			tempVec.push_back(nextNeg);
+			tempVec.push_back(nextNegNextZero);
+			tempVec.push_back(nextNegNextZeroNextNeg);
+			sums.first = tempVec;
+			sums.second = tempSum;
+			sumOfSomes.push_back(sums);
+			tempVec.clear();
+			tempSum = 0;
+		}
+		
+		pair&lt;int, int&gt; nextNegNextNeg = getNextNeg(grid, nextNeg);
+
+		
+		pair&lt;int, int&gt; nextNegNextNegNextPos = getNextPos(grid, nextNegNextNeg);
+		if (isValidDir(nextNegNextNegNextPos, invalidGrid))
+		{
+			tempSum += grid[nextNegNextNegNextPos.first][nextNegNextNegNextPos.second];
+			tempSum += grid[nextNegNextNeg.first][nextNegNextNeg.second];
+			tempSum += grid[nextNeg.first][nextNeg.second];
+			tempSum += curPosVal;
+			tempVec.push_back(tempResult);
+			tempVec.push_back(nextNeg);
+			tempVec.push_back(nextNegNextNeg);
+			tempVec.push_back(nextNegNextNegNextPos);
+			sums.first = tempVec;
+			sums.second = tempSum;
+			sumOfSomes.push_back(sums);
+			tempVec.clear();
+			tempSum = 0;
+		}
+		
+		
+		pair&lt;int, int&gt; nextNegNextNegNextZero = getNextZero(grid, nextNegNextNeg);
+		if (isValidDir(nextNegNextNegNextZero, invalidGrid))
+		{
+			tempSum += grid[nextNegNextNegNextZero.first][nextNegNextNegNextZero.second];
+			tempSum += grid[nextNegNextNeg.first][nextNegNextNeg.second];
+			tempSum += grid[nextNeg.first][nextNeg.second];
+			tempSum += curPosVal;
+			tempVec.push_back(tempResult);
+			tempVec.push_back(nextNeg);
+			tempVec.push_back(nextNegNextNeg);
+			tempVec.push_back(nextNegNextNegNextZero);
+			sums.first = tempVec;
+			sums.second = tempSum;
+			sumOfSomes.push_back(sums);
+			tempVec.clear();
+			tempSum = 0;
+		}
+		
+		
+		pair&lt;int, int&gt; nextNegNextNegNextNextNeg = getNextNeg(grid, nextNegNextNeg);
+		if (isValidDir(nextNegNextNegNextNextNeg, invalidGrid))
+		{
+			tempSum += grid[nextNegNextNegNextNextNeg.first][nextNegNextNegNextNextNeg.second];
+			tempSum += grid[nextNegNextNeg.first][nextNegNextNeg.second];
+			tempSum += grid[nextNeg.first][nextNeg.second];
+			tempSum += curPosVal;
+			tempVec.push_back(tempResult);
+			tempVec.push_back(nextNeg);
+			tempVec.push_back(nextNegNextNeg);
+			tempVec.push_back(nextNegNextNegNextNextNeg);
+			sums.first = tempVec;
+			sums.second = tempSum;
+			sumOfSomes.push_back(sums);
+			tempVec.clear();
+			tempSum = 0;
+		}
+	}
+	for (auto e : sumOfSomes)
+	{
+		if (e.second &gt; largest)
+		{
+			largest = e.second;
+			result = e.first;
+		}
+	}
+	movesLeft--;
+	return result;
+}
+
+bool StudentSolver::sortReverse(const pair&lt;int,pair&lt;int, int&gt;&gt;&amp; a, const pair&lt;int, pair&lt;int, int&gt;&gt;&amp; b)
+{
+	return (a.first &gt; b.first);
+}
+
+bool StudentSolver::isValidDir(pair&lt;int, int&gt; tempPair, set&lt;pair&lt;int, int&gt;&gt; invalidGrid)
+{
+	bool result = true; 
+	if (invalidGrid.find(tempPair) != invalidGrid.end())
+		result = false;
+	return result;
+}
+
+vector&lt;set&lt;pair&lt;int, int&gt;&gt;&gt; StudentSolver::invalidPos(vector&lt;vector&lt;int&gt;&gt; grid, vector&lt;pair&lt;int, int&gt;&gt; listOfStarts)
+{
+	vector&lt;set&lt;pair&lt;int, int&gt;&gt;&gt; vectorOfResultSets;
+	set&lt;pair&lt;int, int&gt;&gt; resultSet;
+	int i = 0, j = grid.size() - 1, curCol = 0;;
+	pair&lt;int, int&gt; tempPair;
+	for (auto e : listOfStarts)
+	{
+		curCol = e.second - 1;
+		while (j &gt; i)
+		{
+			i++;
+			for (int k = i; k &lt; j; k++)
+			{
+				tempPair.first = k;
+				tempPair.second = curCol;
+				
+
+				resultSet.insert(tempPair);
+			}
+			if (curCol == 0)
+			{
+				curCol = grid[0].size() - 1;
+			}
+			
+			curCol--;
+			j--;
+		}
+		vectorOfResultSets.push_back(resultSet);
+		i = 0;
+		j = grid.size() - 1;
+		resultSet.clear();
+	}
+	return vectorOfResultSets;
+}
+
+vector&lt;pair&lt;int,int&gt;&gt; StudentSolver::largestSum(vector&lt;vector&lt;pair&lt;int, int&gt;&gt;&gt; pathways, vector&lt;vector&lt;int&gt;&gt; grid, vector&lt;int&gt;&amp; result, vector&lt;pair&lt;int, int&gt;&gt; listOfStarts)
+{
+	vector&lt;pair&lt;int, int&gt;&gt; resultingVecOfPair;
+	vector&lt;pair&lt;int, int&gt;&gt; tempResultingVecOfPair;
+	pair&lt;int, int&gt; largestSumStart;
+	int sum = 0, largestSum = 0, pos = 0;
+	int size = pathways[0].size() - 1;
+	for (auto e : pathways)
+	{
+		if (e.at(size).first == 0 || e.at(size).first == grid.size() - 1)
+		{
+			sum += grid[listOfStarts.at(pos).first][listOfStarts.at(pos).second];
+			for (auto k : e)
+			{
+				sum += grid[k.first][k.second];
+			}
+			if (sum &gt; largestSum)
+			{
+				largestSum = sum;
+				largestSumStart = listOfStarts.at(pos);
+				tempResultingVecOfPair = e;
+				result.clear();
+				if (listOfStarts.at(pos).first == 0)
+				{
+					result.push_back(1);
+					result.push_back(listOfStarts.at(pos).second);
+				}
+				else
+				{
+					result.push_back(0);
+					result.push_back(listOfStarts.at(pos).second);
+				}
+			}
+			sum = 0;
+		}
+		pos++;
+	}
+	
+	
+	
+	
+	
+	resultingVecOfPair = tempResultingVecOfPair;
+	return resultingVecOfPair;
+}
+
+vector&lt;int&gt; StudentSolver::convertToResult(vector&lt;vector&lt;int&gt;&gt; grid, vector&lt;pair&lt;int, int&gt;&gt; tempVecPair)
+{
+	vector&lt;int&gt; result;
+	int numOfCols = grid[0].size();
+	int numOfRows = grid.size();
+	int numOfMoves = numOfCols - 1;
+	pair&lt;int, int&gt; curPair = tempVecPair.at(0);
+	pair&lt;int, int&gt; nextPair = tempVecPair.at(1);
+	int i = 2;
+	while (numOfMoves &gt; 0)
+	{
+		if ((curPair.first == 0 &amp;&amp; nextPair.first == (numOfRows - 1)) || ((curPair.first - 1) == nextPair.first))
+		{
+			result.push_back(1);
+		}
+		else if ((curPair.first == (numOfRows - 1) &amp;&amp; nextPair.first == 0) || ((curPair.first + 1) == nextPair.first))
+		{
+			result.push_back(-1);
+		}
+		else
+		{
+			result.push_back(0);
+		}
+		curPair = nextPair;
+		if(numOfMoves != 1)
+			nextPair = tempVecPair.at(i);
+		--numOfMoves;
+		++i;
+	}
+	return result;
+}
+</PRE>
+</BODY>
+</HTML>

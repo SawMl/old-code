@@ -1,0 +1,297 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>773034533</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class StudentSolver {
+
+    
+    public static ArrayList&lt;Integer&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid) {
+
+        ArrayList&lt;Integer&gt; returnValue = new ArrayList&lt;&gt;();
+
+        int width = grid.get(0).size();
+        int height = grid.size();
+
+        int invalidInt = 7327; 
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid0 = new ArrayList&lt;&gt;();
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; prevStep = new ArrayList&lt;&gt;();
+
+        
+        for (int i = 0; i &lt; height; i++) {
+            prevStep.add(new ArrayList&lt;&gt;());
+
+            if (i == 0) {
+                grid0.add(new ArrayList&lt;&gt;(grid.get(0)));
+                for (int j = 0; j &lt; width; j++) {
+                    prevStep.get(i).add(invalidInt);
+                }
+            }
+            else if (i &lt; height-1) {
+                grid0.add(new ArrayList&lt;&gt;());
+                for (int j = 0; j &lt; width; j++) {
+                    grid0.get(i).add(0);
+                    prevStep.get(i).add(invalidInt);
+                }
+            }
+            else {
+                grid0.add(new ArrayList&lt;&gt;(grid.get(i)));
+                for (int j = 0; j &lt; width; j++) {
+                    prevStep.get(i).add(invalidInt);
+                }
+            }
+
+        }
+
+        ArrayList&lt;Integer&gt; maxPath = findMaximums(grid, grid0, prevStep, width-1);
+
+        int y = maxPath.get(maxPath.size()-1);
+        maxPath.remove(maxPath.size()-1);
+<A NAME="0"></A>        int x = maxPath.get(maxPath.size()-1);
+        maxPath.remove(maxPath.size()-1);
+
+        <FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match376-1.html#0',3,'match376-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>if (y == 0) { returnValue.add(1); }
+        else { returnValue.add(0); }</B></FONT>
+<A NAME="1"></A>        returnValue.add(x);
+
+        
+        <FONT color="#f63526"><A HREF="javascript:ZweiFrames('match376-1.html#1',3,'match376-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>for (int i = maxPath.size(); i &gt; 1; i--) {
+            returnValue.add(maxPath.get(i-1));
+        }
+
+        
+
+        printGrid(grid);
+        System.out.println</B></FONT>(returnValue);
+
+        return returnValue;
+
+    }
+
+    
+    public static ArrayList&lt;Integer&gt; findMaximums(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; originalGrid, ArrayList&lt;ArrayList&lt;Integer&gt;&gt; previousValues, ArrayList&lt;ArrayList&lt;Integer&gt;&gt; previousStep, int stepsRemaining) {
+
+        
+        System.out.println();
+
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; gridK = new ArrayList&lt;&gt;();
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; thisStep = new ArrayList&lt;&gt;();
+
+        int width = originalGrid.get(0).size();
+        int height = originalGrid.size();
+
+        
+        if (stepsRemaining &lt;= 0) {
+            ArrayList&lt;Integer&gt; returnArray = new ArrayList&lt;&gt;();
+<A NAME="2"></A>            
+            int topX = -1, topY = -1, topS = Integer.MIN_VALUE;
+            
+            <FONT color="#77bfc7"><A HREF="javascript:ZweiFrames('match376-1.html#2',3,'match376-top.html#2',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>for (int x = 0; x &lt; previousValues.get(0).size(); x++) {
+                if (topS &lt; previousValues.get(0).get(x)) {</B></FONT>
+                    topS = previousValues.get(0).get(x);
+                    topX = x;
+                    topY = 0;
+<A NAME="3"></A>                }
+            }
+            
+            <FONT color="#6cc417"><A HREF="javascript:ZweiFrames('match376-1.html#3',3,'match376-top.html#3',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>for (int x = 0; x &lt; previousValues.get(0).size(); x++) {
+                if (topS &lt; previousValues.get(previousValues.size()-1).get(x)) {
+                    t</B></FONT>opS = previousValues.get(previousValues.size()-1).get(x);
+                    topX = x;
+                    topY = previousValues.size()-1;
+                }
+            }
+            returnArray.add(previousStep.get(topY).get(topX));
+            returnArray.add(topX);
+            returnArray.add(topY);
+            return returnArray;
+        }
+
+        
+        
+        for (int y = 0; y &lt; height; y++) {
+            gridK.add(new ArrayList&lt;&gt;());
+            thisStep.add(new ArrayList&lt;&gt;());
+            
+            for (int x = 0; x &lt; width; x++) {
+
+                
+                int yUp = (y-1 &lt; 0) ? height-1 : y-1;
+                int yDown = ((y+1) % (height));
+                int xPrev = (x-1 &lt; 0) ? width-1 : x-1;
+
+                int fromTop = previousValues.get(yUp).get(xPrev);       
+                int fromLef = previousValues.get(y).get(xPrev);         
+                int fromBot = previousValues.get(yDown).get(xPrev);     
+
+                
+                int gridVal = originalGrid.get(y).get(x);
+
+                
+                if (fromTop &gt;= fromLef &amp;&amp; fromTop &gt;= fromBot) {
+                    gridK.get(y).add((fromTop + gridVal));
+                    thisStep.get(y).add(-1);
+<A NAME="4"></A>                }
+                
+                else if (fromLef &gt;= fromTop &amp;&amp; fromLef &gt;= fromBot) {
+                    <FONT color="#151b8d"><A HREF="javascript:ZweiFrames('match376-1.html#4',3,'match376-top.html#4',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>gridK.get(y).add((fromLef + gridVal));
+                    thisStep.get(y).add(0);
+                }
+                
+                else {
+                    gridK.get(y).add((fromBot + gridVal));
+                    thisStep.get(y).add</B></FONT>(1);
+                }
+            }
+        }
+
+        ArrayList&lt;Integer&gt; pathSoFar = findMaximums(originalGrid, gridK, thisStep, stepsRemaining-1);
+
+        
+        int thisY = pathSoFar.get(pathSoFar.size()-1);
+        pathSoFar.remove(pathSoFar.size()-1);
+        int thisX = pathSoFar.get(pathSoFar.size()-1);
+        pathSoFar.remove(pathSoFar.size()-1);
+
+        
+        int yUp = (thisY-1 &lt; 0) ? height-1 : thisY-1;
+        int yDown = ((thisY+1) % (height));
+        int xPrev = (thisX-1 &lt; 0) ? width-1 : thisX-1;
+        switch (thisStep.get(thisY).get(thisX)) {
+            case -1:
+                
+                pathSoFar.add(thisStep.get(thisY).get(thisX));
+                pathSoFar.add(xPrev);
+                pathSoFar.add(yUp);
+                break;
+            case 0:
+                
+                pathSoFar.add(thisStep.get(thisY).get(thisX));
+                pathSoFar.add(xPrev);
+                pathSoFar.add(thisY);
+                break;
+            case 1:
+                
+                pathSoFar.add(thisStep.get(thisY).get(thisX));
+                pathSoFar.add(xPrev);
+                pathSoFar.add(yDown);
+                break;
+            default:
+                
+                System.out.println(&quot;There is no remaining path&quot;);
+        }
+
+        return pathSoFar;
+    }
+
+    
+    public static int getScore(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid, ArrayList&lt;Integer&gt; path) {
+
+        
+        int height = grid.size();
+        int width = grid.get(0).size();
+        int x, y;
+
+        
+        if (path.get(0) == 1) { y = 0; }
+        else if (path.get(0) == 0) { y = height-1; }
+        else { System.out.println(&quot;Answer Key Incorrect, path[0] should be 1 or 0&quot;); return Integer.MIN_VALUE; }
+
+        
+        x = path.get(1);
+
+        
+        int sum = grid.get(y).get(x);
+        System.out.println(&quot;\nStart Path\n&quot; + grid.get(y).get(x) + &quot; (&quot; + x + &quot;, &quot; + y + &quot;)&quot;);
+
+        
+        for (int i = 2; i &lt; path.size(); i++) {
+            int step = path.get(i);
+            if (step &lt; -1 || step &gt; 1) {
+                System.out.println(&quot;Answer Key Incorrect, steps can only be -1, 0, or 1.&quot;);
+                return Integer.MIN_VALUE;
+            }
+            System.out.println(&quot;Step: &quot; + step);
+            x = ((x+1) % (width));
+            y = ((y-step) % (height));
+            y = (y &lt; 0) ? height-1 : y;
+<A NAME="5"></A>
+            sum += grid.get(y).get(x);
+            System.out.println(grid.get(y).get(x) + &quot; (&quot; + x + &quot;, &quot; + y + &quot;)&quot;);
+        <FONT color="#c8c2a7"><A HREF="javascript:ZweiFrames('match376-1.html#5',3,'match376-top.html#5',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>}
+
+        return sum;
+
+    }
+
+    public static ArrayList&lt;ArrayList&lt;Integer&gt;&gt; generateGridFromFile(String fileName) {
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; returnGrid = new</B></FONT> ArrayList&lt;&gt;();
+        File file;
+        Scanner scnr;
+        try {
+            file = new File(fileName);
+            scnr = new Scanner(file);
+        } catch (FileNotFoundException e) { System.out.println(&quot;File not found...&quot;); return null; }
+
+        while (scnr.hasNextLine()) {
+            ArrayList&lt;Integer&gt; row = new ArrayList&lt;&gt;();
+            String[] line = scnr.nextLine().split(&quot; &quot;);
+            for (String s : line) {
+                row.add(Integer.valueOf(s));
+<A NAME="6"></A>            }
+            returnGrid.add(row);
+        }
+        <FONT color="#50ebec"><A HREF="javascript:ZweiFrames('match376-1.html#6',3,'match376-top.html#6',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>return returnGrid;
+    }
+
+    public static void printGrid(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid) {
+<A NAME="7"></A>        for (ArrayList&lt;Integer&gt; row : grid) {
+            for (Integer i : row) {</B></FONT>
+                System.out.printf(&quot;%-5s&quot;, i);
+            <FONT color="#c58917"><A HREF="javascript:ZweiFrames('match376-1.html#7',3,'match376-top.html#7',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>}
+            System.out.print(&quot;\n&quot;);
+        }
+    }
+
+    public static void main(String[] args) {</B></FONT>
+
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; inputGrid = generateGridFromFile(&quot;inputgrid1.txt&quot;);
+        ArrayList&lt;Integer&gt; solution1 = new ArrayList&lt;&gt;(Arrays.asList(1, 4, 0, 1, 1, 0, -1));
+        assert inputGrid != null;
+        printGrid(inputGrid);
+        System.out.println(&quot;Points of Given Path: &quot; + getScore(inputGrid, solution1));
+
+        ArrayList&lt;Integer&gt; solution = solve(inputGrid);
+        System.out.println(&quot;Points of solve() Path: &quot; + getScore(inputGrid, solution));
+
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; inputGrid2 = generateGridFromFile(&quot;inputgrid2.txt&quot;);
+        assert inputGrid2 != null;
+        System.out.println(&quot;Input Grid 2 Score: &quot; + getScore(inputGrid2, solve(inputGrid2)));
+
+    }
+
+}
+</PRE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>063048639</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+import copy
+def solve(grid):
+    x = len(grid)
+    y = len(grid[0])
+
+    #find enter and exit
+    maxX = -1
+    maxY = -1
+<A NAME="0"></A>    maxVal = 0
+    endX = 0
+    for i in range(y-1):
+        a <FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match124-0.html#0',2,'match124-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>= grid[0][i]
+        b = grid[x-1][i]
+        c = grid[0][i+1]
+        d = grid[x-1][</B></FONT>i+1]
+        if (a+c) &gt; maxVal:
+            maxVal = a + c
+            maxX = 0
+            maxY = i+1
+        if (a+d) &gt; maxVal:
+            maxVal = a + d
+            maxX = x-1
+            maxY = i+1
+            endX = x - 1
+        if (b + c) &gt; maxVal:
+            maxVal = b + c
+            maxX = 0
+            maxY = i + 1
+        if (b + d) &gt; maxVal:
+            maxVal = b + d
+            maxX = x - 1
+            maxY = i + 1
+            endX = x - 1
+    a = grid[0][y-1]
+    b = grid[x-1][y-1]
+    c = grid[0][0]
+    d = grid[x-1][0]
+    if (a + c) &gt; maxVal:
+        maxVal = a + c
+        maxX = 0
+        maxY = 0
+    if (a + d) &gt; maxVal:
+        maxVal = a + d
+        maxX = x - 1
+        maxY = 0
+        endX = x-1
+    if (b + c) &gt; maxVal:
+        maxVal = b + c
+        maxX = 0
+        maxY = 0
+    if (b + d) &gt; maxVal:
+        maxVal = b + d
+        maxX = x - 1
+        maxY = 0
+        endX = x-1
+
+    #output array
+    ans = []
+    if maxX == 0:
+        ans.append(1)
+    else:
+        ans.append(0)
+    ans.append(maxY)
+
+    endY = maxY - 1
+    if endY == -1:
+        endY = y-1
+    #sort grid
+    sortedGrid = copy.deepcopy(grid)
+    cur = maxY
+    for j in range(y):
+        for i in range(x):
+            sortedGrid[i][j] = grid[i][cur]
+        cur += 1
+        if cur == y:
+            cur = 0
+
+    topArray = []
+    topArray = top(sortedGrid, maxX, 0, endX, y-1)
+
+    for i in range(len(topArray)):
+        ans.append(topArray[i])
+    return ans
+
+def top(grid, startX, startY, endX, endY):
+    visited = copy.deepcopy(grid)
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            visited[i][j] = 0
+    allowed = 1
+    for i in range(len(grid[0])-1,-1,-1):
+        if (allowed*2 &gt; len(grid)):
+            for j in range(len(grid)):
+                visited[j][i] = 1
+        else:
+            for j in range(allowed):
+                up = endX - j
+                if up &lt;= -1:
+                    k = up
+                    up = len(grid) + k
+                down = endX + j
+                if down &gt;= len(grid):
+                    v = down
+                    down = v - len(grid)
+
+                visited[up][i] = 1
+                visited[down][i] = 1
+
+        allowed = allowed + 1
+
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            if visited[i][j] == 0:
+                grid[i][j] = -1
+    ans = []
+
+    for i in range(1, len(grid[0]), 1):
+        if startX == 0:
+            a = grid[len(grid) - 1][i]
+        else:
+            a = grid[startX-1][i]
+        b = grid[startX][i]
+        if startX == (len(grid) - 1):
+            c = grid[0][i]
+        else:
+            c = grid[startX+1][i]
+
+        if (a &gt; b) and (a &gt; c):
+            ans.append(1)
+            if startX == 0:
+                startX = len(grid) - 1
+            else:
+                startX = startX - 1
+        elif (b &gt;= a) and (b &gt;= c):
+            ans.append(0)
+        elif (c &gt;= a) and (c &gt;= b):
+            ans.append(-1)
+            if startX == (len(grid) - 1):
+                startX = 0
+            else:
+                startX = startX + 1
+
+    return ans
+</PRE>
+
+</BODY>
+</HTML>

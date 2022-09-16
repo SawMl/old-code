@@ -1,0 +1,1273 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>560222624</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+
+
+import java.util.*;
+<A NAME="0"></A>public class StudentSolver {
+	
+	
+	public <FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match336-1.html#0',3,'match336-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>static ArrayList&lt;Integer&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid)	
+	{
+		int c=0;
+		int q=0;
+		int sumt =0;
+		int sumq=0;
+		ArrayList&lt;Integer&gt; an = new ArrayList&lt;Int</B></FONT>eger&gt;();
+		ArrayList&lt;Integer&gt; an2 = new ArrayList&lt;Integer&gt;();
+		ArrayList&lt;Integer&gt; ans = new ArrayList&lt;Integer&gt;();
+		
+		
+		
+		for(int i=0;i&lt;1;i++)
+		{
+			
+			for(int j=0;j&lt; grid.get(i).size();j++)
+			{
+				
+
+				
+				ArrayList&lt;Integer&gt; ant = new ArrayList&lt;Integer&gt;();
+				ant.removeAll(ant);
+				
+				
+				int n=0;
+				
+				
+				int sum = grid.get(0).get(j);
+				
+				i = 0;
+				
+				ant.add(1);
+				ant.add(j);
+				
+	
+				
+				
+				
+				while(n&lt; grid.get(0).size()-1)
+				{
+
+
+
+
+
+					
+					
+					int w1=0;
+					int w2=0;
+					int w3=0;
+					int lastr=grid.size()-1;
+					int secondr=1;
+					int secondTooLastRow= grid.size()-2;
+					
+					
+					
+					
+					
+					
+					
+					if(i==0 &amp;&amp; j==grid.get(0).size()-1)
+<A NAME="1"></A>					{
+						
+						w1=grid.get(lastr).get(0);
+					}<FONT color="#f63526"><A HREF="javascript:ZweiFrames('match336-1.html#1',3,'match336-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>
+					
+					else if(i==0 &amp;&amp; j!=grid.get(0).size()-1)
+<A NAME="2"></A>					{
+						
+						w1=grid.get(lastr).get(j+1);</B></FONT>
+					}<FONT color="#77bfc7"><A HREF="javascript:ZweiFrames('match336-1.html#2',3,'match336-top.html#2',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>
+					
+					
+					else if(j == grid.get(0).size()-1)
+					{
+						
+						w1= grid.get(i-1).get(0);</B></FONT>
+					}
+					
+
+
+
+
+
+
+
+					
+					else
+					{
+						
+						w1= grid.get(i-1).get(j+1);
+					}
+					
+			
+					
+					if(j==grid.get(i).size()-1)
+					{
+						
+						w2= grid.get(i).get(0);
+					}
+					
+					else
+<A NAME="3"></A>					{
+						
+						w2= grid.get(i).get(j+1);
+					}<FONT color="#6cc417"><A HREF="javascript:ZweiFrames('match336-1.html#3',3,'match336-top.html#3',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>
+					
+					
+					
+					
+					
+					if(i == lastr &amp;&amp; j == grid.get(i).size()-1)
+					{
+						
+						w3 = grid.get(0).get(0);</B></FONT>
+					}
+					
+					else if( i == lastr)
+<A NAME="4"></A>					{
+						
+						w3 = grid.get(0).get(j+1);
+					}<FONT color="#151b8d"><A HREF="javascript:ZweiFrames('match336-1.html#4',3,'match336-top.html#4',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>
+					
+					else if(j== grid.get(i).size()-1)
+					{
+						
+						w3 = grid.get(i+1).get(0);</B></FONT>
+					}
+					
+					else
+					{
+						
+						w3 = grid.get(i+1).get(j+1);
+					}
+					
+
+
+
+
+					
+					
+					
+					
+					
+					if(n==grid.get(i).size()-2)
+					{
+						if(i==0 )
+						{
+							if(w2&gt; w1)
+							{
+	
+								sum=sum+w2;
+								ant.add(0);
+								i=0;
+								break;
+							}
+							else if(w1&gt;w2)
+							{
+	
+								sum=sum+w1;
+								ant.add(1);
+								i=lastr;
+								break;
+							}
+							
+						}
+						else if( i==lastr)
+						{
+							if(w2&gt;w3)
+							{
+	
+								sum=sum+w2;
+								ant.add(0);
+								i=lastr;
+								break;
+							}
+							else if(w3&gt;w2)
+							{
+	
+								sum=sum+w3;
+								ant.add(-1);
+								i=0;
+								break;
+							}
+							
+						}
+						
+						else if(i == secondr)
+						{
+				
+							sum=sum+w1;
+							ant.add(1);
+							i=0;
+							break;
+						}
+						
+						else if(i == secondTooLastRow)
+						{
+		
+							sum=sum+w3;
+							ant.add(-1);
+							i=lastr;
+							break;
+						}
+					}
+					
+					
+					
+					
+					
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+					
+					
+					
+					
+					if(w1&gt;w2 &amp;&amp; w1 &gt; w3)
+					{	
+		
+						sum = sum+w1;
+						
+						
+					
+						
+						if(i==0 &amp;&amp; j==grid.get(0).size()-1)
+						{
+							
+							
+							i=lastr;
+							j=0;
+						}
+						
+						else if(i==0 &amp;&amp; j!=grid.get(0).size()-1)
+						{
+							
+							
+							i=lastr;
+							j=j+1;
+						}
+						
+						
+						else if(j == grid.get(0).size()-1)
+						{
+							
+							
+							i=i-1;
+							j=0;
+						}
+						
+						
+						else
+						{
+							
+							
+							i=i-1;
+							j=j+1;
+						}
+	
+						ant.add(1);
+	
+					}
+					/*
+					 * 
+					 * 
+					 * 
+					 * 
+					 */
+					
+					
+					if(w2 &gt; w1 &amp;&amp; w2 &gt; w3)
+					{
+		
+						sum=sum+w2;
+						
+						if(j==grid.get(i).size()-1)
+						{
+							
+							
+							i=i;
+							j=0;
+						}
+						
+						
+						else
+						{
+							
+							
+							i=i;
+							j=j+1;
+						}
+		
+						ant.add(0);
+		
+						
+						
+					}
+					
+					/*
+					 * 
+					 * 
+					 * 
+					 * 
+					 */
+					
+					if(w3&gt; w1 &amp;&amp; w3 &gt; w2)
+					{
+		
+						sum = sum+w3;
+						
+						
+						if(i == lastr &amp;&amp; j == grid.get(i).size()-1)
+						{
+							
+							
+							i=0;
+							j=0;
+						}
+						
+						else if( i == lastr &amp;&amp; j != grid.get(i).size()-1)
+						{
+							
+							
+							i=0;
+							j=j+1;
+						}
+						
+						else if(j== grid.get(i).size()-1)
+						{
+							
+							
+							i=i+1;
+							j=0;
+						}
+						
+						else
+						{
+							
+							
+							i=i+1;
+							j=j+1;
+						}
+		
+		
+						ant.add(-1);
+						
+					}
+					
+					if( (w1==w3 &amp;&amp; w2&lt;w3 )  ) {
+						sum=sum+w3;
+		
+						if(i == lastr &amp;&amp; j == grid.get(i).size()-1)
+						{
+							
+							
+							i=0;
+							j=0;
+						}
+						
+						else if( i == lastr &amp;&amp; j != grid.get(i).size()-1)
+						{
+							
+							
+							i=0;
+							j=j+1;
+						}
+						
+						else if(j== grid.get(i).size()-1)
+						{
+							
+							
+							i=i+1;
+							j=0;
+						}
+						
+						else
+						{
+							
+							
+							i=i+1;
+							j=j+1;
+						}
+		
+		
+						ant.add(-1);
+						
+					}
+					else if(w1==w2 &amp; w3&lt;w1)
+					{
+						sum=sum+w1;
+						if(i==0 &amp;&amp; j==grid.get(0).size()-1)
+						{
+							
+							
+							i=lastr;
+							j=0;
+						}
+						
+						else if(i==0 &amp;&amp; j!=grid.get(0).size()-1)
+						{
+							
+							
+							i=lastr;
+							j=j+1;
+						}
+						
+						
+						else if(j == grid.get(0).size()-1)
+						{
+							
+							
+							i=i-1;
+							j=0;
+						}
+						
+						
+						else
+						{
+							
+							
+							i=i-1;
+							j=j+1;
+						}
+		
+						ant.add(1);
+		
+					
+					}
+					
+					else if(w2==w3 &amp;&amp; w1&lt;w2)
+					{
+						sum=sum+w3;
+						if(i == lastr &amp;&amp; j == grid.get(i).size()-1)
+						{
+							
+							
+							i=0;
+							j=0;
+						}
+						
+						else if( i == lastr &amp;&amp; j != grid.get(i).size()-1)
+						{
+							
+							
+							i=0;
+							j=j+1;
+						}
+						
+						else if(j== grid.get(i).size()-1)
+						{
+							
+							
+							i=i+1;
+							j=0;
+						}
+						
+						else
+						{
+							
+							
+							i=i+1;
+							j=j+1;
+						}
+		
+		
+						ant.add(-1);
+					}
+					
+
+					n++;
+		
+				}
+				
+	
+		
+				
+				if(sum&gt;sumt &amp;&amp; (i== 0 || i==grid.size()-1))
+				{
+					an.removeAll(an);
+					sumt=sum;
+					an=ant;
+				}
+				
+				if(q&lt;grid.get(i).size())
+				{
+					j=q;
+					q++;
+				}
+				
+				System.out.println(&quot;an is now: &quot;+ an);
+				
+				continue;
+				
+			}
+			
+			
+		System.out.println(&quot;highest value top path is &quot; + an);
+		System.out.println(&quot;the highest top sum is: &quot;+ sumt);
+		
+			
+			
+			
+		}
+		
+		
+		/*******************************************************************************************************************************
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * ************************************************************************************************************************
+		 */
+		
+		
+		for(int i=0;i&lt;1;i++)
+		{
+			
+			for(int j=0;j&lt; grid.get(i).size();j++)
+			{
+				
+	
+				
+				ArrayList&lt;Integer&gt; ant = new ArrayList&lt;Integer&gt;();
+				ant.removeAll(ant);
+				
+				
+				int n=0;
+				
+				
+				int sum = grid.get(grid.size()-1).get(j);
+				
+				i = grid.size()-1;
+				
+				ant.add(0);
+				ant.add(j);
+				
+	
+				
+				
+				
+				while(n&lt; grid.get(i).size()-1)
+				{
+	
+	
+	
+	
+	
+					
+					
+					int w1=0;
+					int w2=0;
+					int w3=0;
+					int lastr=grid.size()-1;
+					int secondr=1;
+					int secondTooLastRow= grid.size()-2;
+					
+					
+					
+					
+					
+					
+					
+					if(i==0 &amp;&amp; j==grid.get(0).size()-1)
+<A NAME="5"></A>					{
+						
+						w1=grid.get(lastr).get(0);
+					}<FONT color="#c8c2a7"><A HREF="javascript:ZweiFrames('match336-1.html#5',3,'match336-top.html#5',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>
+					
+					else if(i==0 &amp;&amp; j!=grid.get(0).size()-1)
+					{
+						
+						w1=grid.get(lastr).get(j+1);</B></FONT>
+					}
+					
+					
+					else if(j == grid.get(0).size()-1)
+					{
+						
+						w1= grid.get(i-1).get(0);
+					}
+					
+					else
+					{
+						
+						w1= grid.get(i-1).get(j+1);
+					}
+					
+					
+					
+					if(j==grid.get(i).size()-1)
+					{
+						
+						w2= grid.get(i).get(0);
+					}
+					
+					else
+<A NAME="6"></A>					{
+						
+						w2= grid.get(i).get(j+1);
+					}<FONT color="#50ebec"><A HREF="javascript:ZweiFrames('match336-1.html#6',3,'match336-top.html#6',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>
+					
+					
+					
+					
+					
+					if(i == lastr &amp;&amp; j == grid.get(i).size()-1)
+					{
+						
+						w3 = grid.get(0).get(0);</B></FONT>
+					}
+					
+					else if( i == lastr)
+					{
+						
+						w3 = grid.get(0).get(j+1);
+					}
+					
+					else if(j== grid.get(i).size()-1)
+					{
+						
+						w3 = grid.get(i+1).get(0);
+					}
+					
+					else
+					{
+						
+						w3 = grid.get(i+1).get(j+1);
+					}
+					
+	
+	
+	
+	
+					
+					
+					
+					
+					if(n==grid.get(i).size()-2)
+					{
+						if(i==0 )
+						{
+							if(w2&gt; w1)
+							{
+	
+								sum=sum+w2;
+								ant.add(0);
+								i=0;
+								break;
+							}
+							else if(w1&gt;w2)
+							{
+		
+								sum=sum+w1;
+								ant.add(1);
+								i=lastr;
+								break;
+							}
+							
+						}
+						else if( i==lastr)
+						{
+							if(w2&gt;w3)
+							{
+		
+								sum=sum+w2;
+								ant.add(0);
+								i=lastr;
+								break;
+							}
+							else if(w3&gt;w2)
+							{
+	
+								sum=sum+w3;
+								ant.add(-1);
+								i=0;
+								break;
+							}
+							
+						}
+						
+						else if(i == secondr)
+						{
+	
+							sum=sum+w1;
+							ant.add(1);
+							i=0;
+							break;
+						}
+						
+						else if(i == secondTooLastRow)
+						{
+	
+							sum=sum+w3;
+							ant.add(-1);
+							i=lastr;
+							break;
+						}
+					}
+					
+				
+					
+					
+					
+					if(w1&gt;w2 &amp;&amp; w1 &gt; w3)
+					{	
+	
+						sum = sum+w1;
+						
+						
+					
+						
+						if(i==0 &amp;&amp; j==grid.get(0).size()-1)
+						{
+							
+							
+							i=lastr;
+							j=0;
+						}
+						
+						else if(i==0 &amp;&amp; j!=grid.get(0).size()-1)
+						{
+							
+							
+							i=lastr;
+							j=j+1;
+						}
+						
+						
+						else if(j == grid.get(0).size()-1)
+						{
+							
+							
+							i=i-1;
+							j=0;
+						}
+						
+						
+						else
+						{
+							
+							
+							i=i-1;
+							j=j+1;
+						}
+	
+						ant.add(1);
+	
+					}
+					/*
+					 * 
+					 * 
+					 * 
+					 * 
+					 */
+					
+					
+					if(w2 &gt; w1 &amp;&amp; w2 &gt; w3)
+					{
+	
+						sum=sum+w2;
+						
+						if(j==grid.get(i).size()-1)
+						{
+							
+							
+							i=i;
+							j=0;
+						}
+						
+						
+						else
+						{
+							
+							
+							i=i;
+							j=j+1;
+						}
+	
+						ant.add(0);
+	
+						
+						
+					}
+					
+					/*
+					 * 
+					 * 
+					 * 
+					 * 
+					 */
+					
+					if(w3&gt; w1 &amp;&amp; w3 &gt; w2)
+					{
+	
+						sum = sum+w3;
+						
+						
+						if(i == lastr &amp;&amp; j == grid.get(i).size()-1)
+						{
+							
+							
+							i=0;
+							j=0;
+						}
+						
+						else if( i == lastr &amp;&amp; j != grid.get(i).size()-1)
+						{
+							
+							
+							i=0;
+							j=j+1;
+						}
+						
+						else if(j== grid.get(i).size()-1)
+						{
+							
+							
+							i=i+1;
+							j=0;
+						}
+						
+						else
+						{
+							
+							
+							i=i+1;
+							j=j+1;
+						}
+	
+	
+						ant.add(-1);
+						
+					}
+					
+					if(w1==w3 &amp;&amp; w2&lt;w3) {
+						sum=sum+w3;
+	
+						if(i == lastr &amp;&amp; j == grid.get(i).size()-1)
+						{
+							
+							
+							i=0;
+							j=0;
+						}
+						
+						else if( i == lastr &amp;&amp; j != grid.get(i).size()-1)
+						{
+							
+							
+							i=0;
+							j=j+1;
+						}
+						
+						else if(j== grid.get(i).size()-1)
+						{
+							
+							
+							i=i+1;
+							j=0;
+						}
+						
+						else
+						{
+							
+							
+							i=i+1;
+							j=j+1;
+						}
+	
+	
+						ant.add(-1);
+						
+					}
+					else if(w1==w2 &amp; w3&lt;w1)
+					{
+						sum=sum+w1;
+						if(i==0 &amp;&amp; j==grid.get(0).size()-1)
+						{
+							
+							
+							i=lastr;
+							j=0;
+						}
+						
+						else if(i==0 &amp;&amp; j!=grid.get(0).size()-1)
+						{
+							
+							
+							i=lastr;
+							j=j+1;
+						}
+						
+						
+						else if(j == grid.get(0).size()-1)
+						{
+							
+							
+							i=i-1;
+							j=0;
+						}
+						
+						
+						else
+						{
+							
+							
+							i=i-1;
+							j=j+1;
+						}
+	
+						ant.add(1);
+	
+					
+					}
+					
+					else if(w2==w3 &amp;&amp; w1&lt;w2)
+					{
+						sum=sum+w3;
+						if(i == lastr &amp;&amp; j == grid.get(i).size()-1)
+						{
+							
+							
+							i=0;
+							j=0;
+						}
+						
+						else if( i == lastr &amp;&amp; j != grid.get(i).size()-1)
+						{
+							
+							
+							i=0;
+							j=j+1;
+						}
+						
+						else if(j== grid.get(i).size()-1)
+						{
+							
+							
+							i=i+1;
+							j=0;
+						}
+						
+						else
+						{
+							
+							
+							i=i+1;
+							j=j+1;
+						}
+		
+		
+						ant.add(-1);
+					}
+
+					n++;
+	
+				}
+				
+				System.out.println(&quot;Final sum is: &quot;+ sum);
+				System.out.println(ant);
+				
+				if(sum&gt;sumq &amp;&amp; (i== 0 || i==grid.size()-1))
+				{
+					an2.removeAll(an2);
+					sumq=sum;
+					an2=ant;
+				}
+				
+				if(c&lt;grid.get(i).size())
+				{
+	
+					j=c;
+					c++;
+				}
+				
+				System.out.println(&quot;an is now: &quot;+ an2);
+				
+				continue;
+				
+			}
+			
+			
+		
+			
+			
+			
+		}
+		
+		System.out.println(&quot;highest value bottom path is &quot; + an2);
+		System.out.println(&quot;the highest  bottom sum is: &quot;+ sumq);
+		
+		
+		
+		
+		
+		
+		if(sumt &gt; sumq)
+		{
+			System.out.println(&quot;the largest sum path in total is: &quot;+ an+&quot; with sum: &quot;+ sumt);
+			return an;
+		}
+		else
+			System.out.println(&quot;the largest sum path in total is: &quot;+ an2+&quot; with sum: &quot;+ sumq);
+			return an2;
+		
+		
+		
+		
+		
+		
+	}
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+</PRE>
+
+</BODY>
+</HTML>

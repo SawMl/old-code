@@ -1,0 +1,573 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>210626017</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+import java.util.ArrayList;
+<A NAME="0"></A>import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match864-0.html#0',2,'match864-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>import java.util.Queue;
+
+public class StudentSolver{
+
+    public static void main(String[] args) {
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
+
+    public static ArrayList&lt;Boolean&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs){
+
+        ArrayList&lt;RowOfNumbers&gt; listOfRows = new ArrayList&lt;&gt;();
+
+
+        int nRows</B></FONT>;
+        int mNumberOfSets;
+        ArrayList&lt;NumberSet&gt; listOfNumberSets = new ArrayList&lt;&gt;();
+
+        for (int i=0;i&lt;bulbs.size();i++){ 
+
+            listOfRows.add(new RowOfNumbers(bulbs.get(i)));
+            for (int j=0;j&lt;3;j++){
+                if (listOfNumberSets.size() == 0){
+                    listOfNumberSets.add(new NumberSet(listOfRows.get(i).array.get(j),i));
+                }
+
+                boolean alreadyHaveSet = false;
+                for (int g=0;g&lt;listOfNumberSets.size();g++){
+                    if (listOfNumberSets.get(g).number == Math.abs(listOfRows.get(i).array.get(j))  ){
+                        alreadyHaveSet = true;
+                        if (i != 0 || j != 0)
+                            listOfNumberSets.get(g).addLocation(i);
+                    }
+
+                }
+                if (!alreadyHaveSet){
+                    listOfNumberSets.add(new NumberSet(listOfRows.get(i).array.get(j),i));
+
+                }
+
+
+
+
+
+
+
+            }
+
+        }
+
+
+        Collections.sort(listOfNumberSets);
+        int lowest = 999999;
+        lowest = lowestFromNumberSets(listOfNumberSets, lowest);
+        HashMap&lt;Integer, ArrayList&lt;Integer&gt;&gt; hashMapOfLocationsToSets = new HashMap&lt;&gt;();
+        HashMap&lt;Integer, Boolean&gt; hashMapOfNumbersAndBooleanCurrent = new HashMap&lt;&gt;();
+        for (int g=0;g&lt;listOfNumberSets.size();g++) {
+            hashMapOfLocationsToSets.put(listOfNumberSets.get(g).number, listOfNumberSets.get(g).locations);
+            hashMapOfNumbersAndBooleanCurrent.put(listOfNumberSets.get(g).number, false);
+
+        }
+
+
+
+
+
+
+
+
+        
+
+
+
+        nRows = listOfRows.size();
+        mNumberOfSets = hashMapOfLocationsToSets.size();
+        int allRedQuantity = 0;
+
+        int functionalRowQuantity = 0;
+        for (int g=0;g&lt;listOfRows.size();g++) {
+            allRedQuantity += listOfRows.get(g).allReds;
+
+            functionalRowQuantity += listOfRows.get(g).functionalRow;
+        }
+        if (functionalRowQuantity == nRows){
+            
+            System.out.println(&quot;Don't forget to code me&quot;);
+            ArrayList&lt;Boolean&gt; allOnList = new ArrayList&lt;&gt;();
+            int i=lowest;
+            int j = 0;
+            while (j &lt; mNumberOfSets){
+                allOnList.add(false);
+                if (hashMapOfLocationsToSets.containsKey(i)){
+                    i++;
+                    j++;
+                }
+                else{
+                    i++;
+                }
+            }
+
+            return allOnList;
+        }
+        if (allRedQuantity == 0){
+            
+
+            ArrayList&lt;Boolean&gt; allOnList = new ArrayList&lt;&gt;();
+            int i=lowest;
+            int j = 0;
+            while (j &lt; mNumberOfSets){
+                allOnList.add(true);
+                if (hashMapOfLocationsToSets.containsKey(i)){
+                    i++;
+                    j++;
+                }
+                else{
+                    i++;
+                }
+            }
+
+            return allOnList;
+        }
+
+        
+
+        int bigLoopCount = 0;
+        Queue&lt;Integer&gt; queue = new LinkedList&lt;&gt;();
+        
+        while(bigLoopCount&lt;10000) {
+
+
+            
+            int needsFixing = 0;
+            for (int i = 0; i &lt; listOfRows.size(); i++) {
+                if (listOfRows.get(i).functionalRow == 0) {
+                    needsFixing = i;
+                    break;
+                }
+            }
+
+            
+            int leastCommon = 0;
+            int leastCommonSize = 10000;
+            for (int i = 0; i &lt; 3; i++) {
+                if (hashMapOfLocationsToSets.get(listOfRows.get(needsFixing).array.get(i)).size() &lt; leastCommonSize &amp;&amp; !queue.contains(listOfRows.get(needsFixing).array.get(i)) ) {
+                    leastCommon = listOfRows.get(needsFixing).array.get(i);
+                    leastCommonSize = hashMapOfLocationsToSets.get(listOfRows.get(needsFixing).array.get(i)).size();
+                }
+            }
+            hashMapOfNumbersAndBooleanCurrent.put(leastCommon, !hashMapOfNumbersAndBooleanCurrent.get(leastCommon));
+
+            
+            for (int i = 0; i &lt; leastCommonSize; i++) {
+                int currentLocation = hashMapOfLocationsToSets.get(leastCommon).get(i);
+                for (int j = 0; j &lt; 3; j++) {
+                    if (    Math.abs(     listOfRows.get(currentLocation).array.get(j)   ) ==  leastCommon  ) {
+                        listOfRows.get(currentLocation).flipToNegative(j);
+                        queue.add(leastCommon);
+                    }
+                }
+                int wasLastOneFunctioning = listOfRows.get(currentLocation).functionalRow;
+                listOfRows.get(currentLocation).evaluate();
+                if (listOfRows.get(currentLocation).functionalRow &gt; wasLastOneFunctioning) {
+                    functionalRowQuantity += 1;
+                } else if (listOfRows.get(currentLocation).functionalRow &lt; wasLastOneFunctioning) {
+                    functionalRowQuantity -= 1;
+                }
+
+            }
+
+
+
+            
+            if (functionalRowQuantity == listOfRows.size()) {
+
+                return toArrayListFunc(hashMapOfNumbersAndBooleanCurrent, mNumberOfSets);
+            }
+
+
+            if (queue.size() &gt; 3){
+                queue.poll();
+            }
+
+
+            bigLoopCount++;
+        }
+
+
+        
+
+
+
+
+
+
+        System.out.println(&quot;Mission failed&quot;);
+        return null;
+
+    }
+
+
+
+
+    public static ArrayList&lt;Boolean&gt; toArrayListFunc(HashMap&lt;Integer, Boolean&gt; hashMapOfNumbersAndBooleanCurrentParam, int mSets){
+        ArrayList&lt;Boolean&gt; boolList = new ArrayList&lt;&gt;();
+
+
+
+        int i=1;
+        int j=0;
+        while (j&lt;mSets){
+            if (hashMapOfNumbersAndBooleanCurrentParam.get(i) == null){
+                hashMapOfNumbersAndBooleanCurrentParam.put(i, false);
+                boolList.add(hashMapOfNumbersAndBooleanCurrentParam.get(i));
+                i++;
+            }
+            else{
+                boolList.add(hashMapOfNumbersAndBooleanCurrentParam.get(i));
+                i++;
+                j++;
+            }
+        }
+
+        return boolList;
+    }
+
+
+
+
+    public static int lowestFromNumberSets(ArrayList&lt;NumberSet&gt; listOfNumberSetsParam, int lowestParam){
+
+
+
+
+        int lowest = 100000;
+
+
+
+
+
+        
+        for (int g=0;g&lt;listOfNumberSetsParam.size();g++) {
+
+
+            if (listOfNumberSetsParam.get(g).number &lt; lowest){
+                lowest = listOfNumberSetsParam.get(g).number;
+
+            }
+
+
+        }
+
+        return lowest;
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+class NumberSet implements Comparable&lt;NumberSet&gt;{
+    public int number;
+    public static boolean currentOn = false;
+    public ArrayList&lt;Integer&gt; locations = new ArrayList&lt;Integer&gt;();
+
+
+
+    NumberSet(int numberParam, int locationParam){
+        number = Math.abs(numberParam);
+        addLocation(locationParam);
+    }
+
+    NumberSet(int numberParam, ArrayList&lt;Integer&gt; locationsListParam){
+        number = Math.abs(numberParam);
+        locations = locationsListParam;
+    }
+
+    public void addLocation(int nRow){
+        boolean duplicate = false;
+        for (int i=0;i&lt;locations.size();i++){
+            if (nRow == locations.get(i)){
+                duplicate = true;
+            }
+        }
+        if (!duplicate)
+            this.locations.add(nRow);
+    }
+
+    public static void activateCurrent(){
+        currentOn = true;
+    }
+
+    public static void deactivateCurrent(){
+        currentOn = false;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    @Override
+    public int compareTo(NumberSet object) {
+        int r;
+        if (number == object.number){
+            return 0;
+        }
+        else return r = number&gt; object.number ? 1:-1;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class RowOfNumbers {
+    public int noReds = 0;
+    public int allReds = 0;
+    public int functionalRow = 1;
+    public ArrayList&lt;Integer&gt; array = new ArrayList&lt;&gt;(3);
+
+
+    RowOfNumbers(ArrayList&lt;Integer&gt; arrayParam){
+        array = arrayParam;
+
+        int redsCount = 0;
+        for (int i =0; i&lt;array.size();i++){
+            if (array.get(i) &lt; 0){
+                redsCount += 1;
+            }
+        }
+        if (redsCount == 0){
+            noReds = 1;
+            functionalRow = 0;
+        }
+
+
+        if (redsCount == 3)
+            allReds = 1;
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+    }
+
+    public void flipToNegative(int whichLocation){
+        array.set(whichLocation,array.get(whichLocation)*-1);
+    }
+
+    public void evaluate(){
+        functionalRow = 1;
+        int redsCount = 0;
+        for (int i =0; i&lt;array.size();i++){
+            if (array.get(i) &lt; 0){
+                redsCount += 1;
+            }
+        }
+        if (redsCount == 0){
+            noReds = 1;
+            functionalRow = 0;
+        }
+    }
+}
+</PRE>
+
+</BODY>
+</HTML>

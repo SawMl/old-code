@@ -1,0 +1,259 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>332767772</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.Scanner;
+
+public class StudentSolver {
+
+	 
+	public static ArrayList&lt;Boolean&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs) {
+		ArrayList&lt;Boolean[]&gt; comb=new ArrayList&lt;&gt;();
+		
+		
+		int max=maxNumber(bulbs);
+		ArrayList&lt;Boolean&gt; values = new ArrayList&lt;Boolean&gt;();
+		
+		ArrayList&lt;switchs&gt; switches=createBulbs(max);
+		Boolean newCombination[]=new Boolean[switches.size()];
+		Boolean check;
+		
+		
+		
+		
+		
+		for (int i = 0; i &lt; bulbs.size(); i++) {
+			if(bulbs.get(i).get(0)==bulbs.get(i).get(1) &amp;&amp; bulbs.get(i).get(1)==bulbs.get(i).get(2)) {
+				if(verifySolution(bulbs,bulbs.get(i).get(0))) {
+					
+					
+					switches.get(Math.abs(bulbs.get(i).get(0))-1).setValue(2);
+					if(bulbs.get(i).get(0)&gt;0) {
+						switches.get(Math.abs(bulbs.get(i).get(0))-1).setState(true);
+					}	
+				}else {
+					return null;
+				}	
+			}
+		}
+			
+
+		
+		boolean ext;
+		boolean lOn;
+		int cont;
+		int bulbCheck;
+		comb.clear();
+		do {
+			ext=true;
+			
+			for (int j = 0; j &lt; bulbs.size(); j++) {
+				lOn=false;
+				for (int k = 0; k &lt; bulbs.get(j).size(); k++) {
+					if((bulbs.get(j).get(k)&gt;0 &amp;&amp; switches.get(Math.abs(bulbs.get(j).get(k))-1).getState()==true) || 
+							(bulbs.get(j).get(k)&lt;0 &amp;&amp; switches.get(Math.abs(bulbs.get(j).get(k))-1).getState()==false)) {
+						
+						lOn=true;
+						break;
+					}
+				}
+				
+				if(lOn==false) {
+					cont=0;
+					bulbCheck=0;
+					
+					for (int k = 0; k &lt; bulbs.get(j).size(); k++) {
+						if(switches.get(Math.abs(bulbs.get(j).get(k))-1).getValue()==2) {
+							if((bulbs.get(j).get(k)&gt;0 &amp;&amp; switches.get(Math.abs(bulbs.get(j).get(k))-1).getState()==false) || 
+									(bulbs.get(j).get(k)&lt;0 &amp;&amp; switches.get(Math.abs(bulbs.get(j).get(k))-1).getState()==true)) {
+								
+								cont++;
+							}
+						}else{
+							bulbCheck=k;
+						}
+					}
+					
+					
+					
+					
+					if(cont==2) {
+						ext=false;
+						switches.get(Math.abs(bulbs.get(j).get(bulbCheck))-1).setValue(2);
+						switches.get(Math.abs(bulbs.get(j).get(bulbCheck))-1).changeState();
+					}	
+				}
+			}
+			
+			if(ext==false) {
+				
+				
+				
+				for(int i=0; i&lt;switches.size();i++) {
+					newCombination[i]=switches.get(i).getState();
+				}
+				
+				check=verifySolution(comb,newCombination);
+				if(check) {
+					comb.add(newCombination);
+				}else {
+					return null;
+				}
+			}
+		}while(ext==false);
+
+		
+		comb.clear();
+		do {
+			ext=true;
+			for (int i= 0; i &lt; bulbs.size(); i++) {
+				lOn=false;
+				for (int j = 0; j &lt; bulbs.get(i).size(); j++) {
+					if((bulbs.get(i).get(j)&gt;0 &amp;&amp; switches.get(Math.abs(bulbs.get(i).get(j))-1).getState()==true) || 
+							(bulbs.get(i).get(j)&lt;0 &amp;&amp; switches.get(Math.abs(bulbs.get(i).get(j))-1).getState()==false)) {
+						
+						lOn=true;
+						break;
+					}
+				}
+				
+				if(lOn==false) {
+					
+					int menor=maxNumber(bulbs);
+					for (int j = 0; j &lt; bulbs.get(i).size()-1; j++) {
+						if(bulbs.get(i).get(j)&lt;=menor &amp;&amp; switches.get(Math.abs(bulbs.get(i).get(j))-1).getValue()!=2){
+							menor=bulbs.get(i).get(j);
+						}
+					}
+					switches.get(Math.abs(menor)-1).changeState();
+					ext=false;
+				}
+			}	
+			
+			if(ext==false) {
+				
+				for(int i=0; i&lt;switches.size();i++) {
+					newCombination[i]=switches.get(i).getState();
+				}
+				
+				check=verifySolution(comb,newCombination);
+				if(check) {
+					comb.add(newCombination);
+				}else {
+					return null;
+				}
+			}
+
+		}while(ext==false);
+		
+		
+		for(int i=0; i&lt;switches.size(); i++) {
+			values.add(switches.get(i).getState());
+		}
+		
+		return values;
+	}
+	
+	public static boolean verifySolution(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs, int num) {
+		for(int i=0; i&lt;bulbs.size(); i++) {
+			if(bulbs.get(i).get(0)==-1*num &amp;&amp; bulbs.get(i).get(1)==-1*num &amp;&amp; bulbs.get(i).get(2)==-1*num) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	private static boolean verifySolution(ArrayList&lt;Boolean[]&gt; combinations,Boolean blbs[]) {
+		int cont=0;
+		for (int i = 0; i &lt; combinations.size(); i++) {
+			cont=0;
+			for (int j = 0; j &lt; combinations.get(i).length; j++) {
+				if(blbs[j]==combinations.get(i)[j]) {
+					cont++;
+				}
+			}
+
+<A NAME="0"></A>			if(cont==blbs.length) {
+				return false;
+			}
+		}<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match424-1.html#0',3,'match424-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>
+		return true;
+	}
+	
+	private static int maxNumber(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs) {
+		int max=0;
+		for (int i = 0; i &lt; bulbs.size(); i++) {
+			for (int j = 0; j &lt; bulbs.get(i).size(); j++) {
+				if(Math.abs(bulbs.get(i).get(j))&gt;=max) {
+					max=Math.abs(bulbs.get(i).get(j));
+				}
+			}
+		}
+		return max;
+	}</B></FONT>
+	
+	private static ArrayList&lt;switchs&gt; createBulbs(int qty){
+		ArrayList&lt;switchs&gt; blbs= new ArrayList&lt;&gt;();
+		for(int i=0; i&lt;qty; i++) {
+			blbs.add(new switchs());
+		}
+		return blbs;
+	}
+}
+
+class switchs{
+	private int qty;
+	private Boolean state;
+	
+	
+	public switchs() {
+		this.qty=1;
+		this.state=false;
+	}
+	
+	public void changeState() {
+		if(this.state) {
+			this.state=false;
+		}else {
+			this.state=true;
+		}
+	}
+	
+	public void setValue(int value) {
+		this.qty=value;
+	}
+	
+	public int getValue() {
+		return qty;
+	}
+	
+	public void setState(Boolean st) {
+		this.state=st;
+	}
+	
+	public Boolean getState() {
+		return state;
+	}
+}
+</PRE>
+
+</BODY>
+</HTML>

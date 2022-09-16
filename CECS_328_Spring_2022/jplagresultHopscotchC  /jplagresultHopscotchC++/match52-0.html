@@ -1,0 +1,185 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>844956579</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>StudentSolver.cpp</CENTER></H3><HR>
+<PRE>
+#include &quot;StudentSolver.h&quot;
+#include &lt;cmath&gt;
+#include &lt;algorithm&gt;
+#include &lt;iostream&gt;
+#include &lt;random&gt;
+#include &lt;time.h&gt;
+
+using namespace std;
+
+StudentSolver::StudentSolver() {
+
+}
+
+int StudentSolver::max(int a, int b, int c) {
+    if ((a &gt; b) &amp;&amp; (a &gt; c)) {
+        return a;
+    }
+    if ((b &gt; a) &amp;&amp; (b &gt; c)) {
+        return b;
+    }
+    return c;
+}
+/**
+ *  {3,4,1,2,8,6}
+    {6,1,8,2,7,4}
+    {5,4,3,9,9,5}
+    {5,9,8,3,2,6}
+    {8,7,2,9,6,4}
+ */
+
+int StudentSolver::sum_rec(vector&lt;vector&lt;int&gt;&gt; grid, vector&lt;int&gt; &amp;ans, vector&lt;int&gt; &amp;k_sum, int row, int col, int sum, int move, int k) {
+    int n = grid[0].size();
+    int m = grid.size();
+    if (move == 0) {        
+        if (col &gt; n - 1) {
+            col = 0;
+        }
+    }
+    else if (move == 1) {     
+        if (row &lt; 0) {
+            row = m - 1;
+            if (col &gt; n - 1) {
+                col = 0;
+            }
+        }
+        else {
+            if (col &gt; n - 1) {
+                col = 0;
+            }
+        }
+    }
+    else if (move == -1) {     
+        if (row &gt; m - 1){
+            row = 0;
+            if (col &gt; n - 1) {
+                col = 0;
+            }
+        }
+        else {
+            if (col &gt; n - 1) {
+                col = 0;
+            }
+        }
+    }
+
+    if ((k == n-1) &amp;&amp; row != 0 &amp;&amp; row != m-1) {
+        return 0;
+    }
+    else if ((k == n-1) &amp;&amp; (row == 0 || row == m -1)) {
+        return sum + grid[row][col];
+    }
+    /*cout &lt;&lt; endl;
+    cout &lt;&lt; &quot;before k = &quot; &lt;&lt; k &lt;&lt; endl;
+    cout &lt;&lt; &quot;sum = &quot; &lt;&lt; sum &lt;&lt; endl;
+
+    cout &lt;&lt; &quot;grid[&quot; &lt;&lt; row &lt;&lt; &quot;][&quot; &lt;&lt; col &lt;&lt; &quot;] = &quot; &lt;&lt; grid[row][col] &lt;&lt; endl;*/
+    sum = sum + grid[row][col];
+    int right = sum_rec(grid, ans, k_sum, row, col+1, sum, 0, k+1); 
+    int right_up = sum_rec(grid, ans, k_sum, row-1, col+1, sum, 1, k+1); 
+    int right_down = sum_rec(grid, ans, k_sum, row+1, col+1, sum, -1, k+1); 
+    int max_sum = max(right, right_up, right_down);
+    
+    if (k_sum[k] &lt; max_sum) {
+        if (max_sum == right) {
+            
+            ans[k] = 0;
+            k_sum[k] = max_sum;
+        }
+        else if (max_sum == right_up) {
+            
+            ans[k] = 1;
+            k_sum[k] = max_sum;
+        }
+        else {
+            
+            ans[k] = -1;
+            k_sum[k] = max_sum;
+        }
+    }
+   /* cout &lt;&lt; &quot;move 1 = &quot; &lt;&lt; move &lt;&lt; endl;
+    cout &lt;&lt; &quot;right = &quot; &lt;&lt; right &lt;&lt; &quot; right_up = &quot; &lt;&lt; right_up &lt;&lt; &quot; right_down = &quot; &lt;&lt; right_down &lt;&lt; endl;
+    cout &lt;&lt; &quot;k = &quot; &lt;&lt; k &lt;&lt; endl;
+    cout &lt;&lt; &quot;grid[&quot; &lt;&lt; row &lt;&lt; &quot;][&quot; &lt;&lt; col &lt;&lt; &quot;] = &quot; &lt;&lt; grid[row][col] &lt;&lt; endl;*/
+
+
+    
+
+   
+    return max_sum;
+
+}
+
+vector&lt;int&gt; StudentSolver::solve(vector&lt;vector&lt;int&gt;&gt; grid) {
+    
+    int start = 1;
+
+    vector&lt;int&gt; k_sum(grid[0].size() - 1, 0);
+    vector&lt;int&gt; ans_max;
+    vector&lt;int&gt; k;
+    int count = 1;
+    for (int i = 0; i &lt; grid[0].size(); i++) {
+        k.push_back(0); 
+    }
+    int sum_prev = 0;
+    int sum_after = 0;
+    for (int col = 0; col &lt; grid[0].size(); col++) {
+        vector&lt;int&gt; ans(grid[0].size() - 1, 2);
+        vector&lt;int&gt; k_sum(grid[0].size() - 1, 0);
+        int row = 0;
+        int sum = 0;
+        sum_after = max(sum_rec(grid, ans, k_sum, row, col, sum, 0, 0), sum_rec(grid, ans, k_sum, row, col, sum, 1, 0), sum_rec(grid, ans, k_sum, row, col, sum, -1, 0));
+        if (sum_after &gt; sum_prev) {
+            ans_max.clear();
+            ans_max.push_back(start);
+            ans_max.push_back(col);
+<A NAME="0"></A>            for (int i = 0; i &lt; ans.size(); i++) {
+                ans_max.push_back(ans[i]);
+            }
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match52-1.html#0',3,'match52-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>            sum_prev = sum_after;
+        }
+    }
+    /*/int col = 5;
+    int row = 0;
+    ans_max.push_back(start);
+    ans_max.push_back(col);
+    int sum = 0;
+    /*int right = sum_rec(grid, ans, row, col + 1, sum, 0, 1); 
+    int right_up = sum_rec(grid, ans, row - 1, col + 1, sum, 1, 1); 
+    int right_down = sum_rec(grid, ans, row + 1, col + 1, sum, -1, 1); 
+    int max_ = max(right, right_up, right_down);*/
+    
+    cout &lt;&lt; &quot;max = &quot; &lt;&lt; sum_after &lt;&lt; endl;
+
+    
+    for (int i = 0; i &lt; grid.size(); i++) {
+        for (int j = 0; j &lt; grid[0].size(); j++) {
+            cout &lt;&lt; grid[i][j] &lt;&lt; &quot; &quot;;
+        }
+        cout &lt;&lt; endl;
+    }</B></FONT>
+
+    return ans_max;
+}
+</PRE>
+</BODY>
+</HTML>

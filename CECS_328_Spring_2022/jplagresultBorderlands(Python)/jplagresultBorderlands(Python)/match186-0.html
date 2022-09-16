@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>830470407</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+
+def solve(bulbs):
+    # Sort &amp; print each row; Find M, the total number of wire sets
+    numWireSets = 0
+    for row in bulbs:
+        row.sort(key=abs)
+        for bulb in row:
+            if abs(bulb) &gt; numWireSets:
+                numWireSets = abs(bulb)
+
+    # Initialize output array of length M, the wire set configuration
+    wireSetConfig = [None] * numWireSets
+
+    # Initialize array that counts how many rows each wire set appears in
+    wireSetRowCounter = [0] * numWireSets
+
+    # Initialize array that tracks which rows each wire set appears in
+    wireSetRowTracker = []
+    for i in range(numWireSets):
+        wireSetRowTracker.append([])
+
+    # Count how many rows contain each wire set; Keep track of their locations
+    for wireSet in range(1, numWireSets + 1):
+        rowNum = 0
+        for row in bulbs:
+            repeatInteger = False
+            bulbNum = 0
+            for bulb in row:
+                if (abs(bulb) == wireSet) &amp; (not repeatInteger):
+                    wireSetRowCounter[wireSet - 1] += 1
+                    wireSetRowTracker[wireSet - 1].append([rowNum, bulbNum])
+                    repeatInteger = True
+                bulbNum += 1
+            rowNum += 1
+
+    # Update the wireSetConfig boolean values
+    rowCounterEmpty = False
+    while not rowCounterEmpty:
+        for rowCount in range(len(wireSetRowCounter)):
+            if (wireSetRowCounter[rowCount] == 0) &amp; (wireSetConfig[rowCount] is None):
+                wireSetConfig[rowCount] = False
+            elif wireSetRowCounter[rowCount] == 1:
+                currentRow = wireSetRowTracker[rowCount][0][0]
+                if wireSetConfig[rowCount] is None:
+                    if bulbs[wireSetRowTracker[rowCount][0][0]][wireSetRowTracker[rowCount][0][1]] &gt; 0:
+                        wireSetConfig[rowCount] = True
+                    else:
+                        wireSetConfig[rowCount] = False
+                for locationList in wireSetRowTracker:
+                    for location in locationList:
+                        if location[0] == currentRow:
+                            wireSetRowCounter[wireSetRowTracker.index(locationList)] -= 1
+                            locationList.remove(location)
+            elif wireSetRowCounter[rowCount] &gt;= 2:
+                currentRow = wireSetRowTracker[rowCount][0][0]
+                if wireSetConfig[rowCount] is None:
+                    bulbIntList = []
+                    for location in wireSetRowTracker[rowCount]:
+                        bulbIntList.append(bulbs[location[0]][location[1]])
+                    positiveBulbs = 0
+                    negativeBulbs = 0
+                    for bulbInt in bulbIntList:
+                        if bulbInt &gt; 0:
+                            positiveBulbs += 1
+                        else:
+                            negativeBulbs += 1
+                    if positiveBulbs &gt; negativeBulbs:
+                        wireSetConfig[rowCount] = True
+                    else:
+                        wireSetConfig[rowCount] = False
+                for locationList in wireSetRowTracker:
+                    for location in locationList:
+                        if location[0] == currentRow:
+                            wireSetRowCounter[wireSetRowTracker.index(locationList)] -= 1
+                            locationList.remove(location)
+        rowCounterEmpty = True
+        for rowCount in range(len(wireSetRowCounter)):
+            if wireSetRowCounter[rowCount] != 0:
+                rowCounterEmpty = False
+
+    # Define function to create a copy of bulbs for boolean testing
+    def copyBulbs():
+        bulbsCopy = []
+        for row in bulbs:
+            bulbsCopy.append([])
+            for bulb in row:
+                bulbsCopy[bulbs.index(row)].append(bulbs[bulbs.index(row)][bulbs[bulbs.index(row)].index(bulb)])
+        return bulbsCopy
+
+    # Define function to determine which lights are on or off
+    def convertToBoolean(bulbsCopy):
+        for i in range(len(bulbsCopy)):
+            for j in range(len(bulbsCopy[i])):
+                if bulbsCopy[i][j] &gt; 0:
+                    if wireSetConfig[abs(bulbsCopy[i][j]) - 1]:
+                        bulbsCopy[i][j] = 1
+<A NAME="0"></A>                    else:
+                        bulbsCopy[i][j] = 0
+                else:
+                    if wireSetConfig[abs(bulbsCopy<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match186-1.html#0',3,'match186-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>[i][j]) - 1]:
+                        bulbsCopy[i][j] = 0
+                    else:
+                        bulbsCopy[i][j] = 1</B></FONT>
+        return bulbsCopy
+
+    # Set up an array to track adjustments to wireSetConfig
+    configAdjustment = [None] * len(wireSetConfig)
+
+    # Define function to check if any rows have no lights on; Adjust wireSetConfig if so
+    def emptyRowCheck(bulbsCopy):
+        for i in range(len(bulbsCopy)):
+            for j in range(len(bulbsCopy[i])):
+                if (bulbsCopy[i][0] == 0) &amp; (bulbsCopy[i][1] == 0) &amp; (bulbsCopy[i][2] == 0):
+                    if configAdjustment[abs(bulbs[i][j]) - 1] is None:
+                        wireSetConfig[abs(bulbs[i][j]) - 1] = not wireSetConfig[abs(bulbs[i][j]) - 1]
+                        configAdjustment[abs(bulbs[i][j]) - 1] = True
+                        bulbsCopy = copyBulbs()
+                        bulbsCopy = convertToBoolean(bulbsCopy)
+                        emptyRowCheck(bulbsCopy)
+                    elif ((configAdjustment[abs(bulbs[i][0]) - 1] == True) &amp;
+                          (configAdjustment[abs(bulbs[i][1]) - 1] == True) &amp;
+                          (configAdjustment[abs(bulbs[i][2]) - 1] == True)):
+                        wireSetConfig[abs(bulbs[i][j]) - 1] = not wireSetConfig[abs(bulbs[i][j]) - 1]
+                        configAdjustment[abs(bulbs[i][j]) - 1] = True
+                        bulbsCopy = copyBulbs()
+                        bulbsCopy = convertToBoolean(bulbsCopy)
+                        emptyRowCheck(bulbsCopy)
+
+    # Call above functions
+    bulbsCopy = copyBulbs()
+    bulbsCopy = convertToBoolean(bulbsCopy)
+    emptyRowCheck(bulbsCopy)
+
+    # Return the completed wire set configuration array
+    return wireSetConfig
+</PRE>
+
+</BODY>
+</HTML>

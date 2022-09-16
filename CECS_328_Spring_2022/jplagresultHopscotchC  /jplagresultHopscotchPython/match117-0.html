@@ -1,0 +1,208 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>953264039</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+def numCheck(grid, row, col, i):
+    
+    # print(&quot;numcheck&quot;,row, col)
+    next = []
+    rows = len(grid)
+    cols = len(grid[0])
+    # print(rows,&quot;werwerwerwerwer&quot;)
+    # halfcol = int(cols/2)
+    # print(&quot;cccccccccccccccccc&quot;,halfcol)
+    # print(&quot;col, row, &quot; ,grid[row][col])
+    # print(&quot;col&quot;,col)
+    diagUp = row-1
+    diagDown = row+1
+    # print(diagUp)
+    # print(diagDown)
+    col = col+1
+    if col&gt; cols-1:
+        col = 0
+
+    if row+1 &gt; rows-1:
+        diagDown =0
+    
+    if row-1 &lt; 0:
+        diagUp = rows-1
+    
+    if cols%2 ==0:
+    # print(&quot; i: &quot;,i , &quot; rows: &quot;, rows/2)
+        if rows &gt; cols:
+            if i&gt;= cols/2-1:
+                # print(&quot;rowieeee&quot;,rows/2)
+
+                if cols-i==2 and row==0:
+                    next.append(-1)
+                    next.append(grid[row][col])
+                    next.append(grid[diagUp][col])
+                elif cols-i==2 and row!=0 and row&lt;rows/2:
+                    next.append(-1)
+                    next.append(-1)
+                    next.append(grid[diagUp][col])
+                elif cols-i==2 and row==rows-1:
+                    next.append(grid[diagDown][col])
+                    next.append(grid[row][col])
+                    next.append(-1)
+                elif cols-i==2 and row!=0 and row &gt;rows/2:
+                    next.append(grid[diagDown][col])
+                    next.append(-1)
+                    next.append(-1)
+                elif row &gt;= rows/2:
+                    next.append(grid[diagDown][col])
+                    next.append(grid[row][col])
+                    next.append(-1)
+                elif row &lt; rows/2:
+                    next.append(-1) 
+                    next.append(grid[row][col])
+                    next.append(grid[diagUp][col])                    
+
+
+
+            else:
+                next.append(grid[diagDown][col])
+                next.append(grid[row][col])
+                next.append(grid[diagUp][col])
+        else:
+            if i&gt;= cols/2:
+            # print(&quot;rowieeee&quot;,rows/2)
+                if cols-i==2 and row==0:
+                    next.append(-1)
+                    next.append(grid[row][col])
+                    next.append(grid[diagUp][col])
+                elif row&gt;= rows/2:
+                    next.append(grid[diagDown][col])
+                    next.append(-1)
+                    next.append(-1)
+                elif cols-i==2 and row!=0 and row &gt;rows/2:
+                    next.append(grid[diagDown][col])
+                    next.append(-1)
+                    next.append(-1)
+                elif cols-i==2 and row!=0 and row&lt;rows/2:
+                    next.append(-1)
+                    next.append(-1)
+                    next.append(grid[diagUp][col])
+                else:
+                    next.append(-1)
+                    next.append(-1)
+                    next.append(grid[diagUp][col])
+
+            else:
+                next.append(grid[diagDown][col])
+                next.append(grid[row][col])
+                next.append(grid[diagUp][col])
+    else:
+
+        if i&gt;= cols/2-1:
+            # print(&quot;rowi&quot;,int(cols/2)-1)
+            if row&gt;= rows/2:
+                next.append(grid[diagDown][col])
+                next.append(-1)
+                next.append(-1)
+            else:
+                next.append(-1)
+                next.append(-1)
+                next.append(grid[diagUp][col])
+
+        else:
+            next.append(grid[diagDown][col])
+            next.append(grid[row][col])
+            next.append(grid[diagUp][col])
+
+    # print(next)
+
+    # print(&quot;y &quot;, col)
+    # print(&quot;up &quot;,diagUp)
+    # print(&quot;down &quot;,diagDown)
+    # if i :
+    #     if 
+    # print(&quot;diag up&quot;,grid[diagUp][col])
+
+    highest = max(next)
+    maxIndex = next.index(highest)-1
+    if maxIndex == -1:
+        row =diagDown
+    elif maxIndex == 1:
+        row = diagUp
+
+    return row, col, maxIndex, highest
+
+def solve(grid):
+    row = len(grid)
+    col = len(grid[0])
+    topAr = []
+    botAr = []
+    topValue = 0
+<A NAME="0"></A>    botValue = 0
+    
+    if col == 1:
+        <FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match117-1.html#0',3,'match117-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>if grid[0][0] &gt; grid[row-1][0]:
+            topAr =[1, 0]
+        else:
+            topAr =[0,0]
+        r</B></FONT>eturn topAr
+
+    for x in range(0,col-1):
+        topRow = 0
+        botRow = row-1
+        topCol = x
+        botCol = x
+        # print(x)
+        top = [1, x]
+        bot = [0, x]
+        # print(&quot;row&quot;, topRow)
+        # print(&quot;col &quot;,topCol)
+        newTop = grid[topRow][topCol]
+        newBot = grid[botRow][topCol]
+
+        for i in range(col-1):
+            topRow, topCol, topMovement, topNum = numCheck(grid, topRow, topCol, i)
+            # print(topRow, &quot; &quot;, topCol,&quot; &quot;, topMovement,&quot; &quot;, value)
+            newTop += topNum
+            top.append(topMovement)
+            botRow, botCol, botMovement, botNum = numCheck(grid, botRow, botCol, i)
+            newBot += botNum
+            bot.append(botMovement)
+            # print(&quot;i, &quot;,i)
+            # print(topNum,&quot; ,&quot;, topRow, &quot;, &quot;, topCol)
+        # if x ==1:
+        #     print(newTop)
+        #     print(top)
+        if newTop &gt; topValue:
+            topValue = newTop
+            # print(&quot;before&quot;,topAr)
+            # print(&quot;topvalue,&quot;,topValue)
+            topAr = top
+            # print(&quot;after&quot;,top)
+        if newBot &gt; botValue:
+            botValue = newBot
+            botAr = bot
+    #print(top)
+    # print(topValue, &quot; and &quot;, botValue)
+    if topValue &gt; botValue:
+        return topAr
+    else:
+        return botAr
+    
+
+
+</PRE>
+
+</BODY>
+</HTML>

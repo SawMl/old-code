@@ -1,0 +1,361 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>377514201</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+def solve(grid):
+    # Display the grid
+    def displayGrid(grid):
+        row = 0
+        for list in grid:
+            print(row, end = ' ')
+            print(list)
+            row += 1
+    # Initialize the empty grid
+    maxValues = []
+    column = len(grid[0])
+    for row in range(0, len(grid)):
+        maxValues.append( [0] * column)
+        
+    # right
+    def right(row, col, myGrid):
+        temp = []
+        # Right
+        if col == len(myGrid[0]) - 1:
+            right = myGrid[row][col-(col)]
+            temp.append(right)
+            temp.append(row)
+            temp.append(col-(col))
+        else:
+            right = myGrid[row][col+1]
+            temp.append(right)
+            temp.append(row)
+            temp.append(col+1)
+        # Key Value
+        temp.append(0)
+        return temp
+    # Bottom Right
+    def bot_right(row, col, myGrid):
+        temp = []
+        if ( col == (len(myGrid[0])-1) ) and (row == len(myGrid)-1):
+            bottom_right = myGrid[row-row][col-col]
+            temp.append(bottom_right)
+            temp.append(row-row)
+            temp.append(col-col)
+        elif col == (len(myGrid[0])-1):
+            bottom_right = myGrid[row+1][col-col]
+            temp.append(bottom_right)
+            temp.append(row+1)
+            temp.append(col-col)
+        elif (row == len(myGrid)-1):
+            bottom_right = myGrid[row - row][col+1]
+            temp.append(bottom_right)
+            temp.append(row - row)
+            temp.append(col+1)
+        else:
+            bottom_right = myGrid[row+1][col+1]
+            temp.append(bottom_right)
+            temp.append(row+1)
+            temp.append(col+1)
+        # Key Value
+        temp.append(-1)
+        return temp
+    
+    def top_right(row,col, myGrid):
+        temp = []
+        # All the way to the right and all the way to the bottom
+# curr = [[3, 4, 1, 2, 8, 6], 
+# 	    [6, 1, 8, 2, 7, 4], 
+# 	    [5, 4, 3, 9, 9, 5], 
+# 		[5, 9, 8, 3, 2, 6], 
+# 		[8, 7, 2, 9, 6, 4]]
+        if col == (len(myGrid[0])-1) and row == 0:
+            top_right = myGrid[len(grid)-1][col-col]
+            temp.append(top_right)
+            temp.append(len(grid)-1)
+            temp.append(col-col)
+
+        elif col == (len(myGrid[0])-1) and row == (len(grid)-1):
+            top_right = myGrid[row-1][col-col]
+            temp.append(top_right)
+            temp.append(row-1)
+            temp.append(col-col)
+        
+        elif col == (len(myGrid[0])-1):
+            top_right = myGrid[row-1][col-col] 
+            temp.append(top_right)
+            temp.append(row-1)
+            temp.append(col-col)
+        elif row == 0:
+            row = len(grid)
+            top_right = myGrid[row-1][col+1]
+            temp.append(top_right)
+            temp.append(len(grid) - 1)
+            temp.append(col+1)
+        else:
+            top_right = myGrid[row-1][col+1]
+            temp.append(top_right)
+            temp.append(row-1)
+            temp.append(col+1)
+        # Key Value
+        temp.append(1)
+        return temp
+    # Left
+    def left(row, col, myGrid):
+        # temp = []
+        # print(f'current num: {myGrid[row][col]}')
+        if col == len(grid[0]):
+            left = myGrid[row][col-1]
+        else:
+            left = myGrid[row][col-1]
+        # temp.append(left)
+        # temp.append(row)
+        # temp.append(col)
+        return left
+    # Bottom Left
+    def bot_left(row, col, myGrid):
+        # temp = []
+        # print(f'current num: {myGrid[row][col]}')
+        if ( col == 0 ) and (row == 0):
+            bot_left = myGrid[row+1][col-1]
+        elif (row == len(myGrid)-1):
+            bot_left = myGrid[row - row][col-1]
+        else:
+            bot_left = myGrid[row+1][col-1]
+        # temp.append(right)
+        # temp.append(row)
+        # temp.append(col)
+        return bot_left
+    # Top Left
+    def top_left(row,col, myGrid):
+        # temp = []
+        # print(f'current num: {myGrid[row][col]}')
+        if ( col == 0 ) or (row == 0):
+            top_left = myGrid[row-1][col-1]
+        else:
+            top_left = myGrid[row-1][col-1]
+        # temp.append(right)
+        # temp.append(row)
+        # temp.append(col)
+        return top_left
+
+    def fillGrid(grid):
+        for col in range(0, len(grid[0])):
+            for row in range(0, len(grid)):
+                currentMax = 0
+                if col == 0:
+                    maxValues [row][col] = grid[row][col]
+                # print(f'row: {row} col: {col}')
+                else:
+                    prev = maxValues[row][col]
+                    currentMax = max( left(row, col, grid), bot_left(row, col, grid), top_left(row, col, grid) )
+                    maxValues [row][col] = currentMax + grid[row][col]
+                # print('grid')
+                # displayGrid(grid)
+                # print()
+                # print('maxValues')
+                # displayGrid(maxValues)
+                # print()
+        return maxValues
+
+    maxGrid = (fillGrid(grid))
+    displayGrid(grid)
+    print()
+    # displayGrid(maxGrid)
+
+    def maximum(nums):
+        myMax = []
+        myRow = 0
+        myCol = 0
+        myKey = 0
+        max = 0
+        for item in nums:
+            if item[0] &gt; max:
+                max = item[0]
+                myRow = item[1]
+                myCol = item[2]
+                myKey = item[3]
+        
+        myMax.append(max)
+        myMax.append(myRow)
+        myMax.append(myCol)
+        myMax.append(myKey)
+        return myMax
+    
+    def solveGrid(grid, myGrid):
+        # topRow = grid[0]
+        # botRow = grid[-1]
+        # print()
+        # print(topRow)
+        # print(botRow)
+        
+        def solving(grid, row, col):
+            allValues = []
+            allPaths = []
+            maxOverall = {}
+            output = {}
+            myRow = row
+            myCol = col
+            for num in range(0, len(grid[row])):
+                Path = []
+                # Determine if this is top or bottom
+                if row == 0:
+                    Path.append(1)
+                elif row == len(grid)-1:
+                    Path.append(0)
+                # Add the index of the column
+                Path.append(num)
+                
+                # Start our loop for the direction
+                i = 0 
+                myMax = 0
+                current=grid[row][num]
+                myRow = row
+                myCol = num
+                myMax+=current
+                # print(f'Starting Value: {current}')
+                while i &lt; len(grid[row]) -1 :
+                    #print(myRow[i]) is the starting value for the TOP row and BOT row
+                    # Select the maximum option, right, bot right, top right
+                    # print(f'MyRow: {myRow} MyCol: {myCol}')
+                    nums = [right(myRow, myCol, grid), bot_right( myRow, myCol, grid), top_right( myRow, myCol, grid)]
+                    currentMax = maximum(nums)
+                    # print(f'Current Value: {current}')
+                    # print(f'options{nums}')
+                    # Add the max value
+                    myMax += currentMax[0]
+                    myRow = currentMax[1]
+                    myCol = currentMax[2]
+                    # Move current position to our new max position
+                    current = grid[myRow][myCol]
+                    # Add the direction to path
+                    Path.append(currentMax[3])
+                    # print(myMax)
+                    # Check our last value
+                    # print(f'Path: {Path}, i: {i}, row: {currentMax}')
+                    if i == len(grid[row])-2:
+                        # print('Cur', currentMax)
+                        if currentMax[1] == 0 or currentMax[1] == len(grid)-1:
+                            output.update( {myMax:Path} )
+                            # print(f'CHANGE: {output}')
+                        # print(currentMax)
+                    # output.update({myMax:Path})
+                    i+=1
+                # print(Path)
+                
+                # print(f'Max: {max}')
+                # print()
+            # print(output)
+            # print(output.get(max(output)))
+            
+            
+            newDict ={}
+            newDict.update( {max(output):output.get(max(output))} )
+            # print(newDict)
+            return newDict
+
+                    
+        #     output = {}
+        #     i = 0
+        #     max = 0
+        #     current = grid[row][i]
+        #     while i &lt; len(grid[row]):
+        #         #print(myRow[i]) is the starting value for the TOP row and BOT row
+        #         print(current)
+        #         maxPath = []
+        #         nums = [right(row, col, grid), bot_right( row, col, grid), top_right( row, col, grid)]
+        #         currentMax = maximum(nums)
+        #         max += currentMax[0]
+        #         current = grid[currentMax[1]][currentMax[2]]
+        #         print(currentMax)
+        #         print(nums)
+        #         i+=1
+        top_row = 0
+        top_col = 0
+        bot_row = len(grid)-1
+        bot_col = 0
+        # print(&quot;Top&quot;)
+        top = solving(grid, top_row, top_col)
+        # print(&quot;Bot&quot;)
+        bot = solving(grid, bot_row, bot_col)
+        topKey = list(top.keys())[0]
+        botKey = list(bot.keys())[0]
+        
+        if topKey &gt; botKey:
+            return (list(top.values())[0])
+        else:
+            return (list(top.values())[0])
+            
+        # if topKey &gt; botKey:
+        # maxTop = max(solving(grid, top_row, top_col))
+        # maxBot = max(solving(grid, bot_row, bot_col))
+        
+    return solveGrid(grid, maxGrid)
+# curr = [[3, 4, 1, 2, 8, 6], 
+# 	    [6, 1, 8, 2, 7, 4], 
+# 	    [5, 4, 3, 9, 9, 5], 
+# 		[5, 9, 8, 3, 2, 6], 
+# 		[8, 7, 2, 9, 6, 4]]
+
+# print(solve(curr))
+
+# Test 2
+# Answer 
+t2_A= [1, 5, 1, 0, 0, 0, -1, 0]                                       
+t2 = [ [1, 7, 6, 9, 9, 5, 1], [1, 6, 7, 1, 4, 5, 4], [4, 2, 6, 2, 6, 7, 2]
+, [1, 7, 6, 5, 3, 9, 4] , [4, 6, 3, 5, 2, 4, 6] ,[8, 9, 9, 7, 9, 4, 9] ]
+
+
+<A NAME="0"></A># Test 4
+# Answer
+t4_A=[1, 1, 0]
+t4 <FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match113-1.html#0',3,'match113-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>= [ [843, 608], [267, 554], [649, 158], [805, 28], [46, 18], [300, 372], [795, 657], [623, 788], [337, 366], [392</B></FONT>, 358]]
+
+
+# Test 5
+# Answer
+t5_A=[1, 10, 1, 0, 0, 1, -1, 0, 0, -1, 1, -1]      
+t5 = [
+[21, 22, 79, 11, 86, 21, 30, 61, 26, 94, 81],
+[54, 35, 47, 56, 85, 53, 27, 79, 6, 43, 11],
+[48, 70, 79, 68, 83, 96, 27, 90, 31, 98, 28],
+[27, 42, 9, 22, 15, 76, 83, 30, 3, 21, 37],
+[81, 35, 31, 85, 73, 35, 97, 14, 7, 76, 26],
+[17, 33, 36, 91, 9, 56, 41, 96, 11, 45, 22],
+[11, 65, 13, 98, 84, 5, 15, 71, 9, 50, 35],
+[15, 66, 70, 74, 76, 64, 32, 64, 36, 63, 86],
+[44, 15, 28, 82, 46, 75, 5, 1, 71, 75, 51],
+[68, 60, 94, 5, 98, 91, 49, 16, 65, 25, 24]
+]
+print(solve(t5))
+# Test 7
+# Answer
+t7_A = [1, 47, -1, 0, 0, 0, 0, -1, -1, -1, -1, -1, 0, -1, 0, 0, 0, 0, 0, -1, -1, -1, 0, 0, -1, -1, -1, -1, -1, 0, -1, -1, -1, -1, -1, -1, 0, -1, 0, 0, 0, -1, -1, 0, -1, 0, 0, -1, 0, 0, 0]
+t7 = [ [2, 2, 5, 7, 4, 9, 2, 8, 5, 1, 1, 3, 1, 3, 2, 6, 8, 9, 6, 7, 4, 7, 1, 9, 2, 2, 6, 3, 7, 3, 6, 5, 2, 7, 4, 6, 7, 8, 6, 5, 6, 5, 7, 8, 8, 3, 2, 7, 4, 2], [4, 2, 7, 5, 6, 2, 5, 1, 2, 8, 9, 3, 1, 6, 6, 2, 9, 2, 6, 4, 6, 1, 9, 7, 4, 4, 5, 6, 2, 9, 3, 7, 3, 4, 2, 2, 3, 9, 3, 2, 8, 9, 8, 4, 5, 3, 2, 7, 6, 2] ]
+# print(solve(t7))
+
+tests = [t2, t4, t5, t7]
+answer = [t2_A, t4_A, t5_A, t7_A]
+for test in tests:
+    if solve(test) in answer:
+        print('pass')
+    else:
+        print('fail')
+</PRE>
+
+</BODY>
+</HTML>

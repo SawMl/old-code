@@ -1,0 +1,213 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>111979500</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+def solve(grid):
+    #print(grid)
+    lenRows = len(grid[0])
+    lenColumn = len(grid)
+    firstRow = grid[0]
+    lastRow = grid[lenColumn - 1]
+    highestTop = max(firstRow)
+    highestBottom = max(lastRow)
+    i = 0
+    indv_columns = []
+    finalAnswer = []
+
+    last_column = []
+    k = 0
+    while k &lt; lenColumn:
+        last_column.append(grid[k][lenRows - 1])
+        k+=1
+
+
+    # get starting position
+    if highestTop &gt; highestBottom:
+        position = grid[0].index(highestTop)  # getting index of biggest num in the top row
+        startingRow = 0
+        finalAnswer.append(1)
+        #position = str(position)
+        finalAnswer.append(position)
+        #finalAnswer += ', '
+        position = int(position)
+        
+        curr_row = 0 
+        i += 1
+
+    elif highestBottom &gt; highestTop:
+        position = grid[lenColumn - 1].index(highestBottom)  # getting index of biggest num in the bottom row
+        #print(position)
+        startingRow = lenColumn - 1
+        finalAnswer.append(0)
+        #position = str(position)
+        finalAnswer.append(position)
+        #finalAnswer += ', '
+        position = int(position)
+    
+        curr_row = lenColumn - 1
+        i += 1
+    elif highestBottom == highestTop:
+        position = grid[0].index(highestTop)
+        startingRow = 0
+        finalAnswer.append(1)
+        #position = str(position)
+        finalAnswer.append(position)
+        #finalAnswer += ', '
+        position = int(position)
+      
+        curr_row = 0 
+        i += 1
+
+    #curr_row = startingRow
+    curr_column = position
+    curr_position = grid[curr_row][curr_column]
+    curr_position_index = grid[curr_row].index(curr_position)
+
+    while i &lt; (lenRows):  # i is only the counter for how many times to jump before getting back to strating column 
+
+        # gets position if at the top row
+        #if curr_position in grid[0]:
+        #if curr_string = 'top row'
+        if curr_row == 0: 
+            #print('in first row')
+            if curr_position == grid[0][lenRows - 1]:  # if at the very top edge
+                curr_position = max(grid[0][0], grid[1][0], grid[lenColumn - 1][0])
+                if curr_position == grid[0][0]:
+                    finalAnswer.append(0)
+                    curr_row = 0
+                    curr_column = 0
+                
+                elif curr_position == grid[1][0]:
+                    finalAnswer.append(-1)
+                    curr_row = 1
+                    curr_column = 0
+                elif curr_position == grid[lenColumn - 1][0]:
+                    finalAnswer.append(1)
+                    curr_row = lenColumn - 1
+                    curr_column = 0 
+               
+            else:
+                curr_position = max(grid[curr_row][curr_column + 1], grid[curr_row + 1][curr_column + 1], grid[lenColumn - 1][curr_column + 1])
+                if curr_position == grid[curr_row][curr_column + 1]:
+                    finalAnswer.append(0)
+                    curr_column += 1
+                    curr_string = 'top row'
+                elif curr_position == grid[curr_row + 1][curr_column + 1]:
+                    finalAnswer.append(-1)
+<A NAME="0"></A>                    curr_row += 1
+                    curr_column += 1
+                elif curr_position == grid[lenColumn - 1][curr_column +1]:
+                    finalAnswer<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match173-0.html#0',2,'match173-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>.append(1)
+                    curr_row = lenColumn - 1
+                    curr_column += 1
+                
+               
+
+        # gets position if at the bottom row
+        #elif curr_position in grid[lenColumn - 1]:
+        elif curr_row == lenColumn - 1:
+            #print('bottom row')
+            if curr_position == grid[lenColumn - 1][lenRows - 1]:  # if at the very bottom edge
+                curr_position = max(grid[lenColumn - 1][</B></FONT>0], grid[lenColumn - 2][0], grid[0][0])
+                if curr_position == grid[lenColumn - 1][0]:
+                    finalAnswer.append(0)
+                    curr_row = lenColumn - 1
+                    curr_column = 0
+                  
+                elif curr_position == grid[lenColumn - 2][0]:
+                    finalAnswer.append(1)
+                    curr_row = lenColumn - 2
+                    curr_column = 0
+                elif curr_position == grid[0][0]:
+                    finalAnswer.append(-1)
+                    curr_row = 0
+                    curr_column = 0
+                        
+                                                  
+
+            else:
+                curr_position = max(grid[lenColumn - 1][curr_column + 1], grid[lenColumn - 2][curr_column + 1], grid[0][curr_column +1])
+                if curr_position == grid[lenColumn - 1][curr_column + 1]:
+                    finalAnswer.append(0)
+                    curr_row = lenColumn - 1
+                    curr_column += 1
+                
+                elif curr_position == grid[lenColumn - 2][curr_column + 1]:
+                    finalAnswer.append(1)
+                    curr_row = lenColumn - 2
+                    curr_column += 1
+                elif curr_position == grid[0][curr_column + 1]:
+                    finalAnswer.append(-1)
+                    curr_row = 0
+                    curr_column += 1
+
+        #gets position if in last column at all
+        elif curr_column == lenRows - 1: 
+           # print('at the last column')
+            curr_position = max(grid[curr_row -1][0], grid[curr_row][0], grid[curr_row +1][0])
+            if curr_position == grid[curr_row -1][0]:
+                finalAnswer.append(1)
+                curr_row -= 1
+                curr_column = 0
+            elif curr_position == grid[curr_row][0]:
+                finalAnswer.append(0)
+                curr_column = 0
+            elif curr_position == grid[curr_row + 1][0]:
+                finalAnswer.append(-1)
+                curr_row += 1
+                curr_column = 0 
+            
+            
+
+        else:
+            #print('somewhere random')
+            curr_position = max(grid[curr_row][curr_column + 1], grid[curr_row - 1][curr_column + 1],
+                                grid[curr_row + 1][curr_column + 1])
+            if curr_position == grid[curr_row][curr_column + 1]:
+                finalAnswer.append(0)
+                curr_column += 1
+            elif curr_position == grid[curr_row - 1][curr_column + 1]:
+                finalAnswer.append(1)
+                curr_row -= 1
+                curr_column += 1
+            elif curr_position == grid[curr_row + 1][curr_column + 1]:
+                finalAnswer.append(-1)
+                curr_row += 1
+                curr_column += 1
+
+
+            #if curr_position index in top return curr_string = 'top row' 
+
+        
+       # print(curr_position)
+        i += 1
+   
+    return finalAnswer 
+
+
+
+##print(solve([[3, 4, 1, 2, 8, 6],
+##             [6, 1, 8, 2, 7, 4],
+##             [5, 4, 3, 9, 9, 5],
+##             [5, 9, 8, 3, 2, 6],
+##             [8, 7, 2, 9, 6, 4]]))
+##
+</PRE>
+
+</BODY>
+</HTML>

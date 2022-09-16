@@ -1,0 +1,305 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>712135998</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+import java.util.*;
+
+public class StudentSolver {
+
+    public static ArrayList&lt;Boolean&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs) {
+        ArrayList&lt;Boolean&gt; answer_list = new ArrayList&lt;&gt;();
+
+       
+
+
+
+
+        
+        Integer[] sorted_array = new Integer[bulbs.size() * 3];
+
+        if (bulbs.size() == 0) {
+            return answer_list;
+        }
+        
+
+        
+        for (int i = 0; i &lt; bulbs.size(); i++) {
+            ArrayList&lt;Integer&gt; int_subset = bulbs.get(i);
+            
+            int first = Math.abs(int_subset.get(0)) - Math.abs(int_subset.get(1));
+            int second = Math.abs(int_subset.get(1)) - Math.abs(int_subset.get(2));
+            int third = Math.abs(int_subset.get(0)) - Math.abs(int_subset.get(2));
+
+            if (Math.abs(first) &lt;= 5 &amp;&amp; Math.abs(second) &lt;= 5 &amp;&amp; Math.abs(third) &lt;= 5) {
+                for (int j = 0; j &lt; 3; j++) {
+                    sorted_array[3 * i + j] = int_subset.get(j);
+                }
+            } else {
+                return answer_list;
+            }
+        }
+        int first_element = (int) sorted_array[0];
+        int num_element_track = 1;
+        for(int i = 1; i &lt; sorted_array.length; i++){
+            if(first_element == sorted_array[i]){
+                num_element_track++;
+            }
+        }
+        if(num_element_track == sorted_array.length &amp;&amp; sorted_array[0] &gt; 0){
+            answer_list.add(true);
+            return answer_list;
+        }
+        else if(num_element_track == sorted_array.length &amp;&amp; sorted_array[0] &lt; 0){
+            answer_list.add(false);
+            return answer_list;
+        }
+        
+        for (int i = 0; i &lt; sorted_array.length; i++) {
+            if (sorted_array[i] &lt; 0) {
+                sorted_array[i] = Math.abs(sorted_array[i]);
+            }
+        }
+
+        Arrays.sort(sorted_array);
+
+        
+        int arrayValue = sorted_array[sorted_array.length - 1] - sorted_array[0];
+        System.out.println(arrayValue);
+        int[] intArray = new int[arrayValue + 1];
+
+        for(int i = 0; i &lt; intArray.length; i++){
+            if(intArray[0] == 0){
+                intArray[i] = sorted_array[i];
+            }
+            else{
+                intArray[i] =  intArray[i - 1] + 1;
+            }
+        }
+
+        for(int i = 0; i &lt; intArray.length; i++){
+            System.out.print(intArray[i] + &quot; &quot;);
+        }
+        System.out.println();
+        
+        for(int i = 0; i &lt; sorted_array.length; i++)
+        {
+            System.out.print(sorted_array[i] + &quot; &quot;);
+            if((i + 1) % 3 == 0)
+            {
+                System.out.print(&quot;\n&quot;);
+            }
+        }
+
+
+
+        
+        
+
+        int[] track_boolean = new int[intArray.length];
+        int temp = 0;
+        for (int i = 0; i &lt; intArray.length; i++) {
+            for (int j = 0; j &lt; sorted_array.length; j++) {
+                if (intArray[i] == sorted_array[j]) {
+                    temp += 1;
+                }
+                track_boolean[i] = temp;
+            }
+            temp = 0;
+        }
+        for (int i = 0; i &lt; track_boolean.length; i++) {
+            if (track_boolean[i] &gt;= 2) {
+<A NAME="0"></A>                answer_list.add(i, true);
+            } else {
+                answer_list.add(i, false);
+            <FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match641-1.html#0',3,'match641-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>}
+        }
+        return answer_list;
+    }
+
+    public static void main(String[] args) {
+
+
+        
+        ArrayList&lt;Boolean&gt; answer_list = new</B></FONT> ArrayList&lt;&gt;();
+
+
+        
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; combined_lists = new ArrayList&lt;&gt;();
+
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs = new ArrayList&lt;&gt;();
+        
+        
+
+        
+        ArrayList&lt;Integer&gt; bulbs1 = new ArrayList&lt;&gt;();
+        bulbs1.add(-4);
+        bulbs1.add(-4);
+        bulbs1.add(-1);
+
+        
+        ArrayList&lt;Integer&gt; bulbs2 = new ArrayList&lt;&gt;();
+        bulbs2.add(13);
+        bulbs2.add(9);
+        bulbs2.add(-14);
+
+        
+        ArrayList&lt;Integer&gt; bulbs3 = new ArrayList&lt;&gt;();
+        bulbs3.add(4);
+        bulbs3.add(-7);
+        bulbs3.add(-4);
+
+        
+        ArrayList&lt;Integer&gt; bulbs4 = new ArrayList&lt;&gt;();
+        bulbs4.add(-2);
+        bulbs4.add(6);
+        bulbs4.add(3);
+
+        
+        ArrayList&lt;Integer&gt; bulbs5 = new ArrayList&lt;&gt;();
+        bulbs5.add(-6);
+        bulbs5.add(-8);
+        bulbs5.add(11);
+
+        
+        ArrayList&lt;Integer&gt; bulbs6 = new ArrayList&lt;&gt;();
+        bulbs6.add(7);
+        bulbs6.add(11);
+        bulbs6.add(-10);
+
+        
+        ArrayList&lt;Integer&gt; bulbs7 = new ArrayList&lt;&gt;();
+        bulbs7.add(5);
+        bulbs7.add(6);
+        bulbs7.add(4);
+
+        
+        ArrayList&lt;Integer&gt; bulbs8 = new ArrayList&lt;&gt;();
+        bulbs8.add(10);
+        bulbs8.add(14);
+        bulbs8.add(9);
+
+        combined_lists.add(bulbs1);
+<A NAME="1"></A>        combined_lists.add(bulbs2);
+        combined_lists.add(bulbs3);
+        combined_lists.add(bulbs4);
+        <FONT color="#f63526"><A HREF="javascript:ZweiFrames('match641-1.html#1',3,'match641-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>combined_lists.add(bulbs5);
+        combined_lists.add(bulbs6);
+        combined_lists.add(bulbs7);
+        combined_lists.add(bulbs8);
+
+        System.out.println(combined_lists);
+        System.out.println(solve(combined_lists));
+
+        
+
+        
+
+
+        /*
+        
+        Integer[] sorted_array = new Integer[combined_lists.size() * 3];
+
+        
+        for(int i = 0; i &lt; combined_lists.size(); i++){
+            ArrayList&lt;Integer&gt; int_subset = combined_lists.get(i);
+            
+            int first = Math.abs(int_subset.get(0)) - Math.abs(int_subset.get(1));
+            int second = Math.abs(int_subset.get(1)) - Math.abs(int_subset.get(2));
+            int third = Math.abs(int_subset.get(0)) - Math.abs(int_subset.get(2));
+
+            if(Math.abs(first) &lt;= 5 &amp;&amp; Math.abs(second) &lt;= 5 &amp;&amp; Math.abs(third) &lt;= 5){
+                for(int j = 0; j &lt; 3; j++){
+                    sorted_array[3 * i + j] = int_subset.get(j);
+                }
+            }
+            else{
+                
+            }
+        }
+
+        
+        for(int i = 0; i &lt; sorted_array.length; i++){
+            if(sorted_array[i] &lt; 0){
+                sorted_array[i] = Math.abs(sorted_array[i]);
+            }
+        }
+
+        Arrays.sort(sorted_array);
+
+        
+        TreeSet&lt;Integer&gt; elements_in_list = new TreeSet&lt;&gt;();
+        for (Integer value : sorted_array) {
+            for (int j = 0; j &lt; sorted_array.length; j++) {
+                if (value.equals(sorted_array[j])) {
+                    elements_in_list.add(value);
+                }
+            }
+        }
+        Object[] helperArray = elements_in_list.toArray();
+        System.out.println(Arrays.toString(helperArray));
+        
+        for(int i = 0; i &lt; sorted_array.length; i++){
+            System.out.print(sorted_array[i] + &quot; &quot;);
+            if((i + 1) % 3 == 0){
+                System.out.print(&quot;\n&quot;);
+            }
+        }
+
+        
+        
+        
+        
+        
+
+        ArrayList&lt;Boolean&gt; answer_boolean = new ArrayList&lt;&gt;();
+        int[] track_boolean = new int[elements_in_list.size()];
+        int temp = 0;
+        for(int i = 0; i &lt; helperArray.length; i++){
+            for(int j = 0; j &lt; sorted_array.length; j++){
+                if(helperArray[i] == sorted_array[j]){
+                    temp += 1;
+                }
+                track_boolean[i] = temp;
+            }
+            temp = 0;
+        }
+        for(int i = 0; i &lt; track_boolean.length;i++){
+            if(track_boolean[i] &gt;= 2){
+                answer_boolean.add(i, true);
+            }
+            else{
+                answer_boolean.add(i, false);
+            }
+        }
+        System.out.println(answer_boolean);
+        System.out.println(elements_in_list);
+
+
+        */
+    }</B></FONT>
+}
+
+
+
+
+
+
+</PRE>
+
+</BODY>
+</HTML>

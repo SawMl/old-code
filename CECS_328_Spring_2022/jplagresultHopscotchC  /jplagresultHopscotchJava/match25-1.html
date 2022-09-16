@@ -1,0 +1,191 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>136609048</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+import java.util.ArrayList;
+
+public class StudentSolver{
+    static class Point{
+        int x,y;
+        public Point(int x,int y){
+            this.x = x;
+            this.y = y;
+        }
+        @Override
+        public String toString(){
+            return this.x+&quot; &quot;+this.y;
+        }
+    }
+    public static void main(String[] args){
+        int[][] array = {
+                {3, 4, 1, 2, 8, 6},
+                {6, 1, 8, 2, 7, 4},
+                {5, 4, 3, 9, 9, 5},
+                {5, 9, 8, 3, 2, 6},
+                {8, 7, 2, 9, 6, 4}
+        };
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; list = new ArrayList&lt;&gt;();
+        for(int i=0;i&lt;array.length;i++){
+            list.add(new ArrayList&lt;Integer&gt;());
+            for(int j=0;j&lt;array[i].length;j++){
+                list.get(i).add(array[i][j]);
+            }
+        }
+        System.out.println(solve(list));
+    }
+    public static ArrayList&lt;Integer&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid){
+        int n = grid.size();
+        int m = grid.get(0).size();
+        int[][] matrix = new int[n][m];
+        for(int i=0;i&lt;n;i++){
+            for(int j=0;j&lt;m;j++){
+                matrix[i][j]=grid.get(i).get(j);
+            }
+        }
+        int maxPath = -1;
+        ArrayList&lt;Integer&gt; solution = null;
+        Point beg;
+        for(int j=0;j&lt;m;j++){
+            beg = new Point(0,j);
+            int[][] temp = new int[n][m];
+            temp[beg.x][beg.y]=matrix[beg.x][beg.y];
+            populate(temp,matrix,beg);
+            if(maxPath&lt;temp[0][beg.y-1&lt;0?m-1:beg.y-1]){
+                maxPath = temp[0][beg.y-1&lt;0?m-1:beg.y-1];
+                solution = getSolutionPath(beg,new Point(0,beg.y-1&lt;0?m-1:beg.y-1),temp,matrix);
+            }
+            if(maxPath&lt;temp[n-1][beg.y-1&lt;0?m-1:beg.y-1]){
+                maxPath = temp[n-1][beg.y-1&lt;0?m-1:beg.y-1];
+                solution = getSolutionPath(beg,new Point(n-1,beg.y-1&lt;0?m-1:beg.y-1),temp,matrix);
+            }
+            beg = new Point(n-1,j);
+            temp = new int[n][m];
+            temp[beg.x][beg.y]=matrix[beg.x][beg.y];
+            populate(temp,matrix,beg);
+            if(maxPath&lt;temp[n-1][beg.y-1&lt;0?m-1:beg.y-1]){
+                maxPath = temp[n-1][beg.y-1&lt;0?m-1:beg.y-1];
+                solution = getSolutionPath(beg,new Point(0,beg.y-1&lt;0?m-1:beg.y-1),temp,matrix);
+            }
+<A NAME="1"></A>            if(maxPath&lt;temp[n-1][beg.y-1&lt;0?m-1:beg.y-1]){
+                maxPath = temp[n-1][beg.y-1&lt;0?m-1:beg.y-1];
+                solution = getSolutionPath(beg,new Point(n-1,beg.y-1&lt;0?m-1:beg.y-1),temp,matrix);
+            <FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match25-0.html#1',2,'match25-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>}
+        }
+        
+        return solution;
+    }
+    public static void populate(int[][] temp,int[][] matrix</B></FONT>,Point beg){
+        int y = beg.y;
+        y = (y+1)%matrix[0].length;
+        while(y!=beg.y){
+            for(int i=0;i&lt;matrix.length;i++){
+                int prev=y-1;
+                if(prev&lt;0){
+                    prev = matrix[0].length-1;
+                }
+                if(i==0){
+                    temp[i][y]=Math.max(temp[i][prev],Math.max(temp[matrix.length-1][prev],temp[i+1][prev]));
+                }
+                else if(i==matrix.length-1){
+                    temp[i][y]=Math.max(temp[i][prev],Math.max(temp[i-1][prev],temp[0][prev]));
+                }
+                else{
+                    temp[i][y]=Math.max(temp[i][prev],Math.max(temp[i-1][prev],temp[i+1][prev]));
+                }
+                if(temp[i][y]!=0){
+                    temp[i][y]+=matrix[i][y];
+                }
+            }
+            y = (y+1)%matrix[0].length;
+        }
+        
+        
+    }
+    public static ArrayList&lt;Integer&gt; getSolutionPath(Point beg,Point end,int[][] temp,int[][] matrix){
+        ArrayList&lt;Integer&gt; answer = new ArrayList&lt;Integer&gt;();
+        if(beg.x==0){
+            answer.add(1);
+        }
+        else{
+            answer.add(0);
+        }
+        answer.add(beg.y);
+        ArrayList&lt;Integer&gt; rev = new ArrayList&lt;Integer&gt;();
+        int y = end.y-1&lt;0?matrix[0].length-1:end.y-1;
+        int valNow = temp[end.x][end.y]-matrix[end.x][end.y];
+        Point prevNow = new Point(end.x,end.y);
+        while(y!=end.y){
+            for(int i=0;i&lt;matrix.length;i++){
+                if(temp[i][y]==valNow){
+                    Point now = new Point(i,y);
+                    if(prevNow.x-i==0){
+                        rev.add(0);
+                        prevNow = new Point(i,y);
+                        valNow = valNow - matrix[i][y];
+                        break;
+                    }
+                    if(prevNow.x-i==-1){
+                        rev.add(1);
+                        prevNow = new Point(i,y);
+                        valNow = valNow - matrix[i][y];
+                        break;
+                    }
+                    if(prevNow.x-i==1){
+                        rev.add(-1);
+                        prevNow = new Point(i,y);
+                        valNow = valNow - matrix[i][y];
+                        break;
+                    }
+                    if(prevNow.x-i&lt;-1){
+                        rev.add(-1);
+                        prevNow = new Point(i,y);
+                        valNow = valNow - matrix[i][y];
+                        break;
+                    }
+                    if(prevNow.x-i&gt;1){
+                        rev.add(1);
+                        prevNow = new Point(i,y);
+                        valNow = valNow - matrix[i][y];
+                        break;
+                    }
+                }
+            }
+            y--;
+            if(y==-1){
+                y = matrix[0].length-1;
+            }
+        }
+        for(int i=rev.size()-1;i&gt;=0;i--){
+            answer.add(rev.get(i));
+        }
+<A NAME="0"></A>        return answer;
+    }
+
+    static void print(int[][] array)<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match25-0.html#0',2,'match25-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>{
+        for(int i=0;i&lt;array.length;i++){
+            for(int x:array[i]){
+                System.out.print(x+&quot; &quot;);
+            }</B></FONT>
+            System.out.println();
+        }
+    }
+}
+</PRE>
+
+</BODY>
+</HTML>

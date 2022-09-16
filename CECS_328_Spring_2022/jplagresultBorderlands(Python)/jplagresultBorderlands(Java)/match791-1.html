@@ -1,0 +1,531 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>608266256</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+import java.util.*;
+import java.io.File;
+
+public class StudentSolver {
+    public static final boolean DEBUG = false;
+
+    public static void main(String[] args) throws Exception {
+    }
+
+    public static HashSet&lt;ArrayList&lt;Integer&gt;&gt; solveBetter(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; board, int minSet, int maxSet, String type, Map&lt;Integer, Map&lt;ArrayList&lt;Integer&gt;, ArrayList&lt;ArrayList&lt;Integer&gt;&gt;&gt;&gt; allSols) {
+        double st = System.nanoTime();
+        
+        if ((maxSet - minSet + 1) &lt;= 11) {
+            return bruteForceSols2(board, minSet, maxSet);
+        }
+
+        int mid = (maxSet - minSet) / 2 + minSet;
+        
+        ArrayList&lt;ArrayList&lt;ArrayList&lt;Integer&gt;&gt;&gt; boardSets = boardOfSet(board, minSet, maxSet);
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; midBoard = boardSets.get(0);
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; smallBoard = boardSets.get(1);
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; largeBoard = boardSets.get(2);
+
+        
+        int[] isLinesOn = new int[midBoard.size()];
+        Arrays.fill(isLinesOn, -1);
+        
+        HashSet&lt;ArrayList&lt;Integer&gt;&gt; solsMid = bruteForceSols2(midBoard, mid - 5, mid + 5);
+        
+        st = System.nanoTime();
+        HashSet&lt;ArrayList&lt;Integer&gt;&gt; solsSmall = solveBetter(smallBoard, minSet, mid - 1, &quot;small&quot;, allSols);
+        if (DEBUG) System.out.println(&quot;Time takes solveSmall: (&quot; + minSet+&quot;-&quot; + (mid - 1) +&quot;): &quot; + (System.nanoTime()-st) / 1000000000);
+        st = System.nanoTime();
+        HashSet&lt;ArrayList&lt;Integer&gt;&gt; solsLarge = solveBetter(largeBoard, mid + 1, maxSet, &quot;large&quot;, allSols);
+        if (DEBUG) System.out.println(&quot;Time takes solveLarge: (&quot; + (mid + 1)+&quot;-&quot; + maxSet+&quot;): &quot; + (System.nanoTime()-st) / 1000000000);
+
+        
+        
+        
+        Map&lt;ArrayList&lt;Integer&gt;, ArrayList&lt;ArrayList&lt;Integer&gt;&gt;&gt; midMap = toHashMap(solsMid, 3);
+        Map&lt;ArrayList&lt;Integer&gt;, ArrayList&lt;ArrayList&lt;Integer&gt;&gt;&gt; smallMap = toHashMap(solsSmall, 2);
+        Map&lt;ArrayList&lt;Integer&gt;, ArrayList&lt;ArrayList&lt;Integer&gt;&gt;&gt; largeMap = toHashMap(solsLarge, 1);
+
+        st = System.nanoTime();
+        
+        HashSet&lt;ArrayList&lt;Integer&gt;&gt; linesCombine = new HashSet&lt;&gt;(500000);
+        
+        for (ArrayList&lt;Integer&gt; lineMid : solsMid) {
+            ArrayList&lt;Integer&gt; keyHeadMid = getKeyHead(lineMid);
+            ArrayList&lt;Integer&gt; keyTailMid = getKeyTail(lineMid);
+            
+            for (ArrayList&lt;Integer&gt; keySmall : smallMap.keySet()) {
+                ArrayList&lt;Integer&gt; jointSmallMidKey = compareKeySets(keySmall, keyHeadMid);
+                if (jointSmallMidKey != null) {
+                    
+                    for (ArrayList&lt;Integer&gt; keyLarge : largeMap.keySet()) {
+                        ArrayList&lt;Integer&gt; jointLargeMidKey = compareKeySets(keyTailMid, keyLarge);
+                        if (jointLargeMidKey != null) {
+                            if (type.equals(&quot;small&quot;)) {
+                                
+                                for (ArrayList&lt;Integer&gt; lineLarge : largeMap.get(keyLarge)) {
+                                    
+                                    ArrayList&lt;Integer&gt; lineLargeWithKey = new ArrayList&lt;&gt;(keyLarge);
+                                    lineLargeWithKey.addAll(lineLarge);
+                                    ArrayList&lt;Integer&gt; keyTailLineLargeWithKey = getKeyTail(lineLargeWithKey);
+                                    linesCombine.add(keyTailLineLargeWithKey);
+                                }
+                            } else if (type.equals(&quot;large&quot;)) {
+                                
+                                for (ArrayList&lt;Integer&gt; lineSmall : smallMap.get(keySmall)) {
+                                    
+                                    ArrayList&lt;Integer&gt; lineSmallWithKey = new ArrayList&lt;&gt;(lineSmall);
+                                    lineSmallWithKey.addAll(keySmall);
+                                    ArrayList&lt;Integer&gt; keyHeadLineSmallWithKey = getKeyHead(lineSmallWithKey);
+                                    linesCombine.add(keyHeadLineSmallWithKey);
+                                }
+                            } else if (type.equals(&quot;final&quot;)) {
+                                ArrayList&lt;Integer&gt; lineCombine = new ArrayList&lt;&gt;(1000);
+                                lineCombine.addAll(smallMap.get(keySmall).get(0));
+                                lineCombine.addAll(jointSmallMidKey);
+                                lineCombine.add(lineMid.get(lineMid.size()/2));
+                                lineCombine.addAll(jointLargeMidKey);
+                                lineCombine.addAll(largeMap.get(keyLarge).get(0));
+                                linesCombine.add(lineCombine);
+                                return linesCombine;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (DEBUG) System.out.println(&quot;Time takes join line:(&quot; + minSet+&quot;-&quot; + maxSet+&quot;): &quot; + (System.nanoTime()-st) / 1000000000);
+        return linesCombine;
+    }
+
+    public static HashSet&lt;ArrayList&lt;Integer&gt;&gt; bruteForceSols2(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; board, int minSet, int maxSet) {
+        if (board.isEmpty()){
+            HashSet&lt;ArrayList&lt;Integer&gt;&gt; returnSols = new HashSet&lt;&gt;();
+            returnSols.add(createArrayList(maxSet - minSet + 1, -1));
+            return returnSols;
+        }
+        
+        HashSet&lt;Integer&gt; setsInBoard = getSetsInBoard(board);
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; newConditions = new ArrayList&lt;&gt;(1000);
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; conditions = new ArrayList&lt;&gt;();
+        ArrayList&lt;Integer&gt; condition = createArrayList(maxSet - minSet + 1, -1);
+        conditions.add(condition);
+        for (int set : setsInBoard) {
+            newConditions.clear();
+            for (ArrayList&lt;Integer&gt; eachCondition : conditions) {
+                ArrayList&lt;Integer&gt; eachConditionClone = (ArrayList&lt;Integer&gt;) eachCondition.clone();
+                eachCondition.set(set - minSet, 1);
+                eachConditionClone.set(set - minSet, 0);
+                newConditions.add(eachCondition);
+                newConditions.add(eachConditionClone);
+            }
+            conditions = (ArrayList&lt;ArrayList&lt;Integer&gt;&gt;) newConditions.clone();
+        }
+
+        
+        HashSet&lt;ArrayList&lt;Integer&gt;&gt; sols = new HashSet&lt;&gt;(1000);
+        int[] isLinesOn;
+        for (ArrayList&lt;Integer&gt; con : conditions) {
+            isLinesOn = new int[board.size()];
+            for (int set: setsInBoard) {
+                int c = con.get(set - minSet);
+                int lineIndex = 0;
+                for (ArrayList&lt;Integer&gt; line : board) {
+                    
+                    if ((line.contains(set) &amp;&amp; c == 1) || (line.contains(-set) &amp;&amp; c == 0)) {
+                        isLinesOn[lineIndex] = 1;
+                    }
+                    lineIndex++;
+                    if (isAllLinesOn(isLinesOn)) {
+                        sols.add(con);
+                    }
+                }
+            }
+        }
+
+        return sols;
+    }
+
+    public static HashSet&lt;Integer&gt; getSetsInBoard(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; board) {
+        HashSet&lt;Integer&gt; returnList = new HashSet&lt;&gt;();
+        for (ArrayList&lt;Integer&gt; line : board) {
+            for (int i : line) {
+                returnList.add(Math.abs(i));
+            }
+        }
+        return returnList;
+    }
+
+    
+    public static ArrayList&lt;Integer&gt; createArrayList(int size, int value) {
+        ArrayList&lt;Integer&gt; list = new ArrayList&lt;&gt;(size);
+        for (int i = 0; i &lt; size; i++) {
+            list.add(value);
+        }
+        return list;
+    }
+
+
+    
+    public static ArrayList&lt;Integer&gt; compareKeySets(ArrayList&lt;Integer&gt; k1, ArrayList&lt;Integer&gt; k2) {
+        ArrayList&lt;Integer&gt; returnKey = new ArrayList&lt;&gt;();
+        for (int i = 0; i &lt; k1.size(); i++) {
+            if (k1.get(i) == -1) {
+                returnKey.add(k2.get(i));
+            } else if (k2.get(i) == -1) {
+                returnKey.add(k1.get(i));
+            } else if (k1.get(i) != k2.get(i)) {
+                return null;
+            } else {
+                returnKey.add(k1.get(i));
+            }
+        }
+        return returnKey;
+    }
+
+    
+    public static ArrayList&lt;Integer&gt; getKeyTail(ArrayList&lt;Integer&gt; list) {
+        ArrayList&lt;Integer&gt; keyTail = new ArrayList&lt;&gt;();
+        for (int i = list.size() - 5; i &lt; list.size(); i++ ) {
+            keyTail.add(list.get(i));
+        }
+        return keyTail;
+    }
+
+    
+    public static ArrayList&lt;Integer&gt; getKeyHead(ArrayList&lt;Integer&gt; list) {
+        ArrayList&lt;Integer&gt; keyHead = new ArrayList&lt;&gt;();
+        for (int i = 0; i &lt; 5; i++ ) {
+            keyHead.add(list.get(i));
+        }
+        return keyHead;
+    }
+
+
+    /* To hash map
+    @param option:  1 - map with key is first 5
+                    2 - map with key is last 5
+                    3 - map with key is [] (empty array)
+    */
+    public static Map&lt;ArrayList&lt;Integer&gt;, ArrayList&lt;ArrayList&lt;Integer&gt;&gt;&gt; toHashMap(HashSet&lt;ArrayList&lt;Integer&gt;&gt; list, int option) {
+        Map&lt;ArrayList&lt;Integer&gt;, ArrayList&lt;ArrayList&lt;Integer&gt;&gt;&gt; map = new HashMap&lt;&gt;(list.size()/2);
+
+        for (ArrayList&lt;Integer&gt; l : list) {
+            ArrayList&lt;Integer&gt; arr1 = new ArrayList&lt;&gt;(), arr2 = new ArrayList&lt;&gt;();
+            if (option == 1) {
+                ArrayList&lt;ArrayList&lt;Integer&gt;&gt; subLists = getSubList(l, 5);
+                arr1 = subLists.get(0);
+                arr2 = subLists.get(1);
+            } else if (option == 2) {
+                ArrayList&lt;ArrayList&lt;Integer&gt;&gt; subLists = getSubList(l, l.size() - 5);
+                arr1 = subLists.get(1);
+                arr2 = subLists.get(0);
+            } else if (option == 3) {
+                arr1 = new ArrayList&lt;&gt;();
+                arr2 = l;
+            }
+            if (!map.containsKey(arr1)) {
+                ArrayList&lt;ArrayList&lt;Integer&gt;&gt; values = new ArrayList&lt;&gt;(list.size() / 2);
+                map.put(arr1, values);
+            }
+            map.get(arr1).add(arr2);
+        }
+        return map;
+    }
+
+    
+    public static ArrayList&lt;ArrayList&lt;Integer&gt;&gt; getSubList(ArrayList&lt;Integer&gt; list, int middle) {
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; l = new ArrayList&lt;&gt;();
+        ArrayList&lt;Integer&gt; l1 = new ArrayList&lt;&gt;(12);
+        ArrayList&lt;Integer&gt; l2 = new ArrayList&lt;&gt;(12);
+        for (int i = 0; i &lt; middle; i++) {
+            l1.add(list.get(i));
+        }
+        for (int i = middle; i &lt; list.size(); i++) {
+            l2.add(list.get(i));
+        }
+        l.add(l1);
+        l.add(l2);
+        return l;
+    }
+
+    
+    public static ArrayList&lt;ArrayList&lt;ArrayList&lt;Integer&gt;&gt;&gt; boardOfSet(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; board, int minSet, int maxSet) {
+        ArrayList&lt;ArrayList&lt;ArrayList&lt;Integer&gt;&gt;&gt; list = new ArrayList&lt;&gt;();
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; midBoard = new ArrayList&lt;&gt;(5000);
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; smallBoard = new ArrayList&lt;&gt;(2000);
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; largeBoard = new ArrayList&lt;&gt;(2000);
+
+        int mid = (maxSet - minSet) / 2 + minSet;
+        for (ArrayList&lt;Integer&gt; line : board) {
+            boolean isInRangeMid = true;
+            for (int i : line) {
+                if (Math.abs(i) &gt; mid + 5 || Math.abs(i) &lt; mid - 5) {
+                    isInRangeMid = false;
+                    break;
+                }
+            }
+            if (isInRangeMid) midBoard.add(line);
+            else {
+                
+                for (int i : line) {
+                    if ((i &gt; 0 &amp;&amp; i &gt;= minSet &amp;&amp; i &lt;= mid - 1) || (i &lt; 0 &amp;&amp; i &lt;= -minSet &amp;&amp; i &gt;= -(mid - 1))) {
+                        smallBoard.add(line);
+                        break;
+                    } else {
+                        largeBoard.add(line);
+                        break;
+                    }
+                }
+            }
+        }
+        list.add(midBoard);
+        list.add(smallBoard);
+        list.add(largeBoard);
+        return list;
+    }
+
+
+    public static ArrayList&lt;Boolean&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs) {
+        int maxSet = findMaxSet(bulbs);
+        sortBulbsByColumn(bulbs);
+        removeAlwaysTrueRows(bulbs);
+        HashSet&lt;ArrayList&lt;Integer&gt;&gt; bulbsSet = new HashSet&lt;&gt;(bulbs);
+        bulbs = new ArrayList&lt;&gt;(bulbsSet);
+        if (DEBUG) System.out.println(bulbs);
+        ArrayList&lt;Boolean&gt; solution = new ArrayList&lt;&gt;();
+        for (int i = 0; i &lt; maxSet; i++) {
+            solution.add(true);
+        }
+
+        if (maxSet &lt; 20 &amp;&amp; bulbs.size() &lt;= 2000) {
+            Map&lt;Integer, Map&lt;ArrayList&lt;Integer&gt;, ArrayList&lt;ArrayList&lt;Integer&gt;&gt;&gt;&gt; allSols = new HashMap&lt;&gt;();
+            HashSet&lt;ArrayList&lt;Integer&gt;&gt; sols = solveBetter(bulbs, 1, maxSet, &quot;final&quot;, allSols);
+
+            
+            ArrayList&lt;Boolean&gt; solInBoolean = solIntToBoolean(sols.iterator().next());
+
+            if (DEBUG) System.out.println(solInBoolean);
+            return solInBoolean;
+        }
+
+        ArrayList&lt;ArrayList&lt;Boolean&gt;&gt; configs = getAllPossibleConfig();
+        for (ArrayList&lt;Boolean&gt; config : configs) {
+            if (DEBUG) System.out.println(&quot;Initial config: &quot; + config + &quot; &quot; + areRowsWithWireSetAllOn(1, config, bulbs));
+            if (areRowsWithWireSetAllOn(1, config, bulbs)){
+                
+                Collections.fill(solution, true);
+                
+                for (int i = 0; i &lt;= 5; i++) {
+                    solution.set(i, config.get(i));
+                }
+
+                if (DEBUG) System.out.println(&quot;Before bruteforce &quot; + solution);
+                boolean a = bruteForceSols(bulbs, 7, maxSet, solution);
+                if (a) {
+                    if (testIfAllLinesOn(bulbs, solution)) {
+                        break;
+                    }
+                }
+            }
+
+        }
+        if (DEBUG) {
+            if (!testIfAllLinesOn(bulbs, solution)) {
+                System.out.println(&quot;This set is wrong: &quot; + solution);
+                String s = &quot;&quot;;
+                for (ArrayList&lt;Integer&gt; l : bulbs) s = s + l + &quot;\n&quot;;
+                if (true) throw new RuntimeException(s);
+<A NAME="0"></A>            }
+        }
+        return solution;
+    <FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match791-0.html#0',2,'match791-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>}
+
+    
+    public static ArrayList&lt;Boolean&gt; solIntToBoolean(ArrayList&lt;Integer&gt; sol) {
+        ArrayList&lt;Boolean&gt; returnSol = new ArrayList&lt;&gt;();
+        for (int i : sol) {
+            returnSol.add(i == 1);
+        }</B></FONT>
+        return returnSol;
+    }
+
+    
+    public static ArrayList&lt;ArrayList&lt;Integer&gt;&gt; boardOfSet(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; board, int set) {
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; boardOfSet = new ArrayList&lt;&gt;(2000);
+        for (ArrayList&lt;Integer&gt; line : board) {
+            if (line.contains(set) || line.contains(-set)) {
+                boardOfSet.add(line);
+            }
+        }
+        return boardOfSet;
+    }
+
+    public static void sortBulbsByColumn(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs) {
+        for (ArrayList&lt;Integer&gt; l : bulbs) {
+            Collections.sort(l);
+        }
+    }
+
+    public static void removeAlwaysTrueRows(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; board) {
+        for (int line = board.size() - 1; line &gt;= 0; line--) {
+            int a = board.get(line).get(0);
+            int b = board.get(line).get(1);
+            int c = board.get(line).get(2);
+            if (a == -b || a == -c || b  == -c) {
+                board.remove(line);
+            }
+        }
+    }
+
+    public static Boolean areRowsWithWireSetAllOn(Integer set, ArrayList&lt;Boolean&gt; config, ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs) {
+        if (DEBUG) System.out.println(&quot;Checking wire: &quot; + set + &quot; with solution &quot; + config);
+        for (ArrayList&lt;Integer&gt; row : bulbs) {
+            if (DEBUG) System.out.println(&quot;Checking row &quot; + row + &quot; condition &quot; + (row.contains(set) || row.contains(-set)));
+            if (row.contains(set) || row.contains(-set)) {
+                Boolean isRowOn = false;
+                
+                for (Integer i : row) {
+                    if ((i &gt; 0) &amp;&amp; (i &lt;= set + 5) &amp;&amp; (config.get(i - 1))) {
+                        isRowOn = true;
+                    } else if ((i &lt; 0) &amp;&amp; (-i &lt;= set + 5) &amp;&amp; (!config.get(-i - 1))) {
+                        isRowOn = true;
+                    }
+                }
+                if (DEBUG) System.out.println(&quot;Result &quot; + isRowOn + &quot; row &quot; + row + &quot; with solution &quot; + config);
+                
+                if (!isRowOn) {
+                    if (DEBUG) System.out.println(&quot;Row is not on&quot;);
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+
+    public static Boolean bruteForceSols(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs, int currentWireSet, int maxWireSet, ArrayList&lt;Boolean&gt; solution) {
+        if (DEBUG) System.out.println(&quot;Bruting wireSet &quot; + currentWireSet + &quot;.Current solution&quot; + solution);
+
+        
+        if (currentWireSet == maxWireSet){
+            Boolean isRowOn = true;
+            for (int i = currentWireSet - 5; i &lt;= maxWireSet; i++) {
+                isRowOn &amp;= areRowsWithWireSetAllOn(i, solution, bulbs);
+                if (DEBUG) System.out.println(&quot;Checking wire set: &quot; + i + &quot;. isRowOn: &quot; + isRowOn + &quot;. with solution: &quot; + solution);
+            }
+
+            return isRowOn;
+        }
+
+        
+        solution.set(currentWireSet - 1, true);
+        if (areRowsWithWireSetAllOn(currentWireSet - 5, solution, bulbs)){
+            if (bruteForceSols( bulbs, currentWireSet + 1, maxWireSet, solution)) {
+                return true;
+            }
+        }
+        
+        solution.set(currentWireSet - 1, false);
+        if (areRowsWithWireSetAllOn(currentWireSet - 5, solution, bulbs)) {
+            return bruteForceSols(bulbs, currentWireSet + 1, maxWireSet, solution);
+        }
+        return false;
+    }
+
+    public static ArrayList&lt;ArrayList&lt;Boolean&gt;&gt; getAllPossibleConfig() {
+        
+        ArrayList&lt;ArrayList&lt;Boolean&gt;&gt; newConditions = new ArrayList&lt;&gt;();
+        ArrayList&lt;ArrayList&lt;Boolean&gt;&gt; configs = new ArrayList&lt;&gt;();
+        ArrayList&lt;Boolean&gt; config = new ArrayList&lt;&gt;(6);
+        for (int i = 0; i &lt; 6; i++) config.add(false);
+        configs.add(config);
+        for (int i = 0; i &lt; 6 ; i++) {
+            newConditions.clear();
+            for (ArrayList&lt;Boolean&gt; cf : configs) {
+                ArrayList&lt;Boolean&gt; cfClone = (ArrayList&lt;Boolean&gt;) cf.clone();
+                cf.set(i, false);
+                cfClone.set(i, true);
+                newConditions.add(cf);
+                newConditions.add(cfClone);
+            }
+            configs = (ArrayList&lt;ArrayList&lt;Boolean&gt;&gt;) newConditions.clone();
+        }
+        
+        return configs;
+    }
+
+    
+    public static int findMaxSet(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs) {
+        int maxSet = 1;
+        for (ArrayList&lt;Integer&gt; line : bulbs) {
+            for (int i : line) {
+                int value = Math.abs(i);
+                if (value &gt; maxSet) {
+                    maxSet = value;
+                }
+            }
+        }
+
+        return maxSet;
+    }
+
+    
+    public static boolean testIfAllLinesOn(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs, ArrayList&lt;Boolean&gt; sol) {
+        int[] isLinesOn = new int[bulbs.size()];
+        int set = 1;
+        for (boolean condition : sol) {
+            int lineIndex = 0;
+            for (ArrayList&lt;Integer&gt; line : bulbs) {
+                
+                if ((line.contains(set) &amp;&amp; condition) || (line.contains(-set) &amp;&amp; !condition)) {
+                    isLinesOn[lineIndex] = 1;
+                }
+                lineIndex++;
+                if (isAllLinesOn(isLinesOn)) return true;
+            }
+            set++;
+        }
+
+        
+        if (DEBUG) {
+            String s = &quot;&quot;;
+            for (int i =0 ; i&lt; isLinesOn.length; i++) {
+                if (isLinesOn[i] == 0) {
+                    s += bulbs.get(i) +&quot;\n&quot;;
+                }
+            }
+            System.out.println(s);
+        }
+
+        
+        return false;
+    }
+
+    
+    public static boolean isAllLinesOn(int[] isLinesOn) {
+        for (int isLineOn : isLinesOn) {
+            if (isLineOn == 0 || isLineOn == -1) { return false; };
+        }
+        return true;
+    }
+
+}
+</PRE>
+
+</BODY>
+</HTML>

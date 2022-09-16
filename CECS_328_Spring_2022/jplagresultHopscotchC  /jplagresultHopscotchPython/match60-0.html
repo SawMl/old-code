@@ -1,0 +1,224 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>631000182</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+def check(grid, row, col, mnum, rc):  # checks whether the path goes straight, straight-up, or straight-down
+    c = 0  # initializes the path number
+    temp_row = row  # previous row
+    con = []  # array to return with need values of the movement and spot number
+
+    if col + 1 == len(grid[0]):  # checks if this move requires a portal jump to the first column and changes it's index
+        col = -1
+    if row + 1 == len(grid):  # check if this move might require a portal jump to the top row and changes it's index to account for it
+        row = -1
+
+    zero = grid[row][col + 1]  # element right of current spot
+    one = grid[row - 1][col + 1]  # element right-up of current spot
+    none = grid[row + 1][col + 1]  # element right down of current spot
+    if zero &gt; one and zero &gt; none:  # checks which move hold the greater element
+        if rc == 1:
+            c = 1
+        elif rc == 2:
+            c = -1
+        else:
+            c = 0
+
+    elif one &gt; zero and one &gt; none:  # checks which move hold the greater element
+        if (((len(grid) - temp_row) + 1 &lt; temp_row) and temp_row == mnum) or rc == 2:  # checks when row == number of moves left and if it is closer to top or bottom row
+            if zero &gt; none:
+                c = 0
+            elif none &gt; zero:
+                c = -1
+            elif zero == none:
+                c = -1
+            rc = 2  # set rc to 2 so it continues to move down towards bottom row
+        else:
+            c = 1
+        if rc == 2:
+            c = -1
+        elif rc == 1:
+            c = 1
+    elif none &gt; zero and none &gt; one:  # checks which move hold the greater element
+        if (((len(grid) - temp_row) + 1 &gt; temp_row) and temp_row == mnum) or rc == 1:  # checks when row == number of moves left and if it is closer to top or bottom row
+            if zero &gt; one:
+                c = 0
+            elif one &gt; zero or rc == 1:
+                c = 1
+            elif zero == one:
+                c = 1
+            rc = 1  # set rc to 2 so it continues to move down towards bottom row
+        else:
+            c = -1
+        if rc == 1:
+            c = 1
+        elif rc == 2:
+            c = -1
+    elif zero == one:  # when equal checks which move is closer to the top or the bottom rows and selects that move
+        cc = 0
+        if grid.index(grid[row]) &lt; (len(grid) 
+            c = 1
+        elif grid.index(grid[row]) &gt; (len(grid) 
+            c = 0
+        if temp_row == mnum and (len(grid) - temp_row) + 1 &gt; temp_row:
+            rc = 1
+            cc = 1
+        elif temp_row == mnum and (len(grid) - temp_row) + 1 &lt; temp_row:
+            rc = 2
+            c = 0
+            cc = 1
+        if rc == 1 and cc != 1:
+            c = 1
+        elif rc == 2 and cc != 1:
+            c = -1
+    elif zero == none:  # when equal checks which move is closer to the top or the bottom rows and selects that move
+        cc = 0
+        if grid.index(grid[row]) &gt; (len(grid) 
+            c = -1
+        elif grid.index(grid[row]) &lt; (len(grid) 
+            c = 0
+        if temp_row == mnum and (len(grid) - temp_row) + 1 &gt; temp_row:
+            rc = 1
+            c = 0
+            cc = 1
+        elif temp_row == mnum and (len(grid) - temp_row) + 1 &lt; temp_row:
+            rc = 2
+            cc = 1
+        if rc == 1 and cc != 1:
+            c = 1
+        elif rc == 2 and cc != 1:
+            c = -1
+    elif one == none:  # when equal checks which move is closer to the top or the bottom rows and selects that move
+        if grid.index(grid[row - 1]) &lt; (len(grid) 
+            c = 1
+        elif grid.index(grid[row - 1]) &gt; (len(grid) 
+            c = -1
+        elif grid.index(grid[row - 1]) == int(len(grid) 
+            c = -1
+        elif grid.index(grid[row + 1]) == int(len(grid) 
+            c = 1
+        if temp_row == mnum and (len(grid) - temp_row) + 1 &gt; temp_row:
+            rc = 1
+            c = 1
+        elif temp_row == mnum and (len(grid) - temp_row) + 1 &lt; temp_row:
+            rc = 2
+            c = -1
+        if rc == 1:
+            c = 1
+        elif rc == 2:
+            c = -1
+
+    if c != -1:  # if the next move doesn't require a portal jump back to the first row when current spot is at the bottom then resets the row back to the last row
+        row = temp_row
+    if c == 0:  # creates the move and appends values needed to determine the next move (right)
+        new = grid[row][col + 1]
+        con.append(new)
+        con.append(row)
+        con.append(col + 1)
+        con.append(c)
+        if rc == 1 or rc == 2:
+            con.append(rc)
+        else:
+            con.append(0)
+    elif c == 1:  # creates the move and appends values needed to determine the next move (right - up)
+        if row - 1 == -1:  # if the move requires a portal jump from the top to bottom row then change the row number to the correct number
+            row = len(grid)
+            new = grid[row - 1][col + 1]
+<A NAME="0"></A>            con.append(new)
+            con.append(row - 1)
+            con.append(col + 1)
+            con<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match60-1.html#0',3,'match60-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>.append(c)
+            if rc == 1 or rc == 2:
+                con.append(rc)
+            else:
+                con.append(0)
+        else:  # else continue as normal
+            new = grid[row - 1][col + 1]
+<A NAME="1"></A>            con.append(new)
+            con.append(row - 1)
+            con.append(</B></FONT>col + 1)
+            con<FONT color="#f63526"><A HREF="javascript:ZweiFrames('match60-1.html#1',3,'match60-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>.append(c)
+            if rc == 1 or rc == 2:
+                con.append(rc)
+            else:
+                con.append(0)
+    elif c == -1:  # creates the move and appends values needed to determine the next move (right - down)
+        new = grid[row + 1][col + 1]
+        con.append(new)
+        con.append(row + 1)
+        con.append(</B></FONT>col + 1)
+        con.append(c)
+        if rc == 1 or rc == 2:
+            con.append(rc)
+        else:
+            con.append(0)
+    return con
+
+
+def run(grid, row, col, numc):  # given the start position (row and column number) uses check function to find the best possible path
+    count = 0  # initializes the column count as it runs through
+    total = 0  # initializes total number the elements in the path gives
+    rc = 0  # used to check if the rows will continue to move up or down
+    move_num = len(grid[0]) - 1
+    start_col = col  # the column number at the start position
+    start = grid[row][col]  # the element at the start position
+    current = []  # array with needed values (column start number, movement numbers, total) - resets each time
+    current.append(start_col)  # first element will always be column start number
+    while count &lt; numc - 1:  # runs through each column once
+        move_num = move_num - 1
+        con = check(grid, row, col, move_num, rc)  # calls check function (check description at the function for details)
+        total = total + con[0]  # gets the total by adding the element at each move
+        row = con[1]  # gets the current row of the move
+        col = con[2]  # gets the current column of the move
+        current.append(con[3])  # gets the current move number
+        rc = con[4]  # gets the row continue number
+        count = count + 1
+    total = total + start  # gets the final total after it runs through each column and adds the start element
+    current.append(total)  # last element will always be the total
+    return current
+
+
+def solve(grid):
+    numr = len(grid)  # number of rows in grid
+    numc = len(grid[0])  # number of columns in grid
+    final = []  # final array of row start number, column start number, and movement numbers
+    row = 0  # starting row at first row in grid
+    max_path = 0  # the max number of the optimal path
+    for col in range(numc):  # runs through each column at the first row
+        current = run(grid, row, col, numc)
+        if current[-1] &gt; max_path:  # if the total of that path is greater change max
+            max_path = current[-1]
+            current.pop()  # pops out the max number which is at the end of the test list
+            final.clear()  # clears the final array so that new values of the new optimal path can be appended
+            final.append(1)  # append one because this for loop only goes through the columns in the first row
+            for i in current:  # runs through the rest of the elements in test for the (start column number and moves numbers)
+                final.append(i)
+    row = numr - 1  # starting row at the last row in grid
+    for col in range(numc):  # runs through each column at the last row
+        current = run(grid, row, col, numc)
+        if current[-1] &gt; max_path:  # if the total of that path is greater change max
+            max_path = current[-1]
+            current.pop()  # pops out the max number which is at the end of the test list
+            final.clear()  # clears the final array so that new values of the new optimal path can be appended
+            final.append(0)  # append zero because this for loop only goes through the columns in the last row
+            for i in current:  # runs through the rest of the elements in test for the (start column number and moves numbers)
+                final.append(i)
+    return final
+</PRE>
+
+</BODY>
+</HTML>

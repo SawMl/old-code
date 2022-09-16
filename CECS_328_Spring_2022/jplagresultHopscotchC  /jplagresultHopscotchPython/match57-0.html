@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>834421107</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+
+
+import copy
+
+# This function returns the value of the row and col youre looking for and accounts for looping through the top/bottom. 
+def findNumInMatrix(colToFind, rowToFind, totalCols, totalRows, gridCopy, currColPos, currRowPos):
+    # if current col is second to last column: special case, because you can only end at top or bottom row
+    if currColPos == totalCols - 2:
+        # if youre at row 1, only valid exit is right, up (top row)
+        if currRowPos == 1:
+            return gridCopy[0][totalCols - 1]
+        # if youre at second to last row, only valid exit is right, down (bottom row)
+        if currRowPos == totalRows - 2:
+            return gridCopy[totalRows - 1][totalCols - 1]
+        # if youre at top or bottom row, have to check if right/right up or right/right down (respectively) is bigger to know where to move
+        if currRowPos == 0 or currRowPos == totalRows - 1:
+            return max(gridCopy[0][totalCols - 1], gridCopy[totalRows - 1][totalCols - 1])
+        else:
+            # this isnt a valid output so its a big negative number so you dont choose it
+            return -999999999
+    
+    # if it goes out of bounds from the bottom
+    if rowToFind &gt;= totalRows:
+<A NAME="0"></A>        return gridCopy[0][colToFind]
+    # if it goes out of bounds at the top
+    if rowToFind &lt; 0:
+        return gridCopy[totalRows - 1]<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match57-1.html#0',3,'match57-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>[colToFind]
+
+    # every other case that isn't out of bounds or the special case, return the row/col youre looking for because its valid
+    return gridCopy[rowToFind][colToFind]
+
+
+def solve(grid):
+    rows = len(grid) # total number of rows
+<A NAME="1"></A>    cols = len(grid[0]) # total number of cols
+
+    gridCopy =</B></FONT> copy.deepcopy(grid) # copy of grid used to calculate the highest total/backtrack to find path taken
+    path <FONT color="#f63526"><A HREF="javascript:ZweiFrames('match57-1.html#1',3,'match57-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>= [] # path to return
+
+    # start at second to last column because its a special case where you can only move where you end at top or bottom row, going backwards
+    for col in range(cols - 2, -1, -1):
+        # going through every row
+        for row in range(0, rows, 1) :
+            moveRight = findNumInMatrix(col + 1, row, cols, rows, gridCopy, col, row) # finding the value thats to the right of where im at
+            moveRightUp = findNumInMatrix(col + 1, row + 1, cols, rows, gridCopy, col, row) # finding the value thats right, up of where im at
+            moveRightDown = findNumInMatrix(col + 1, row - 1, cols, rows, gridCopy, col, row) # finding the value thats right, down of where im at
+            
+            # finding what value is the biggest to know where to move, then changing the value in the grid copy to the new current score
+            if moveRight &gt;= moveRightUp and moveRight &gt;= moveRightDown:
+                gridCopy[row][</B></FONT>col] += moveRight
+            elif moveRightDown &gt;= moveRight and moveRightDown &gt;= moveRightUp:
+                gridCopy[row][col] += moveRightDown
+            else:
+                gridCopy[row][col] += moveRightUp
+
+    # determining if the top row or bottom row, first index, is bigger so i know where to start
+    if gridCopy[0][0] &lt; gridCopy[rows - 1][0]:
+        prevPosition = [rows - 1, 0] # keeping track of where im at for when i start backtracking
+        path.append(0) # bottom row as per instructions
+        path.append(0) # index
+    else:
+        prevPosition = [0, 0] # keeping track of where im at for when i start backtracking
+        path.append(1) # top row as per instructions
+        path.append(0) # index
+    
+    # start backtracking to find how i got the highest total sum
+    for i in range(cols - 1): # going through every col once
+        rowPos = prevPosition[0] # starting from where I chose above
+        colPos = prevPosition[1]
+        moveRight = findNumInMatrix(colPos + 1, rowPos, cols, rows, gridCopy, colPos, rowPos) # checking the value same as when used above
+        moveRightUp = findNumInMatrix(colPos + 1, rowPos - 1, cols, rows, gridCopy, colPos, rowPos)
+        moveRightDown = findNumInMatrix(colPos + 1, rowPos + 1, cols, rows, gridCopy, colPos, rowPos)
+
+        # picking the biggest number to backtrack/calculate how it got the highest total sum
+        if moveRight &gt;= moveRightUp and moveRight &gt;= moveRightDown:
+            path.append(0) # as per instructions
+        elif moveRightDown &gt;= moveRight and moveRightDown &gt;= moveRightUp:
+            path.append(-1) # as per instructions
+            prevPosition[0] += 1 # because i move down, i have to change the row im now at
+        else:
+            path.append(1) # as per instructions
+            prevPosition[0] -= 1 # because i move up, i have to change the row im now at
+            
+        prevPosition[1] += 1 # to move onto the next col, bc not using i anywhere
+    # print(path)
+    return path
+
+
+########################################
+# print(&quot;Testing!&quot;)
+# test1 = [[3,4,1,2,8,6], [6,1,8,2,7,4], [5,4,3,9,9,5], [5,9,8,3,2,6], [8,7,2,9,6,4]]
+# test2 = [[1, 4, 9, 4], [9, 5, 5, 8], [4, 6, 8, 2], [3, 9, 8, 2]]
+# test3 = [[6, 3, 5, 9, 4, 2, 9, 7, 1], [7, 4, 2, 3, 6, 6, 5, 5, 5], [3, 3, 3, 9, 4, 4, 6, 4, 6], [7, 7, 8, 9, 9, 1, 7, 5, 8], [2, 6, 2, 9, 5, 8, 2, 3, 8]]
+# test4 = [[1, 8, 3, 1, 2, 6, 6, 7, 9, 3], [8, 6, 6, 7, 5, 5, 5, 1, 1, 9], [1, 7, 1, 2, 9, 3, 9, 6, 5, 4], [3, 7, 6, 9, 7, 9, 4, 3, 6, 2], [8, 3, 5, 3, 9, 9, 9, 9, 6, 7], 
+# [1, 9, 8, 5, 2, 8, 9, 1, 5, 2], [8, 6, 1, 1, 4, 5, 5, 4, 3, 6], [3, 3, 7, 5, 8, 3, 3, 4, 2, 5]]
+
+# solve(test1)
+# solve(test2)
+# solve(test3)
+# solve(test4)
+</PRE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,170 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>620093012</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+def solve(grid: list):
+    m = len(grid)
+    n = len(grid[0])
+
+    top_score = float('-inf')
+    top_or_bottom = 1
+    best_col = 0
+    best_route = []
+
+    for col in range(n):
+        dp = create_empty_matrix(m, n)
+        score_top, route_top = _solve(grid, m, n, 0, col, 0, [], dp)
+        score_bottom, route_bottom = _solve(grid, m, n, m - 1, col, 0, [], dp)
+
+        if is_greater_than_top_score(score_top, top_score):
+            top_score = score_top
+            top_or_bottom = 1
+            best_col = col
+            best_route = route_top
+
+        if is_greater_than_top_score(score_bottom, top_score):
+            top_score = score_bottom
+            top_or_bottom = 0
+            best_col = col
+            best_route = route_bottom
+
+    return [top_or_bottom, best_col] + best_route
+
+
+def create_empty_matrix(m: int, n: int):
+    return [[None for _ in range(n)] for _ in range(m)]
+
+
+def is_greater_than_top_score(score: int, top_score: int):
+    return score &gt; top_score
+
+
+def _solve(grid: list, m: int, n: int, row: int, col: int, depth: int, route: list, dp: list):
+    if is_depth_reached(depth, n):
+        if is_top_or_bottom(row, m):
+            score = get_matrix_value(grid, row, col)
+
+            return score, route
+
+        return 0, []
+
+    new_col = get_next_column(col, n)
+
+    new_row = get_next_row_one(row, m)
+
+    if get_dp(dp, new_row, new_col):
+        score_one = get_dp_score(dp, new_row, new_col)
+        route_one = [1] + get_dp_route(dp, new_row, new_col)
+    else:
+        score_one, route_one = _solve(grid, m, n, new_row, new_col, depth + 1, [1], dp)
+
+    new_row = get_next_row_zero(row)
+
+    if get_dp(dp, new_row, new_col):
+        score_zero = get_dp_score(dp, new_row, new_col)
+        route_zero = [0] + get_dp_route(dp, new_row, new_col)
+    else:
+        score_zero, route_zero = _solve(grid, m, n, new_row, new_col, depth + 1, [0], dp)
+
+    new_row = get_next_row_neg_one(row, m)
+
+    if get_dp(dp, new_row, new_col):
+        score_neg_one = get_dp_score(dp, new_row, new_col)
+        route_neg_one = [-1] + get_dp_route(dp, new_row, new_col)
+    else:
+        score_neg_one, route_neg_one = _solve(grid, m, n, new_row, new_col, depth + 1, [-1], dp)
+
+    top_score = get_max_value(score_one, score_zero, score_neg_one)
+
+    if is_top_score(score_one, top_score):
+        best_route = route_one
+    elif is_top_score(score_zero, top_score):
+        best_route = route_zero
+    else:
+<A NAME="0"></A>        best_route = route_neg_one
+
+    current_score = compute_current_score(get_matrix_value(grid, row, col), top_score)
+    current_route = compute_current_route<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match156-1.html#0',3,'match156-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>(route, best_route)
+
+    store_score_route(dp, row, col, current_score, best_route)
+
+    return current_score, current_route
+
+
+def is_depth_reached(depth: int, n: int):
+    return depth == n - 1
+
+
+def is_top_or_bottom(row: int, m: int):
+    return row == 0 or row == m - 1
+
+
+def get_matrix_value(grid: list, row: int, col: int):
+    return</B></FONT> grid[row][col]
+
+
+def get_next_column(col: int, n: int):
+    return (col + 1) % n
+
+
+def get_dp_score(dp: list, row: int, col: int):
+    return get_dp(dp, row, col)[0]
+
+
+def get_dp_route(dp: list, row: int, col: int):
+    return get_dp(dp, row, col)[1]
+
+
+def get_dp(dp: list, row: int, col: int):
+    return dp[row][col]
+
+
+def get_next_row_one(row: int, m: int):
+    return row - 1 if row != 0 else m - 1
+
+
+def get_next_row_zero(row: int):
+    return row
+
+
+def get_next_row_neg_one(row: int, m: int):
+    return row + 1 if row != (m - 1) else 0
+
+
+def get_max_value(val1: int, val2: int, val3: int):
+    return max(val1, val2, val3)
+
+
+def is_top_score(score: int, top_score: int):
+    return score == top_score
+
+
+def compute_current_score(grid_score: int, top_score: int):
+    return grid_score + top_score
+
+
+def compute_current_route(grid_route: list, best_route: list):
+    return grid_route + best_route
+
+
+def store_score_route(dp: list, row: int, col: int, score: int, route: list):
+    dp[row][col] = (score, route)
+</PRE>
+
+</BODY>
+</HTML>

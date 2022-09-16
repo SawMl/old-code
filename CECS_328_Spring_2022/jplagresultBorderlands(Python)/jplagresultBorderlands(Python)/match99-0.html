@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>855735224</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+<A NAME="0"></A>import math
+
+#returns and finds the number of wire sets within the given bulb list
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match99-1.html#0',3,'match99-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>def findM(bulbs):
+    M = 0
+    #goes through each element in the bulbs array
+    for i in range(len(bulbs)):
+        #goes through each bulb in each element
+        for b in range(3):
+            #M will be set to b is the absolute value of b is larger than the current M
+            if abs(bulbs[i][b]) &gt; M:
+                M = bulbs[i][b]</B></FONT>
+    return M
+
+#will find where the config does not work
+def findOff(config, bulbs):
+    #this list will hold the indexes of the rows that do not work
+    off = []
+    # will go through each row to verify if the config works
+    for i in range(len(bulbs)):
+        #counts how many of the bulbs do NOT work in a row
+        count = 0
+        #goes through each bulb in the row
+        for b in bulbs[i]:
+            #if a bulb in the row works it will break and go to the next row
+            if (b&gt;0 and config[b] == True) or (b&lt;0 and config[b] == False):
+                break
+            else:
+                #if bulb doesnt work increase count by one
+                count += 1
+        #if the count gets to 3 the row does not work and need to be fixed
+        if count == 3:
+            #adds the index to the off list
+            off.append(i)
+    return off
+
+def checkConfig(config, bulbs):
+    #boolean to return whether this configuration works
+    works = True
+    off = findOff(config, bulbs)
+    #print(&quot;off&quot;, off)
+    #if the off list is not empty
+    if (off == []):
+        #fixconfig
+        return config
+    else:
+        fixed = fixConfig(config, bulbs, off)
+        #returns true if the config works or false if it does not
+        return fixed
+
+#will adjust the configuration to give a correct answer
+def fixConfig(config, bulbs, off):
+    fixedConfig = config
+
+    for i in off:
+        num = bulbs[i][0]
+        if fixedConfig[num-1] == True:
+            fixedConfig[num-1] = False
+        else:
+            fixedConfig[num-1] = True
+
+    return fixedConfig
+
+# main function that will take in a list of bulbs and return a list of booleans
+def solve(bulbs):
+    #N is the size of the list/ number of rows in the list
+    N = len(bulbs)
+    #M is the number of wire sets in the problem
+    M = findM(bulbs)
+
+    # config will hold the answer of all the booleans for the bulbs
+    # will be of length M
+    config = [False]
+    config = config * M
+    #print (checkConfig(config, bulbs))
+
+    config = checkConfig(config, bulbs)
+
+    return config
+
+</PRE>
+
+</BODY>
+</HTML>

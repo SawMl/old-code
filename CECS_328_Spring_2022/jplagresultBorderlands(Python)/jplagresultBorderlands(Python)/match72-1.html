@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>613750120</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+def allLight(bulb, config):
+    for i in range(len(bulb)-1): 
+        if (bulb[i][0] &lt; 0 and config[abs(bulb[i][0])-1] == False) or (bulb[i][0] &gt; 0 and config[abs(bulb[i][0])-1] == True):
+            continue
+        
+        if (bulb[i][1] &lt; 0 and config[abs(bulb[i][1])-1]) == False or (bulb[i][1] &gt; 0 and config[abs(bulb[i][1])-1] == True):
+            continue
+
+        if (bulb[i][2] &lt; 0 and config[abs(bulb[i][2])-1]) == False or (bulb[i][2] &gt; 0 and config[abs(bulb[i][2])-1] == True):
+            continue
+        
+        return i
+    
+
+    return -1
+
+def solve(bulb):
+    max = 0
+
+    for i in range(len(bulb)-1):
+        for j in range(3):
+            if abs(bulb[i][j]) &gt; max:
+                 max = abs(bulb[i][j])
+
+    configuration = []
+    for i in range(max):
+        configuration.append(False)
+
+    for i in range(len(bulb)-1):
+        for j in range(3):
+            if bulb[i][j] &gt; 0:
+                configuration[bulb[i][j]-1] = True
+            else :
+                configuration[abs(bulb[i][j])-1] = False
+        
+
+    check = allLight(bulb,configuration)
+
+    while(check != -1):
+        i = 0
+        double_check = allLight(bulb,configuration)
+        while(double_check == check):
+            if configuration[abs(bulb[check][i])] == True:
+                configuration[abs(bulb[check][i])] = False
+            else:
+                configuration[abs(bulb[check][i])] = True
+            i = i + 1
+            double_check = allLight(bulb,configuration)
+<A NAME="0"></A>        
+        check = allLight(bulb,configuration)
+
+    r<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match72-0.html#0',2,'match72-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>eturn configuration
+
+arr = [[-4,-4,-1],
+            [13,-9,-14],
+            [4,-7,-2],
+            [-2,6,3],
+            [-6,-8,-11],
+            [-4,-3,-6],
+            [7,11,-10],
+            [4,-7,6],
+            [5,6,4],
+            [10</B></FONT>,14,-9]]
+
+config = solve(arr)
+
+for i in config:
+    print(str(i))
+</PRE>
+
+</BODY>
+</HTML>

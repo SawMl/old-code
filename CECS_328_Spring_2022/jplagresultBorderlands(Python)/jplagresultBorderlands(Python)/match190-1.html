@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>209578625</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+
+def solve(bulbs):
+    
+    
+    ############ - FOR FINDING THE NUMBER OF WIRE SETS (M) - #############
+    abs_val = [[abs(x) for x in y] for y in bulbs]
+    max_val = list(map(max, abs_val))
+    #The number of wire sets 
+    M = max(max_val)
+    #print(M)
+    ###########################################################
+    #Array of switches, ON - True   or  OFF - False
+    switch = [False] * (M)
+
+    &quot;&quot;&quot;
+    middle = M 
+    upper_half = M - middle
+    lower_half = M - upper_half
+    &quot;&quot;&quot;
+
+    ###########################################################
+    #2D array with the location of the switches 
+    loc = [[None for a in range(len(bulbs))] for b in range(M)]
+<A NAME="0"></A>
+    for i in range(len(bulbs)):
+        for j in range(3):
+            if bulbs<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match190-0.html#0',2,'match190-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>[i][j] &gt; 0:
+                loc[abs(bulbs[i][j]) - 1].insert(0, i+1)
+            else:
+                loc[abs(bulbs[i][j]) - 1].insert(</B></FONT>0, -(i+1))
+
+    
+    #in row_cond we should not have the inverse version of an already defined number 
+    # Ex: -2, -2, 3, 1, 8, 9, 3, -2, -1
+    #                ^                ^
+    #                |                |
+    #cannot have the both versions, thats saying switch 1 should be on and off at the same time 
+    #2D array with no repititions 
+    sets = [ set(y) for y in loc]
+    row_cond = [0]*len(bulbs)
+    k = 0
+    #print(&quot;\n&quot;)
+    #print(sets)
+    #finds the locations where the switch has been used 
+  
+    while row_cond[-1] == 0 and k != len(bulbs):
+      flag = 0
+      for switch_row, val in enumerate(sets):
+        for j in val:
+          
+          if flag == 0:
+            if k &lt; len(bulbs):
+              if j != None:
+                if abs(j) == k + 1:
+                    if j &gt; 0:
+                        row_cond[k] = switch_row + 1
+                        k += 1
+                        flag = 1
+                    else:
+                        row_cond[k] = -(switch_row + 1)
+                        k += 1
+                        flag = 1
+    &quot;&quot;&quot;
+    while row_cond[-1] == 0 and k != len(bulbs):
+        for switch_row, val in enumerate(sets):
+            for j in val:
+              print(j)
+              if k &lt; len(bulbs):
+                if j != None:
+                  if -j in row_cond:
+                    continue
+                  else:
+                    if abs(j) == k + 1:
+                        if j &gt; 0:
+                            row_cond[k] = switch_row + 1
+                            k += 1
+                        else:
+                            row_cond[k] = -(switch_row + 1)
+                            k += 1
+    &quot;&quot;&quot;
+
+    
+   
+    for val in row_cond:
+        if val &gt; 0:
+            switch[val - 1] = True
+        else:
+            switch[abs(val) - 1] = False
+
+
+    ##############- FOR CHECKING LIGHT CONDITION -##################################
+    #switch = [False, False, False, True, False, False, True, False, False, False, False, False, False, False]
+    bulb_cond = [0] * len(bulbs)
+
+    #print(len(bulbs[9]))
+
+    for i in range(len(bulbs)):
+        for j in range(3):
+            if (bulb_cond[i] != 1):
+                if (switch[abs(bulbs[i][j]) - 1] == True):
+                    #checking for normal lights
+                    if bulbs[i][j] &gt; 0:
+                        #This row(i) has light
+                        bulb_cond[i] = 1
+                else:
+                    #checking for red light 
+                    if bulbs[i][j] &lt; 0:
+                        #This row(i) has light
+                        bulb_cond[i] = 1
+
+
+    #print(&quot;row_cond: &quot;, row_cond)
+    #Checking if every row has activated light, then return the value 
+    #print(&quot;bulb_cond&quot;, bulb_cond)
+    if len(set(bulb_cond)) == 1:
+        #print(&quot;it works!&quot;)
+        print(switch)
+        return switch
+
+
+
+
+&quot;&quot;&quot;
+q_1 = [[-4, -4, -1],                
+       [13, -9, -14], 
+       [4, -7, -2], 
+       [-2, 6, 3], 
+       [-6, -8, 11], 
+       [-4, -3, -6], 
+       [7, 11, -10], 
+       [4, -7, 6], 
+       [5, 6, 4], 
+       [10, 14, -9]]
+
+solve(q_1)
+&quot;&quot;&quot;
+</PRE>
+
+</BODY>
+</HTML>

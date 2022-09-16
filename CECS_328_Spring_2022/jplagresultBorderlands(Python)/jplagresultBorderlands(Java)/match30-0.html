@@ -1,0 +1,242 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>378198241</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+import java.util.ArrayList;
+
+public class StudentSolver {
+	private static ArrayList&lt;Boolean&gt; fillerSoln = new ArrayList&lt;Boolean&gt;();
+	private static ArrayList&lt;ArrayList&lt;Integer&gt;&gt; sublists = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();
+	private static int lastM;
+	private static int count;
+	private static Boolean found;
+	
+	private static Boolean key;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+<A NAME="0"></A>	public static void lastLastM(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; sorted) {
+		lastM = sorted.get(0).get(0);
+		for (int i = 0; i &lt; sorted.size(); i++) {
+			for (int j = 0; j &lt; 3; j++) {<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match30-1.html#0',3,'match30-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>
+				if (sorted.get(i).get(j)&gt;lastM) {
+					lastM = sorted.get(i).get(j);
+				}</B></FONT>
+			}
+		}
+	}
+	
+	
+	public static void checkOpposite() {
+		count = 0;
+		found = false;
+		while(count &lt; lastM &amp;&amp; found == false) {
+			for (int i = 0; i &lt; sublists.get(count).size(); i++) {
+				if (sublists.get(count).contains(-1 * sublists.get(count).get(i))) {
+					found = true;
+					fillerSoln.set(count, true);
+					for (int j = 0; j &lt; sublists.get(count).size(); j++) {
+						removeRows(sublists.get(count).get(0));
+					}
+				}
+			}
+			count++;
+		}
+	}
+	
+	
+	
+	
+		
+	
+	
+	
+	
+	
+	
+	public static boolean oneSign(int bulbNumber) {
+		if (sublists.get(bulbNumber).size() == 1) {
+			return true;
+		}
+		key = isPositive(sublists.get(bulbNumber).get(0));
+		for (int i = 0; i &lt; sublists.get(count).size(); i++) {
+			if (!key == isPositive(sublists.get(count).get(i))){
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public static boolean isPositive(int bulbNumber) {
+		if (bulbNumber &gt; 0) {
+			return true;
+		}
+		else if (bulbNumber &lt; 0) {
+			return false;
+		}
+		else {
+			System.out.println(&quot;Something bad happened&quot;);
+			return true;
+		}
+	}
+	
+	
+	public static void checkSame() {
+		count = 0;
+		found = false;
+		
+		while (count &lt; lastM &amp;&amp; found == false) {
+			if(!sublists.get(count).isEmpty()) {
+				found = oneSign(count);
+			}
+			else if (fillerSoln.get(count) == null){
+				fillerSoln.set(count, true);
+			}
+			count++;
+		}
+		if (found == true) {
+			fillerSoln.set(count-1, key);
+			for (int i = 0; i &lt; sublists.get(count-1).size(); i++) {
+				removeRows(sublists.get(count-1).get(0));
+			}
+		}
+		else {
+			
+			noSame();
+		}
+	}
+	
+	
+	
+	public static void noSame() {
+		checkOpposite();
+		if (found == false) {
+			count = 0;
+			while (count &lt; lastM ) {
+				if (fillerSoln.get(count) == null) {
+					fillerSoln.set(count, isPositive(sublists.get(count).get(0)));
+					for (int i = 0; i &lt; sublists.get(count).size(); i++) {
+						removeRows(sublists.get(count).get(0));
+					}
+					break;
+				}
+				count++;
+			}
+		}
+	}
+	
+	
+	
+	public static ArrayList&lt;Boolean&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt;bulbs){
+		
+		
+		
+		createSublists(bulbs);
+		displaySublists();
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		for (int i = 0; i &lt; lastM; i++) {
+			fillerSoln.add(null);
+		}
+		
+		
+		while (fillerSoln.contains(null)) {
+			
+			checkSame();
+
+		}
+		displaySublists();
+		
+		
+		return fillerSoln;
+	}
+
+	
+	private static void createSublists(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; sorted) {
+		ArrayList&lt;Integer&gt; empty;
+		
+		lastLastM(sorted);
+		for (int i = 0; i &lt; lastM; i++) {
+			empty = new ArrayList&lt;Integer&gt;();
+			empty.add(0);
+			sublists.add(empty);
+		}
+		
+		for (int r = 0; r &lt; sorted.size(); r++) {
+			for (int c = 0; c &lt; 3; c++) {
+				sublists.get(Math.abs(sorted.get(r).get(c))-1).add((r+1)*(sorted.get(r).get(c)/Math.abs(sorted.get(r).get(c))));
+			}
+		}
+	
+	for (int z = 0; z &lt; lastM; z++) {
+		sublists.get(z).remove(0);
+	}
+	
+	
+	}
+	
+	
+	private static void displaySublists() {
+		for (int i = 0; i &lt; lastM; i++) {
+			System.out.println();
+			System.out.print(&quot;Sublist &quot; + (i+1) + &quot; contains: &quot;);
+			for (int j = 0; j &lt; sublists.get(i).size(); j++) {
+				System.out.print(sublists.get(i).get(j) + &quot; &quot;);
+			}
+		}
+	}
+	
+	
+<A NAME="1"></A>	
+	private static void removeRows(int row) {
+		for (int i = 0; i &lt; lastM; i++) {
+			while (sublists.get(i).contains(row) || sublists.get(i).conta<FONT color="#f63526"><A HREF="javascript:ZweiFrames('match30-1.html#1',3,'match30-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>ins(-1 * row)) {
+				if (sublists.get(i).lastIndexOf(row) &gt; -1) {
+					sublists.get(i).remove(sublists.get(i).lastIndexOf(row));</B></FONT>
+				}
+				if (sublists.get(i).lastIndexOf(-1 * row) &gt; -1) {
+					sublists.get(i).remove(sublists.get(i).lastIndexOf(row * -1));
+				}
+			}
+		}
+	}
+}
+</PRE>
+
+</BODY>
+</HTML>

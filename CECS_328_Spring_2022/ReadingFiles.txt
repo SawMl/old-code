@@ -1,0 +1,20 @@
+public static ArrayList<ArrayList<Integer>> getSampleGrid(String filename) throws FileNotFoundException{
+		FileInputStream in = new FileInputStream(filename);
+		Scanner input = new Scanner(in);
+		Scanner inp;
+		String s = "";
+		ArrayList<Integer> row;
+		ArrayList<ArrayList<Integer>> sampleGrid = new ArrayList<ArrayList<Integer>>();
+		while (input.hasNext()) {
+			row = new ArrayList<Integer>();
+			s=input.nextLine();
+			inp=new Scanner(s);
+			while (inp.hasNext()) {
+				row.add(inp.nextInt());
+			}
+			if (!row.isEmpty())
+				sampleGrid.add(row);
+		}
+		return sampleGrid;
+		
+	}

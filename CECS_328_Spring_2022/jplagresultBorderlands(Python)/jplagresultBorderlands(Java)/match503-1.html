@@ -1,0 +1,182 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>591556707</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+
+
+import java.util.ArrayList;
+
+public class StudentSolver {
+    
+    private static ArrayList&lt;Boolean&gt; finalCircuitPanel;
+
+    
+    private static ArrayList&lt;ArrayList&lt;Integer&gt;&gt; listOfBulbs;
+
+    
+    private static int numberOfCircuits;
+
+    
+    private static boolean done = false;
+
+    
+    public static void main(String[] args) {
+        
+        int n = 25;
+        int m = 20;
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbList = new ArrayList&lt;&gt;();
+
+        
+        for (int i = 0; i &lt; n; i++) {
+            bulbList.add(new ArrayList&lt;&gt;());
+            for (int j = 0; j &lt; 3; j++) {
+                int rand = (int) (Math.random() * 2*m - m);
+
+                
+                if (rand == 0) {
+                    rand = 1;
+                }
+
+                
+                bulbList.get(i).add(rand);
+            }
+        }
+
+        
+        System.out.println(bulbList);
+
+        
+        ArrayList&lt;Boolean&gt; answer = solve(bulbList);
+
+        
+        System.out.println(answer);
+    }
+
+    
+    public static ArrayList&lt;Boolean&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs) {
+        return borderlands(bulbs);
+    }
+
+    
+    public static ArrayList&lt;Boolean&gt; borderlands(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs) {
+        
+<A NAME="0"></A>        listOfBulbs = bulbs;
+
+        
+        numberOfCircuits = <FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match503-0.html#0',2,'match503-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>findNumberOfCircuits(listOfBulbs);
+
+        
+        ArrayList&lt;Boolean&gt; circuitPanel = new ArrayList&lt;&gt;();
+
+        
+        for (int a = 0; a &lt; numberOfCircuits; a++) {
+            circuitPanel.add(false);
+        }</B></FONT>
+
+        
+        generateCircuitPanel(circuitPanel, 0);
+
+        
+        return finalCircuitPanel;
+    }
+
+    
+    public static int findNumberOfCircuits(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs) {
+        
+        int numberOfCircuits = -1;
+
+        
+        for (int i = 0; i &lt; bulbs.size(); i++) {
+<A NAME="3"></A>            for (int j = 0; j &lt; 3; j++) {
+                
+                if (numberOfCircuits &lt; Math.abs(bulbs.get(i).get(j))) {
+                    <FONT color="#6cc417"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match503-0.html#3',2,'match503-top.html#3',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>numberOfCircuits = Math.abs(bulbs.get(i).get(j));
+                }
+            }
+        }</B></FONT>
+        
+        return numberOfCircuits;
+    }
+
+    
+    public static void generateCircuitPanel(ArrayList&lt;Boolean&gt; circuitPanel, int index) {
+        
+        if (index &lt; numberOfCircuits) {
+            generateCircuitPanel(circuitPanel, index + 1);
+
+            
+            if (done) {
+                return;
+            }
+
+            
+            circuitPanel.set(index, true);
+            generateCircuitPanel(circuitPanel, index + 1);
+        }
+
+        
+        if (done) {
+            return;
+        }
+
+        
+        if (validateCircuitPanel(circuitPanel)) {
+<A NAME="1"></A>            finalCircuitPanel = circuitPanel;
+            done = true;
+        }
+    <FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match503-0.html#1',2,'match503-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>}
+
+    
+    public static boolean validateCircuitPanel(ArrayList&lt;Boolean&gt; circuitP) {
+        
+        boolean validity;
+
+        
+        for (int k = 0; k &lt; listOfBulbs.size(); k++) {
+            
+<A NAME="2"></A>            v</B></FONT>alidity = false;
+
+            
+            for (int j = 0; j &lt; 3; j++) <FONT color="#77bfc7"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match503-0.html#2',2,'match503-top.html#2',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>{
+                
+                if (listOfBulbs.get(k).get(j) &lt; 0 &amp;&amp; !circuitP.get(Math.abs(listOfBulbs.get(k).get(j)) - 1)) {
+                    validity = true;
+
+                
+                }</B></FONT> else if (listOfBulbs.get(k).get(j) &gt; 0 &amp;&amp; circuitP.get(Math.abs(listOfBulbs.get(k).get(j) - 1))) {
+                    validity = true;
+                }
+
+                
+<A NAME="4"></A>            }
+
+            
+            <FONT color="#151b8d"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match503-0.html#4',2,'match503-top.html#4',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>if (!validity) {
+                return false;
+            }
+        }
+
+        
+        return true;
+    }</B></FONT>
+
+}
+</PRE>
+
+</BODY>
+</HTML>

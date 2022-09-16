@@ -1,0 +1,171 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>745413253</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+import java.util.ArrayList;
+
+public class StudentSolver {
+  public static void main(String[] args) {
+    /*ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs = new ArrayList&lt;&gt;();
+    bulbs.add(getSet(new int[] { -4, -4, -1 }));
+    bulbs.add(getSet(new int[] { 13, -9, -14 }));
+    bulbs.add(getSet(new int[] { 4, -7, -2 }));
+    bulbs.add(getSet(new int[] { -2, 6, 3 }));
+    bulbs.add(getSet(new int[] { -6, -8, 11 }));
+    bulbs.add(getSet(new int[] { -4, -3, -6 }));
+    bulbs.add(getSet(new int[] { 7, 11, -10 }));
+    bulbs.add(getSet(new int[] { 4, -7, 6 }));
+    bulbs.add(getSet(new int[] { 5, 6, 4 }));
+    bulbs.add(getSet(new int[] { 10, 14, -9 }));
+
+    ArrayList&lt;Boolean&gt; sol = solve2(bulbs);
+
+    System.out.println(sol.toString());*/
+  }
+
+  public static ArrayList&lt;Integer&gt; getSet(int[] set) {
+<A NAME="0"></A>    ArrayList&lt;Integer&gt; res = new ArrayList&lt;&gt;();
+    for (int num : set) {
+      res.add(num);
+    <FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match479-1.html#0',3,'match479-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>}
+    return res;
+  }
+
+  public static ArrayList&lt;Boolean&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs) {
+
+    int M = 0;
+
+    for (ArrayList&lt;Integer&gt; set : bulbs) { 
+      for (Integer bulb : set) {</B></FONT> 
+        int value = Math.abs(bulb);
+        if (value &gt; M) {
+          M = value;
+        }
+      }
+    }
+
+    boolean[][] solution = new boolean[(int) Math.pow(2, M)][M]; 
+
+    int counter = 1;
+
+    for (int i = 0; i &lt; solution[0].length; i++) { 
+      boolean current = true;
+      int currentCounter = counter;
+      for (int j = 0; j &lt; solution.length; j++) { 
+        solution[j][i] = current;
+        currentCounter--;
+        if (currentCounter == 0) {
+          current = !current; 
+          currentCounter = counter;
+        }
+      }
+      counter *= 2;
+    }
+<A NAME="1"></A>
+    for (int row = 0; row &lt; solution.length; row++) {
+      boolean valid = isValid(bulbs, solution[row]);
+      if (valid) <FONT color="#f63526"><A HREF="javascript:ZweiFrames('match479-1.html#1',3,'match479-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>{
+        ArrayList&lt;Boolean&gt; result = new ArrayList&lt;&gt;();
+<A NAME="2"></A>        for (boolean b : solution[row]) {
+          result.add(b);
+        }</B></FONT>
+        <FONT color="#77bfc7"><A HREF="javascript:ZweiFrames('match479-1.html#2',3,'match479-top.html#2',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>return result;
+        
+      }
+    }
+    return null;
+  }
+
+  /*public static ArrayList&lt;Boolean&gt; solve2(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs) {
+    int M = 0;
+
+    for (ArrayList&lt;Integer&gt; set : bulbs) { 
+      for (Integer bulb : set) { 
+        int value = Math.abs(bulb);
+        if (value &gt; M) {
+          M = value;
+        }
+      }
+    }
+
+    boolean[] solution = new boolean[M]; 
+    return recursion(bulbs, solution, 0);
+  }*/
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+  public static ArrayList&lt;Boolean&gt; recursion(
+      ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs, boolean[] solution</B></FONT>, int index) {
+    if (index == solution.length) {
+
+      
+      if (isValid(bulbs, solution)) {
+        ArrayList&lt;Boolean&gt; result = new ArrayList&lt;&gt;();
+        for (boolean b : solution) {
+          result.add(b);
+        }
+        return result;
+      }
+
+      
+      return null;
+    }
+    ArrayList&lt;Boolean&gt; result = recursion(bulbs, solution, index + 1);
+    if (result != null)
+<A NAME="3"></A>      return result;
+
+    solution[index] = true;
+    result = <FONT color="#6cc417"><A HREF="javascript:ZweiFrames('match479-1.html#3',3,'match479-top.html#3',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>recursion(bulbs, solution, index + 1);
+    return result;
+  }
+
+  
+  public static boolean isValid(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs,
+      boolean[] possibleCase) {
+
+    for (ArrayList&lt;Integer&gt; set : bulbs) {</B></FONT> 
+      boolean valid = false;
+      for (Integer bulb : set) { 
+        if (bulb &lt; 0 &amp;&amp; !possibleCase[(int) Math.abs(bulb) - 1]) {
+          valid = true; 
+        } else if (bulb &gt; 0 &amp;&amp; possibleCase[(int) Math.abs(bulb) - 1]) {
+          valid = true; 
+        }
+      }
+      if (!valid) 
+        return false;
+    }
+
+    
+    return true;
+  }
+}
+</PRE>
+
+</BODY>
+</HTML>

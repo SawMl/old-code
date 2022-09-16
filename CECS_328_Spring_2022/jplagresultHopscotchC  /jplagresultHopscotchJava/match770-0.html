@@ -1,0 +1,186 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>603933536</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+import java.util.*;
+
+class StudentSolver {
+  public static int rows, cols = 0;
+  
+  public static void main(String[] args) {
+    ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt; ();
+	  Scanner in = new Scanner(System.in);
+	    		
+		System.out.print(&quot;Enter number of rows (m): &quot;);
+		rows = getInteger();
+		System.out.print(&quot;Enter number of columns (n): &quot;);
+		cols = getInteger();
+
+    
+    for (int r=0; r&lt;rows; r++){
+      grid.add(new ArrayList&lt;Integer&gt; (cols));
+      for (int c=0; c&lt;cols; c++){
+        System.out.print(&quot;Enter element for row &quot; + r + &quot;, column &quot; + c + &quot;: &quot;);
+        grid.get(r).add(c, getInteger());
+      }
+    }    
+
+    
+<A NAME="0"></A>    for (int r=0; r&lt;rows; r++){
+      grid.add(new ArrayList&lt;Integer&gt; (cols));
+      for (int c=0; c&lt;cols; c++){
+        if (c != cols-1) <FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match770-1.html#0',3,'match770-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>{
+          System.out.print(grid.get(r).get(c) + &quot;, &quot;);
+        } else {
+          System.out.print(grid.get(r).get(c));
+        }
+      }</B></FONT>
+<A NAME="1"></A>      System.out.println();
+    }
+
+    <FONT color="#f63526"><A HREF="javascript:ZweiFrames('match770-1.html#1',3,'match770-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>solve(grid);
+		
+  }
+
+  public static ArrayList&lt;Integer&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid) {
+    Random randomNumberGen = new Random();
+    ArrayList&lt;Integer&gt; answer = new ArrayList&lt;Integer&gt; (</B></FONT>);
+    
+		int entry = randomNumberGen.nextInt(2); 
+    int currentRow = 0;
+
+    if (entry == 1) { 
+      currentRow = 0;
+    } else if (entry == 0) { 
+      currentRow = rows-1;
+    }
+    answer.add(entry); 
+		
+		int currentColumn = randomNumberGen.nextInt(cols); 
+		answer.add(currentColumn); 
+
+    int score = grid.get(currentRow).get(currentColumn);
+    System.out.println(&quot;Starting column = &quot; + currentColumn);
+    System.out.println(&quot;Starting score = &quot; + score);	
+
+    int moves = cols-1; 
+    int max = 0;
+    int moveRight, moveRightUp, moveRightDown = 0;
+
+    while (moves != 0) {
+      
+      
+      if ((currentColumn+1) % cols == 0) { 
+        currentColumn = 0;
+        
+      } else {
+        currentColumn++;
+        
+      }
+
+      moveRight = grid.get(currentRow).get(currentColumn);      
+      max = moveRight;
+
+      
+      
+      int tempRowUp, tempRowDown = 0;
+      if ((currentRow-1) &lt; 0) {
+        
+        
+        tempRowUp = rows-1;
+        moveRightUp = grid.get(tempRowUp).get(currentColumn);
+      } else {
+        
+        
+        tempRowUp = currentRow-1;
+        moveRightUp = grid.get(tempRowUp).get(currentColumn);
+      }
+      
+      
+      if ((currentRow+1) % rows == 0) {
+        
+        tempRowDown = 0;
+        moveRightDown = grid.get(tempRowDown).get(currentColumn);
+      }
+      else {
+        
+        tempRowDown = currentRow+1;
+        moveRightDown = grid.get(tempRowDown).get(currentColumn);
+      }
+
+      max = moveRight;
+      if (moveRightUp &gt; max) {
+        max = moveRightUp;
+      }
+      if (moveRightDown &gt; max) {
+        max = moveRightDown;
+      }
+
+      if (max == moveRight) {
+        answer.add(0);
+      } else if (max == moveRightUp) {
+        answer.add(1);
+        currentRow = tempRowUp;
+        
+      } else if (max == moveRightDown) {
+        answer.add(-1);
+        currentRow = tempRowDown;
+      }
+
+      score = score + max; 
+      moves--; 
+    }
+
+    System.out.println(answer);
+    System.out.println(score);
+
+    return answer;
+  }
+
+  public static int getInteger() {
+    Scanner in = new Scanner(System.in);
+    boolean isValid = false;
+    int userIn, num = 0;
+    
+    while (isValid == false) {
+      if (in.hasNextInt()) {
+        userIn = in.nextInt();
+        if (userIn &gt; 0) {
+          isValid = true;
+          num = userIn;
+        } else {
+          System.out.println(&quot;Input out of range! Please enter a positive integer.&quot;);
+        }
+        
+      } else {
+        in.next(); 
+        System.out.println(&quot;Invalid input. Please try again.&quot;);
+      }
+    }
+
+    return num;
+  }
+
+  
+    
+  
+}
+</PRE>
+
+</BODY>
+</HTML>

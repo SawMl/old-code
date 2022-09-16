@@ -1,0 +1,314 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>303987975</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+import copy
+
+# START = [[8,5, 3, 2, 2, 9, 9], [2, 3, 6, 3, 7, 1,9], [1, 2, 2, 4, 4, 3, 2], [9, 2, 3, 4, 4, 2, 8], [2, 1, 6, 6, 7,5, 1]]
+# START = [[4, 8, 2, 8, 8, 1, 8, 7], [1, 1, 7, 2, 4, 7, 9, 4], [9, 5, 9, 8, 1, 1, 6, 7], [9, 2, 6, 7, 3, 7, 8, 7], [8, 2, 4, 5, 3, 7, 5, 7], [8, 1, 1, 5, 5, 6, 7, 4]]
+# START = [[3, 4, 1, 2, 8, 6], [6, 1, 8, 2, 7, 4], [5, 4, 3, 9, 9, 5], [5, 9, 8, 3, 2, 6], [8, 7, 2, 9, 6, 4]]
+# START = [[1, 1, 4, 8, 8, 6, 2, 2, 8, 2, 1, 5], [2, 8, 1, 8, 2, 2, 2, 4, 5, 9, 9, 1], [8, 3, 2, 5, 2, 2, 5, 8, 9, 8, 4, 4], [1, 4, 1, 9, 8, 9, 5, 6, 1, 6, 4, 7], [7, 2, 6, 8, 4, 1, 1, 7, 1, 2, 5, 3], [6, 2, 2, 6, 1, 6, 2, 2, 7, 8, 7, 7], [8, 5, 5, 8, 9, 8, 7, 8, 8, 3, 2, 5]]
+# START = [[3,75,27,45,19,96,98,55,31,57,78],[99,43,43,75,96,46,4,99,30,15,69],[26,74,13,83,29,38,74,59,88,78,21],[5,60,65,13,45,90,55,74,13,78,16],[25,10,88,70,66,47,17,52,37,30,90],[63,13,47,74,71,90,75,41,59,39,99],[95,49,54,44,24,52,14,76,99,90,97],[31,6,79,59,9,19,99,53,89,16,47],[46,94,59,92,40,23,32,7,86,4,12],[89,67,41,85,11,24,91,99,37,1,87]]
+
+START = [[9, 7, 2, 7, 2, 7, 1, 5, 1], [5, 3, 2, 9, 1, 1, 9, 4, 3], [7, 7, 8, 5, 2, 4, 1, 3, 8],
+         [1, 3, 3, 4, 8, 4, 5, 6, 4], [4, 3, 3, 9, 2, 7, 3, 4, 3]]
+
+
+def fillGrid(emptyGrid, grid):
+    for i in range(len(grid)):
+        emptyGrid.append([])
+
+    for row in emptyGrid:
+        for i in range(len(grid[0])):
+            row.append(0)
+
+
+def displayGrid(grid):
+    for i in range(len(grid)):
+        for num in grid[i]:
+            print(f&quot; {num}&quot;, end=&quot;  &quot;)
+        print()
+    print('------------')
+
+
+def UpRight(points, grid):
+    if points[0] == 0:
+        points[0] = len(grid) - 1
+    else:
+        points[0] -= 1
+
+    if points[1] == len(grid[0]) - 1:
+        points[1] = 0
+    else:
+        points[1] += 1
+
+    return points
+
+
+def UpLeft(points, grid):
+    if points[0] == 0:
+        points[0] = len(grid) - 1
+    else:
+        points[0] -= 1
+
+    if points[1] == 0:
+        points[1] = len(grid[0]) - 1
+    else:
+        points[1] -= 1
+
+    return points
+
+
+def Right(points, grid):
+    if points[1] == len(grid[0]) - 1:
+        points[1] = 0
+    else:
+        points[1] += 1
+
+    return points
+
+
+def Left(points, grid):
+    if points[1] == 0:
+        points[1] = len(grid[0]) - 1
+    else:
+        points[1] -= 1
+
+    return points
+
+
+def DownRight(points, grid):
+    if points[0] == len(grid) - 1:
+        points[0] = 0
+    else:
+        points[0] += 1
+
+    if points[1] == len(grid[0]) - 1:
+        points[1] = 0
+    else:
+        points[1] += 1
+
+    return points
+
+
+def DownLeft(points, grid):
+    if points[0] == len(grid) - 1:
+        points[0] = 0
+    else:
+        points[0] += 1
+
+    if points[1] == 0:
+        points[1] = len(grid[0]) - 1
+    else:
+        points[1] -= 1
+
+    return points
+
+
+def findStartingPoints(list, grid):
+    for i in range(len(grid[0])):
+        list.append([0, i])
+
+    for i in range(len(grid[0])):
+        list.append([len(grid) - 1, i])
+
+
+def solve(grid):
+    emptyGrid = []
+    startingPoints = []
+    maxValues = []
+    fillGrid(emptyGrid, grid)
+    findStartingPoints(startingPoints, grid)
+
+    # displayGrid(emptyGrid)
+    # print(startingPoints)
+    displayGrid(grid)
+    for point in startingPoints:
+        maxValues.append(dijkstra(point, copy.deepcopy(emptyGrid), copy.deepcopy(grid)))
+
+    # print(maxValues)
+    maxIndex = maxValues.index(max(maxValues))
+    maxPoint = startingPoints[maxIndex]
+
+    final_dijkstra(maxPoint, emptyGrid, grid)
+    exitValue = findExitValue(emptyGrid, maxPoint, max(maxValues))
+
+    x = createPath(exitValue, grid, emptyGrid, maxPoint)
+    print(x)
+    displayGrid(grid)
+
+    return x
+
+
+def findExitValue(e, p, val):
+    if p[0] == 0:
+        p1 = Left(copy.deepcopy(p), e)
+        p2 = UpLeft(copy.deepcopy(p), e)
+    else:
+        p1 = Left(copy.deepcopy(p), e)
+        p2 = DownLeft(copy.deepcopy(p), e)
+
+    if e[p1[0]][p1[1]] == val:
+        return p1
+    else:
+        return p2
+
+
+def createPath(p, grid, e, START_VALUE):
+    mPoint = copy.deepcopy(p)
+    entrance = START_VALUE
+    # print(entrance)
+    directions = []
+
+    # print(e[mPoint[0]][mPoint[1]])
+    for i in range(len(e[0]) - 1):
+        # print(e[mPoint[0]][mPoint[1]] - grid[mPoint[0]][mPoint[1]])
+        prev = e[mPoint[0]][mPoint[1]] - grid[mPoint[0]][mPoint[1]]
+        p1 = UpLeft(copy.deepcopy(mPoint), e)
+<A NAME="1"></A>        p2 = Left(copy.deepcopy(mPoint), e)
+        p3 = DownLeft(copy.deepcopy(mPoint), e)
+
+        values = [<FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match104-0.html#1',2,'match104-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>e[p1[0]][p1[1]], e[p2[0]][p2[1]], e[p3[0]][p3[</B></FONT>1]]]
+
+        if values[0] == prev:
+            prev = e[p1[0]][p1[1]]
+            mPoint = p1
+            directions.insert(0, -1)
+        elif values[1] == prev:
+            prev = e[p2[0]][p2[1]]
+            mPoint = p2
+            directions.insert(0, 0)
+        else:
+            prev = e[p3[0]][p3[1]]
+            mPoint = p3
+            directions.insert(0, 1)
+
+    if entrance[0] == 0:
+        directions.insert(0, entrance[1])
+        directions.insert(0, 1)
+    else:
+        directions.insert(0, entrance[1])
+        directions.insert(0, 0)
+
+    return directions
+
+
+def final_dijkstra(point, e, grid):
+    finishedPoints = []
+    unfinishedPoints = []
+    trashBin = []
+    SOURCE = copy.deepcopy(point)
+
+    e[point[0]][point[1]] = grid[point[0]][point[1]]
+    unfinishedPoints.append(point)
+
+    while len(unfinishedPoints) != 0:
+        point = findBiggestScore(unfinishedPoints, e, finishedPoints, SOURCE)
+
+        revealThreePoints(point, e, grid, unfinishedPoints, SOURCE)
+
+
+def dijkstra(point, e, grid):
+    finishedPoints = []
+    unfinishedPoints = []
+    trashBin = []
+    SOURCE = copy.deepcopy(point)
+
+    e[point[0]][point[1]] = grid[point[0]][point[1]]
+    unfinishedPoints.append(point)
+
+    # displayGrid(e)
+    # displayGrid(grid)
+    # print(point)
+
+    while len(unfinishedPoints) != 0:
+        point = findBiggestScore(unfinishedPoints, e, finishedPoints, SOURCE)
+
+        revealThreePoints(point, e, grid, unfinishedPoints, SOURCE)
+
+    # printFinishedPoints(e, finishedPoints)
+    # print(unfinishedPoints)
+
+    # displayGrid(e)
+
+    return findMaxExit(e, SOURCE)
+
+
+def findMaxExit(e, SOURCE):
+    if SOURCE[0] == 0:
+        p1 = Left(copy.deepcopy(SOURCE), e)
+        p2 = UpLeft(copy.deepcopy(SOURCE), e)
+    else:
+        p1 = Left(copy.deepcopy(SOURCE), e)
+        p2 = DownLeft(copy.deepcopy(SOURCE), e)
+
+    return max(e[p1[0]][p1[1]], e[p2[0]][p2[1]])
+
+
+def printFinishedPoints(e, finishedPoints):
+    for p in finishedPoints:
+        print(e[p[0]][p[1]], end=&quot; &quot;)
+
+
+def findBiggestScore(unfinishedPoints, e, finishedPoints, SOURCE):
+    temp = 0
+    newPoint = [0, 0]
+    for p in unfinishedPoints:
+        if e[p[0]][p[1]] &gt; temp:
+            temp = e[p[0]][p[1]]
+            newPoint = [p[0], p[1]]
+
+    if newPoint[1] == SOURCE[1]:
+        if newPoint in unfinishedPoints:
+            unfinishedPoints.remove(newPoint)
+
+    if newPoint in unfinishedPoints:
+        unfinishedPoints.remove(newPoint)
+    if newPoint not in finishedPoints:
+        finishedPoints.append(newPoint)
+    return newPoint
+
+
+def revealThreePoints(point, e, grid, unfinishedPoints, SOURCE):
+    p1 = UpRight(copy.deepcopy(point), grid)
+<A NAME="0"></A>    p2 = Right(copy.deepcopy(point), grid)
+    p3 = DownRight(copy.deepcopy(point), grid)
+
+    <FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match104-0.html#0',2,'match104-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>if e[point[0]][point[1]] + grid[p1[0]][p1[1]] &gt; e[p1[0]][p1[</B></FONT>1]]:
+        if p1[1] != SOURCE[1]:
+            e[p1[0]][p1[1]] = e[point[0]][point[1]] + grid[p1[0]][p1[1]]
+<A NAME="2"></A>            if p1 not in unfinishedPoints:
+                unfinishedPoints.append(p1)
+
+    if e<FONT color="#77bfc7"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match104-0.html#2',2,'match104-top.html#2',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>[point[0]][point[1]] + grid[p2[0]][p2[1]] &gt; e[p2[0]][p2[</B></FONT>1]]:
+        if p2[1] != SOURCE[1]:
+            e[p2[0]][p2[1]] = e[point[0]][point[1]] + grid[p2[0]][p2[1]]
+            if p2 not in unfinishedPoints:
+                unfinishedPoints.append(p2)
+
+    if e[point[0]][point[1]] + grid[p3[0]][p3[1]] &gt; e[p3[0]][p3[1]]:
+        if p3[1] != SOURCE[1]:
+            e[p3[0]][p3[1]] = e[point[0]][point[1]] + grid[p3[0]][p3[1]]
+            if p3 not in unfinishedPoints:
+                unfinishedPoints.append(p3)
+
+# solve(START)
+</PRE>
+
+</BODY>
+</HTML>

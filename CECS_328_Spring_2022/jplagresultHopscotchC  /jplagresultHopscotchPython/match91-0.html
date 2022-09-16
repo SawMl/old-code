@@ -1,0 +1,724 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>482133588</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+import random
+def solve(grid):
+  #top = 0
+  #top_index = 0
+  #bottom = 0
+  #bottom_index = 0
+  #top_sum = []
+  #bottom_sum = []
+  #top_path = [1]
+  #bottom_path = [0]
+  #for x in grid[0]:
+  #  if x &gt; top:
+  #    top = x
+  #for y in grid[len(grid)-1]:
+  #  if y &gt; bottom:
+  #    bottom = y
+  #print(top)
+  #print(bottom)
+  #print(random.choice(grid[0]))
+  top_rand = random.choice(grid[0])
+  #bottom_rand = random.choice(grid[len(grid)-1])
+  all_top_pos = {}
+  #for top_grid in grid[0]:
+  #all_top_pos[str(top_grid)] = []
+  true_top_list = []
+  true_top_max = 0
+  for top in grid[0]:
+    top_index = 0
+    top_path = [1]
+    top_sum = []
+    top_sum.append(top)
+    #print(&quot;top: &quot;, top)
+    #bottom_sum.append(bottom)
+    top_index += grid[0].index(top)
+    #bottom_index += grid[len(grid)-1].index(bottom)
+    #print(&quot;-=-=-=-=-=&quot;)
+    #print(top_index)
+    top_path.append(top_index)
+    #bottom_path.append(bottom_index)
+    #print(bottom_index)
+    #print(&quot;[][][][][][]&quot;)
+    top_pointer_x = 0
+    top_pointer_y = top_index
+    #bottom_pointer_x = len(grid) - 1
+    #bottom_pointer_y = bottom_index
+    top_list = []
+    #bottom_list = []
+    top_list.append(top_index)
+    #bottom_list.append(bottom_index)
+    #print(top_index)
+    #print(top_list)
+    #print(&quot;-----------------&quot;)
+    #print(grid[top_pointer_x][0])
+    #print((grid[top_pointer_x][top_pointer_y+1]))
+    #print(top_pointer_x-1 &lt; 0)
+    #print((grid[len(grid)-1][top_pointer_y+1]))
+    num_pos_list = []
+    #num_pos_list2 = []
+    #print(top_pointer_x-1)
+    #print(len(grid)-1)
+  
+    &quot;&quot;&quot;&quot;
+    #0
+    options = {}
+    if top_pointer_y + 1 &gt; len(grid[0])-1:
+      num_pos_list.append(grid[top_pointer_x][0])
+      options[str(0)] = 1
+    else:
+      num_pos_list.append(grid[top_pointer_x][top_pointer_y+1])
+      options[str(0)] = 2
+    #1
+    if top_pointer_y + 1 &gt; len(grid[0])-1:
+      if top_pointer_x - 1 &lt; 0:
+        num_pos_list.append(grid[len(grid)-1][0])
+        options[str(1)] = 1.1
+      else:
+          num_pos_list.append(grid[top_pointer_x - 1][0])
+          options[str(1)] = 1.2
+    else:
+      if top_pointer_x - 1 &lt; 0:
+        num_pos_list.append(grid[len(grid)-1][top_pointer_y+1])
+        options[str(1)] = 2.1;
+      else:
+        num_pos_list.append(grid[top_pointer_x - 1][top_pointer_y+1])
+        options[str(1)] = 2.2
+    #-1
+    if top_pointer_y + 1 &gt; len(grid[0])-1:
+      if top_pointer_x + 1 &gt; len(grid)-1:
+        num_pos_list.append(grid[0][top_pointer_y+1])
+        options[str(2)] = 3.1
+      else:
+        num_pos_list.append(grid[top_pointer_x +  1][0])
+        options[str(2)] = 3.2
+    else:
+      if top_pointer_x - 1 &lt; 0:
+        num_pos_list.append(grid[len(grid)-1][top_pointer_y+1])
+        options[str(2)] = 3.3
+      else:
+        num_pos_list.append(grid[top_pointer_x - 1][top_pointer_y+1])
+        options[str(2)] = 3.4
+    
+    print(&quot;numbers: &quot;, num_pos_list)
+    max_num = 0;
+    for num in num_pos_list:
+      if num &gt; max_num:
+        max_num = num
+    print(max_num)
+    choice = num_pos_list.index(max_num)
+    print(&quot;choice: &quot;, choice)
+    print(options)
+    if choice == 0:
+      if options[str(choice)] == 1:
+        top_pointer_y = 0
+      else:
+        top_pointer_y += 1
+    elif choice == 1:
+      if options[str(choice)] == 1.1:
+        top_pointer_x = len(grid)-1
+        top_pointer_y = 0
+      elif options[str(choice)] == 1.2:
+        top_pointer_x -= 1
+        top_pointer_y = 0
+      elif options[str(choice)] == 2.1:
+        top_pointer_x = len(grid)-1
+        top_pointer_y += 1
+      elif options[str(choice)] == 2.2:
+        top_pointer_x -= 1
+        top_pointer_y += 1
+    elif choice == 2:
+      if options[str(choice)] == 3.1:
+        top_pointer_x = 0
+        top_pointer_y += 1
+      elif options[str(choice)] == 3.2:
+        top_pointer_x += 1
+        top_pointer_y = 0
+      elif options[str(choice)] == 3.3:
+        top_pointer_x = len(grid) - 1
+        top_pointer_y += 1
+      elif options[str(choice)] == 3.4:
+        top_pointer_x -= 1
+        top_pointer_y += 1
+    top_list.append(top_pointer_y)
+    print(&quot;============&quot;)
+    print(top_list)
+    &quot;&quot;&quot;  
+    
+    
+    #&quot;&quot;&quot;&quot;
+    while len(top_list) != len(grid[0]):
+      #print(&quot;pointer: &quot;, grid[top_pointer_x][top_pointer_y])
+     #0
+      options = {}
+      if top_pointer_y + 1 &gt; len(grid[0])-1:
+        num_pos_list.append(grid[top_pointer_x][0])
+        options[str(0)] = 1
+      else:
+        num_pos_list.append(grid[top_pointer_x][top_pointer_y+1])
+        options[str(0)] = 2
+      #1
+      if top_pointer_y + 1 &gt; len(grid[0])-1:
+        if top_pointer_x - 1 &lt; 0:
+          num_pos_list.append(grid[len(grid)-1][0])
+          options[str(1)] = 1.1
+        else:
+            num_pos_list.append(grid[top_pointer_x - 1][0])
+            options[str(1)] = 1.2
+      else:
+        if top_pointer_x - 1 &lt; 0:
+          num_pos_list.append(grid[len(grid)-1][top_pointer_y+1])
+          options[str(1)] = 2.1;
+        else:
+          num_pos_list.append(grid[top_pointer_x - 1][top_pointer_y+1])
+          options[str(1)] = 2.2
+      #-1
+      if top_pointer_y + 1 &gt; len(grid[0])-1:
+        if top_pointer_x + 1 &gt; len(grid)-1:
+          num_pos_list.append(grid[0][0])
+          options[str(2)] = 3.1
+        else:
+          num_pos_list.append(grid[top_pointer_x +  1][0])
+          options[str(2)] = 3.2
+      else:
+        if top_pointer_x + 1 &gt; len(grid) - 1:
+          num_pos_list.append(grid[0][top_pointer_y+1])
+          options[str(2)] = 3.3
+        else:
+          num_pos_list.append(grid[top_pointer_x + 1][top_pointer_y+1])
+          options[str(2)] = 3.4
+     # print(&quot;numbner: &quot;, num_pos_list)
+      max_num = 0;
+      for num in num_pos_list:
+        #print(&quot;num: &quot;, num)
+        if num &gt; max_num:
+          max_num = num
+      #print(&quot;max_option: &quot;, max_num)
+      #print(max_num)
+      &quot;&quot;&quot;&quot;&quot;
+      #This is correct
+      choice = num_pos_list.index(max_num)
+      if len(top_list) == len(grid):
+        ending1 = top_pointer_x - 0
+        ending2 = 0
+        if top_pointer_x &gt; len(grid) - 1:
+          ending2 = top_pointer_x - len(grid) - 1
+        else:
+          ending2 = (len(grid) - 1) - top_pointer_x
+        if ending1 &gt; ending2:
+          if choice == 1:
+            choice = 2
+        elif ending1 &lt; ending2:
+            if choice == 2:
+              choice = 1
+      if choice == 2:
+        top_path.append(-1)
+      else:
+        top_path.append(choice)
+      &quot;&quot;&quot;
+      choice = num_pos_list.index(max_num)
+      #print(&quot;top_list: &quot;, top_list)
+      #print(&quot;len(top_list)&quot;, len(top_list))
+      #print(&quot;len(grid)&quot;, len(grid))
+      #print(len(top_list) == len(grid))
+      if len(top_list) == len(grid[0])-1:
+        if top_pointer_x == 0 or top_pointer_x == len(grid)-1:
+          if top_pointer_x == 0:
+            if num_pos_list[0] &gt; num_pos_list[1]:
+              choice = 0
+            else:
+              choice = 1
+          if top_pointer_x == len(grid)-1:
+            if num_pos_list[0] &gt; num_pos_list[2]:
+              choice = 0
+            else:
+              choice = 2
+            
+          #choice = 0
+        else:
+          ending1 = top_pointer_x - 0
+          ending2 = 0
+          if top_pointer_x &gt; len(grid) - 1:
+            ending2 = top_pointer_x - len(grid) - 1
+          else:
+            ending2 = (len(grid) - 1) - top_pointer_x
+          if ending1 &gt; ending2:
+            if choice == 1:
+              choice = 2
+          elif ending1 &lt; ending2:
+              if choice == 2:
+                choice = 1
+      if choice == 2:
+        top_path.append(-1)
+      else:
+        top_path.append(choice)
+      #print(&quot;choice: &quot;, choice)
+      #print(options)
+      
+                
+      #if choice == 2:
+        #top_path.append(choice - 3)
+        
+      if choice == 0:
+        if options[str(choice)] == 1:
+          top_pointer_y = 0
+          #print(&quot;++++++++1&quot;)
+        else:
+          top_pointer_y += 1
+<A NAME="0"></A>          #print(&quot;++++++++2&quot;)
+      elif choice == 1:
+        if options[str(choice)] == 1.1:
+          top_pointer_x = len<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match91-1.html#0',3,'match91-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>(grid)-1
+          top_pointer_y = 0
+          #print(&quot;++++++++1.1&quot;)
+        elif options[str(choice)] == 1.2:
+          top_pointer_x -= 1
+          top_pointer_y = 0
+          #print(&quot;++++++++1.2&quot;)
+        elif options[str(choice)] == 2.1:
+          top_pointer_x = len(grid)-1
+          top_pointer_y += 1
+          #print(&quot;++++++++2.1&quot;)
+        elif options[str(choice)] == 2.2:
+          top_pointer_x -=</B></FONT> 1
+          top_pointer_y += 1
+          #print(&quot;++++++++2.2&quot;)
+      elif choice == 2:
+        if options[str(choice)] == 3.1:
+          top_pointer_x = 0
+          top_pointer_y += 1
+          #print(&quot;++++++++3.1&quot;)
+        elif options[str(choice)] == 3.2:
+          top_pointer_x += 1
+          top_pointer_y = 0
+          #print(&quot;++++++++3.2&quot;)
+          
+        elif options[str(choice)] == 3.3:
+          top_pointer_x = len(grid) - 1
+          top_pointer_y += 1
+          #print(&quot;++++++++3.3&quot;)
+          
+        elif options[str(choice)] == 3.4:
+          #print(&quot;before x: &quot;, top_pointer_x)
+          #print('before y: ', top_pointer_y)
+          top_pointer_x += 1
+          #print('after x: ', top_pointer_x)
+          top_pointer_y += 1
+          #print('after y: ', top_pointer_y)
+          
+          
+          #print(&quot;++++++++3.4&quot;)
+      &quot;&quot;&quot;&quot;
+      if choice == 0:
+        if options[str(choice)] == 1:
+          top_pointer_y = 0
+          print(&quot;++++++++1&quot;)
+        else:
+          top_pointer_y += 1
+          print(&quot;++++++++2&quot;)
+      elif choice == 1:
+        if options[str(choice)] == 1.1:
+          top_pointer_x = len(grid)-1
+          top_pointer_y = 0
+          print(&quot;++++++++1.1&quot;)
+        elif options[str(choice)] == 1.2:
+          top_pointer_x -= 1
+          top_pointer_y = 0
+          print(&quot;++++++++1.2&quot;)
+        elif options[str(choice)] == 2.1:
+          top_pointer_x = len(grid)-1
+          top_pointer_y += 1
+          print(&quot;++++++++2.1&quot;)
+        elif options[str(choice)] == 2.2:
+          top_pointer_x -= 1
+          top_pointer_y += 1
+          print(&quot;++++++++2.2&quot;)
+      elif choice == 2:
+        if options[str(choice)] == 3.1:
+          top_pointer_x = 0
+          top_pointer_y += 1
+          print(&quot;++++++++3.1&quot;)
+        elif options[str(choice)] == 3.2:
+          top_pointer_x += 1
+          top_pointer_y = 0
+          print(&quot;++++++++3.2&quot;)
+          
+        elif options[str(choice)] == 3.3:
+          top_pointer_x = len(grid) - 1
+          top_pointer_y += 1
+          print(&quot;++++++++3.3&quot;)
+          
+        elif options[str(choice)] == 3.4:
+          top_pointer_x -= 1
+          top_pointer_y += 1
+          print(&quot;++++++++3.4&quot;)
+      &quot;&quot;&quot;
+      top_list.append(top_pointer_y)
+      #print(&quot;============&quot;)
+      #print(top_list)
+      options.clear()
+      num_pos_list.clear()
+      #print(&quot;now: &quot;, grid[top_pointer_x][top_pointer_y])
+      top_sum.append(grid[top_pointer_x][top_pointer_y])
+      #print(&quot;top now: &quot;, top_sum)
+      #print(top_path)
+      max_top = 0
+      for x_num in top_sum:
+        max_top += x_num
+      if top_pointer_x == 0 or top_pointer_x == len(grid)-1:
+        all_top_pos[str(top)] = [top_path, max_top]
+        #[str(top)].append(top_path, max_top)
+        #all_top_pos[str(top)].append(max_top)
+        
+      #print(all_top_pos[str(top)])
+      #for op in grid[0]:
+      #  if str(op) in all_top_pos:
+      #    if all_top_pos[str(op)][1] &gt; true_top_max:
+      #      true_top_max = all_top_pos[str(op)]
+      #print(true_top_max)
+    #&quot;&quot;&quot;
+
+  #&quot;&quot;&quot;&quot;
+  #print(&quot;------------------------------------------------------------------&quot;)
+  all_bottom_pos = {}
+  true_bottom_list = []
+  true_bottom_max = 0
+  for bottom in grid[len(grid)-1]:
+    &quot;&quot;&quot;&quot;
+    bottom_index = 0
+    bottom_path = [0]
+    bottom_sum = []
+    bottom_sum.append(bottom)
+    bottom_index += grid[len(grid)-1].index(bottom)
+    bottom_path.append(bottom_index)
+    bottom_pointer_x = len(grid) - 1
+    bottom_pointer_y = bottom_index
+    bottom_list = []
+    bottom_list.append(bottom_index)
+    num_pos_list2 = []
+    &quot;&quot;&quot;
+    
+    bottom_index = 0
+    bottom_path = [0]
+    bottom_sum = []
+    bottom_sum.append(bottom)
+    #print(&quot;top: &quot;, top)
+    #bottom_sum.append(bottom)
+    bottom_index += grid[len(grid)-1].index(bottom)
+    #bottom_index += grid[len(grid)-1].index(bottom)
+    #print(&quot;-=-=-=-=-=&quot;)
+    #print(top_index)
+    bottom_path.append(bottom_index)
+    #bottom_path.append(bottom_index)
+    #print(bottom_index)
+    #print(&quot;[][][][][][]&quot;)
+    bottom_pointer_x = 0
+    bottom_pointer_y = len(grid) - 1
+    #bottom_pointer_x = len(grid) - 1
+    #bottom_pointer_y = bottom_index
+    bottom_list = []
+    #bottom_list = []
+    bottom_list.append(bottom_index)
+    #bottom_list.append(bottom_index)
+    #print(top_index)
+    #print(top_list)
+    #print(&quot;-----------------&quot;)
+    #print(grid[top_pointer_x][0])
+    #print((grid[top_pointer_x][top_pointer_y+1]))
+    #print(top_pointer_x-1 &lt; 0)
+    #print((grid[len(grid)-1][top_pointer_y+1]))
+    num_pos_list2 = []
+    while len(bottom_list) != len(grid[0]):
+
+     #0
+      options2 = {}
+      if bottom_pointer_y + 1 &gt; len(grid[0])-1:
+        num_pos_list2.append(grid[bottom_pointer_x][0])
+        options2[str(0)] = 1
+      else:
+        num_pos_list2.append(grid[bottom_pointer_x][bottom_pointer_y+1])
+        options2[str(0)] = 2
+      #1
+      if bottom_pointer_y + 1 &gt; len(grid[0])-1:
+        if bottom_pointer_x - 1 &lt; 0:
+          num_pos_list2.append(grid[len(grid)-1][0])
+          options2[str(1)] = 1.1
+        else:
+            num_pos_list2.append(grid[bottom_pointer_x - 1][0])
+            options2[str(1)] = 1.2
+      else:
+        if bottom_pointer_x - 1 &lt; 0:
+          num_pos_list2.append(grid[len(grid)-1][bottom_pointer_y+1])
+          options2[str(1)] = 2.1;
+        else:
+          num_pos_list2.append(grid[bottom_pointer_x - 1][bottom_pointer_y+1])
+          options2[str(1)] = 2.2
+      #-1
+      if bottom_pointer_y + 1 &gt; len(grid[0])-1:
+        if bottom_pointer_x + 1 &gt; len(grid)-1:
+          num_pos_list2.append(grid[0][0])
+          options2[str(2)] = 3.1
+        else:
+          num_pos_list2.append(grid[bottom_pointer_x +  1][0])
+          options2[str(2)] = 3.2
+      else:
+        if bottom_pointer_x + 1 &gt; len(grid) - 1:
+          num_pos_list2.append(grid[0][bottom_pointer_y+1])
+          options2[str(2)] = 3.3
+        else:
+          num_pos_list2.append(grid[bottom_pointer_x + 1][bottom_pointer_y+1])
+          options2[str(2)] = 3.4
+      #print(&quot;numbner: &quot;, num_pos_list2)
+      max_num2 = 0;
+      for num in num_pos_list2:
+        #print(&quot;num: &quot;, num)
+        if num &gt; max_num2:
+          max_num2 = num
+      #print(&quot;max_option: &quot;, max_num2)
+      #print(max_num)
+      &quot;&quot;&quot;&quot;&quot;
+      #This is correct
+      choice = num_pos_list.index(max_num)
+      if len(top_list) == len(grid):
+        ending1 = top_pointer_x - 0
+        ending2 = 0
+        if top_pointer_x &gt; len(grid) - 1:
+          ending2 = top_pointer_x - len(grid) - 1
+        else:
+          ending2 = (len(grid) - 1) - top_pointer_x
+        if ending1 &gt; ending2:
+          if choice == 1:
+            choice = 2
+        elif ending1 &lt; ending2:
+            if choice == 2:
+              choice = 1
+      if choice == 2:
+        top_path.append(-1)
+      else:
+        top_path.append(choice)
+      &quot;&quot;&quot;
+      choice2 = num_pos_list2.index(max_num2)
+      #print(&quot;top_list: &quot;, top_list)
+      #print(&quot;len(top_list)&quot;, len(top_list))
+      #print(&quot;len(grid)&quot;, len(grid))
+      #print(len(top_list) == len(grid))
+      if len(bottom_list) == len(grid[0])-1:
+        if bottom_pointer_x == 0 or bottom_pointer_x == len(grid)-1:
+          if bottom_pointer_x == 0:
+            if num_pos_list2[0] &gt; num_pos_list2[1]:
+              choice2 = 0
+            else:
+              choice2 = 1
+          if bottom_pointer_x == len(grid)-1:
+            if num_pos_list2[0] &gt; num_pos_list2[2]:
+              choice2 = 0
+            else:
+              choice2 = 2
+            
+          #choice = 0
+        else:
+          ending3 = bottom_pointer_x - 0
+          ending4 = 0
+          if bottom_pointer_x &gt; len(grid) - 1:
+            ending4 = top_pointer_x - len(grid) - 1
+          else:
+            ending4 = (len(grid) - 1) - bottom_pointer_x
+          if ending3 &gt; ending4:
+            if choice2 == 1:
+              choice2 = 2
+          elif ending3 &lt; ending4:
+              if choice2 == 2:
+                choice2 = 1
+      if choice2 == 2:
+        bottom_path.append(-1)
+      else:
+        bottom_path.append(choice2)
+      #print(&quot;choice: &quot;, choice2)
+      #print(options2)
+      
+                
+      #if choice == 2:
+        #top_path.append(choice - 3)
+        
+      if choice2 == 0:
+        if options2[str(choice2)] == 1:
+          bottom_pointer_y = 0
+          #print(&quot;++++++++1&quot;)
+        else:
+          bottom_pointer_y += 1
+          #print(&quot;++++++++2&quot;)
+      elif choice2 == 1:
+        if options2[str(choice2)] == 1.1:
+          bottom_pointer_x = len(grid)-1
+          bottom_pointer_y = 0
+          #print(&quot;++++++++1.1&quot;)
+        elif options2[str(choice2)] == 1.2:
+          bottom_pointer_x -= 1
+          bottom_pointer_y = 0
+          #print(&quot;++++++++1.2&quot;)
+        elif options2[str(choice2)] == 2.1:
+          bottom_pointer_x = len(grid)-1
+          bottom_pointer_y += 1
+          #print(&quot;++++++++2.1&quot;)
+        elif options2[str(choice2)] == 2.2:
+          bottom_pointer_x -= 1
+          bottom_pointer_y += 1
+          #print(&quot;++++++++2.2&quot;)
+      elif choice2 == 2:
+        if options2[str(choice2)] == 3.1:
+          bottom_pointer_x = 0
+          bottom_pointer_y += 1
+          #print(&quot;++++++++3.1&quot;)
+        elif options2[str(choice2)] == 3.2:
+          bottom_pointer_x += 1
+          bottom_pointer_y = 0
+          #print(&quot;++++++++3.2&quot;)
+          
+        elif options2[str(choice2)] == 3.3:
+          bottom_pointer_x = len(grid) - 1
+          bottom_pointer_y += 1
+          #print(&quot;++++++++3.3&quot;)
+          
+        elif options2[str(choice2)] == 3.4:
+          #print(&quot;before x: &quot;, top_pointer_x)
+          #print('before y: ', top_pointer_y)
+          bottom_pointer_x += 1
+          #print('after x: ', top_pointer_x)
+          bottom_pointer_y += 1
+          #print('after y: ', top_pointer_y)
+          
+          
+          #print(&quot;++++++++3.4&quot;)
+      &quot;&quot;&quot;&quot;
+      if choice == 0:
+        if options[str(choice)] == 1:
+          top_pointer_y = 0
+          print(&quot;++++++++1&quot;)
+        else:
+          top_pointer_y += 1
+          print(&quot;++++++++2&quot;)
+      elif choice == 1:
+        if options[str(choice)] == 1.1:
+          top_pointer_x = len(grid)-1
+          top_pointer_y = 0
+          print(&quot;++++++++1.1&quot;)
+        elif options[str(choice)] == 1.2:
+          top_pointer_x -= 1
+          top_pointer_y = 0
+          print(&quot;++++++++1.2&quot;)
+        elif options[str(choice)] == 2.1:
+          top_pointer_x = len(grid)-1
+          top_pointer_y += 1
+          print(&quot;++++++++2.1&quot;)
+        elif options[str(choice)] == 2.2:
+          top_pointer_x -= 1
+          top_pointer_y += 1
+          print(&quot;++++++++2.2&quot;)
+      elif choice == 2:
+        if options[str(choice)] == 3.1:
+          top_pointer_x = 0
+          top_pointer_y += 1
+          print(&quot;++++++++3.1&quot;)
+        elif options[str(choice)] == 3.2:
+          top_pointer_x += 1
+          top_pointer_y = 0
+          print(&quot;++++++++3.2&quot;)
+          
+        elif options[str(choice)] == 3.3:
+          top_pointer_x = len(grid) - 1
+          top_pointer_y += 1
+          print(&quot;++++++++3.3&quot;)
+          
+        elif options[str(choice)] == 3.4:
+          top_pointer_x -= 1
+          top_pointer_y += 1
+          print(&quot;++++++++3.4&quot;)
+      &quot;&quot;&quot;
+      bottom_list.append(top_pointer_y)
+      #print(&quot;============&quot;)
+      #print(top_list)
+      options2.clear()
+      num_pos_list2.clear()
+      #print(&quot;now: &quot;, grid[top_pointer_x][top_pointer_y])
+      bottom_sum.append(grid[bottom_pointer_x][bottom_pointer_y])
+      #print(&quot;bottom now: &quot;, bottom_sum)
+      #print(bottom_path)
+      max_bottom = 0
+      for o_num in bottom_sum:
+        max_bottom += o_num
+      if bottom_pointer_x == 0 or bottom_pointer_x == len(grid)-1:
+        #print(&quot;000000000000000000000000000&quot;)
+        all_bottom_pos[str(bottom)] = [bottom_path, max_bottom]
+  #&quot;&quot;&quot;
+  #print(top_sum)
+  #max_top = 0
+  #for x_num in top_sum:
+  #  max_top += x_num
+  #print(max_top)
+  #return top_path
+  #print(&quot;bottom pos: &quot;, all_bottom_pos)
+  #print(all_top_pos[&quot;1&quot;][-1])
+  for op in grid[0]:
+    if str(op) in all_top_pos:
+      if all_top_pos[str(op)][-1] &gt; true_top_max:
+        true_top_max = all_top_pos[str(op)][-1]  
+  #print(true_top_max)
+  for high in grid[0]:
+    if str(high) in all_top_pos:
+      #print(&quot;------------------------------&quot;)
+      #print(all_top_pos[str(high)][0])
+      if all_top_pos[str(high)][-1] == true_top_max:
+        true_top_list.append(all_top_pos[str(high)][0])
+  for ip in grid[len(grid)-1]:
+    if str(ip) in all_bottom_pos:
+      if all_bottom_pos[str(ip)][-1] &gt; true_bottom_max:
+        true_bottom_max = all_bottom_pos[str(ip)][-1]  
+  #print(true_bottom_max)
+  for high1 in grid[len(grid)-1]:
+    if str(high1) in all_bottom_pos:
+      #print(&quot;------------------------------&quot;)
+      #print(all_top_pos[str(high)][0])
+      if all_bottom_pos[str(high1)][-1] == true_bottom_max:
+        true_bottom_list.append(all_bottom_pos[str(high1)][0])
+  
+  #print(true_top_list)
+  #print(true_top_max)
+  #print(true_bottom_list)
+  #print(true_bottom_max)
+  if true_top_max &gt; true_bottom_max:
+    return true_top_list[0]
+  else:
+    return true_bottom_list[0]
+#grid = [[3,4,1,2,8,6],
+#       [6,1,8,2,7,4],
+#       [5,4,3,9,9,5],
+#       [5,9,8,3,2,6],
+#       [8,7,2,9,6,4]]
+#grid = [[4, 3, 6, 1],
+#          [6, 8, 3, 4],
+#          [3, 2, 1, 6],
+#          [5, 4, 4, 7],
+#         [6, 2, 7, 9]];
+#print(solve(grid))
+</PRE>
+
+</BODY>
+</HTML>

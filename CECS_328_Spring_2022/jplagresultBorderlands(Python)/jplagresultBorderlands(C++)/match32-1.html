@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>212225568</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>StudentSolver.cpp</CENTER></H3><HR>
+<PRE>
+#include &quot;StudentSolver.h&quot;
+
+#include &lt;iostream&gt;
+
+using namespace std;
+
+bool merge(vector&lt;int&gt;&amp; p1, vector&lt;int&gt;&amp; p2, vector&lt;int&gt;&amp; out) {
+    for (int i = 0; i &lt; p1.size(); i++) {
+        if (!(p1[i] == 0 || p2[i] == 0 || p1[i] == p2[i]))
+            return false;
+
+        out[i] = max(p1[i], p2[i]);
+    }
+
+    return true;
+}
+
+void addPossibilies(vector&lt;vector&lt;int&gt;&gt;&amp; possibilities, vector&lt;vector&lt;int&gt;&gt;&amp; insert) {
+    vector&lt;vector&lt;int&gt;&gt; newPossibilities;
+    for (vector&lt;int&gt;&amp; v : insert) {
+        for (vector&lt;int&gt;&amp; possibility : possibilities) {
+            newPossibilities.emplace_back(v.size(), 0);
+            vector&lt;int&gt;&amp; nP = newPossibilities.back();
+            
+            if (!merge(v, possibility, nP))
+                newPossibilities.pop_back();
+        }
+    }
+
+<A NAME="0"></A>    possibilities = newPossibilities;
+}
+
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match32-0.html#0',2,'match32-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>vector&lt;bool&gt; StudentSolver::solve(vector&lt;vector&lt;int&gt;&gt; bulbs) {
+    int m = 0;
+    for (int i = 0; i &lt; bulbs.size(); i++) {
+        for (int b : bulbs[i]) {</B></FONT>
+            if (abs(b) &gt; m)
+                m = b;
+        }
+    }
+    
+    
+    vector&lt;vector&lt;int&gt;&gt; possibilities;
+    possibilities.emplace_back(m + 1, 0);
+
+    for (int i = 0; i &lt; bulbs.size(); i++) {
+        int bl[3] = {bulbs[i][0], bulbs[i][1], bulbs[i][2]};
+        bool isNegative[3] = {bl[0] &lt; 0, bl[1] &lt; 0, bl[2] &lt; 0};
+
+        bl[0] = abs(bl[0]);
+        bl[1] = abs(bl[1]);
+        bl[2] = abs(bl[2]);
+
+        
+
+        vector&lt;vector&lt;int&gt;&gt; insert;
+        for (int s = 0; s &lt; 3; s++) {
+            int a = bl[s];
+            int b = bl[(s + 1) % 3];
+            int c = bl[(s + 2) % 3];
+
+            
+            int v;
+            if (isNegative[s])
+                v = 2;
+            else
+                v = 1;
+
+            vector&lt;int&gt;* stuff;
+
+            insert.emplace_back(m + 1, 0);
+            stuff = &amp;insert.back();
+            (*stuff)[b] = 2;
+            (*stuff)[c] = 2;
+            (*stuff)[a] = v;
+
+            insert.emplace_back(m + 1, 0);
+            stuff = &amp;insert.back();
+            (*stuff)[b] = 1;
+            (*stuff)[c] = 2;
+            (*stuff)[a] = v;
+
+            insert.emplace_back(m + 1, 0);
+            stuff = &amp;insert.back();
+            (*stuff)[b] = 2;
+            (*stuff)[c] = 1;
+            (*stuff)[a] = v;
+
+            insert.emplace_back(m + 1, 0);
+            stuff = &amp;insert.back();
+            (*stuff)[b] = 1;
+            (*stuff)[c] = 1;
+            (*stuff)[a] = v;
+        }
+
+        addPossibilies(possibilities, insert);
+    }
+
+    if (possibilities.size() &gt; 0) {
+        vector&lt;bool&gt; out(m, true);
+
+        for (int i = 0; i &lt; m; i++) {
+            if (possibilities[0][i + 1] == 2)
+                out[i] = false;
+                
+            cout &lt;&lt; out[i] &lt;&lt; &quot;, &quot;;
+        }
+        cout &lt;&lt; endl;
+        
+        return out;
+    }
+
+    return vector&lt;bool&gt;();
+}
+</PRE>
+</BODY>
+</HTML>

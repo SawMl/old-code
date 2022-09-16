@@ -1,0 +1,235 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>494218148</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>Pos.java</CENTER></H3><HR>
+<PRE>
+import java.util.ArrayList;
+
+class Pos {
+    static int total;
+    int x;
+    int y;
+    int val;
+    int direction;
+    int max;
+    ArrayList&lt;Integer&gt; sol = new ArrayList&lt;&gt;();
+    Pos(int x, int y) {
+        this.x = x;
+<A NAME="0"></A>        this.y = y;
+    }
+
+    <FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match13-0.html#0',2,'match13-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>Pos(int x, int y, int val) {
+        this.x = x;
+        this.y = y;
+        this.val = val;
+    }
+
+    Pos(int x</B></FONT>, int y, int val, int direction) {
+        this.x = x;
+        this.y = y;
+        this.val = val;
+        this.direction = direction;
+    }
+
+    @Override
+    public String toString() {
+        return &quot;(x, y): &quot; + x + &quot;, &quot; + y;
+    }
+}
+</PRE>
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class StudentSolver {
+    public static final boolean DEBUG = false;
+    public static void main(String[] args) {
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid = new ArrayList&lt;&gt;();
+        try {
+            Scanner scan = new Scanner(new File(&quot;/Users/macos/Documents/CSULB/CS 328/Coding 3/src/grid&quot;));
+            while (scan.hasNextLine()) {
+                ArrayList&lt;Integer&gt; row = new ArrayList&lt;&gt;();
+                String[] num = scan.nextLine().split(&quot;, &quot;);
+                for (String n : num) {
+                    row.add(Integer.parseInt(n));
+                }
+                grid.add(row);
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println(&quot;File Not Found&quot;);
+        }
+        ArrayList&lt;Integer&gt; sol = solve(grid);
+        System.out.println(&quot;Final Sol: &quot; + sol);
+    }
+
+    public static ArrayList&lt;Integer&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid) {
+
+        ArrayList&lt;ArrayList&lt;Pos&gt;&gt; gridOfPos = gridOfPos(grid);
+
+        
+        int totalMax = 0;
+        ArrayList&lt;Integer&gt; returnSol = new ArrayList&lt;&gt;();
+        for (int i = 0; i &lt; grid.get(0).size(); i++) {
+            gridOfPos = gridOfPos(grid); 
+            Pos enterPosTop = gridOfPos.get(0).get(i);
+            if (DEBUG) System.out.println(&quot;Entering at column: &quot; + i + &quot; from top.&quot;);
+            int sum = solveRecur(grid, enterPosTop, enterPosTop, gridOfPos, 0);
+            if (DEBUG) System.out.println(&quot;Total: &quot; + sum +&quot; - with solution: &quot; + enterPosTop.sol);
+            if (sum &gt; totalMax) {
+                totalMax = sum;
+                returnSol.clear();
+                returnSol.add(1);
+                returnSol.add(i);
+                returnSol.addAll(enterPosTop.sol);
+            }
+        }
+
+        
+        for (int i = 0; i &lt; grid.get(0).size(); i++) {
+            gridOfPos = gridOfPos(grid); 
+            Pos enterPosBot = gridOfPos.get(grid.size() - 1).get(i);
+            if (DEBUG) System.out.println(&quot;Entering at column: &quot; + i + &quot; from top.&quot;);
+            int sum = solveRecur(grid, enterPosBot, enterPosBot, gridOfPos, 0);
+            if (DEBUG) System.out.println(&quot;Total: &quot; + sum +&quot; - with solution: &quot; + enterPosBot.sol);
+            if (sum &gt; totalMax) {
+                totalMax = sum;
+                returnSol.clear();
+                returnSol.add(0);
+                returnSol.add(i);
+                returnSol.addAll(enterPosBot.sol);
+            }
+        }
+
+        System.out.println(&quot;Final Sol: &quot; + returnSol + &quot; - &quot; + totalMax);
+        return returnSol;
+    }
+
+    public static int solveRecur(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid, Pos current, Pos enterPos, ArrayList&lt;ArrayList&lt;Pos&gt;&gt; gridOfPos, int sum) {
+        if (DEBUG) System.out.println(&quot;Current: (&quot; + current.x + &quot;, &quot; + current.y + &quot;) = &quot; + current.val);
+        if (current.y == columnSubtract(grid, enterPos.y)) {
+            if (current.x == 0 || current.x == grid.size() - 1) {
+                current.max = current.val;
+                return current.val;
+            }
+            if (DEBUG) System.out.println(&quot;\tCannot exit from &quot; + current);
+            current.max = 0;
+            return 0;
+        }
+
+        ArrayList&lt;Pos&gt; availablePos = findAvailablePos(grid, current, gridOfPos);
+        if (DEBUG) System.out.println(&quot;\tAvailable Options for &quot; + current + &quot;: &quot; + availablePos);
+        int maxOfAvailablePos = 0;
+        current.max = current.val;
+        for (Pos p : availablePos) {
+            if (p.max != -1) {
+                sum += p.max;
+            } else {
+                sum += solveRecur(grid, p, enterPos, gridOfPos, sum);
+            }
+            if (sum &gt; maxOfAvailablePos) {
+                maxOfAvailablePos = sum;
+                ArrayList&lt;Integer&gt; newSol = new ArrayList&lt;&gt;();
+                newSol.add(p.direction);
+                newSol.addAll(p.sol);
+                current.sol = newSol;
+                current.max = current.val + sum;
+            }
+            sum = 0;
+        }
+<A NAME="3"></A>        if (maxOfAvailablePos == 0) {
+            
+            current.max = 0;
+        <FONT color="#6cc417"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match13-0.html#3',2,'match13-top.html#3',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>}
+        return current.max;
+    }
+
+    public static ArrayList&lt;ArrayList&lt;Pos&gt;&gt; gridOfPos(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid) {
+        ArrayList&lt;ArrayList&lt;Pos&gt;&gt; gridOfPos = new</B></FONT> ArrayList&lt;&gt;();
+        for (int i = 0; i &lt; grid.size(); i++) {
+            ArrayList&lt;Pos&gt; rowOfPos = new ArrayList&lt;&gt;();
+<A NAME="4"></A>            for (int j = 0; j &lt; grid.get(0).size(); j++) {
+                Pos p = new Pos(i, j, grid.get(i).get(j));
+                p.max = -1;
+                <FONT color="#151b8d"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match13-0.html#4',2,'match13-top.html#4',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>rowOfPos.add(p);
+            }
+            gridOfPos.add(rowOfPos);
+        }
+        return gridOfPos;
+    }</B></FONT>
+
+    public static ArrayList&lt;Pos&gt; findAvailablePos(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid, Pos enterPos, ArrayList&lt;ArrayList&lt;Pos&gt;&gt; gridOfPos) {
+        int availableColumn = columnAdd(grid, enterPos.y);
+        int availableRow1 = rowSubtract(grid, enterPos.x);
+        int availableRow2 = enterPos.x;
+        int availableRow3 = rowAdd(grid, enterPos.x);
+        Pos p1 = gridOfPos.get(availableRow1).get(availableColumn);
+        p1.direction = 1;
+        Pos p2 = gridOfPos.get(availableRow2).get(availableColumn);
+        p2.direction = 0;
+        Pos p3 = gridOfPos.get(availableRow3).get(availableColumn);
+        p3.direction = -1;
+        ArrayList&lt;Pos&gt; p = new ArrayList&lt;&gt;();
+        if (p1.val &lt; p2.val) {
+            Pos pTemp = p1;
+            p1 = p2;
+            p2 = pTemp;
+        }
+        if (p2.val &lt; p3.val) {
+            Pos pTemp = p2;
+            p2 = p3;
+            p3 = pTemp;
+        }
+        if (p1.val &lt; p2.val) {
+            Pos pTemp = p1;
+<A NAME="1"></A>            p1 = p2;
+            p2 = pTemp;
+        }
+        <FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match13-0.html#1',2,'match13-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>p.add(p1);
+        p.add(p2);
+        p.add(p3);
+        return p;
+    }
+
+    public static int columnSubtract(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid, int col) {</B></FONT>
+        if (col - 1 &lt; 0) return grid.get(0).size() - 1;
+        return col - 1;
+    }
+<A NAME="2"></A>
+    public static int columnAdd(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid, int col) {
+        if (col + 1 &gt;= grid.get(0).size()) return 0;
+        <FONT color="#77bfc7"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match13-0.html#2',2,'match13-top.html#2',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>return col + 1;
+    }
+
+    public static int rowSubtract(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid, int row) {
+        if (row - 1 &lt; 0) return</B></FONT> grid.size() - 1;
+        return row - 1;
+    }
+
+    public static int rowAdd(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid, int row) {
+        if (row + 1 &gt;= grid.size()) return 0;
+        return row + 1;
+    }
+
+}
+</PRE>
+
+</BODY>
+</HTML>

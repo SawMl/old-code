@@ -1,0 +1,224 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>269562465</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+def solve(grid):
+    # a list for finding the optimal path on the bottom and top of the grid
+    topList = [1]
+    bottomList = [0]
+
+    # Variables to keep track of the sum of the top and bottom lists
+    topMax = 0
+    bottomMax = 0
+
+    # Append into topList the index of the maximum number in the 1st row and same for the last row for the bottomList
+    topList.append(grid[0].index(max(grid[0])))
+    bottomList.append(grid[len(grid) - 1].index(max(grid[len(grid) - 1])))
+
+    topMax += max(grid[0])
+    bottomMax += max(grid[len(grid) - 1])
+    
+    # Traverse through the grid, starting on the number we choose as the maximum
+    topList = cylinderTraversal(grid, 0, topList[1], 0, topList)
+    bottomList = cylinderTraversal(grid, len(grid) - 1, bottomList[1], 0, bottomList)
+
+    # Pop the last element 
+    topList.pop()
+    bottomList.pop()
+
+    # Find the sum of the top and bottom lists by traversing through the grid with the top and bottom lists.
+    topMax = findSum(grid, 0, topList[1], topList, 2, topMax)
+    bottomMax = findSum(grid, len(grid) - 1 , bottomList[1], bottomList, 1, bottomMax)
+    
+    # If the top sum is greater than the bottom sum, we return the topList
+    return topList if topMax &gt; bottomMax else bottomList
+
+# Function to find the sum of an optimal list.
+def findSum(grid, row, col, listOfMovements, movementCountIndex, maxSum):
+    if movementCountIndex == len(listOfMovements):
+        return maxSum
+    
+    # depending on what the element is at that certain index, we go into that direction
+    if listOfMovements[movementCountIndex] == 0:
+        col = rightDirect(grid, col)
+
+    elif listOfMovements[movementCountIndex] == 1:
+        row, col = rightDirectUp(grid, row, col)
+
+    else:
+        row, col = rightDirectDown(grid, row, col)
+    
+    # Depending on the direction we go, we add the new number we are at currently
+    maxSum += grid[row][col]
+    
+    return findSum(grid, row, col, listOfMovements, movementCountIndex + 1, maxSum)
+
+
+def exitCylinder(grid, row, col, movementCount, optimalList):
+    # If we reach back to the column we started in, we return the list
+    if movementCount == len(grid[0]):
+        return optimalList
+
+    determinatePath = []
+
+    # Like cylinderTraversal, we check for every possible movement we can do.
+    tempCol = rightDirect(grid, col)
+    determinatePath.append(grid[row][tempCol])
+
+    # Only go right and up if the row is below the middle point of the grid. 
+    # It wouldn't make sense to exit at the bottom of the grid if we are below the
+    # middle point of the grid as there wouldn't be enough moves done to achieve it.
+    if row &lt; len(grid) 
+        tempRow, tempCol = rightDirectUp(grid, row, col)
+        
+        determinatePath.append(grid[tempRow][tempCol])
+
+        maxNum = max(determinatePath)
+        if maxNum == determinatePath[0]:
+            optimalList.append(0)
+
+        else:
+            optimalList.append(1)
+
+    # Only go right and down if the row is above the middle point of the grid
+    else:
+        tempRow, tempCol = rightDirectDown(grid, row, col)
+
+        determinatePath.append(grid[tempRow][tempCol])
+
+        maxNum = max(determinatePath)
+        if maxNum == determinatePath[0]:
+            optimalList.append(0)
+
+        else:
+            optimalList.append(-1)
+    
+    
+    return exitCylinder(grid, row, col, movementCount + 1, optimalList)
+
+def cylinderTraversal(grid, row, col, movementCount, optimalList):
+    '''
+    Legal moves:
+        - directly to the right = 0
+        - right and up one = 1
+        - right and down one = -1
+    
+    - single traversal around the cylinder 
+    - hit every column in the cylinder exactly once
+
+    m x n matrix
+    n - 1 movementCounts
+
+    ex: 5 x 6 matrix, 5 movementCounts
+    player with highest score wins
+    find path of optimal player
+
+    ex: 8, 6, 8, 9, 8, 9, exit through bottom
+    '''
+    # 2 movements before we reach the column we started on, we start to exit the cylinder since we need to exit on either the top or bottom.
+    if movementCount == len(grid[0]) - 2:
+        return exitCylinder(grid, row, col, movementCount, optimalList)
+
+    # List to append every possible movement
+    determinatePath = []
+
+    # Append the number if we go right
+    tempCol = rightDirect(grid, col)
+    determinatePath.append(grid[row][tempCol])
+
+    # Append the number if we go right and up
+    tempRow, tempCol = rightDirectUp(grid, row, col)
+    determinatePath.append(grid[tempRow][tempCol])
+
+    # Append the number if we go right and down
+    tempRow, tempCol = rightDirectDown(grid, row, col)
+    determinatePath.append(grid[tempRow][tempCol])
+
+    # Find the max out of the three numbers
+    maxNum = max(determinatePath)
+
+    # If the maxNum equals any of the numbers, we have our column updated by going into that certain direction and append the movement we went with.
+    if maxNum == determinatePath[0]:
+        col = rightDirect(grid, col)
+        optimalList.append(0)
+    
+    elif maxNum == determinatePath[1]:
+        row, col = rightDirectUp(grid, row, col)
+        optimalList.append(1)
+    
+    elif maxNum == determinatePath[2]:
+        row, col = rightDirectDown(grid, row, col)
+        optimalList.append(-1)
+
+    # Recursively call the function until we reach the column we started in.
+    return cylinderTraversal(grid, row, col, movementCount + 1, optimalList)
+
+# Function for going right
+def rightDirect(grid, col):
+    # If we go out of grid bounds to the right, we start back at the 0th column
+    if col + 1 == len(grid[0]):
+        col = 0
+    
+    # Add column by one if we are still in the restrictions of the grid.
+    else:
+        col += 1
+    
+    return col
+
+# Function for going right and up
+def rightDirectUp(grid, row, col):
+    # Go right
+    col = rightDirect(grid, col)
+    
+    # If we go up and its outside of the grid boundaries, we start at the last row on the grid
+    if row - 1 &lt; 0:
+        row = len(grid) - 1
+    
+    # decrease by 1 if we are in the boundaries of the grid
+    else:
+        row -= 1
+    
+    return row, col
+
+def rightDirectDown(grid, row, col):
+    # Go right
+    col = rightDirect(grid, col)
+    
+    # Go down
+    if row + 1 == len(grid):
+        row = 0
+    
+<A NAME="0"></A>    else:
+        row += 1
+    
+    <FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match136-0.html#0',2,'match136-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>return row, col
+    
+if __name__ == '__main__':
+    grid = [[3, 4, 1, 2, 8, 6],
+            [6, 1, 8, 2, 7, 4],
+            [5, 4, 3, 9, 9, 5],
+            [5, 9, 8, 3, 2, 6],
+            [8, 7, 2, 9, 6, 4]]
+
+    maxList = solve(</B></FONT>grid)
+
+    print(maxList)
+</PRE>
+
+</BODY>
+</HTML>

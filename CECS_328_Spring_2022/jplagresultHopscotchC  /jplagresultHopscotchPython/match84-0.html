@@ -1,0 +1,182 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>775985721</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+
+def solve(grid):
+    return solver(grid,None)
+
+def solver(grid,avoid):
+    h, w = len(grid), len(grid[0])
+    spotRange = [-1,2]
+    sumChart = makeChart(grid)
+    row,col = findStart(sumChart,avoid),0
+    lockedSpot = []
+    walls = 0
+    path = [[row,col]]
+
+    while len(path) != w:
+        steps = w-col-1
+        if row == 0 or row == h-1:
+            walls += 1
+            
+        change = nextStep(sumChart,row,col,spotRange,None)
+        
+        if walls &lt;2:
+            if steps-1 == (row+change)%h and change == -1: #locked into moving upwards
+                spotRange = [-1,0]
+            elif steps-1 == h-(row+change)%h-1 and change == 1: #locked into moving downwards
+                spotRange = [1,2]
+                
+            if spotRange != [-1,2]:
+                lockedSpot = [row,col,change]
+                alter = adjChart(sumChart,grid,(row+change)%h,col+1,spotRange)
+                if alter:
+                    change = nextStep(sumChart,row,col,[-1,2],change)
+                    if change != spotRange[0] or change != spotRange[1]:
+                        spotRange = [-1,2]
+            
+        row = (row+change)%h
+<A NAME="0"></A>        col += 1
+        path += [[row,col]]
+    
+    if path<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match84-1.html#0',3,'match84-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>[0][0] != (path[w-1][0]+1)%h and path[0][0] != (path[w-1][0]-1)%h and path[0][0] != path[w-1][0]:
+        if</B></FONT> avoid is None:
+            return solver(grid,[path[0][0]])
+        else:
+            avoid += [path[0][0]]
+            return solver(grid,avoid)
+    return answerStyle(path,grid) 
+    
+def answerStyle(path,grid):
+    h, w = len(grid), len(grid[0]) 
+    answer, walls, start = [],[],[]
+    for i in path:
+        if i[0] == 0 or i[0] == h-1:
+            walls += [i]
+    temp = [-1,-1]
+    for k in walls:
+        if abs(k[1]-temp[1]) == 1:
+            start = k
+        temp = k
+    answer = [1] if start[0] == 0 else [0]
+    answer += [start[1]]
+    
+    for l in range(0,w-1):
+        step = (path[(start[1]+l)%(w)][0] - path[(start[1]+l+1)%(w)][0])
+        if abs(step)&gt;1:
+            step = -1 if path[(start[1]+l)%(w)][0]&gt;0 else 1
+        answer += [step]
+        
+    return answer 
+    
+    
+        
+def adjChart(sumChart,grid,row,col,spotRange):
+    h, w = len(grid), len(grid[0])
+    steps = w-col-1
+    for j in range(col,w-1):
+        tempChange = nextStep(sumChart,row,col,[-1,2],None)
+        if tempChange != spotRange[0]:
+            #print(&quot;alter is true&quot;)
+            return True
+        row = (row+spotRange[0])%h
+    return False   
+    
+    
+def nextStep(sumChart,row,col,spotRange,avoid):
+    h = len(sumChart)
+    tempMax = -1
+    change = -1
+    for k in range(spotRange[0],spotRange[1]):
+        if avoid is not None and k == avoid:
+            continue
+        if sumChart[(row+k)%h][col+1]&gt;tempMax:
+            tempMax = sumChart[(row+k)%h][col+1]
+            change = k
+    return change
+
+
+def makeChart(grid):
+    h, w = len(grid), len(grid[0])
+    sumChart = [[0 for x in range(w)]for y in range(h)]
+    for j in range(w-1,0,-1):
+        for i in range(h):
+            for k in range(-1,2):
+                gridAdd = grid[(i+k)%h][(j-1)%w]+grid[i][j]
+                sumAdd = grid[(i+k)%h][(j-1)%w]+sumChart[i][j]
+                sumChart[(i+k)%h][(j-1)%w] = max(sumChart[(i+k)%h][(j-1)%w],gridAdd,sumAdd)
+    for l in range(h):
+        sumChart[l][w-1] = grid[l][w-1]
+    return sumChart
+
+def findStart(sumGrid,avoid):
+    maxPos, maxVal = -1, -1
+    for i in range(len(sumGrid)):
+        if avoid is not None and avoid.count(i) !=0:
+            continue
+        if sumGrid[i][0] &gt; maxVal:
+            maxVal = sumGrid[i][0]
+            maxPos = i
+    return maxPos
+   
+'''   
+scotch = [
+[3, 4, 1, 2, 8, 6],
+[6, 1, 8, 2, 7, 4],
+[5, 4, 3, 9, 9, 5],
+[5, 9, 8, 3, 2, 6],
+[8, 7, 2, 9, 6, 4]] 
+
+a = [
+[5, 7, 2, 5],
+[5, 3, 7, 3],
+[5, 3, 4, 4],
+[9, 9, 2, 4],
+[9, 7, 5, 4]]
+
+b = [
+[4, 2, 1, 3, 2, 2, 7, 6],
+[4, 7, 7, 5, 3, 4, 6, 4],
+[4, 8, 5, 5, 8, 1, 5, 2],
+[5, 4, 8, 9, 2, 5, 3, 8],
+[2, 9, 6, 3, 3, 5, 9, 8],
+[4, 4, 2, 6, 5, 5, 1, 6]]
+
+c = [
+[6, 4, 2, 6, 7, 9, 9, 4],
+[2, 6, 7, 1, 3, 3, 4, 3],
+[3, 1, 3, 4, 2, 5, 4, 4],
+[1, 1, 3, 6, 8, 7, 2, 4],
+[5, 5, 4, 6, 7, 9, 1, 1],
+[2, 6, 6, 9, 2, 2, 1, 9]]
+
+d = [
+[4, 9, 2, 8, 3],
+[1, 1, 4, 8, 8],
+[9, 6, 6, 9, 3],
+[9, 8, 3, 4, 2]]
+'''
+
+#for i in makeChart(scotch): print(i)
+
+#print(solve(d))
+</PRE>
+
+</BODY>
+</HTML>

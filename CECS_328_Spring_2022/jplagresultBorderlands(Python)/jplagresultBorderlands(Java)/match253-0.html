@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>983747055</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+<A NAME="0"></A>
+
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match253-1.html#0',3,'match253-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>import java.util.ArrayList;
+
+
+public class StudentSolver {
+    public static ArrayList&lt;Boolean&gt; solve(ArrayList&lt;Integer&gt; bulbs) { 
+        ArrayList&lt;Boolean&gt; temp = new ArrayList&lt;&gt;();
+        ArrayList&lt;Integer&gt; temp1 = new ArrayList&lt;&gt;();
+        Integer mult = 0</B></FONT>;
+        for(int i = 0; i &lt; bulbs.size(); i++) {
+            
+            temp1.add(Math.abs(bulbs.get(i)));
+        }
+        Integer num = 0;
+        for(int i = 0; i &lt; temp1.size() - 1;i++) {
+            if(temp1.get(i) &gt; temp1.get(i + 1)) {
+                num = temp1.get(i);
+            }
+            else {
+                num = temp1.get(i + 1);
+            }
+        }
+        for(int i = 0; i &lt; num; i++) {
+            temp.add(false);
+        }
+        
+        for(int i = 0; i &lt; bulbs.size()-2; i = i + 3) {
+            mult = 0;
+            mult = bulbs.get(i) * bulbs.get(i + 1) * bulbs.get(i + 2);
+            System.out.println(bulbs.get(i) + &quot;*&quot; + bulbs.get(i + 1) + &quot;*&quot; + bulbs.get(i + 2) + &quot; = &quot; + mult);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            if(bulbs.get(i) &gt; 0 &amp;&amp; bulbs.get(i + 1) &gt; 0 &amp;&amp; bulbs.get(i + 2) &gt; 0) {
+                
+                temp.set((Math.abs(bulbs.get(i)) - 1), true);
+                mult = 0;
+                
+                
+
+
+
+
+
+
+            }
+            
+        }
+        return temp;
+        
+    }
+    
+    public static void StudentSolver(String arg[]) {
+        ArrayList&lt;Integer&gt; numbers = new ArrayList&lt;&gt; ();
+        numbers.add(-4); numbers.add(-4); numbers.add(-1); 
+        numbers.add(13); numbers.add(-9); numbers.add(-14);
+        numbers.add(4); numbers.add(-7); numbers.add(-2);
+        numbers.add(-2); numbers.add(6); numbers.add(3);
+        numbers.add(-6); numbers.add(-8); numbers.add(11);
+        numbers.add(-4); numbers.add(-3); numbers.add(-6);
+        numbers.add(7); numbers.add(11); numbers.add(-10);
+        numbers.add(4); numbers.add(-7); numbers.add(6);
+        numbers.add(5); numbers.add(6); numbers.add(4);
+        numbers.add(10); numbers.add(14); numbers.add(-9);
+        System.out.println(solve(numbers));
+        
+    }   
+}
+</PRE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,206 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>960911603</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class StudentSolver {
+
+    public static ArrayList&lt;Boolean&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs) {
+        
+        
+        ArrayList&lt;Boolean&gt; result = new ArrayList&lt;Boolean&gt;();
+        Boolean[][] b = new Boolean[bulbs.size()][3]; 
+        Boolean[] rows = new Boolean[bulbs.size()];
+        int M = findM(bulbs);
+        Boolean[] lights = new Boolean[M];
+        for(int p = 0; p &lt; lights.length; p++){
+            lights[p] = false;
+        }
+        checkLights(bulbs, b, rows, lights);
+        int i = (M/2) + 1;
+        int j = M/2;
+        Boolean on;
+        while(i&lt;=M &amp;&amp; j &gt; 0){
+            on = adjustCurrent(bulbs, rows, j, 0, 3);
+            lights[j-1] = on;
+            j--;
+
+            on = adjustCurrent(bulbs, rows, i, 0, 3);
+            lights[i-1] = on;
+            i++;
+        }
+        if(M%2 == 1){
+            on = adjustCurrent(bulbs, rows, i, 0, 3);
+            lights[i-1] = on;
+        }
+        checkLights(bulbs, b, rows, lights);
+        while(!allOn(rows)){ 
+            for(int s = 0; s &lt; 3; s++){
+                for(int k = 0; k &lt; rows.length; k++) {
+                    
+                    
+                    if (rows[k] == false) {
+                        
+                        
+                        on = adjustCurrent(bulbs, rows, bulbs.get(k).get(s), k, 0);
+                        lights[Math.abs(bulbs.get(k).get(s)) - 1] = on;
+                        k = -1;
+                        checkLights(bulbs, b, rows, lights);
+                        if(allOn(rows)){
+                            k = rows.length;
+                            s = 3;
+                        }
+                    } else if (k == rows.length - 1) {
+                        if(s==2 || allOn(rows)){
+                            k = rows.length;
+                            s = 3;
+                        }
+                        else{
+                            s++;
+                        }
+                    }
+                }
+            }
+        }
+
+        for(int m = 0; m &lt; lights.length; m++){
+            result.add(lights[m]);
+        }
+
+        return result;
+    }
+<A NAME="0"></A>
+    public static int findM(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs){ 
+        int max = 1;
+        for(int i = 0; i &lt; bulbs.size(); i++)<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match628-1.html#0',3,'match628-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>{
+            for(int j = 0; j &lt; bulbs.get(i).size(); j++){
+                if(Math.abs(bulbs.get</B></FONT>(i).get(j)) &gt; max){
+                    max = Math.abs(bulbs.get(i).get(j));
+                }
+            }
+        }
+        return max;
+    }
+<A NAME="1"></A>
+    public static Boolean allOn(Boolean[] rows){
+        for(int i = 0; i &lt; rows.length; i++){
+            if(rows[i] == false)<FONT color="#f63526"><A HREF="javascript:ZweiFrames('match628-1.html#1',3,'match628-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>{
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static void checkLights(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs</B></FONT>, Boolean[][] b, Boolean[] rows, Boolean[] lights){
+        for(int i = 0; i &lt; bulbs.size(); i++){
+            for(int j = 0; j &lt; bulbs.get(i).size(); j++){
+                if(bulbs.get(i).get(j) &gt; 0){
+                    if(lights[Math.abs(bulbs.get(i).get(j))-1] == false){
+                        b[i][j] = false;
+                    }
+                    else{
+                        b[i][j] = true;
+                    }
+                }
+                else{
+                    if(lights[Math.abs(bulbs.get(i).get(j))-1] == false){
+                        b[i][j] = true;
+                    }
+                    else{
+                        b[i][j] = false;
+                    }
+                }
+            }
+            if(b[i][0] == true || b[i][1] == true || b[i][2] == true){
+                rows[i] = true;
+            }
+            else{
+                rows[i] = false;
+            }
+        }
+    }
+
+    public static Boolean adjustCurrent(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs, Boolean[] rows, int wire, int row, int bulb){
+        Boolean on = false;
+        Boolean checked = false;
+        
+        
+        
+        if(row != 0){
+            if (bulbs.get(row).get(bulb) &lt; 0) { 
+                on = false;
+                rows[row] = true;
+                checked = true;
+                bulb = 3;
+            } else if (bulbs.get(row).get(bulb) &gt; 0) { 
+                on = true;
+                rows[row] = true;
+                checked = true;
+                bulb = 3;
+            }
+<A NAME="2"></A>        }
+        for(int i = 0; i &lt; bulbs.size(); i++) {
+            if(!checked) {
+                <FONT color="#77bfc7"><A HREF="javascript:ZweiFrames('match628-1.html#2',3,'match628-top.html#2',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>for (int j = 0; j &lt; bulbs.get(i).size(); j++) {
+                    if (Math.abs(bulbs.get</B></FONT>(i).get(j)) == wire) { 
+                        if (!rows[i]) { 
+                            
+                            if (bulbs.get(i).get(j) &lt; 0) { 
+                                
+                                on = false;
+                                rows[i] = true;
+                                checked = true;
+                                j = 3;
+                            } else if (bulbs.get(i).get(j) &gt; 0) { 
+                                
+                                on = true;
+                                rows[i] = true;
+                                checked = true;
+                                j = 3;
+                            }
+                        }
+                    }
+                }
+            }
+            else{
+                for (int j = 0; j &lt; bulbs.get(i).size(); j++) {
+                    if (Math.abs(bulbs.get(i).get(j)) == wire) {
+                        if(on){
+                            if (bulbs.get(i).get(j) &gt; 0) {
+                                rows[i] = true;
+                            }
+                        }
+                        else{
+                            if (bulbs.get(i).get(j) &lt; 0) {
+                                rows[i] = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        return on;
+    }
+}
+</PRE>
+
+</BODY>
+</HTML>

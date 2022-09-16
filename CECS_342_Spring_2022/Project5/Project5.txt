@@ -1,0 +1,86 @@
+interpret(noop).
+
+interpret(printStr(S)) :-
+    write(S).
+
+interpret(printExp(Exp)) :- 
+    evaluate(Exp, Value), 
+    write(Value).
+
+testCondition(equals(Exp1,Exp2)) :-
+    evaluate(Exp1, R1),
+    evaluate(Exp2, R2),
+    R1 == R2.
+
+testCondition(and(Cond1, Cond2)) :-
+    testCondition(Cond1),
+    testCondition(Cond2).
+
+testCondition(not(Cond)) :-
+    \+ testCondition(Cond).
+
+    
+
+interpret(branch(Cond, Then, Else)) :-
+    testCondition(Cond),
+    !,
+    interpret(Then).
+
+interpret(branch(Cond, _, Else)) :-
+    interpret(Else).
+
+interpret(repeat(0, Statement)).
+
+interpret(repeat(Counter, Statement)) :-
+    interpret(Statement),
+    Counter2 is Counter - 1,
+    interpret(repeat(Counter2, Statement)).
+
+evaluate(input(Exp),R) :-
+    write(Exp),
+    read(R).
+
+evaluate(neg(Exp), R) :-
+    evaluate(Exp, R1),
+    R is -1 * R1.
+
+evaluate(pow(Exp1, Exp2), R) :-
+    evaluate(Exp1, R1),
+    evaluate(Exp2, R2),
+    R is R1 ** R2.
+
+evaluate(sqrt(Exp1, R)) :-
+    evaluate(Exp1, R1),
+    R is sqrt(R1).
+
+evaluate(mult(Exp1, Exp2), R) :-
+    evaluate(Exp1, R1),
+    evaluate(Exp2, R2),
+    R is R1 * R2.
+
+evaluate(div(Exp1, Exp2), R) :-
+    evaluate(Exp1, R1),
+    evaluate(Exp2, R2),
+    R is R1 / R2.
+
+evaluate(add(Exp1, Exp2), R) :-
+    evaluate(Exp1, R1),
+    evaluate(Exp2, R2),
+    R is R1 + R2.
+
+evaluate(sub(Exp1, Exp2), R) :-
+    evaluate(Exp1, R1),
+    evaluate(Exp2, R2),
+    R is R1-R2.
+
+evaluate(Exp, Exp).
+
+runProgram :-
+    
+    P = branch(equals(input('Enter a number:'),0),
+               printStr('Good job'),
+               branch(not(equals(input('Enter another number'), 0)),
+                      printStr('Good job'),
+                      repeat(3, printExp(pow(input('Enter a base:'),
+                                             input('Enter an exponent:')))))),
+    interpret(P).

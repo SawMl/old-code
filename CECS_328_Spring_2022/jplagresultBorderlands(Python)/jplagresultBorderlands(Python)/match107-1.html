@@ -1,0 +1,165 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>359930107</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+<A NAME="0"></A># NEGATIVE NUMBER = LIGHT IS ON BY DEFAULT, TRUE WOULD TURN IT OFF
+
+test_set <FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match107-0.html#0',2,'match107-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>= [
+    [-4, -4, -1],
+    [13, -9, -14],
+    [4, -7, -2],
+    [-2, 6, 3],
+    [-6, -8, 11],
+    [-4, -3, -6],
+    [7, 11, -10],
+    [4, -7, 6],
+    [5, 6, 4],
+    [10</B></FONT>, 14, -9]
+    ]
+
+test_set_answers = [
+    [False], 
+    [False], 
+    [False], 
+    [True], 
+    [True], 
+    [False], 
+    [True], 
+    [False], 
+    [False], 
+    [False], 
+    [True], 
+    [False], 
+    [True], 
+    [True],
+    ]
+
+def solve(bulbs):
+    M = 0
+    for i in range(len(bulbs)):
+        for j in range(3):
+            if (abs(bulbs[i][j]) &gt;= M):
+                #Find the max value within bulbs
+                M = bulbs[i][j]
+    N = len(bulbs)
+    #print(&quot;M:&quot;, M, &quot;\nN:&quot;, N)
+    answer = []
+    for i in range(M):
+        answer.append([False])
+    #print(answer)
+    #print(&quot;==========&quot;)
+
+    for i in range(len(bulbs)):
+        for j in range(3):
+            index = 0
+            if (bulbs[i][j] &gt; 0):
+                index = bulbs[i][j]
+                answer[index-1] = [False]
+            else:
+                answer[index-1] = [True]
+    
+    for z in range(10):
+        #print(bulbs)
+        for i in range(len(bulbs)):
+            on_set = is_on(bulbs[i])
+            #print(on_set)
+            if (on_set == False):
+                off_set = find_off(bulbs[i])
+                off_set = map(abs, off_set)
+                off_set = list(off_set)
+                min_value = M
+                for j in range(len(off_set)):
+                    if (off_set[j] &lt; min_value):
+                        ##print(&quot;Element&quot;, off_set[j])
+                        min_value = off_set[j]
+                        #print(&quot;MIN VALUE&quot;, min_value)
+                        min_element = j
+                        #print(&quot;Minimum element:&quot;, min_element, &quot;\nMinimum value:&quot;, min_value)
+                        #print(&quot;==========&quot;)
+                for k in range(len(bulbs)):
+                    for l in range(3):
+                        if (abs(bulbs[k][l]) == min_value):
+                            #print(&quot;WE ARE CHANGING A VALUE&quot;)
+                            bulbs[k][l] = bulbs[k][l] * -1
+                #print(answer[min_value-1])
+                if (answer[min_value-1] == True):
+                    answer[min_value-1] = [False]
+                else:
+                    answer[min_value-1] = [True]
+                #print(answer[min_value-1])
+##            if (on_set == True):
+##                min_value = M
+##                for y in range(3):
+##                    if (bulbs[i][y] &lt; M):
+##                        min_value = bulbs[i][y]
+##                answer[min_value] = [False]
+        #print(z)
+        #print(bulbs)
+        #print(answer)
+    #print(&quot;Hello there&quot;)
+    
+    return answer
+
+def is_on(bulb_set):
+    on = 0
+    off = 0
+    for i in range(len(bulb_set)):
+        if (bulb_set[i] &lt; 0):
+            on += 1
+        if (bulb_set[i] &gt; 0):
+            off += 1
+    if (on &gt; 0):
+        return True
+    elif (off == 3):
+        return False
+
+def find_off(bulb_set):
+    off_set = []
+    for i in range(len(bulb_set)):
+        if (bulb_set[i] &gt; 0):
+            off_set.append(bulb_set[i])
+    return off_set
+
+solve(test_set)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+
+</BODY>
+</HTML>

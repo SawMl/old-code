@@ -1,0 +1,164 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>038543911</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+import java.util.ArrayList;
+
+public class StudentSolver {
+  public static void main(String[] args) {
+    
+    int[][] sample = {
+        { 3, 4, 1, 2, 8, 6 },
+        { 6, 1, 8, 2, 7, 4 },
+        { 5, 4, 3, 9, 9, 5 },
+        { 5, 9, 8, 3, 2, 6 },
+        { 8, 7, 2, 9, 6, 4 } };
+    ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid = new ArrayList&lt;&gt;();
+    add(sample, grid);
+
+    
+    ArrayList&lt;Integer&gt; ans = solve(grid);
+    System.out.println(ans.toString());
+    System.out.println(maxNum);
+
+  }
+
+  public static void add(int[][] sample, ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid) {
+    for (int r = 0; r &lt; sample.length; r++) {
+      ArrayList&lt;Integer&gt; list = new ArrayList&lt;&gt;();
+      for (int c = 0; c &lt; sample[0].length; c++) {
+        list.add(sample[r][c]);
+      }
+
+      grid.add(list);
+    }
+  }
+
+  public static int maxNum = 0;
+<A NAME="0"></A>  public static ArrayList&lt;Integer&gt; answer = null;
+  public static int[][] maxdp = null;
+
+  <FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match531-0.html#0',2,'match531-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>public static ArrayList&lt;Integer&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid) {
+    int row = grid.size();
+    int col = grid.get(0).size();
+    boolean[][] visited = new boolean[row][col]</B></FONT>;
+    ArrayList&lt;Integer&gt; path = new ArrayList&lt;Integer&gt;();
+    
+    path.add(1); 
+
+    
+    for (int c = 0; c &lt; col; c++) {
+      path.add(c);
+      int endCol = (c - 1 + col) % col;
+      int[][] dp = new int[row][col];
+      helper(grid, dp, 0, c, endCol);
+
+      if (dp[0][c] &gt; maxNum) {
+        maxNum = dp[0][c];
+        answer = new ArrayList&lt;Integer&gt;(path);
+        maxdp = dp;
+      }
+      path.remove(path.size() - 1);
+    }
+    path.remove(path.size() - 1); 
+
+    path.add(0); 
+    for (int c = 0; c &lt; col; c++) {
+      path.add(c);
+      int endCol = (c - 1 + col) % col;
+      int[][] dp = new int[row][col];
+      helper(grid, dp, row - 1, c, endCol);
+
+      if (dp[row - 1][c] &gt; maxNum) {
+        maxNum = dp[row - 1][c];
+        answer = new ArrayList&lt;Integer&gt;(path);
+        maxdp = dp;
+      }
+      path.remove(path.size() - 1);
+    }
+
+    int r = 0; 
+    if (answer.get(0) == 0) 
+      r = row - 1;
+    int c = answer.get(1);
+
+    while (answer.size() &lt; col + 1) {
+      int newC = (c + 1) % col;
+      int upR = (r - 1 + row) % row;
+      int downR = (r + 1 + row) % row;
+
+      if (maxdp[r][newC] &gt;= maxdp[upR][newC]
+          &amp;&amp; maxdp[r][newC] &gt;= maxdp[downR][newC]) {
+        answer.add(0);
+        c = newC;
+      } else if (maxdp[upR][newC] &gt;= maxdp[r][newC]
+          &amp;&amp; maxdp[upR][newC] &gt;= maxdp[downR][newC]) {
+        answer.add(1);
+        c = newC;
+        r = upR;
+      } else {
+        answer.add(-1);
+        c = newC;
+        r = downR;
+<A NAME="1"></A>      }
+    }
+
+    <FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match531-0.html#1',2,'match531-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>return answer;
+  }
+
+  public static void helper(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid, int[][] dp,
+      int r, int c, int endCol</B></FONT>) {
+
+    if (c == endCol) { 
+      if (r == 0 || r == grid.size() - 1) {
+        dp[r][c] = grid.get(r).get(c);
+
+        return;
+      }
+      dp[r][c] = -1;
+
+      return;
+    }
+
+    int row = grid.size();
+    int col = grid.get(0).size();
+
+    
+    int newC = (c + 1) % col;
+    if (dp[r][newC] == 0)
+      helper(grid, dp, r, newC, endCol);
+
+    
+    int upR = (r - 1 + row) % row;
+    if (dp[upR][newC] == 0)
+      helper(grid, dp, upR, newC, endCol);
+
+    
+    int downR = (r + 1 + row) % row;
+    if (dp[downR][newC] == 0)
+      helper(grid, dp, downR, newC, endCol);
+
+    dp[r][c] = grid.get(r).get(c)
+        + Math.max(dp[r][newC], Math.max(dp[upR][newC], dp[downR][newC]));
+
+  }
+}
+</PRE>
+
+</BODY>
+</HTML>

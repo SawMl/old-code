@@ -1,0 +1,342 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>528639664</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+def solve(grid):
+    print(&quot;grid&quot;)
+    for line in grid:
+        print(line)
+    fat_num = 0
+    index_fat_num = 0
+    fat_num2 = 0
+    index_fat_num2 = 0
+    fat_num3 = 0
+    index_fat_num3 = 0
+    fat_num4 = 0
+    index_fat_num4 = 0
+    fat_num5 = 0
+    index_fat_num5 = 0
+    fat_num6 = 0
+    index_fat_num6 = 0
+    total = 0
+    crossing = 0
+    crossing2 = 0
+    crossing3 = 0
+    crossing4 = 0
+    crossing5 = 0
+    crossing6 = 0
+
+    exit = False
+    total = 0
+    result = []
+    moves = []
+    moves2 = []
+    moves3 = []
+    moves4 = []
+    moves5 = []
+    moves6 = []
+    for line in grid[0]:
+        if line &gt; fat_num:
+            fat_num = line
+            index_fat_num = grid[0].index(line)
+        moves = [1, index_fat_num]
+    for line in grid[0]:
+        if line &gt; fat_num2 and grid[0].index(line) != index_fat_num:
+            fat_num2 = line
+            index_fat_num2 = grid[0].index(line)
+        moves2 = [1, index_fat_num2]
+    for line in grid[0]:
+        if line &gt; fat_num5 and grid[0].index(line) != index_fat_num and grid[0].index(line) != index_fat_num2:
+            fat_num5 = line
+            index_fat_num5 = grid[0].index(line)
+        moves5 = [1, index_fat_num5]
+
+    for line in grid[len(grid) - 1]:
+        if line &gt; fat_num3:
+            fat_num3 = line
+            index_fat_num3 = grid[len(grid) - 1].index(line)
+        moves3 = [0, index_fat_num3]
+    for line in grid[len(grid) - 1]:
+        if line &gt; fat_num4 and grid[len(grid) - 1].index(line) != index_fat_num3:
+            fat_num4 = line
+            index_fat_num4 = grid[len(grid) - 1].index(line)
+        moves4 = [0, index_fat_num4]
+    for line in grid[len(grid) - 1]:
+        if line &gt; fat_num6 and grid[len(grid) - 1].index(line) != index_fat_num3  and grid[len(grid) - 1].index(line) != index_fat_num4:
+            fat_num6 = line
+            index_fat_num6 = grid[len(grid) - 1].index(line)
+        moves6 = [0, index_fat_num6]
+
+    total = fat_num
+    total2 = fat_num2
+    total3 = fat_num3
+    total4 = fat_num4
+    total5 = fat_num5
+<A NAME="0"></A>    total6 = fat_num6
+    indexo = 0
+    topdown = False
+    topdown2 <FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match170-1.html#0',3,'match170-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>= False
+    topdown3 = False
+    topdown4 = False
+    topdown5 = False
+    topdown6 = False
+
+    crescendo = False
+    for i in range(len(grid[0]) - 1):
+
+        dif = 1000
+        if</B></FONT> i == int((len(grid[0]) - 1) / 2):
+            crescendo = True
+        if crescendo is True:
+            dif = len(grid[0]) - 1 - i
+
+        result = biggest_number_on_the_right(grid, indexo, index_fat_num, dif)
+        total = total + result[0]
+        moves.append(result[1])
+        if result[2] is True:
+            crossing += 1
+        indexo = result[3]
+        index_fat_num = result[4]
+        if i == len(grid[0]) - 2:
+            if indexo == len(grid) - 1 or indexo == 0:
+                topdown = True
+    indexo = 0
+    crescendo = False
+    for i in range(len(grid[0]) - 1):
+
+        dif = 1000
+        if i == int((len(grid[0]) - 1) / 2):
+            crescendo = True
+        if crescendo is True:
+            dif = len(grid[0]) - 1 - i
+
+        result = biggest_number_on_the_right(grid, indexo, index_fat_num2, dif)
+        total2 = total2 + result[0]
+        moves2.append(result[1])
+        if result[2] is True:
+            crossing2 += 1
+        indexo = result[3]
+        index_fat_num2 = result[4]
+        if i == len(grid[0]) - 2:
+            if indexo == len(grid) - 1 or indexo == 0:
+                topdown2 = True
+    indexo = 0
+    crescendo = False
+    for i in range(len(grid[0]) - 1):
+
+        dif = 1000
+        if i == int((len(grid[0]) - 1) / 2):
+            crescendo = True
+        if crescendo is True:
+            dif = len(grid[0]) - 1 - i
+
+        result = biggest_number_on_the_right(grid, indexo, index_fat_num5, dif)
+        total5 = total5 + result[0]
+        moves5.append(result[1])
+        if result[2] is True:
+            crossing5 += 1
+        indexo = result[3]
+        index_fat_num5 = result[4]
+        if i == len(grid[0]) - 2:
+            if indexo == len(grid) - 1 or indexo == 0:
+                topdown5 = True
+
+    indexo = len(grid) - 1
+    crescendo = False
+    for i in range(len(grid[0]) - 1):
+
+
+        dif = 1000
+        if i == int((len(grid[0]) - 1) / 2):
+            crescendo = True
+        if crescendo is True:
+            dif = len(grid[0]) - 1 - i
+
+        result = biggest_number_on_the_right(grid, indexo, index_fat_num3, dif)
+        total3 = total3 + result[0]
+        moves3.append(result[1])
+        if result[2] is True:
+            crossing3 += 1
+        indexo = result[3]
+        index_fat_num3 = result[4]
+        if i == len(grid[0]) - 2:
+            if indexo == len(grid) - 1 or indexo == 0:
+                topdown3 = True
+    indexo = len(grid) - 1
+    crescendo = False
+    for i in range(len(grid[0]) -1 ):
+
+
+        dif = 1000
+        if i == int ( (len(grid[0]) -1)/2):
+            crescendo = True
+        if crescendo is True:
+            dif = len(grid[0]) - 1 - i
+
+        result = biggest_number_on_the_right(grid, indexo, index_fat_num4, dif)
+        total4 = total4 + result[0]
+        moves4.append(result[1])
+        if result[2] is True:
+            crossing4 += 1
+        indexo = result[3]
+        index_fat_num4 = result[4]
+        if i == len(grid[0]) - 2:
+            if indexo == len(grid) - 1 or indexo == 0:
+                topdown4 = True
+
+    indexo = len(grid) - 1
+    crescendo = False
+    for i in range(len(grid[0]) - 1):
+
+        dif = 1000
+        if i == int((len(grid[0]) - 1) / 2):
+            crescendo = True
+        if crescendo is True:
+            dif = len(grid[0]) - 1 - i
+
+        result = biggest_number_on_the_right(grid, indexo, index_fat_num6, dif)
+        total6 = total6 + result[0]
+        moves6.append(result[1])
+        if result[2] is True:
+            crossing6 += 1
+        indexo = result[3]
+        index_fat_num6 = result[4]
+        if i == len(grid[0]) - 2:
+            if indexo == len(grid) - 1 or indexo == 0:
+                topdown6 = True
+    print(total)
+    print(total2)
+    print(total3)
+    print(total4)
+    print(total5)
+    print(total6)
+
+    print(&quot;solutions&quot;)
+    print(moves)
+    print(moves2)
+    print(moves3)
+    print(moves4)
+
+    maxi = max(total, total2, total3, total4)
+    if total &gt; total2 and total &gt; total3 and total &gt; total4 and total &gt; total5 and total &gt; total6 and topdown == True and crossing &gt; 0:
+        return moves
+    elif total2 &gt; total and total2 &gt; total3 and total2 &gt; total4 and total2 &gt; total5 and total2 &gt; total6 and topdown2 == True and crossing2 &gt; 0:
+        return moves2
+    elif total3 &gt; total and total3 &gt; total3 and total3 &gt; total4 and total3 &gt; total5 and total3 &gt; total6 and topdown3 == True and crossing3 &gt; 0:
+        return moves3
+    elif total4 &gt; total2 and total4 &gt; total3 and total4 &gt; total and total4 &gt; total5 and total4 &gt; total6 and topdown4 == True and crossing4 &gt; 0:
+        return moves4
+    elif total5 &gt; total2 and total5 &gt; total3 and total5 &gt; total and total5 &gt; total4 and total5 &gt; total6 and topdown5 == True and crossing4 &gt; 0:
+        return moves5
+    elif total6 &gt; total2 and total6 &gt; total3 and total6 &gt; total and total6 &gt; total4 and total6 &gt; total5 and topdown6 == True and crossing4 &gt; 0:
+        return moves6
+    elif total == maxi and topdown == True and crossing &gt; 0:
+        print(moves)
+        return moves
+    elif total2 == maxi and topdown2 == True and crossing2 &gt; 0:
+        print(moves2)
+        return moves2
+    elif total3 == maxi and topdown3 == True and crossing3 &gt; 0:
+        print(moves3)
+        return moves3
+    elif total4 == maxi and topdown4 == True and crossing4 &gt; 0:
+        print(moves4)
+        return moves4
+    elif total5 == maxi and topdown5 == True and crossing4 &gt; 0:
+        print(moves5)
+        return moves5
+    elif total6 == maxi and topdown6 == True and crossing4 &gt; 0:
+        print(moves6)
+        return moves6
+
+def biggest_number_on_the_right(array, index_row, index_col, i):
+    num = array[index_row][index_col]
+
+    right = 0
+    up_rigth = 0
+    down_rigth = 0
+
+
+    if index_col == len(array[0]) - 1:
+        index_col = 0
+    else:
+        index_col = index_col + 1
+    traverse = False
+    traverse1 = False
+
+
+    right = array[index_row][index_col]
+    if index_row == 0:
+        up_right = array[len(array) - 1][index_col]
+        traverse = True
+    else:
+        up_right = array[index_row - 1][index_col]
+
+    if index_row == len(array) - 1:
+        traverse1 = True
+        down_rigth = array[0][index_col]
+    else:
+        down_rigth = array[index_row + 1][index_col]
+
+    if (index_row - (i - 1) != 0 and index_row - (i - 1) != -1)  and (index_row + ( i - 1) != len(array)-1 and index_row + ( i - 1) != len(array)):
+        if right &gt; up_right and right &gt; down_rigth:
+            return [right, 0, False, index_row, index_col]
+        elif up_right &gt;= right and up_right &gt; down_rigth:
+            if traverse is True:
+                return [up_right, 1, True, len(array) - 1, index_col]
+            else:
+                return [up_right, 1, False, index_row - 1, index_col]
+        elif down_rigth &gt;= right and down_rigth &gt; up_right:
+
+            if traverse1 is True:
+                return [down_rigth, -1, True, 0, index_col]
+            else:
+                return [down_rigth, -1, False, index_row + 1, index_col]
+        elif up_right == down_rigth:
+            if index_row &gt; len(array) / 2:
+                if traverse1 is True:
+                    return [down_rigth, -1, True, 0, index_col]
+                else:
+                    return [down_rigth, -1, False, index_row + 1, index_col ]
+            else:
+                if traverse is True:
+                    return [up_right, 1, True, len(array) - 1, index_col]
+                else:
+                    return [up_right, 1, False, index_row - 1, index_col]
+    elif index_row - (i - 1) == 0 or index_row - (i - 1) == -1:
+        if index_row == 0:
+            if right &gt; up_right:
+                return [right, 0, False, index_row, index_col]
+        if traverse is True:
+            return [up_right, 1, True, len(array) - 1, index_col]
+        else:
+            return [up_right, 1, False, index_row - 1, index_col]
+    elif index_row + ( i - 1) != len(array)-1 or index_row + ( i - 1) != len(array):
+        if index_row == len(array) - 1:
+            if right &gt; down_rigth:
+                return [right, 0, False, index_row, index_col]
+        if traverse1 is True:
+            return [down_rigth, -1, True, 0, index_col]
+        else:
+            return [down_rigth, -1, False, index_row + 1, index_col]
+
+
+</PRE>
+
+</BODY>
+</HTML>

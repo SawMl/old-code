@@ -1,0 +1,245 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>789149422</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+def next_nodes(grid, r, c):
+    c = 0 if c == len(grid[0]) -1 else c + 1
+
+    # Direct right case
+    yield (r, c)
+
+    # Right Up case
+    ru = len(grid) -1 if r == 0 else r-1
+    yield(ru, c)
+
+    # Right Down case
+    rd = 0 if r == len(grid)-1 else r + 1
+    yield (rd, c)
+
+
+def print_arr(grid, vs):
+    for i in range(len(grid)):
+        print(&quot;[&quot;, end=&quot; &quot;)
+        for j in range(len(grid[0])):
+            v = grid[i][j]['v']
+            if (i,j) in vs:
+                ind = vs.index((i,j))
+                print(f&quot;({ind}: {v})&quot;.rjust(6), end=&quot;, &quot;)
+<A NAME="0"></A>            else:
+                print(str(v).rjust(6), end=&quot;, &quot;)
+        print(&quot;],&quot;)
+    print(<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match94-1.html#0',3,'match94-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>&quot;&quot;)
+
+
+def depth_first_best(grid, rs, cs, rd, cd, k, vs):
+    &quot;&quot;&quot;
+    A function for finding out the best path of length k
+    between node (rs, cs) and (rd, cd).
+    Uses cached depth first search(some people call it dynamic programming)
+
+    Keyword arguments:
+    grid -- hopscotch-grid: element of the form {'v': original_value, 'wt': -inf, 'seq': None}
+    rs, cs -- start node
+    rd, cd -- end node
+    k -- length of path
+    &quot;&quot;&quot;
+    ## For debug
+    # vs.append((rs,cs))
+    # print_arr(grid, vs)
+
+    # If we already have calculated the value then
+    # there is no need of recalculating it!!
+    if grid[rs][cs]['seq'] != None:
+        ## For debug
+        # vs.pop()
+        # print(f&quot;Cache hit: k:{k} seq_len: {len(grid[rs][cs]['seq'])}&quot;)
+
+        return grid[rs][cs]['wt'], grid[rs][</B></FONT>cs]['seq']
+    
+    if k == 1:
+        ## For debug
+        # vs.pop()
+
+        if rs == rd and cs == cd:
+            return grid[rs][cs]['v'], [(rs, cs)]
+        return -float('inf'), [(rs, cs)]
+
+    mx_seq = []
+    mx_wt = -float('inf')
+    # Move to the childrens of the current node
+    # and select the one which provides the highest
+    # weight
+    for (rn, cn) in next_nodes(grid, rs, cs):
+        wt, seq = depth_first_best(grid, rn, cn, rd, cd, k-1, vs)
+        if mx_wt &lt; wt:
+            mx_wt = wt
+
+            &quot;&quot;&quot;
+                Most of the problems was caused by 
+                mx_seq = seq, so keep an eye on it
+                Since we will be storing this array further down the road,
+                it is better to copy it otherwise the parent will store child's array
+                and then crazy things will occur
+            &quot;&quot;&quot;
+            mx_seq = seq.copy()
+
+    # Add the values of current node
+    mx_wt += grid[rs][cs]['v']
+    mx_seq.insert(0, (rs,cs))
+    
+    # Add the values into the cache
+    grid[rs][cs]['seq'] = mx_seq
+    grid[rs][cs]['wt'] = mx_wt
+
+    ## For debug
+    # vs.pop()
+    
+    return mx_wt, mx_seq
+
+
+def reset_grid(grid):
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            grid[i][j]['seq'] = None
+            grid[i][j]['wt'] = -float('inf')
+
+
+def graphify(grid):
+    return [ [ {'v': v, 'seq': None, 'wt': -float('inf')} for v in a ] for a in grid ]
+
+
+def professor_direction(start, end, grid):
+    # Direct right
+    if start[0] == end[0]:
+        return 0
+    
+    # Right down
+    if (start[0] + 1) % len(grid) == end[0]:
+        return -1
+    
+    # Right top
+    return 1
+
+
+def index_to_professors_solution(indices, grid):
+    p_s = []
+    if indices[0][0] == 0:
+        p_s.append(1)
+    else:
+        p_s.append(0)
+    p_s.append(indices[0][1])
+
+    for i in range(1, len(indices)):
+        p_s.append(professor_direction(indices[i-1], indices[i], grid))
+
+    return p_s
+
+
+def solve_all_comb(grid):
+    # If we start with (0,c) then the destination can be
+    # either (0, (c-1) % len(grid[0])) -- corresponding to the left and on top
+    # or (len(grid)-1, (c-1) % len(grid[0])) -- corresponding to left on bottom
+    #
+    # By the property of symmetry path starting from top and ending at the bottom
+    # will be same even if we start from bottom and it ends at the top
+    # So we need to check the path starting from the bottom and ending at the bottom
+    # also, i.e start = (len(grid)-1,c) and end = ((c-1)%len(grid[0]))
+
+    _grid = graphify(grid)
+    k = len(grid[0])
+    mx_seq = None
+    mx_wt = -float('inf')
+    for c in range(k):
+        cd = (c-1) % k
+
+        # For destination at the top, starting from top
+        reset_grid(_grid)
+        wt_top, seq_top = depth_first_best(_grid, 0, c, 0, cd, k, [])
+        if mx_wt &lt; wt_top:
+            mx_wt = wt_top
+            mx_seq = seq_top
+        
+        # For the destination at the bottom, starting from top
+        reset_grid(_grid)
+        wt_bot, seq_bot = depth_first_best(_grid, 0, c, len(grid)-1, cd, k, [])
+        if mx_wt &lt; wt_bot:
+            mx_wt = wt_bot
+            mx_seq = seq_bot
+
+        # For the destination at bottom, starting from bottom
+        reset_grid(_grid)
+        wt_bot, seq_bot = depth_first_best(_grid, len(grid)-1, c, len(grid)-1, cd, k, [])
+        if mx_wt &lt; wt_bot:
+            mx_wt = wt_bot
+            mx_seq = seq_bot
+
+
+    # print(mx_wt, mx_seq)
+    # print_arr(_grid, mx_seq)
+    return index_to_professors_solution(mx_seq, grid)
+    pass
+
+def test_depth_first_best(grid):
+    vs = []
+    _grid = graphify(grid)
+    sol = depth_first_best(_grid, 0, 3, 2, 2, len(grid[0]), vs)
+    
+    
+    print(sol)
+    print(f'Columns in hopscotch: {len(grid[0])}, Columns in solution: {len(sol[1])}')
+    print_arr(_grid, sol[1])
+
+
+def solve(grid):
+    # test_depth_first_best(grid)
+    # print(f&quot;Grid: {grid}&quot;)
+    return solve_all_comb(grid)
+    pass
+
+# grid = [
+#     [3, 4, 1, 2, 8, 6,],
+#     [6, 1, 8, 2, 7, 4,],
+#     [5, 4, 3, 9, 9, 5,],
+#     [5, 9, 8, 3, 2, 6,],
+#     [8, 7, 2, 9, 6, 4,],
+# ]
+
+# grid = [
+#     [1, 2, 3, 4, ],
+#     [4, 5, 6, 7, ],
+#     [7, 8, 9, 9, ],
+# ]
+
+# grid = [[7, 1, 3, 2, 7], [5, 1, 9, 7, 5], [9, 8, 6, 5, 4], [4, 4, 4, 6, 4]]
+
+grid = [
+    [1, 2, 1, 6, 3, 8, 1, 7, 6, 4], 
+    [8, 6, 7, 5, 9, 1, 4, 3, 2, 7], 
+    [8, 5, 9, 3, 6, 9, 8, 1, 3, 1], 
+    [7, 8, 3, 6, 9, 6, 6, 9, 8, 5], 
+    [6, 7, 2, 9, 1, 4, 2, 8, 4, 2], 
+    [2, 2, 1, 9, 6, 1, 7, 3, 6, 3], 
+    [6, 2, 4, 4, 3, 6, 7, 2, 7, 9], 
+    [3, 8, 7, 5, 7, 3, 5, 9, 8, 5]
+]
+
+print(solve(grid))
+</PRE>
+
+</BODY>
+</HTML>

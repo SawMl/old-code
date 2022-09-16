@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>087778513</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+
+def solve(bulbs):
+    #print(&quot;bulbs: &quot;,bulbs)
+    m = maxVal(bulbs)
+    lights = dict()
+    weights = weighted(bulbs,m)
+    #print(&quot;weights: &quot;,weights)
+    
+    for row in bulbs:
+        maxW = [0,0] #store bulb and max weight
+        if not rowOn(row,lights):
+            #print(&quot;rowOff: &quot;,row)
+            for i in range(len(row)):
+                #print(&quot;light= &quot;, row[i])
+                if abs(row[i]) in lights:
+                    continue
+                if weights[row[i]] &gt; maxW[1]:
+                    maxW[0],maxW[1] = row[i], weights[row[i]]
+             
+            if maxW[0] == 0:
+                print(&quot;failed&quot;)
+            if row[0]==row[1]==row[2]:
+                maxW[0],maxW[1] = row[0], weights[row[0]]
+                
+            if maxW[0]&lt;0:
+                lights[abs(maxW[0])] = False
+                #print(&quot;F &quot;,maxW[0])
+            else:
+                lights[abs(maxW[0])] = True
+                #print(&quot;T &quot;,maxW[0])
+        #else:
+            #print(&quot;rowOn: &quot;,row)
+              
+    #print(lights)  
+    lights = populate(lights,m)
+    return lights[1:m+1]
+
+def rowOn(row,diction):
+    for i in row:
+        if abs(i) in diction:
+            if i&gt;0 and diction[abs(i)] or i&lt;0 and not diction[abs(i)]:
+                return True
+    return False
+    
+def populate(diction,m):
+    array = [False]*(m+1)
+    for i in range(len(array)):
+        if i in diction:
+            array[i] = diction[i]
+    return array
+<A NAME="0"></A>    
+def maxVal(array):
+    minmax = 0
+    <FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match134-0.html#0',2,'match134-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>for i in array:
+        for j in i:
+            if abs(j)&gt;minmax:
+                minmax = abs(j)
+            
+    return minmax 
+    
+def weighted(array,m):
+    count=</B></FONT> dict()
+    count = count.fromkeys(range(-m,m+1),0)
+    for i in array:
+        for j in i:
+            count[j] += 1
+    return count
+
+'''
+n = [[7, -7, -8], [-8, -8, -10], [7, 7, 11], [8, 5, 5], [10, -12, -15], [-6, -5, 4], [-6, 6, 5], [5, 7, 10], [-4, 5, 3], [9, -9, -8]]
+print(solve(n))
+n = [[-4, -4, -1], [13, -9, -14],[ 4, -7, -2],[ -2, 6, 3],[ -6, -8, 11],[ -4, -3, -6],[ 7, 11, -10],[ 4, -7, 6],[ 5, 6, 4],[ 10, 14, -9]] 
+print(solve(n))
+n = [[7, 6, -7], [-9, 10, 11], [13, -12, 11]]
+print(solve(n))
+n = [[5, 5, -6], [4, 2, -4], [-7, -10, 10], [-5, -6, -7], [3, -1, -1], [-6, -4, 2], [-2, -4, 7], [-6, 4, -6], [8, -4, -3], [-13, 8, -11], [-5, -7, -6], [-6, -8, 5], [3, -1, 4], [3, 6, -4], [-6, -10, -7], [4, -1, -4], [4, -7, 4], [5, 5, -3], [3, 4, 1], [3, -6, 3]]
+print(solve(n))
+n = [[-10, 11, -7], [6, 6, 8], [11, -10, 9], [10, -13, -13], [-6, -8, 9], [-7, -2, -4], [-10, 9, 10], [9, 9, 13], [-10, 8, -8], [-1, 2, 3], [-1, 5, 6], [5, 4, 3], [5, 9, -4], [-10, -10, 10], [3, 3, -8], [5, -6, -4], [-7, 6, -11], [10, 10, 8], [-10, -10, -7], [4, -8, -7]]
+print(solve(n))
+
+'''
+#n =  [[8, -7, 10], [-6, 7, -6], [-7, -5, -3], [5, -7, 8], [15, -12, 15], [-7, 5, 5], [-19, -15, -15], [-14, -15, -16], [8, 9, 6], [-13, 11, -14], [-5, -8, -7], [-6, 5, -7], [-13, 14, 14], [7, 8, -8], [5, 3, -4], [4, -4, 4], [-12, 11, -10], [-12, -15, -10], [-11, -10, 11], [-15, 14, -18], [-6, -9, -5], [15, 11, 14], [-10, 8, 10], [-3, -7, 4], [-8, -10, -7], [8, 8, -9], [6, -6, -10], [-15, 14, -17], [13, 9, 8], [-19, 19, -15], [-10, -12, 8], [17, 15, -13], [5, -4, -3], [7, -10, -7], [15, 19, 18], [13, -15, -14], [-13, -10, 14], [11, -7, -12], [-11, -11, 16], [-16, -15, -15], [10, -14, -12], [9, -7, -4], [8, -10, -10], [-10, -9, 8], [9, -6, 6], [9, 6, 8], [17, -19, -18], [14, -12, -16], [8, 8, -4], [-12, -8, 8], [-12, 9, -7], [-17, -18, 14], [17, 17, 18], [19, -15, 18], [6, -7, -3], [-18, 17, -19], [-15, -11, -10], [-16, 19, -19], [-9, -10, -7], [12, 12, 14], [-16, 17, -16], [15, -20, 17], [17, -13, -18], [10, -10, -6], [16, 19, 14], [-1, -6, -4], [8, -6, -3], [-14, 11, -13], [-6, 5, 8], [8, 3, -6], [-15, 14, -15], [-6, 9, 4], [-7, -3, 5], [4, 4, -6], [-16, 19, -16], [-17, -13, 13], [19, -17, -19], [12, 12, -13], [-3, -2, 5], [6, 5, -2], [-14, 14, 11], [11, 9, 11], [15, 11, -11], [-9, -6, 5], [10, -10, 9], [-16, -18, -15], [-13, 15, 17], [-15, 13, -15], [-9, -7, -10], [-20, -16, -18], [2, 4, -6], [8, -6, -6], [-2, 4, -3], [15, -16, 19], [-8, 13, -13], [7, -9, 8], [16, -15, 17], [20, 19, -17], [-10, 10, -6], [-5, -3, -6]]
+#print(solve(n))
+</PRE>
+
+</BODY>
+</HTML>

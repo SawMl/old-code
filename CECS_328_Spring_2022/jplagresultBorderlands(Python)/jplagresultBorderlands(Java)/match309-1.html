@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>421815405</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.Scanner;
+public class StudentSolver {
+
+
+
+
+
+
+
+
+
+
+	public static ArrayList&lt;Boolean&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt;bulbs){
+		Random rand = new Random();
+
+
+
+		
+		
+		int N= 10;
+		int M= 14;
+		int low = M;
+		int up = M+5;
+		int randint = rand.nextInt(1);
+		bulbs = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;(N);
+		
+		
+		for (ArrayList&lt;Integer&gt; i:bulbs) {
+			if (randint == 1) {
+				i.add((int)Math.floor(Math.random()*(low-up+1)+low)*-1);
+			}else {
+				i.add((int)Math.floor(Math.random()*(low-up+1)+low));
+			}
+			if (randint == 1) {
+				i.add((int)Math.floor(Math.random()*(low-up+1)+low)*-1);
+			}else {
+				i.add((int)Math.floor(Math.random()*(low-up+1)+low));
+			}
+			if (randint == 1) {
+				i.add((int)Math.floor(Math.random()*(low-up+1)+low)*-1);
+<A NAME="0"></A>			}else {
+				i.add((int)Math.floor(Math.random()*(low-up+1)+low));
+			}
+		}<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match309-0.html#0',2,'match309-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>
+		
+		
+		ArrayList&lt;Boolean&gt;ans = new ArrayList&lt;Boolean&gt;();
+		for (int i = 0; i&lt;M;i++) {
+			int rando = rand.nextInt(1);
+			if (rando == 1) {
+				ans.add(true);</B></FONT>
+			}else {
+				ans.add(false);
+			}
+		}
+		return ans;
+	}
+	
+
+}
+</PRE>
+
+</BODY>
+</HTML>

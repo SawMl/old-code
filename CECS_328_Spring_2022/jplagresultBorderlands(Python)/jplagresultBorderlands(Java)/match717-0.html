@@ -1,0 +1,656 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>561264859</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+<A NAME="0"></A><FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match717-1.html#0',3,'match717-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>import java.util.*;
+public class StudentSolver 
+{
+	public static void main(String[] args)
+	{
+		ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs = new ArrayList&lt;&gt;();
+		ArrayList&lt;Integer&gt; dummy1 = new ArrayList&lt;&gt;()</B></FONT>;
+		dummy1.add(-4);
+		dummy1.add(-4);
+		dummy1.add(-1);
+		bulbs.add(dummy1);
+		ArrayList&lt;Integer&gt; dummy2 = new ArrayList&lt;&gt;();
+		dummy2.add(13);
+		dummy2.add(-9);
+		dummy2.add(14);
+		bulbs.add(dummy2);
+		ArrayList&lt;Integer&gt; dummy3 = new ArrayList&lt;&gt;();
+		dummy3.add(4);
+		dummy3.add(-7);
+		dummy3.add(-2);
+		bulbs.add(dummy3);
+		ArrayList&lt;Integer&gt; dummy4 = new ArrayList&lt;&gt;();
+		dummy4.add(-2);
+		dummy4.add(6);
+		dummy4.add(3);
+		bulbs.add(dummy4);
+		ArrayList&lt;Integer&gt; dummy5 = new ArrayList&lt;&gt;();
+		dummy5.add(-6);
+		dummy5.add(-8);
+		dummy5.add(11);
+		bulbs.add(dummy5);
+		ArrayList&lt;Integer&gt; dummy6 = new ArrayList&lt;&gt;();
+		dummy6.add(-4);
+		dummy6.add(-3);
+		dummy6.add(-6);
+		bulbs.add(dummy6);
+		ArrayList&lt;Integer&gt; dummy7 = new ArrayList&lt;&gt;();
+		dummy7.add(7);
+		dummy7.add(11);
+		dummy7.add(-10);
+		bulbs.add(dummy7);
+		ArrayList&lt;Integer&gt; dummy8 = new ArrayList&lt;&gt;();
+		dummy8.add(4);
+		dummy8.add(-7);
+		dummy8.add(6);
+		bulbs.add(dummy8);
+		ArrayList&lt;Integer&gt; dummy9 = new ArrayList&lt;&gt;();
+		dummy9.add(5);
+		dummy9.add(6);
+		dummy9.add(4);
+		bulbs.add(dummy9);
+		ArrayList&lt;Integer&gt; dummy10 = new ArrayList&lt;&gt;();
+		dummy10.add(10);
+		dummy10.add(14);
+		dummy10.add(-9);
+		bulbs.add(dummy10);
+		ArrayList&lt;Integer&gt; dummy11 = new ArrayList&lt;&gt;();
+		dummy11.add(-14);
+		dummy11.add(-14);
+		dummy11.add(-11);
+		bulbs.add(dummy11);
+		ArrayList&lt;Integer&gt; dummy12 = new ArrayList&lt;&gt;();
+		dummy12.add(23);
+		dummy12.add(-19);
+		dummy12.add(21);
+		bulbs.add(dummy12);
+		/**
+			ArrayList&lt;Integer&gt; dummy13 = new ArrayList&lt;&gt;();
+			dummy13.add(14);
+			dummy13.add(-17);
+			dummy13.add(-12);
+			bulbs.add(dummy13);
+			ArrayList&lt;Integer&gt; dummy14 = new ArrayList&lt;&gt;();
+			dummy14.add(-12);
+			dummy14.add(16);
+			dummy14.add(13);
+			bulbs.add(dummy14);
+			ArrayList&lt;Integer&gt; dummy15 = new ArrayList&lt;&gt;();
+			dummy15.add(-16);
+			dummy15.add(-18);
+			dummy15.add(21);
+			bulbs.add(dummy15);
+			ArrayList&lt;Integer&gt; dummy16 = new ArrayList&lt;&gt;();
+			dummy16.add(-14);
+			dummy16.add(-13);
+			dummy16.add(-16);
+			bulbs.add(dummy16);
+			ArrayList&lt;Integer&gt; dummy17 = new ArrayList&lt;&gt;();
+			dummy17.add(17);
+			dummy17.add(21);
+			dummy17.add(-20);
+			bulbs.add(dummy17);
+			ArrayList&lt;Integer&gt; dummy18 = new ArrayList&lt;&gt;();
+			dummy18.add(14);
+			dummy18.add(-17);
+			dummy18.add(16);
+			bulbs.add(dummy18);
+			ArrayList&lt;Integer&gt; dummy19 = new ArrayList&lt;&gt;();
+			dummy19.add(15);
+			dummy19.add(16);
+			dummy19.add(14);
+			bulbs.add(dummy19);
+			ArrayList&lt;Integer&gt; dummy20 = new ArrayList&lt;&gt;();
+			dummy20.add(20);
+			dummy20.add(24);
+			dummy20.add(-19);
+			bulbs.add(dummy20);
+			ArrayList&lt;Integer&gt; dummy21 = new ArrayList&lt;&gt;();
+			dummy21.add(-34);
+			dummy21.add(-34);
+			dummy21.add(-21);
+			bulbs.add(dummy21);
+			ArrayList&lt;Integer&gt; dummy22 = new ArrayList&lt;&gt;();
+			dummy22.add(33);
+			dummy22.add(-29);
+			dummy22.add(34);
+			bulbs.add(dummy22);
+			ArrayList&lt;Integer&gt; dummy23 = new ArrayList&lt;&gt;();
+			dummy23.add(34);
+			dummy23.add(-37);
+			dummy23.add(-32);
+			bulbs.add(dummy23);
+		 **/
+		for (int i = 0; i &lt; bulbs.size(); i++)
+		{
+			System.out.println(bulbs.get(i));
+		}
+		System.out.println(solve(bulbs));
+	}
+	public static ArrayList&lt;Boolean&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs)
+	{
+		ArrayList&lt;Boolean&gt; answer = new ArrayList&lt;&gt;();
+		if (bulbs.size() == 0)
+		{
+			return answer;
+		}
+		int M = findM(bulbs);
+		int test = 1;
+		if (test == 1)
+		{
+			ArrayList&lt;Integer&gt; group = new ArrayList&lt;&gt;();
+			for (int i = 0; i &lt; M; i++)
+			{
+				group.add(i + 1);
+			}
+			ArrayList&lt;ArrayList&lt;Boolean&gt;&gt; answerList = booleanAssay(group, bulbs);
+			boolean goodAnswer = false;
+			int j = -1;
+			while(!goodAnswer)
+			{
+				j++;
+				System.out.println(&quot;j = &quot; + j);
+				goodAnswer = isSolutionForGrouping(group, bulbs, answerList.get(j));
+			}
+			return answerList.get(j);
+		}
+		return null;
+		/**
+		ArrayList&lt;ArrayList&lt;Integer&gt;&gt; groupings = getGroupings(M);
+		int n = groupings.size();
+		ArrayList&lt;ArrayList&lt;ArrayList&lt;Integer&gt;&gt;&gt; bulbGroups = new ArrayList&lt;&gt;();
+		for (int i = 0; i &lt; n; i++)
+		{
+			bulbGroups.add(arrangeRowsByGrouping(groupings.get(i), bulbs));
+		}
+		ArrayList&lt;ArrayList&lt;ArrayList&lt;Boolean&gt;&gt;&gt; possibleSolutionsList = new ArrayList&lt;&gt;();
+		for (int i = 0; i &lt; n; i++)
+		{
+			ArrayList&lt;ArrayList&lt;Boolean&gt;&gt; possibleSolutions = new ArrayList&lt;&gt;();
+			
+			possibleSolutions = solutionsForGrouping(groupings.get(i), bulbGroups.get(i), possibleSolutions);
+			possibleSolutionsList.add(possibleSolutions);
+		}
+		System.out.println(possibleSolutionsList);
+		System.out.println(&quot;above is maximum size list (first iteration)&quot;);
+		if (test == 1)
+		{
+			
+		}
+		possibleSolutionsList = combineGroupsByTwos(M, bulbs, groupings, bulbGroups, possibleSolutionsList);
+		System.out.println(possibleSolutionsList);
+		System.out.println(&quot;above is list state after all done combining&quot;);
+		if (test == 1)
+		{
+			
+		}
+		/**
+				Random guess = new Random();
+				boolean allOn = false;
+				while (!allOn)
+				{
+					for (int i = 0; i &lt; M; i++)
+					{
+						answer.add(guess.nextBoolean());
+					}
+					ArrayList&lt;Boolean&gt; row = new ArrayList&lt;&gt;();
+					for (int i = 0; i &lt; bulbs.size(); i++)
+					{
+						row.add(checkRow(bulbs.get(i), answer));
+					}
+					allOn = rowsAllOn(row);
+				}
+				
+		
+		System.out.println(&quot;Solution below:&quot;);
+		int returnint = 0;
+		for (int i = 0; i &lt; possibleSolutionsList.size(); i++)
+		{
+			returnint++;
+			System.out.println(&quot;:/&quot;);
+			System.out.println(possibleSolutionsList.get(i));
+		}
+		if (returnint == 0)
+		{
+			return possibleSolutionsList.get(0).get(0);
+
+		}
+		else
+		{
+			return possibleSolutionsList.get(possibleSolutionsList.size() - 1).get(0);
+		}
+		 **/
+	}
+	public static ArrayList&lt;ArrayList&lt;ArrayList&lt;Boolean&gt;&gt;&gt; combineGroupsByTwos(int M, ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs, ArrayList&lt;ArrayList&lt;Integer&gt;&gt; groupings, ArrayList&lt;ArrayList&lt;ArrayList&lt;Integer&gt;&gt;&gt; bulbGroups, ArrayList&lt;ArrayList&lt;ArrayList&lt;Boolean&gt;&gt;&gt; possibleSolutionsList)
+	{
+		System.out.println(possibleSolutionsList);
+		System.out.println(&quot;yellow&quot;);
+		if (groupings.size() == 1)
+		{
+			System.out.println(groupings.get(0));
+			System.out.println(&quot;returns here&quot;);
+			return possibleSolutionsList;
+		}
+		ArrayList&lt;ArrayList&lt;Integer&gt;&gt; nextLevelGroupings = new ArrayList&lt;&gt;();
+		ArrayList&lt;ArrayList&lt;ArrayList&lt;Boolean&gt;&gt;&gt; nextLevelPossibleSolutionsList = new ArrayList&lt;&gt;();
+		ArrayList&lt;ArrayList&lt;ArrayList&lt;Integer&gt;&gt;&gt; nextLevelBulbGroups = new ArrayList&lt;&gt;();
+		if (groupings.size() % 2 == 0)
+		{
+			System.out.println(possibleSolutionsList);
+			System.out.println(&quot;even&quot;);
+			for (int i = 0; i &lt; groupings.size(); i += 2)
+			{
+				ArrayList&lt;Integer&gt; tempGrouping = new ArrayList&lt;&gt;();
+				for (int j = 0; j &lt; groupings.get(i).size(); j++)
+				{
+					tempGrouping.add(groupings.get(i).get(j));
+				}
+				for (int j = 0; j &lt; groupings.get(i + 1).size(); j++)
+				{
+					tempGrouping.add(groupings.get(i).get(j));
+				}
+				nextLevelGroupings.add(tempGrouping);
+				ArrayList&lt;ArrayList&lt;Integer&gt;&gt; tempBulbGroup = arrangeRowsByGrouping(tempGrouping, bulbs);
+				nextLevelBulbGroups.add(tempBulbGroup);
+				ArrayList&lt;ArrayList&lt;Boolean&gt;&gt; nextLevelPossibleSolutions = new ArrayList&lt;&gt;();
+				for (int j = 0; j &lt; possibleSolutionsList.get(i).size(); j++)
+				{
+					for (int k = 0; k &lt; possibleSolutionsList.get(i + 1).size(); k++)
+					{
+						ArrayList&lt;Boolean&gt; tempPossibleSolution = new ArrayList&lt;&gt;();
+						for (int l = 0; l &lt; possibleSolutionsList.get(i).get(j).size(); l++)
+						{
+							tempPossibleSolution.add(possibleSolutionsList.get(i).get(j).get(l));
+						}
+						for (int l = 0; l &lt; possibleSolutionsList.get(i + 1).get(k).size(); l++)
+						{
+							tempPossibleSolution.add(possibleSolutionsList.get(i + 1).get(k).get(l));
+						}
+						System.out.println(isSolutionForGrouping(tempGrouping, tempBulbGroup, tempPossibleSolution));
+						System.out.println(&quot;cyan1&quot;);
+						if (isSolutionForGrouping(tempGrouping, tempBulbGroup, tempPossibleSolution))
+						{
+							nextLevelPossibleSolutions.add(tempPossibleSolution);
+							System.out.println(tempPossibleSolution);
+							System.out.println(&quot;magenta1&quot;);
+						}
+					}
+				}
+				nextLevelPossibleSolutionsList.add(nextLevelPossibleSolutions);
+				System.out.println(nextLevelPossibleSolutionsList);
+				System.out.println(&quot;above is list state after a certain iteration of combining&quot;);
+				System.out.println(&quot;green&quot;);
+			}
+		}
+		else
+		{
+			System.out.println(possibleSolutionsList);
+			System.out.println(&quot;odd&quot;);
+			for (int i = 0; i &lt; groupings.size() - 1; i += 2)
+			{
+				ArrayList&lt;Integer&gt; tempGrouping = new ArrayList&lt;&gt;();
+				for (int j = 0; j &lt; groupings.get(i).size(); j++)
+				{
+					tempGrouping.add(groupings.get(i).get(j));
+				}
+				for (int j = 0; j &lt; groupings.get(i + 1).size(); j++)
+				{
+					tempGrouping.add(groupings.get(i + 1).get(j));
+				}
+				nextLevelGroupings.add(tempGrouping);
+				ArrayList&lt;ArrayList&lt;Integer&gt;&gt; tempBulbGroup = arrangeRowsByGrouping(tempGrouping, bulbs);
+				for (int j = 0; j &lt; tempBulbGroup.size(); j++)
+				{
+					System.out.println(tempBulbGroup.get(j));
+				}
+				System.out.println(&quot;BulbGroup above&quot;);
+				nextLevelBulbGroups.add(tempBulbGroup);
+				ArrayList&lt;ArrayList&lt;Boolean&gt;&gt; nextLevelPossibleSolutions = new ArrayList&lt;&gt;();
+				for (int j = 0; j &lt; possibleSolutionsList.get(i).size(); j++)
+				{
+					for (int k = 0; k &lt; possibleSolutionsList.get(i + 1).size(); k++)
+					{
+						ArrayList&lt;Boolean&gt; tempPossibleSolution = new ArrayList&lt;&gt;();
+						System.out.println(possibleSolutionsList.get(i).get(j).size());
+						for (int l = 0; l &lt; possibleSolutionsList.get(i).get(j).size(); l++)
+						{
+							tempPossibleSolution.add(possibleSolutionsList.get(i).get(j).get(l));
+						}
+						System.out.println(possibleSolutionsList.get(i + 1).get(k).size());
+						for (int l = 0; l &lt; possibleSolutionsList.get(i + 1).get(k).size(); l++)
+						{
+							tempPossibleSolution.add(possibleSolutionsList.get(i + 1).get(k).get(l));
+						}
+						System.out.println(isSolutionForGrouping(tempGrouping, tempBulbGroup, tempPossibleSolution));
+						System.out.println(&quot;cyan2&quot;);
+						System.out.println(tempPossibleSolution);
+						if (isSolutionForGrouping(tempGrouping, tempBulbGroup, tempPossibleSolution))
+						{
+							nextLevelPossibleSolutions.add(tempPossibleSolution);
+						}
+					}
+				}
+				nextLevelPossibleSolutionsList.add(nextLevelPossibleSolutions);
+			}
+			
+			System.out.println(groupings.get(groupings.size() - 1));
+			for (int i = 0; i &lt; groupings.get(groupings.size() - 1).size(); i++)
+			{
+				nextLevelGroupings.get(nextLevelGroupings.size() - 1).add(groupings.get(groupings.size() - 1).get(i));
+			}
+			boolean entireOriginalProblem = false;
+			if (nextLevelGroupings.get(nextLevelGroupings.size() - 1).size() == M)
+			{
+				System.out.println(nextLevelGroupings.get(nextLevelGroupings.size() - 1));
+				
+				System.out.println(M);
+				System.out.println(&quot;awooga&quot;);
+				entireOriginalProblem = true;
+			}
+			if (entireOriginalProblem)
+			{
+				System.out.println(&quot;oy oy oy&quot;);
+				System.out.println(nextLevelPossibleSolutionsList.size());
+				System.out.println(nextLevelPossibleSolutionsList.get(nextLevelPossibleSolutionsList.size() - 1));
+				System.out.println(possibleSolutionsList.get(possibleSolutionsList.size() - 1).size());
+				System.out.println(possibleSolutionsList);
+				ArrayList&lt;ArrayList&lt;Boolean&gt;&gt; finalPossibleSolutions = new ArrayList&lt;&gt;();
+				for (int i = 0; i &lt; possibleSolutionsList.get(possibleSolutionsList.size() - 2).size(); i++)
+				{
+					for (int j = 0; j &lt; possibleSolutionsList.get(possibleSolutionsList.size() - 1).size(); j++)
+					{
+						ArrayList&lt;Boolean&gt; tempPossibleSolution = new ArrayList&lt;&gt;();
+						for (int k = 0; k &lt; possibleSolutionsList.get(possibleSolutionsList.size() - 2).get(i).size(); k++)
+						{
+							tempPossibleSolution.add(possibleSolutionsList.get(possibleSolutionsList.size() - 2).get(i).get(k));
+						}
+						for (int k = 0; k &lt; possibleSolutionsList.get(possibleSolutionsList.size() - 1).get(j).size(); k++)
+						{
+							tempPossibleSolution.add(possibleSolutionsList.get(possibleSolutionsList.size() - 1).get(j).get(k));
+						}
+						System.out.println(&quot;========================================&quot;);
+						System.out.println(tempPossibleSolution);
+						if (isSolutionForGrouping(nextLevelGroupings.get(nextLevelGroupings.size() - 1), bulbs, tempPossibleSolution))
+						{
+							finalPossibleSolutions.add(tempPossibleSolution);
+						}
+					}
+				}
+				nextLevelPossibleSolutionsList.add(finalPossibleSolutions);
+				return nextLevelPossibleSolutionsList;
+			}
+			System.out.println(nextLevelGroupings.get(nextLevelGroupings.size() - 1));
+			ArrayList&lt;ArrayList&lt;Integer&gt;&gt; tempBulbGroup = arrangeRowsByGrouping(nextLevelGroupings.get(nextLevelGroupings.size() - 1), bulbs);
+			System.out.println(tempBulbGroup);
+			nextLevelBulbGroups.add(tempBulbGroup);
+			ArrayList&lt;ArrayList&lt;Boolean&gt;&gt; nextLevelPossibleSolutions = new ArrayList&lt;&gt;();
+			for (int i = 0; i &lt; possibleSolutionsList.get(possibleSolutionsList.size() - 2).size(); i++)
+			{
+				for (int j = 0; j &lt; possibleSolutionsList.get(possibleSolutionsList.size() - 1).size(); j++)
+				{
+					ArrayList&lt;Boolean&gt; tempPossibleSolution = new ArrayList&lt;&gt;();
+					for (int k = 0; k &lt; possibleSolutionsList.get(possibleSolutionsList.size() - 2).get(i).size(); k++)
+					{
+						tempPossibleSolution.add(possibleSolutionsList.get(possibleSolutionsList.size() - 2).get(i).get(k));
+					}
+					for (int k = 0; k &lt; possibleSolutionsList.get(possibleSolutionsList.size() - 1).get(j).size(); k++)
+					{
+						tempPossibleSolution.add(possibleSolutionsList.get(possibleSolutionsList.size() - 1).get(j).get(k));
+					}
+					System.out.println(isSolutionForGrouping(nextLevelGroupings.get(nextLevelGroupings.size() - 1), tempBulbGroup, tempPossibleSolution));
+					System.out.println(&quot;cyan3&quot;);
+					System.out.println(nextLevelGroupings.get(nextLevelGroupings.size() - 1).size());
+					if (isSolutionForGrouping(nextLevelGroupings.get(nextLevelGroupings.size() - 1), tempBulbGroup, tempPossibleSolution))
+					{
+						nextLevelPossibleSolutions.add(tempPossibleSolution);
+						System.out.println(tempPossibleSolution);
+						System.out.println(&quot;magenta2&quot;);
+					}
+				}
+			}
+			nextLevelPossibleSolutionsList.add(nextLevelPossibleSolutions);	
+			System.out.println(&quot;Full solution below:&quot;);
+			for (int i = 0; i &lt; nextLevelPossibleSolutions.size(); i++)
+			{
+				if (nextLevelPossibleSolutions.get(i).size() == M)
+				{
+					System.out.println(nextLevelPossibleSolutions.get(i));
+				}
+			}
+			System.out.println(nextLevelPossibleSolutionsList.get(nextLevelPossibleSolutionsList.size() - 1));
+			System.out.println(&quot;above is list state after a certain iteration of combining&quot;);
+			System.out.println(&quot;blue&quot;);
+		}
+		System.out.println(&quot;groupings state after combination below this line:&quot;);
+		for (int i = 0; i &lt; nextLevelGroupings.size(); i++)
+		{
+			System.out.println(nextLevelGroupings.get(i));
+		}
+		System.out.println(&quot;recurses here&quot;);
+		nextLevelPossibleSolutionsList = combineGroupsByTwos(M, bulbs, nextLevelGroupings, nextLevelBulbGroups, nextLevelPossibleSolutionsList);
+		return nextLevelPossibleSolutionsList;
+	}
+	/**
+	public static ArrayList&lt;ArrayList&lt;Boolean&gt;&gt; solutions(int masteri, ArrayList&lt;ArrayList&lt;Integer&gt;&gt; groupings, ArrayList&lt;ArrayList&lt;ArrayList&lt;Integer&gt;&gt;&gt; bulbGroups, ArrayList&lt;ArrayList&lt;Boolean&gt;&gt; possibleSolutions)
+	{
+		for (int i = masteri; i &lt; groupings.size(); i++)
+		{
+			if (i != masteri)
+			{
+				possibleSolutions = booleanAssay(groupings.get(i));
+				possibleSolutions = solutionsForGrouping(groupings.get(i), bulbGroups.get(i), possibleSolutions);
+				solutions(i, groupings, bulbGroups, possibleSolutions);
+			}
+		}
+		return possibleSolutions;
+	}
+	**/
+	public static ArrayList&lt;ArrayList&lt;Integer&gt;&gt; arrangeRowsByGrouping(ArrayList&lt;Integer&gt; group, ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs)
+	{
+		ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbGroup = new ArrayList&lt;&gt;();
+		for (int i = 0; i &lt; bulbs.size(); i++)
+		{
+			boolean belongs = false;
+			for (int j = 0; j &lt; 3; j++)
+			{
+				if (belongs)
+				{
+					break;
+				}
+				for (int k = 0; k &lt; group.size(); k++)
+				{
+					if (Math.abs(bulbs.get(i).get(j)) == group.get(k))
+					{
+						bulbGroup.add(bulbs.get(i));
+						belongs = true;
+						break;
+					}
+				}
+			}
+		}
+		return bulbGroup;
+	}
+	public static boolean isSolutionForGrouping(ArrayList&lt;Integer&gt; groupingInQuestion, ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbGroup, ArrayList&lt;Boolean&gt; potentialSolution)
+	{
+		for (int i = 0; i &lt; bulbGroup.size(); i++)
+		{
+			if (!checkRow(groupingInQuestion, bulbGroup.get(i), potentialSolution))
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+	public static ArrayList&lt;ArrayList&lt;Boolean&gt;&gt; solutionsForGrouping(ArrayList&lt;Integer&gt; groupingInQuestion, ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbGroup, ArrayList&lt;ArrayList&lt;Boolean&gt;&gt; possibleSolutions)
+	{
+		int n = possibleSolutions.size();
+		for (int i = 0; i &lt; n; i++)
+		{
+			if (!isSolutionForGrouping(groupingInQuestion, bulbGroup, possibleSolutions.get(i)))
+			{
+				possibleSolutions.remove(i);
+				i--;
+				n--;
+			}
+		}
+		return possibleSolutions;
+	}
+<A NAME="1"></A>
+	public static int findM(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs)
+	{
+		int check = 0;<FONT color="#f63526"><A HREF="javascript:ZweiFrames('match717-1.html#1',3,'match717-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>
+		for (int i = 0; i &lt; bulbs.size(); i++)
+		{
+			for (int j = 0; j &lt; bulbs.get(i).size(); j++)
+			{</B></FONT>
+				if (Math.abs(bulbs.get(i).get(j)) &gt; check)
+				{
+					check = Math.abs(bulbs.get(i).get(j));
+				}
+			}
+		}
+		return check;
+	}
+	public static boolean checkRow(ArrayList&lt;Integer&gt; groupingInQuestion, ArrayList&lt;Integer&gt; row, ArrayList&lt;Boolean&gt; answer)
+	{
+		
+		
+		
+		for (int i = 0; i &lt; 3; i++)
+		{
+			if (row.get(i) &lt; 0)
+			{
+				for (int j = 0; j &lt; groupingInQuestion.size(); j++)
+				{
+					if (groupingInQuestion.get(j) == Math.abs(row.get(i)))
+					{
+						if (answer.get(j) == false)
+						{
+							return true;
+						}
+					}
+				}
+			}
+			else
+			{
+				for (int j = 0; j &lt; groupingInQuestion.size(); j++)
+				{
+					if (groupingInQuestion.get(j) == Math.abs(row.get(i)))
+					{
+						if (answer.get(j) == true)
+						{
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+	public static boolean rowsAllOn(ArrayList&lt;Boolean&gt; row)
+	{
+		for (int i = 0; i &lt; row.size(); i++)
+		{
+			if (!row.get(i))
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+	public static int[] getModes(ArrayList&lt;Integer&gt; rowInQuestion, ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs)
+	{
+		int[] modes = new int[3];
+		for (int i = 0; i &lt; bulbs.size(); i++)
+		{
+			for (int j = 0; j &lt; 3; j++)
+			{
+				if (bulbs.get(i).get(j) == rowInQuestion.get(j))
+				{
+					modes[j]++;
+				}
+			}
+		}
+		return modes;
+	}
+	public static ArrayList&lt;ArrayList&lt;Integer&gt;&gt; getGroupings(int M)
+	{
+		ArrayList&lt;ArrayList&lt;Integer&gt;&gt; groupings = new ArrayList&lt;&gt;();
+		int key = 0;
+		for (int i = 1; i &lt; M - 6; i += 6)
+		{
+			ArrayList&lt;Integer&gt; currentGroup = new ArrayList&lt;&gt;();
+			for (int j = 0; j &lt; 6; j++)
+			{
+				currentGroup.add(i + j);
+			}
+			groupings.add(currentGroup);
+			key = i;
+		}
+		if (M % 6 != 0)
+		{
+			for (int i = M % 6 - 1; i &gt;= 0; i--)
+			{
+				groupings.get(groupings.size() - 1).add(M - i);
+			}
+		}
+		else
+		{
+			ArrayList&lt;Integer&gt; finalGroup = new ArrayList&lt;&gt;();
+			key++;
+			for (int i = key; i &lt;= M; i++)
+			{
+				finalGroup.add(i);
+			}
+			groupings.add(finalGroup);
+		}
+		return groupings;
+	}
+	public static ArrayList&lt;ArrayList&lt;Boolean&gt;&gt; booleanAssay(ArrayList&lt;Integer&gt; group, ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs)
+	{
+		ArrayList&lt;ArrayList&lt;Boolean&gt;&gt; assay = new ArrayList&lt;&gt;();
+		for (int i = 0; i &lt; Math.pow(2, group.size()); i++)
+		{
+			ArrayList&lt;Boolean&gt; current = new ArrayList&lt;&gt;();
+			for (int j = group.size() - 1; j &gt;= 0; j--)
+			{
+				if (i / (int) Math.pow(2, j) % 2 == 0)
+				{
+					current.add(true);
+				}
+				else
+				{
+					current.add(false);
+				}
+			}
+			if (isSolutionForGrouping(group, bulbs, current))
+			{
+				assay.add(current);
+			}
+		}
+		return assay;
+	}
+}
+</PRE>
+
+</BODY>
+</HTML>

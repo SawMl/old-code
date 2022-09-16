@@ -1,0 +1,255 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>225555093</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>StudentSolver.cpp</CENTER></H3><HR>
+<PRE>
+
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &quot;StudentSolver.h&quot;
+
+static std::vector&lt;int&gt; solve(std::vector&lt;std::vector&lt;int&gt;&gt; grid);
+std::vector&lt;int&gt; findMovement(int tRow, int tCol, int&amp; row, int&amp; col, const std::vector&lt;std::vector&lt;int&gt;&gt; grid, std::vector&lt;int&gt; a);
+int getValue(int tRow, int tCol, int&amp; row, int&amp; col, const std::vector&lt;std::vector&lt;int&gt;&gt; grid);
+
+
+std::vector&lt;int&gt; StudentSolver::solve(std::vector&lt;std::vector&lt;int&gt;&gt; grid){
+<A NAME="0"></A>    std::vector&lt;int&gt; a;
+    int tRow = 0;
+    int tCol = 0;
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match69-0.html#0',2,'match69-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>    int&amp; row = tRow;
+    int&amp; col = tCol;
+
+    
+    if (grid[0][grid.size() - 1] &gt; grid[grid.size() - 1][grid.size() - 1]){
+
+        tRow = 0;
+        tCol = grid.at(0).size() - 2;
+
+        a.push_back(1);
+        a.push_back(tCol);
+    }else{
+        tRow = grid.size() - 1;
+        tCol = grid.at(grid.size() - 1).size() - 2;
+        a.push_back(0);
+        a.push_back(tCol);
+    }</B></FONT>
+
+    std::cout &lt;&lt; std::endl;
+
+    return findMovement(tRow, tCol, row, col, grid, a);
+}
+
+
+
+
+std::vector&lt;int&gt; findMovement(int tRow, int tCol, int&amp; row, int&amp; col, const std::vector&lt;std::vector&lt;int&gt;&gt; grid, std::vector&lt;int&gt; a) {
+    int movement = 0;
+    int max = 0;
+    int i = 0;
+    std::vector&lt;std::vector&lt;int&gt;&gt; movements;
+    std::vector&lt;int&gt; temp;
+
+
+    while(i &lt; grid[0].size() - 1){
+
+        
+        if(max &lt; getValue(tRow - 1, tCol + 1, row, col, grid)){
+            max = grid[row][col];
+            movement = 1;
+            temp.push_back(row);
+            temp.push_back(col);
+            temp.push_back(movement);
+            movements.push_back(temp);
+            temp.clear();
+            row = tRow;
+            col = tCol;
+        }
+
+            
+        if (max &lt; getValue(tRow, tCol + 1, row, col, grid)){
+            max = grid[row][col];
+            movement = 0;
+            temp.push_back(row);
+            temp.push_back(col);
+            temp.push_back(movement);
+            movements.push_back(temp);
+            temp.clear();
+            row = tRow;
+            col = tCol;
+        }
+
+            
+        if(max &lt; getValue(tRow + 1, tCol + 1, row, col, grid)){
+            max = grid[row][col];
+            movement = -1;
+            temp.push_back(row);
+            temp.push_back(col);
+            temp.push_back(movement);
+            movements.push_back(temp);
+            temp.clear();
+            row = tRow;
+            col = tCol;
+        }
+
+        for (int j = 0; j &lt;  movements.size(); j++) {
+            if(movement == movements[j][2]){
+                a.push_back(movement);
+                row = movements[j][0];
+                col = movements[j][1];
+                tRow = row;
+                tCol =  col;
+            }
+        }
+
+        movements.clear();
+        max = 0;
+        i++;
+    }
+
+    for (int i = 0; i &lt; a.size(); ++i) {
+        std::cout &lt;&lt; a[i] &lt;&lt; &quot; &quot;;
+    }
+
+    return a;
+}
+
+
+
+int getValue(int tRow, int tCol, int&amp; row, int&amp; col, const std::vector&lt;std::vector&lt;int&gt;&gt; grid){
+    int numRows = (int)grid.size();
+    int numCol = (int)grid[0].size();
+
+    if(tRow &gt;= numRows){
+        std::cout &lt;&lt; 1;
+
+        if (tCol == 0){
+            std::cout &lt;&lt; 1 &lt;&lt; '\n';
+            row = 0;
+            return grid[0][tCol];
+        }
+
+        if (0 &lt; tCol &amp;&amp; tCol &lt; numCol){
+            std::cout &lt;&lt; 2 &lt;&lt; '\n';
+            row = 0;
+            return grid[0][tCol];
+        }
+
+        
+        if(tCol == numCol){
+            std::cout &lt;&lt; 3 &lt;&lt; '\n';
+            row = 0;
+            col = 0;
+            return grid[0][0];
+        }
+    }
+
+    if(tRow &lt; 0){
+        std::cout &lt;&lt; 2;
+        if(tCol == 0){
+            std::cout &lt;&lt; 1 &lt;&lt; '\n';
+            row = numRows - 1;
+            return grid[numRows - 1][tCol];
+        }
+
+        if(0 &lt; tCol &amp;&amp; tCol &lt; numCol){
+            std::cout &lt;&lt; 2 &lt;&lt; '\n';
+            row = numRows - 1;
+            col = tCol;
+            return grid[numRows - 1][tCol];
+        }
+
+        if(tCol &gt; numCol){
+            std::cout &lt;&lt; 3 &lt;&lt; '\n';
+            row = numRows -  1;
+            col = numCol - 1;
+            return grid[numRows - 1][numCol - 1];
+        }
+
+        
+        if(tCol == numCol){
+            std::cout &lt;&lt; 4 &lt;&lt; '\n';
+            row = numRows - 1;
+            col = 0;
+            return grid[numRows - 1][0];
+        }
+    }
+
+    if(tCol &gt;= numCol){
+        std::cout &lt;&lt; 3;
+        if(row == 0){
+            std::cout &lt;&lt; 1 &lt;&lt; '\n';
+            col = 0;
+            return grid[tRow][0];
+        }
+
+        if(0 &lt; tRow &amp;&amp; tRow &lt; numRows){
+            std::cout &lt;&lt; 2 &lt;&lt; '\n';
+            col = 0;
+            return grid[tRow][0];
+        }
+    }
+
+    row = tRow;
+    col = tCol;
+
+    return grid[tRow][tCol];
+}
+
+/*
+int main() {
+
+    std::vector&lt;std::vector&lt;int&gt;&gt; grid;
+
+    std::vector&lt;int&gt; v0;
+    std::vector&lt;int&gt; v1;
+    std::vector&lt;int&gt; v2;
+    std::vector&lt;int&gt; v3;
+    std::vector&lt;int&gt; v4;
+
+    v0.push_back(3); v0.push_back(4); v0.push_back(1); v0.push_back(2); v0.push_back(8); v0.push_back(6);
+    v1.push_back(6); v1.push_back(1); v1.push_back(8); v1.push_back(2); v1.push_back(7); v1.push_back(4);
+    v2.push_back(5); v2.push_back(4); v2.push_back(3); v2.push_back(9); v2.push_back(9); v2.push_back(5);
+    v3.push_back(5); v3.push_back(9); v3.push_back(8); v3.push_back(3); v3.push_back(2); v3.push_back(6);
+    v4.push_back(8); v4.push_back(7); v4.push_back(2); v4.push_back(9); v4.push_back(6); v4.push_back(4);
+
+    grid.push_back(v0);
+    grid.push_back(v1);
+    grid.push_back(v2);
+    grid.push_back(v3);
+    grid.push_back(v4);
+
+    int tcol = 0;
+    int trow = 0;
+    int&amp; col = tcol;
+    int&amp; row = trow;
+
+    for (int i = 0; i &lt; grid.size(); ++i) {
+        for(int j = 0; j &lt; grid[i].size(); j++){
+            std::cout &lt;&lt; grid[i][j] &lt;&lt; ' ';
+        }
+        std::cout &lt;&lt; '\n';
+    }
+
+    solve(grid);
+
+    return 0;
+}
+ */
+</PRE>
+</BODY>
+</HTML>

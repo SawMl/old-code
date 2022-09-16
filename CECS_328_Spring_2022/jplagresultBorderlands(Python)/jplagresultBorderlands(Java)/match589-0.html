@@ -1,0 +1,200 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>717164043</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.Comparator;
+import java.util.Map;
+
+public class StudentSolver {
+    public static ArrayList&lt;Boolean&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs) {
+
+
+
+        System.out.println(&quot;Question (&quot; + bulbs.size() + &quot;)&quot;);
+        int size = findSize(bulbs);
+        boolean[] solution = new boolean[size];
+
+
+
+
+
+
+
+
+
+
+
+
+
+        ArrayList&lt;Integer&gt; done = new ArrayList&lt;Integer&gt;();
+        ArrayList&lt;Integer&gt; doneRows = new ArrayList&lt;Integer&gt;();
+        boolean st = true;
+        TreeMap&lt;Integer, Integer&gt; data = new TreeMap&lt;Integer, Integer&gt;();
+        for (int i = 1; i &lt;= size; i++) {
+
+            data.put(-i, 0);
+            data.put(i, 0);
+            for (int j = 0; j &lt; bulbs.size(); j++) {
+                if (bulbs.get(j).contains(i)) {
+                    data.put(i, data.get(i) + 1);
+                }
+                if (bulbs.get(j).contains(-i)) {
+                    data.put(-i, data.get(-i) + 1);
+                }
+            }
+
+        }
+
+        while (st) {
+
+            System.out.println(data);
+            int high = Collections.max(data.values());
+            Set&lt;Map.Entry&lt;Integer, Integer&gt;&gt; temp = data.entrySet();
+            for (Map.Entry&lt;Integer, Integer&gt; entry : temp) {
+                if (entry.getValue().equals(high)) {
+                    if (entry.getKey() &lt; 0) {
+                        solution[-entry.getKey() - 1] = false;
+                    } else if (entry.getKey() &gt; 0) {
+                        solution[entry.getKey() - 1] = true;
+                    }
+                    data.put(entry.getKey(), 0);
+                    data.put(-entry.getKey(), 0);
+                    done.add(Math.abs(entry.getKey()));
+
+                }
+            }
+            high = Collections.max(data.values());
+
+            if (high == 0) {
+                st = false;
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+        ArrayList&lt;Boolean&gt; answers = new ArrayList&lt;Boolean&gt;();
+        for (int i = 0; i &lt; solution.length; i++) {
+            System.out.print(i+1 + &quot;=&quot; + solution[i] + &quot;,  &quot;);
+            answers.add(solution[i]);
+        }
+        return answers;
+    }
+
+
+    public static int findSize(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs) {
+        int max = 0;
+        int min = 0;
+        for (int i = 0; i &lt; bulbs.size(); i++) {
+            int tempMax = Collections.max(bulbs.get(i));
+            int tempMin = Collections.min(bulbs.get(i));
+            if (tempMax &gt; max) {
+                max = tempMax;
+<A NAME="0"></A>            }
+            if (tempMin &lt; min) {
+                min = tempMin;
+            <FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match589-1.html#0',3,'match589-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>}
+        }
+        if (min &lt; 0) {
+            min = -min;
+        }</B></FONT>
+        return Math.max(max, min);
+    }
+
+    public static ArrayList&lt;Integer&gt; aSingleArray(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs) {
+        ArrayList&lt;Integer&gt; list = new ArrayList&lt;Integer&gt;();
+        for (int i = 0; i &lt; bulbs.size(); i++) {
+            for (int j = 0; j &lt; bulbs.get(i).size(); j++) {
+                list.add(bulbs.get(i).get(j));
+<A NAME="1"></A>            }
+        }
+        return list;
+    <FONT color="#f63526"><A HREF="javascript:ZweiFrames('match589-1.html#1',3,'match589-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>}
+
+    public static ArrayList&lt;ArrayList&lt;Integer&gt;&gt; sortNumbers(ArrayList&lt;Integer&gt; list) {
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; array = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();
+        ArrayList&lt;Integer&gt; onlyPos = new ArrayList&lt;Integer&gt;();
+        ArrayList&lt;Integer&gt; onlyNeg = new ArrayList&lt;Integer&gt;();
+        ArrayList&lt;Integer&gt; both = new</B></FONT> ArrayList&lt;Integer&gt;();
+        for (int i = 0; i &lt; list.size(); i++) {
+            if (list.get(i) &gt; 0 &amp;&amp; !onlyPos.contains(list.get(i)) &amp;&amp; !list.contains(-list.get(i))) {
+                onlyPos.add(list.get(i));
+            } else if (list.get(i) &lt; 0 &amp;&amp; !onlyNeg.contains(-list.get(i)) &amp;&amp; !list.contains(-list.get(i))) {
+                onlyNeg.add(-list.get(i));
+            } else if (list.get(i) &gt; 0 &amp;&amp; !both.contains(list.get(i)) &amp;&amp; list.contains(-list.get(i))) {
+                both.add(list.get(i));
+            }
+        }
+<A NAME="2"></A>        array.add(onlyPos);
+        array.add(onlyNeg);
+        array.add(both);
+        <FONT color="#77bfc7"><A HREF="javascript:ZweiFrames('match589-1.html#2',3,'match589-top.html#2',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>return array;
+    }
+
+    public static void setPositiveValues(ArrayList&lt;Integer&gt; list, boolean[] solution) {
+        for (int i = 0; i &lt; list.size(); i++) {</B></FONT>
+            solution[list.get(i) - 1] = true;
+        }
+    }
+
+    public static void setNegativeValues(ArrayList&lt;Integer&gt; list, boolean[] solution) {
+        for (int i = 0; i &lt; list.size(); i++) {
+            if (list.get(i) - 1 &lt; 0) {
+                list.set(i, -list.get(i));
+            }
+            solution[list.get(i) - 1] = false;
+        }
+    }
+
+
+
+}
+</PRE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,191 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>665467443</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+def get_surrounding_moves(pos, grid):
+    N = len(grid[0])
+    M = len(grid)
+    # find largest number from surrounding positions
+    # first find positions
+    surrounding_pos = []
+    r = pos[0]
+    c = pos[1]
+    for x in range(-1, 2):
+        row = r + x
+        col = c + 1
+
+        if row &lt; 0:
+            row = M - 1
+        if row &gt; (M - 1):
+            row = 0
+        if col &gt; (N - 1):
+            col = 0
+        surrounding_pos.append((row, col))
+    return surrounding_pos
+
+
+def get_max_pos(positions, grid):
+    max_val = -1
+<A NAME="0"></A>    max_pos = (-1, -1)
+
+    for pos in positions:
+        if max_val &lt; grid<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match147-1.html#0',3,'match147-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>[pos[0]][pos[1]]:
+            max_val = grid[pos[0]][pos[1]]
+            max_pos = </B></FONT>pos
+    return (max_pos, max_val, positions.index(max_pos))
+
+
+def get_last_move(positions, grid):
+    max_val = -1
+    max_pos = (-1, -1)
+    #this for loop chooses a position that is either at the top or bottom, and max of the two if possible
+    for x in positions:
+        if x[0] == 0 or x[0] == len(grid) - 1:
+            if max_val &lt; grid[x[0]][x[1]]:
+                max_val = grid[x[0]][x[1]]
+                max_pos = x
+    #if no last moves are top or bottom positions, then just choose the max
+    if max_val == -1:
+        #return 'Not Valid Route'
+        return get_max_pos(positions, grid)
+
+    return max_pos, max_val, positions.index(max_pos)
+
+
+#returns 1,0, or -1 depending on which way the route moved
+def get_route_dir(move):
+    if move[2] == 0:
+        return 1
+    elif move[2] == 1:
+        return 0
+    else:
+        return -1
+
+
+def get_optimal_route(routes):
+    top_routes = routes[0]
+    bottom_routes = routes[1]
+    max_route_value = routes[2]
+
+    #get rid of non valid routes\
+    optimal_routes = []
+    for route in top_routes:
+      
+        if route[1] == max_route_value and 'Not Valid Route' not in route[0]:
+            optimal_routes.append(route)
+    for route in bottom_routes:
+        if route[1] == max_route_value and 'Not Valid Route' not in route[0]:
+            optimal_routes.append(route)
+
+    #routes with highest score
+
+    #find optimal route with highest starting value
+    return optimal_routes
+
+def solve(grid):
+    N = len(grid[0])
+    M = len((grid))
+    max_route_value = 0
+    # either start at 0 or 1
+    # start at 1 of n columns
+    # go thru top starting positions get those routes
+    # go thru bottom starting positions get those routes
+
+    top_routes = []
+    bottom_routes = []
+
+    # go through top starting positions
+    for x in range(N):
+        starting_pos = (0, x)
+        curr_pos = (0, x)
+        curr_route = [1, x]
+        curr_points = grid[0][x]
+        moves = 0
+        # must go through every column once and only once
+        while moves &lt; N - 1:
+            surrounding_moves = get_surrounding_moves(curr_pos, grid)
+            # if not the last move do this
+            if moves &lt; N - 2:
+                best_move = get_max_pos(surrounding_moves, grid)
+                # update current score count
+                curr_points += best_move[1]
+                #get the direction
+                curr_route.append(get_route_dir(best_move))
+                curr_pos = best_move[0]
+            # case for the last move, if there is a chance to end on top or bottom of board,
+            # then take that move no matter what
+            else:
+                last_move = get_last_move(surrounding_moves, grid)
+                #print(last_move)
+                if last_move != 'Not Valid Route':
+                    curr_points += last_move[1]
+                    curr_route.append(get_route_dir(last_move))
+                else:
+                    curr_route.append(last_move)
+
+            moves += 1
+        if max_route_value &lt; curr_points:
+            max_route_value = curr_points
+        top_routes.append((curr_route, curr_points))
+
+      
+
+    # go through bottom starting positions
+    for x in range(N):
+        starting_pos = (M - 1, x)
+        curr_pos = (M - 1, x)
+        curr_route = [0, x]
+        curr_points = 0
+        moves = 0
+        # must go through every column once and only once
+        while moves &lt; N - 1:
+            surrounding_moves = get_surrounding_moves(curr_pos, grid)
+            # if not the last move do this
+            if moves &lt; N - 2:
+                best_move = get_max_pos(surrounding_moves, grid)
+                # update current score count
+                curr_points += best_move[1]
+                #get the direction
+                curr_route.append(get_route_dir(best_move))
+                curr_pos = best_move[0]
+
+            # case for the last move, if there is a chance to end on top or bottom of board,
+            # then take that move no matter what
+            else:
+                last_move = get_last_move(surrounding_moves, grid)
+                if last_move != 'Not Valid Route':
+                    curr_points += last_move[1]
+                    curr_route.append(get_route_dir(last_move))
+                else:
+                    curr_route.append(last_move)
+
+            moves += 1
+        if max_route_value &lt; curr_points:
+            max_route_value = curr_points
+        bottom_routes.append((curr_route, curr_points))
+    print(top_routes)
+    print(bottom_routes)
+    
+    return get_optimal_route([top_routes, bottom_routes, max_route_value])[0][0]
+    
+
+#
+</PRE>
+
+</BODY>
+</HTML>

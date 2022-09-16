@@ -1,0 +1,279 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>517564944</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.Scanner;
+
+public class StudentSolver {
+	
+	
+	public static ArrayList&lt;Integer&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid)
+	{
+<A NAME="0"></A>		int rows=grid.size();
+		int cols=grid.get(0).size();
+		ArrayList&lt;ArrayList&lt;Coordinates&gt;&gt; results = new ArrayList&lt;ArrayList&lt;Coordinates&gt;&gt;();
+		ArrayList&lt;Arra<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match775-0.html#0',2,'match775-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>yList&lt;Coordinates&gt;&gt; combinations;
+		ArrayList&lt;Coordinates&gt; combination;
+		int posFinalY;
+		int iNext;
+		int iLast;
+		int jNext;
+		Coordinates up;
+		Coordinates middle;
+		Coordinates bottom;
+		int sizeComb;
+		boolean exist=false;
+
+		
+		for(int x=0; x&lt;rows;x++) </B></FONT>
+		{
+			for(int y=0;y&lt;cols;y++) {
+				if(x==0 || x==rows-1) 
+				{
+					combinations = new ArrayList&lt;ArrayList&lt;Coordinates&gt;&gt;();
+					combination=new ArrayList&lt;&gt;();
+					combination.add(new Coordinates(x,y,grid.get(x).get(y)));
+					combinations.add(combination);
+					if(y-1&lt;0)posFinalY=cols-1;
+					else posFinalY=y-1;
+					
+					for(int i=0;i&lt;cols-1; i++) {	
+						combination=new ArrayList&lt;&gt;();
+						for(int j=0; j&lt;combinations.get(i).size();j++) 
+						{
+							iNext=combinations.get(i).get(j).getI()+1;
+							iLast=combinations.get(i).get(j).getI()-1;
+							jNext=combinations.get(i).get(j).getJ()+1;
+							
+							if(iLast&lt;0) iLast=grid.size()-1;
+							if(iNext==rows) iNext=0;
+							if(jNext==cols) jNext=0;
+							
+							
+							up=new Coordinates(iLast, jNext, grid.get(iLast).get(jNext));
+							middle= new Coordinates(combinations.get(i).get(j).getI(),jNext,grid.get(combinations.get(i).get(j).getI()).get(jNext));
+							bottom= new Coordinates(iNext,jNext,grid.get(iNext).get(jNext) );
+							
+							sizeComb=combination.size();
+							
+							if(sizeComb&lt;3) {
+								combination.add(up);
+								combination.add(middle);
+								combination.add(bottom);
+							}else {
+								exist=false;
+								for(int k=sizeComb-1;k&gt;=sizeComb-3;k--) {
+									if(combination.get(k).getI()==up.getI() &amp;&amp; combination.get(k).getJ()==up.getJ()) {
+										
+										exist=true;
+										break;
+									}
+								}
+								if(exist==false) combination.add(up);
+								
+								exist=false;
+								for(int k=sizeComb-1;k&gt;=sizeComb-3;k--) {
+									if(combination.get(k).getI()==middle.getI() &amp;&amp; combination.get(k).getJ()==middle.getJ()) {
+										
+										exist=true;
+										break;
+									}
+								}
+								if(exist==false) combination.add(middle);
+								
+								exist=false;
+								for(int k=sizeComb-1;k&gt;=sizeComb-3;k--) {
+									if(combination.get(k).getI()==bottom.getI() &amp;&amp; combination.get(k).getJ()==bottom.getJ()) {
+										
+										exist=true;
+										break;
+									}
+								}
+								if(exist==false) combination.add(bottom);
+							}
+						}
+						combinations.add(combination);
+					}
+					
+					ArrayList&lt;Row&gt; rowCoordinates = new ArrayList&lt;Row&gt;();
+					ArrayList&lt;Coordinates&gt; coordinates;
+					
+					
+					for(int i=0; i&lt;combinations.size();i++) {
+						coordinates= new ArrayList&lt;&gt;();
+						for(int j=0; j&lt;combinations.get(i).size();j++) {
+							coordinates.add(new Coordinates(combinations.get(i).get(j).getI(), combinations.get(i).get(j).getJ(),combinations.get(i).get(j).getValor()));
+						}
+						rowCoordinates.add(new Row(i,0,coordinates));
+					}
+					
+
+					int i=0;
+					int total=0;
+					ArrayList&lt;Coordinates&gt; pickedCoordinate= new ArrayList&lt;&gt;();
+					ArrayList&lt;Coordinates&gt; maxCoordinate= new ArrayList&lt;&gt;();
+					int max=-1;
+
+					while(rowCoordinates.get(1).getPointerJ()!=3) {
+						if(i==rowCoordinates.size()-1) {
+							
+							total+=rowCoordinates.get(i).getCoordinate().get(rowCoordinates.get(i).getPointerJ()).getValor();
+							pickedCoordinate.add(rowCoordinates.get(i).getCoordinate().get(rowCoordinates.get(i).getPointerJ()));
+							
+							int limit=rowCoordinates.get(i).getCoordinate().get(rowCoordinates.get(i).getPointerJ()).getJ();
+							int limit2=rowCoordinates.get(i).getCoordinate().get(rowCoordinates.get(i).getPointerJ()).getI();
+							if(total&gt;=max &amp;&amp;  limit==posFinalY &amp;&amp; (limit2==0 || limit2==rows-1)) {
+								max=total;
+								maxCoordinate=(ArrayList&lt;Coordinates&gt;)pickedCoordinate.clone();
+							}
+							
+							
+							rowCoordinates.get(i).increaseJ();
+							i=0;
+							total=0;
+							pickedCoordinate= new ArrayList&lt;&gt;();
+						}
+<A NAME="1"></A>						else if(rowCoordinates.get(i).getPointerJ()+3&gt;rowCoordinates.get(i+1).getPointerJ()) {
+							
+							total+=rowCoordinates.get(i).getCoordinate().get(rowCoordinates.get(i).getPointerJ()).getValor();
+							pickedCoordinate.add(rowCoordinates.get(i).getCoordinate().get(rowCoor<FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match775-0.html#1',2,'match775-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>dinates.get(i).getPointerJ()));
+							i++;
+						}else if(rowCoordinates.get(i).getPointerJ()+3&lt;=rowCoordinates.get(i+1).getPointerJ()) {</B></FONT>
+							
+							rowCoordinates.get(i).increaseJ();
+							for(int  k=i+1;k&lt;rowCoordinates.size();k++) {
+								rowCoordinates.get(k).setPointerJ(rowCoordinates.get(i).getPointerJ());
+							}
+							i=0;
+							
+							pickedCoordinate= new ArrayList&lt;&gt;();
+							total=0;
+						}			
+					}
+			
+					results.add(maxCoordinate);
+				}
+			}
+		}
+		
+		int sum2=0;
+		int max=-1;
+		ArrayList&lt;Coordinates&gt; maxCoordinate=new ArrayList&lt;&gt;();
+		
+		for(int i=0;i&lt;results.size();i++) {
+			sum2=0;
+			for(int j=0; j&lt;results.get(i).size();j++) {
+				sum2+=results.get(i).get(j).getValor();
+			}
+			
+			if(sum2&gt;=max) {
+				max=sum2;
+				maxCoordinate=(ArrayList&lt;Coordinates&gt;)results.get(i).clone();
+			}
+		}
+			
+		
+		
+		ArrayList&lt;Integer&gt; sequence=new ArrayList&lt;&gt;();
+
+		if(maxCoordinate.get(0).getI()==0) sequence.add(1);
+		else  sequence.add(0);    
+		sequence.add(maxCoordinate.get(0).getJ());
+		
+		for(int i=0;i&lt;maxCoordinate.size()-1;i++) {
+<A NAME="2"></A>			
+			if(maxCoordinate.get(i).getI()==maxCoordinate.get(i+1).getI()) {
+				sequence.add(0);
+			}else if(maxCoordinate.get(i).<FONT color="#77bfc7"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match775-0.html#2',2,'match775-top.html#2',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>getI()&gt;maxCoordinate.get(i+1).getI()) {
+<A NAME="3"></A>				if(maxCoordinate.get(i).getI()-maxCoordinate.get(i+1).getI()&lt;=1) sequence.add(1);</B></FONT>
+				else sequence.add(-1);
+			}
+			else if(maxCoordinate.get(i).<FONT color="#6cc417"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match775-0.html#3',2,'match775-top.html#3',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>getI()&lt;maxCoordinate.get(i+1).getI()) {
+				if(maxCoordinate.get(i+1).getI()-maxCoordinate.get(i).getI()&lt;=1) sequence.add(-1);</B></FONT>
+				else sequence.add(1);
+			}
+		}
+		
+		return sequence;
+	}	
+}
+
+class Row{
+	ArrayList&lt;Coordinates&gt; coordinates;
+	private int pointerI;
+	private int pointerJ;
+	public Row(int pointerI,int pointerJ, ArrayList&lt;Coordinates&gt; coordinates) {
+		this.pointerI=pointerI;
+		this.pointerJ=pointerJ;
+		this.coordinates=coordinates;
+	}
+	
+	public ArrayList&lt;Coordinates&gt; getCoordinate(){
+		return coordinates;
+	}
+	
+	public int getPointerI() {
+		return pointerI;
+	}
+	
+	public int getPointerJ() {
+		return pointerJ;
+	}
+	
+	public void increaseJ() {
+		this.pointerJ++;
+	}
+	
+	public void setPointerI(int pointerI) {
+		this.pointerI=pointerI;
+	}
+	
+	public void setPointerJ(int pointerJ) {
+		this.pointerJ=pointerJ;
+	}
+}
+
+class Coordinates{
+	private int value;
+	private int i;
+	private int j;
+	public Coordinates(int i,int j, int value) {
+		this.i=i;
+		this.j=j;
+		this.value=value;
+	}
+	
+	public int getI() {
+		return i;
+	}
+	
+	public int getJ() {
+		return j;
+	}
+	
+	public int getValor() {
+		return value;
+	}
+}
+</PRE>
+
+</BODY>
+</HTML>

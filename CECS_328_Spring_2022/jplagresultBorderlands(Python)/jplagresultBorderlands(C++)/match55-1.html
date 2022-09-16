@@ -1,0 +1,420 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>256262789</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>StudentSolver.cpp</CENTER></H3><HR>
+<PRE>
+#include &quot;StudentSolver.h&quot;
+#include &lt;iostream&gt;
+#include &lt;cmath&gt;
+#include &lt;ctime&gt;
+#include &lt;cstdlib&gt;
+
+
+
+
+void StudentSolver::checkk(bool&amp; c, vector &lt;int&gt;&amp; numLights) {
+	c = true;
+	for (int i = 0; i &lt; numLights.size(); i++) {
+		if (numLights[i] == 0) {
+			c = false;
+		}
+	}
+}
+
+void StudentSolver::update(vector &lt;vector &lt;int&gt;&gt;&amp; bulbs, int b, vector &lt;int&gt;&amp; numLights, vector &lt;bool&gt; booleans) {
+	for (int i = 0; i &lt; bulbs.size(); i++) {
+		for (int k = 0; k &lt; bulbs[i].size(); k++) {
+			if (bulbs[i][k] == b + 1) {
+				if (booleans[b] == true) {
+					numLights[i] ++;
+				}
+				else if (booleans[b] == false) {
+					numLights[i]--;
+				}
+			}
+			else if (bulbs[i][k] == -(b + 1)) {
+				if (booleans[b] == true) {
+					numLights[i] --;
+				}
+				else if (booleans[b] == false) {
+					numLights[i]++;
+				}
+			}
+		}
+	}
+}
+
+void StudentSolver::compare(vector&lt;bool&gt;&amp; booleans, vector&lt;vector&lt;bool&gt;&gt;&amp; comp, int M, vector &lt;vector &lt;int&gt;&gt;&amp; bulbs, vector &lt;int&gt;&amp; numLights) {
+	bool chk = false;
+	if (comp.size() &gt; 0) {
+		for (int i = 0; i &lt; comp.size(); i++) { 
+			chk = false;
+			for (int t = 0; t &lt; comp[i].size(); t++) {
+				if (booleans[t] != comp[i][t]) {
+					chk = true;
+					t = comp[i].size();
+				}
+			}
+			if (chk == false) {
+				i = comp.size();
+			}
+		}
+
+		if (chk == false) {
+
+			int ran = floor(M / 2);
+
+			
+			if (booleans[ran - 1] == true) {
+				booleans[ran - 1] = false;
+			}
+			else if (booleans[ran - 1] == false) {
+				booleans[ran - 1] = true;
+			}
+			update(bulbs, ran - 1, numLights, booleans);
+
+
+		}
+		else comp.push_back(booleans);
+	}
+	else comp.push_back(booleans);
+}
+
+
+std::vector &lt;bool&gt; StudentSolver::solve2(std::vector &lt; std::vector &lt;int&gt;&gt; bulbs) {
+
+	vector &lt; vector &lt;bool&gt;&gt; comp;
+
+	int M = 0;
+	int temp;
+<A NAME="0"></A>	std::srand(std::time(0));
+	StudentSolver t;
+	vector &lt;bool&gt; rows(bulbs.size(), false);
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match55-0.html#0',2,'match55-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>	vector &lt;int&gt; numLights(bulbs.size(), 0);
+	
+	for (int i = 0; i &lt; bulbs.size(); i++) {
+		for (int p = 0; p &lt; bulbs[i].size(); p++) {
+			if (bulbs[i][p] &lt; 0) {</B></FONT>
+				temp = -1 * bulbs[i][p];
+			}
+			else temp = bulbs[i][p];
+
+			if (temp &gt;= M) {
+				M = temp;
+			}
+		}
+	}
+	
+	vector &lt;bool&gt; booleans(M, false);
+
+	
+	
+	for (int i = 0; i &lt; bulbs.size(); i++) {
+		for (int p = 0; p &lt; bulbs[i].size(); p++) {
+			if (bulbs[i][p] &lt; 0) {
+				rows[i] = true;
+				numLights[i]++; 
+			}
+		}
+	}
+<A NAME="1"></A>
+	bool check = true;
+	
+<FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match55-0.html#1',2,'match55-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>	for (int i = 0; i &lt; rows.size(); i++) {
+		if (rows[i] == false) {
+			check = false;
+		}
+	}
+	for (int i = 0; i &lt; numLights.size(); i++) {</B></FONT>
+		cout &lt;&lt; numLights[i] &lt;&lt; endl;
+	}
+
+	if (check == true) {
+		cout &lt;&lt; &quot;thihs&quot;;
+		return booleans;
+	}
+
+	else {
+		bool allLit = false;
+		while (allLit == false) {
+			for (int i = 0; i &lt; numLights.size(); i++) { 
+				if (numLights[i] == 0) {
+					for (int w = 0; w &lt; 3; w++) { 
+						int ran = rand() % 3;
+						if (bulbs[i][ran] &lt; 0) { 
+							int temp = -(bulbs[i][ran]) - 1;
+							if (booleans[temp] == 0) {
+								booleans[temp] = 1;
+							}
+							else booleans[temp] = 0;
+							cout &lt;&lt; &quot;stuck1&quot; &lt;&lt; endl;
+							t.update(bulbs, temp, numLights, booleans);
+							for (int i = 0; i &lt; numLights.size(); i++) {
+								cout &lt;&lt; numLights[i] &lt;&lt; endl;
+							}
+						}
+						else { 
+							int temp = bulbs[i][ran] - 1;
+							if (booleans[temp] == 0) {
+								booleans[temp] = 1;
+							}
+							else booleans[temp] = 0; 
+							cout &lt;&lt; &quot;stuck2: &quot; &lt;&lt; temp &lt;&lt; &quot; &quot; &lt;&lt; endl;
+							t.update(bulbs, temp, numLights, booleans);
+							for (int i = 0; i &lt; numLights.size(); i++) {
+								cout &lt;&lt; numLights[i] &lt;&lt; endl;
+							}
+						}
+						t.checkk(allLit, numLights);
+						if (allLit == true) {
+							cout &lt;&lt; &quot;this&quot; &lt;&lt; endl;
+							i = numLights.size();
+							break;
+						}
+						if (numLights[i] &gt; 0) {
+							w = 3;
+						}
+					}
+					t.compare(booleans, comp, M, bulbs, numLights);
+				}
+			}
+		}
+
+	}
+	return booleans;
+}
+
+
+std::vector &lt;bool&gt; StudentSolver::solve(std::vector &lt; std::vector &lt;int&gt;&gt; bulbs) {
+
+	vector &lt; vector &lt;bool&gt;&gt; comp;
+
+	int M = 0;
+	int temp;
+	std::srand(std::time(0));
+	StudentSolver t;
+	vector &lt;bool&gt; rows(bulbs.size(), false);
+	vector &lt;int&gt; numLights(bulbs.size(), 0);
+	
+	for (int i = 0; i &lt; bulbs.size(); i++) {
+		for (int p = 0; p &lt; bulbs[i].size(); p++) {
+			if (bulbs[i][p] &lt; 0) {
+				temp = -1 * bulbs[i][p];
+			}
+			else temp = bulbs[i][p];
+
+			if (temp &gt;= M) {
+				M = temp;
+			}
+		}
+	}
+	
+	vector &lt;bool&gt; booleans(M, false);
+
+	
+	vector &lt;vector &lt;int&gt;&gt; one;
+	int fl = floor(M / 2);
+	int n = 0;
+	vector &lt;int&gt; dont; 
+	if (bulbs.size() &gt; 2) {
+		for (int i = 0; i &lt; bulbs.size(); i++) {
+			int x = 0;
+			for (int t = 0; t &lt; bulbs[i].size(); t++) {
+				if (bulbs[i][t] == fl || bulbs[i][t] == -fl) {
+					one.push_back(bulbs[i]);
+					t = bulbs[i].size();
+				}
+			}
+		}
+
+		for (int i = 0; i &lt; one.size(); i++) { 
+			for (int t = 0; t &lt; one[i].size(); t++) {
+				int fix = one[i][t];
+				if (one[i][t] &lt; 0) {
+					fix = -(one[i][t]);
+				}
+				temp = fix;
+				dont.push_back(temp);
+				if (temp &gt; n) {
+					n = temp;
+				}
+			}
+		}
+
+		vector &lt;bool&gt; rec = solve2(one);
+
+		cout &lt;&lt; &quot;rec:&quot; &lt;&lt; endl;
+		for (int w = 0; w &lt; n; w++) { 
+			cout &lt;&lt; rec[w];
+			if (booleans[w] != rec[w]) {
+
+				booleans[w] = rec[w];
+			}
+		}
+		cout &lt;&lt; endl;
+	}
+	vector &lt;int&gt; drelp;
+	for (int i = 0; i &lt; dont.size(); i++) { 
+		bool is = false;
+		for (int n = 0; n &lt; drelp.size(); n++) {
+			if (dont[i] != drelp[n]) {
+				is = true;
+			}
+		}
+		if (is == true) {
+			drelp.push_back(dont[i]);
+		}
+	}
+
+
+	
+	
+	for (int i = 0; i &lt; bulbs.size(); i++) {
+		for (int p = 0; p &lt; bulbs[i].size(); p++) {
+			int y = bulbs[i][p];
+			if (y &lt; 0) {
+				y = -y;
+			}
+			y = y - 1;
+			if (booleans[y] == true) {
+				if (bulbs[i][p] &gt; 0) {
+					rows[i] = true;
+					numLights[i]++;
+				}
+			}
+			else if (booleans[y] == false) {
+				if (bulbs[i][p] &lt; 0) {
+					rows[i] = true;
+					numLights[i]++;
+				}
+			}
+			
+			
+			
+			
+		}
+
+	}
+
+	bool check = true;
+	
+	for (int i = 0; i &lt; rows.size(); i++) {
+		if (rows[i] == false) {
+			check = false;
+		}
+	}
+	for (int i = 0; i &lt; numLights.size(); i++) {
+		cout &lt;&lt; &quot;on: &quot; &lt;&lt; numLights[i] &lt;&lt; endl;
+	}
+
+	if (check == true) {
+		cout &lt;&lt; &quot;thihs&quot;;
+		return booleans;
+	}
+
+	else {
+		int siz = 0;
+		
+		for (int i = 0; i &lt; bulbs.size(); i++) {
+			for (int l = 0; l &lt; 3; l++) {
+				if (bulbs[i][l] == fl || bulbs[i][l] == -fl) {
+					siz++;
+					l = 3;
+				}
+			}
+		}
+		cout &lt;&lt; &quot;size: &quot; &lt;&lt; siz &lt;&lt; endl;
+
+		if (siz != bulbs.size()) {
+			for (int i = 0; i &lt; bulbs.size(); i++) {
+				for (int l = 0; l &lt; 3; l++) {
+					if (bulbs[i][l] == fl) {
+						bulbs.erase(bulbs.begin() + i + 1);
+						numLights.erase(numLights.begin() + i + 1);
+						l = 3;
+					}
+				}
+			}
+		}
+
+		bool allLit = false;
+		while (allLit == false) {
+			for (int i = 0; i &lt; numLights.size(); i++) { 
+				if (numLights[i] ==0) {
+					for (int w = 0; w &lt; 3; w++) { 
+
+						int ran = rand() % 3;
+						cout &lt;&lt; &quot;ran&quot; &lt;&lt; ran &lt;&lt; endl;
+						
+						bool loo = false;
+						for (int v = 0; v &lt; drelp.size(); v++) {
+							if (bulbs[i][ran] == drelp[v]) {
+								loo = true;
+							}
+						}
+
+
+						if (loo == false) {
+							if (bulbs[i][ran] &lt; 0) { 
+								int temp = -(bulbs[i][ran]) - 1;
+								if (booleans[temp] == 0) {
+									booleans[temp] = 1;
+								}
+								else booleans[temp] = 0;
+								cout &lt;&lt; &quot;stuck1&quot; &lt;&lt; endl;
+								t.update(bulbs, temp, numLights, booleans);
+								for (int i = 0; i &lt; numLights.size(); i++) {
+									cout &lt;&lt; numLights[i] &lt;&lt; endl;
+								}
+							}
+							else { 
+								int temp = bulbs[i][ran] - 1;
+								if (booleans[temp] == 0) {
+									booleans[temp] = 1;
+								}
+								else booleans[temp] = 0; 
+								cout &lt;&lt; &quot;stuck2: &quot; &lt;&lt; temp &lt;&lt; &quot; &quot; &lt;&lt; endl;
+								t.update(bulbs, temp, numLights, booleans);
+								for (int i = 0; i &lt; numLights.size(); i++) {
+									cout &lt;&lt; numLights[i] &lt;&lt; endl;
+								}
+							}
+							t.checkk(allLit, numLights);
+							if (allLit == true) {
+								cout &lt;&lt; &quot;this&quot; &lt;&lt; endl;
+								i = numLights.size();
+								break;
+							}
+							if (numLights[i] &gt; 0) {
+								w = 3;
+							}
+							t.compare(booleans, comp, M, bulbs, numLights);
+						}
+						
+					}
+					
+
+				}
+			}
+		}
+
+	}
+	return booleans;
+}
+</PRE>
+</BODY>
+</HTML>

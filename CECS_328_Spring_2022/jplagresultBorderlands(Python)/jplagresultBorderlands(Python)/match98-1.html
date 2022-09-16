@@ -1,0 +1,82 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>353166678</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+import math
+import random
+
+def solve(bulbs):
+    alogrithmActive = False #Used to check if there is actually a problem to solve
+    final_answer = []
+    bulbNumbers = set() #will recieve the number of bulbs in the set
+    bulbArray = bulbs
+    bulbBool = []
+    for i in bulbArray:
+        rowBool = []
+        for j in range(3):
+            bulbNumbers.add(abs(i[j]))
+            if (i[j] &lt; 0):
+                rowBool.append(True)
+            else:
+                rowBool.append(False)
+        bulbBool.append(rowBool)
+    sorted_bulbNumbers = list(bulbNumbers) #Putting a note here to remember to possibly sort it if the set ends up not sorting for one of the problems.
+    for i in bulbBool:
+        if ((not i[0]) and (not i[1]) and (not i[2])):
+            alogrithmActive = True #used to check if we already found the answer or not. If this is true, we have not found the answer already.
+
+    for i in range(sorted_bulbNumbers[-1]):
+            final_answer.append(False)
+    if alogrithmActive == False:
+        return final_answer
+    else:
+        startAlgorithm = True
+        while startAlgorithm:
+            startAlgorithm = False
+            for i in range(len(bulbArray)):
+<A NAME="0"></A>                if ((bulbArray[i][0] &gt; 0) and (bulbArray[i][1] &gt; 0) and (bulbArray[i][2] &gt; 0)):
+                    numberTest = random.randint(0, 2)
+                    changeNumber = abs(bulbArray[i][numberTest])
+                    <FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match98-0.html#0',2,'match98-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>for j in range(len(bulbArray)):
+                        for k in range(3):
+                            if abs(bulbArray[j][k]) == changeNumber:
+                                bulbArray[j][k] *=</B></FONT> -1
+<A NAME="1"></A>                                if bulbBool[j][k]:
+                                    bulbBool[j][k] = False
+                                else:
+                                    bulbBool[j][k] = <FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match98-0.html#1',2,'match98-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>True
+                    if final_answer[changeNumber-1] == True:
+                        final_answer[changeNumber-1] = False
+                    else:
+                        final_answer[changeNumber-1] = T</B></FONT>rue
+            #arrayIterate = 0
+            for i in bulbBool:
+                if ((not i[0]) and (not i[1]) and (not i[2])):
+                    startAlgorithm = True
+            
+    return final_answer
+
+#testing area
+#test0 = [[-11,2,3], [-3,5,6], [-6,2,3]]
+#test = [[-11,9,10], [10, -7, 8], [7, 10, 10], [3, 4, -1], [15, 15, -11], [-6, -4, 8], [-9,-7,-4], [4, 9, 5], [-13, 13, -10], [-11, -6, -9]]
+#test2 = [[-6, 4, -5],[-13, 13, -13],[-3, -7, 7],[7, 6, -8],[-8, 7, 7],[1, 1, -2],[9, -7, 9],[-9, 11, 7],[9, 9, -5],[-10, 9, -8],[9, -8, 11],[8, -8, 7],[-5, 9, 10],[4, -7, -5],[-9, -9, 7],[-8, -10, -8],[10, -8, -12],[7, 9, 10],[-14, 10, -13],[-3, -5, -6]]
+#print(solve(test2))
+</PRE>
+
+</BODY>
+</HTML>

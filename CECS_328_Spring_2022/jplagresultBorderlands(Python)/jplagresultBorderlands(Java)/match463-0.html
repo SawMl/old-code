@@ -1,0 +1,402 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>817027443</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+
+
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.Dictionary;
+
+public class StudentSolver {
+
+    public static void main(String[] args){
+        
+        ArrayList&lt;Integer&gt; a1  = new ArrayList&lt;Integer&gt;(Arrays.asList(-4, 4, -1));
+        ArrayList&lt;Integer&gt; a2  = new ArrayList&lt;Integer&gt;(Arrays.asList(13, -9,-14));
+        ArrayList&lt;Integer&gt; a3  = new ArrayList&lt;Integer&gt;(Arrays.asList( -4, -7, -9));
+        ArrayList&lt;Integer&gt; a4  = new ArrayList&lt;Integer&gt;(Arrays.asList(2,  6,  -4));
+        ArrayList&lt;Integer&gt; a5  = new ArrayList&lt;Integer&gt;(Arrays.asList(6, -8, -11));
+        ArrayList&lt;Integer&gt; a6  = new ArrayList&lt;Integer&gt;(Arrays.asList(-6, -6, -6));
+        ArrayList&lt;Integer&gt; a7  = new ArrayList&lt;Integer&gt;(Arrays.asList( 7, 11,-10));
+        ArrayList&lt;Integer&gt; a8  = new ArrayList&lt;Integer&gt;(Arrays.asList( 4, -7,  6));
+        ArrayList&lt;Integer&gt; a9  = new ArrayList&lt;Integer&gt;(Arrays.asList( 5,  6,  4));
+        ArrayList&lt;Integer&gt; a10 = new ArrayList&lt;Integer&gt;(Arrays.asList(10, 14, -9));
+        ArrayList&lt;Integer&gt; a11 = new ArrayList&lt;Integer&gt;(Arrays.asList(-10, -10, 9));
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; test = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;(Arrays.asList(a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11));
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        
+        
+
+        
+        
+        
+        
+
+    }
+
+    
+    
+    
+    public static ArrayList&lt;Boolean&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt;bulbs){
+        int M = findM(bulbs);
+        Set&lt;Integer&gt; visited = new HashSet&lt;Integer&gt;();
+        ArrayList&lt;Boolean&gt; wireState = new ArrayList&lt;Boolean&gt;(M+1);
+
+        for(int i = 0;i&lt;=M;i++){
+            wireState.add(false);
+        }
+
+        
+        Set&lt;Integer&gt; stone = setInStone(bulbs, M);
+        
+        if(!stone.isEmpty()){
+            for (Integer i : stone) {
+                if(i&gt;0){
+                    wireState.set(i,true);
+                    
+                }
+                bulbs = reduceRows(bulbs, i);
+            }
+        }
+        
+        if(lightsOnAllRows(bulbs, wireState)){
+            wireState.remove(0);
+            return wireState;
+        }
+        
+        
+        bulbs = removedupes(bulbs);
+        
+
+        
+        Set&lt;Integer&gt; singlebulbs = checkSingles(bulbs);
+        if(!singlebulbs.isEmpty()){
+            for (Integer i : singlebulbs) {
+                if(i&gt;0){
+                    visited.add(i);
+                    wireState.set(i,true);
+                }
+                else{
+                    visited.add(i);
+                    wireState.set(i*-1,false);
+                }
+                bulbs = reduceRows(bulbs, i);
+            }
+        }
+        
+        bulbs = removeVisited(bulbs,visited);
+        
+
+        if(lightsOnAllRows(bulbs, wireState)){
+            wireState.remove(0);
+            return wireState;
+        }
+
+        wireState = bruteForceRecursive(bulbs, wireState,visited);
+        wireState.remove(0);
+        return wireState;
+
+    }
+
+    
+    public static int findM(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs){
+        int largest = 0;
+        for(ArrayList&lt;Integer&gt; wireSet:bulbs){
+            for(Integer i:wireSet){
+                if(i &lt;0){
+                    if((i * -1) &gt; largest){
+                        largest = i*-1;
+                    }
+                }
+<A NAME="0"></A>                else{
+                    if(i &gt; largest){
+                        largest = i;
+                    <FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match463-1.html#0',3,'match463-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>}
+                }
+            }
+        }
+        return largest;
+    }    
+
+    
+    public static boolean checkRowForLight(ArrayList&lt;Integer&gt; threeBulbs</B></FONT>,ArrayList&lt;Boolean&gt; wireState){
+        boolean ans = false;
+        for(Integer i : threeBulbs){
+            if(i &lt; 0){
+                if(!wireState.get(i*-1)){
+                    return true;
+                }
+            }
+            else{
+                if(wireState.get(i)){
+                    return true;
+                }
+            }
+        }
+        return ans;
+    }
+
+    
+    public static ArrayList&lt;Boolean&gt; checkAllRows(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs, ArrayList&lt;Boolean&gt; wireState){
+        ArrayList&lt;Boolean&gt; currentStatus = new ArrayList&lt;Boolean&gt;();
+        for(ArrayList&lt;Integer&gt; wireSet:bulbs){
+            currentStatus.add(checkRowForLight(wireSet,wireState));
+        }
+        return currentStatus;
+    }
+
+    
+    public static boolean lightsOnAllRows(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs, ArrayList&lt;Boolean&gt; wireState){
+        boolean status = !(checkAllRows(bulbs, wireState).contains(false));
+        return status;
+    }
+
+    
+    public static ArrayList&lt;Integer&gt; checkForBulb(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs,int checkNum){
+<A NAME="1"></A>        ArrayList&lt;Integer&gt; listOfSets = new ArrayList&lt;Integer&gt;();
+        for(int i =0;i&lt;bulbs.size();i++){
+            ArrayList&lt;Integer&gt; wireSet = bulbs.get(i);
+            <FONT color="#f63526"><A HREF="javascript:ZweiFrames('match463-1.html#1',3,'match463-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>if(wireSet.contains(checkNum) || wireSet.contains(checkNum * -1)){
+                listOfSets.add(i);
+            }
+        }</B></FONT>
+        return listOfSets;
+    }    
+
+    public static ArrayList&lt;Boolean&gt; switchSingleWire( ArrayList&lt;Boolean&gt; wireState, int switchWire){
+        ArrayList&lt;Boolean&gt; wireStateInside = new ArrayList&lt;Boolean&gt;(wireState);
+        if(switchWire &lt; 0){
+            wireStateInside.set(switchWire*-1,false);
+        }
+        else{
+            wireStateInside.set(switchWire,true);
+        }
+        
+        return wireStateInside;
+    }
+
+    
+    public static Set&lt;Integer&gt; setInStone(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs,int M){
+<A NAME="2"></A>        Set&lt;Integer&gt; stone = new HashSet&lt;Integer&gt;();
+        for(ArrayList&lt;Integer&gt; wireSet: bulbs){
+            stone.addAll(wireSet);
+        <FONT color="#77bfc7"><A HREF="javascript:ZweiFrames('match463-1.html#2',3,'match463-top.html#2',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>}
+        for(int i = 1; i &lt;M+1;i++){
+            if(stone.contains(i) &amp;&amp; stone.contains(i*-1)){</B></FONT>
+                stone.remove(i);
+                stone.remove(i*-1);
+            }
+        }
+        return stone;
+    }   
+
+    public static ArrayList&lt;Integer&gt; numCount(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs, ArrayList&lt;Boolean&gt; wireState){
+        Dictionary&lt;Integer,Integer&gt; numberCount = new Hashtable&lt;Integer,Integer&gt;();
+        Set&lt;Integer&gt; stillHereNums = new HashSet&lt;Integer&gt;();
+        ArrayList&lt;Integer&gt; mostToLeast = new ArrayList&lt;Integer&gt;();
+        for(ArrayList&lt;Integer&gt; rows:bulbs){
+            for(Integer bulbInt:rows){
+                if(!stillHereNums.contains(bulbInt)){
+                    stillHereNums.add(bulbInt);
+                    numberCount.put(bulbInt,1);
+                }
+                else{
+                    numberCount.put(bulbInt,numberCount.get(bulbInt)+1);
+                }
+            }
+        }
+        mostToLeast = mostToLeast(numberCount,stillHereNums);
+
+        return mostToLeast;
+    }
+
+    public static ArrayList&lt;Integer&gt; mostToLeast(Dictionary&lt;Integer,Integer&gt; diction,Set&lt;Integer&gt; unsorted){
+        int most = 0;
+        int mostValue = 0;
+        ArrayList&lt;Integer&gt; sortedList = new ArrayList&lt;Integer&gt;();
+        if(unsorted.isEmpty()){
+            return sortedList;
+        }
+        for(Integer i:unsorted){
+            if(diction.get(i) &gt; most){
+                most = diction.get(i);
+                mostValue = i;
+            }
+        }
+        unsorted.remove(mostValue);
+        diction.remove(mostValue);
+        sortedList.add(mostValue);
+        sortedList.addAll(mostToLeast(diction,unsorted));
+        return sortedList;
+    }
+
+    public static ArrayList&lt;ArrayList&lt;Integer&gt;&gt; reduceRows(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs,int remove){
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbsReduced = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();
+        for(ArrayList&lt;Integer&gt; wireSet:bulbs){
+            if(!wireSet.contains(remove)){
+                bulbsReduced.add(wireSet);
+            }
+        }
+        return bulbsReduced;
+    }
+
+    
+    public static ArrayList&lt;ArrayList&lt;Integer&gt;&gt; removedupes(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs){
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; noDupes = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();
+        Set&lt;Integer&gt; checkdupe = new HashSet&lt;Integer&gt;();
+        for(ArrayList&lt;Integer&gt; wireSet:bulbs){
+            checkdupe.clear();
+            checkdupe.addAll(wireSet);
+            if(checkdupe.size()&lt;3){
+                ArrayList&lt;Integer&gt; noDupeWireSet = new ArrayList&lt;Integer&gt;(checkdupe);
+                noDupes.add(noDupeWireSet);
+            }
+            else{
+                noDupes.add(wireSet);
+            }
+        }
+        return noDupes;
+    }
+
+    
+    public static Set&lt;Integer&gt; checkSingles(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs){
+        Set&lt;Integer&gt; singles = new HashSet&lt;Integer&gt;();
+        for(ArrayList&lt;Integer&gt; wireSet: bulbs){
+            if(wireSet.size() == 1){    
+                singles.add(wireSet.get(0));
+            }
+        }
+        return singles;
+    }
+
+    
+    public static ArrayList&lt;ArrayList&lt;Integer&gt;&gt; removeVisited(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs, Set&lt;Integer&gt; visited){
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; newBulbs = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;(bulbs);
+        for(Integer i : visited){
+
+            for(ArrayList&lt;Integer&gt; wireSet : newBulbs){
+<A NAME="3"></A>                if(wireSet.contains(i*-1)){
+                    wireSet.remove(wireSet.indexOf(i*-1));
+                }
+            <FONT color="#6cc417"><A HREF="javascript:ZweiFrames('match463-1.html#3',3,'match463-top.html#3',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>}
+        }
+
+        return newBulbs;
+    }
+
+    public static ArrayList&lt;Boolean&gt; bruteForceRecursive(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs,ArrayList&lt;Boolean&gt; wireState,Set&lt;Integer&gt; visited</B></FONT>){
+        ArrayList&lt;Integer&gt; bulbsLeftMosttoLeast = numCount(bulbs, wireState);
+        ArrayList&lt;Boolean&gt; wireStateInside = new ArrayList&lt;Boolean&gt;(wireState);
+        Set&lt;Integer&gt; visitedInside = new HashSet&lt;Integer&gt;(visited);
+        Set&lt;Integer&gt; stone = new HashSet&lt;Integer&gt;();
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbsReduced = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;(bulbs);
+
+        if(lightsOnAllRows(bulbs, wireStateInside)){
+            System.out.println(&quot;Hi:&quot;+bulbs);
+            return wireStateInside;
+        }
+
+        
+        for(Integer i:bulbsLeftMosttoLeast){
+            if(!bulbsLeftMosttoLeast.contains(i*-1)){
+                stone.add(i);
+            }
+        }
+        if(!stone.isEmpty()){
+            for (Integer i : stone) {
+                if(i&gt;0){
+                    wireStateInside.set(i,true);
+                }
+                bulbsLeftMosttoLeast.remove(bulbsLeftMosttoLeast.indexOf(i));
+                bulbsReduced = reduceRows(bulbs,i);
+            }
+        }
+        if(lightsOnAllRows(bulbs, wireStateInside)){
+            return wireStateInside;
+        }
+
+        
+        Set&lt;Integer&gt; singlebulbs = checkSingles(bulbsReduced);
+        if(!singlebulbs.isEmpty()){
+            for (Integer i : singlebulbs) {
+                if(singlebulbs.contains(i*-1)){
+                    return wireStateInside;
+                }
+                if(i&gt;0){
+                    visitedInside.add(i);
+                    wireStateInside.set(i,true);
+                }
+                else{
+                    visitedInside.add(-1*i);
+                }
+                bulbsReduced = reduceRows(bulbsReduced,i);
+            }
+        }
+        bulbsReduced = removeVisited(bulbsReduced,visitedInside);
+        if(lightsOnAllRows(bulbsReduced, wireStateInside)){
+            return wireStateInside;
+        }
+
+        for(Integer i : bulbsLeftMosttoLeast){
+            wireStateInside = switchSingleWire(wireStateInside,i);
+            if(lightsOnAllRows(bulbsReduced, wireStateInside)){
+                return wireStateInside;
+            }
+            bulbsReduced = reduceRows(bulbsReduced, i);
+            for(ArrayList&lt;Integer&gt; wireSet :bulbsReduced){
+                if(wireSet.contains(i*-1)){
+                    wireSet.remove(wireSet.indexOf(i*-1));
+                }
+            }
+            wireStateInside = bruteForceRecursive(bulbsReduced, wireStateInside,visitedInside);
+            if(lightsOnAllRows(bulbsReduced, wireStateInside)){
+                return wireStateInside;
+            }
+        }
+        System.out.println(&quot;Hi:&quot;+bulbs);
+        return wireStateInside;
+        
+    }
+}
+
+
+
+</PRE>
+
+</BODY>
+</HTML>

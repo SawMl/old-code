@@ -1,0 +1,216 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>828496614</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+
+#grid = [[7, 8, 6, 5], [9, 6, 4, 2], [8, 1, 3, 2], [9, 4, 8, 8]]
+#grid = [[2,5,9,2],[7,8,7,4],[9,3,3,1],[9,2,8,9],[2,6,4,7]]
+#grid = [[3,4,1,2,8,6],[6,1,8,2,7,4],[5,4,3,9,9,5],[5,9,8,3,2,6],[8,7,2,9,6,4]]
+#grid = [[9, 6, 6, 9, 3, 8, 5, 6, 8, 9, 1, 5, 9, 3, 8, 8, 9, 9], [1, 9, 1, 3, 8, 6, 4, 9, 9, 5, 9, 4, 8, 1, 5, 6, 3, 1], [9, 4, 2, 1, 2, 3, 6, 3, 8, 2, 4, 4, 6, 7, 4, 4, 3, 2], [6, 4, 8, 8, 4, 1, 1, 2, 5, 8, 7, 1, 1, 7, 4, 4, 1, 5], [3, 6, 5, 4, 4, 8, 1, 9, 8, 1, 6, 9, 7, 4, 9, 9, 5, 5], [1, 1, 8, 7, 6, 1, 7, 9, 5, 2, 9, 8, 6, 2, 7, 8, 9, 9], [4, 5, 6, 8, 7, 3, 2, 2, 7, 2, 2, 9, 5, 3, 2, 6, 3, 4], [3, 6, 4, 8, 7, 8, 8, 7, 7, 6, 8, 5, 8, 5, 1, 4, 8, 3], [3, 7, 1, 6, 8, 6, 2, 6, 4, 1, 8, 4, 9, 8, 1, 4, 1, 9], [5, 4, 1, 7, 1, 6, 2, 5, 1, 2, 3, 7, 6, 1, 5, 2, 6, 9], [6, 1, 3, 9, 4, 7, 2, 7, 5, 2, 9, 2, 3, 5, 8, 7, 6, 7], [2, 6, 1, 6, 5, 3, 1, 3, 7, 4, 9, 4, 6, 7, 3, 8, 8, 6], [4, 2, 7, 3, 3, 2, 2, 3, 3, 3, 4, 6, 2, 4, 2, 6, 8, 9], [5, 3, 8, 5, 1, 6, 2, 7, 7, 6, 2, 1, 5, 5, 7, 5, 8, 5], [1, 3, 3, 1, 6, 9, 1, 3, 5, 4, 4, 4, 1, 8, 7, 2, 3, 3], [9, 8, 2, 5, 6, 4, 2, 8, 6, 2, 6, 4, 2, 7, 7, 9, 7, 9], [3, 3, 2, 9, 4, 3, 8, 8, 8, 1, 5, 3, 1, 3, 6, 7, 7, 4], [3, 3, 6, 2, 2, 9, 5, 7, 7, 2, 7, 1, 3, 6, 9, 3, 6, 2]]
+#grid = [[8, 6 ,7, 7, 6, 4, 3, 6, 9],[4, 2, 7, 2, 7, 8, 9, 7, 6],[9, 9, 6, 6, 3, 7, 2, 9, 8],[1 ,4, 2, 4, 7, 1, 3, 2, 9],[1, 8, 4, 6, 7, 3, 7, 9, 4 ]]
+#grid = [[672], [122], [728], [627], [93], [463], [571], [34], [504], [228]]
+# grid= [[7, 8, 6, 5],
+# [9, 6, 4, 2],
+# [8, 1, 3, 2],
+# [9, 4, 8, 8]]
+# grid = [[4, 6, 4, 9],
+# [9, 6, 6, 3],
+# [1, 2, 3, 6],
+# [4, 2, 7, 9],
+# [6, 5, 7, 9]]
+#grid = [[7, 6, 8, 1, 7], [3, 4, 7, 3, 8], [5, 2, 8, 4, 7], [7, 2, 6, 3, 3], [3, 8, 1, 5, 4]]
+def move(grid,line,col):
+    check = []
+    if col == len(grid)-1:
+        check.append(grid[col - 1][line - 1])
+        check.append(grid[col][line - 1])
+        check.append(grid[0][line-1])
+        return check
+    check.append(grid[col - 1][line-1])
+    check.append(grid[col][line-1])
+    check.append(grid[col + 1][line-1])
+    return check
+# def indexer(grid,line,col):
+#     check = []
+#     if col == len(grid)-1:
+#         check = [[col - 1,line - 1],[col,line - 1],[1,-1]]
+#         return check
+#     check.append(grid[col - 1][line-1])
+#     check.append(grid[col][line-1])
+#     check.append(grid[col + 1][line-1])
+#     check = [[col - 1,line-1],[col,line-1],[col + 1,line-1]]
+#     return check
+
+def first(grid):
+    leng = len(grid)
+    final = []
+    final.append(grid[0])
+    for x in range(leng-2):
+        temp = []
+        for y in range(len(grid[0])):
+            temp.append(0)
+        final.append(temp)
+    final.append(grid[-1])
+    return final
+
+def high(pos):
+    high = 0
+    count = 0
+    for x in range(len(pos)):
+        if pos[x] &gt; high:
+            count = x
+            high = pos[x]
+    return [high,count-1]
+
+def traverse(grid,move,row,col):
+    var = 0
+    print(grid,move,row,col)
+    if move == 1:
+        var = grid[row+1][col-1]
+        return [var,row+1,col-1]
+    elif move == 0:
+        var = grid[row][col - 1]
+        return [var,row,col-1]
+    elif move == -1:
+        var = grid[row-1][col - 1]
+        return [var,row-1,col-1]
+
+def calculate(grid,ans):
+    pass
+
+
+def solve(grid):
+
+    if len(grid[0]) == 1:
+        if grid[0][0]&gt;grid[-1][0]:
+            return [1,0]
+        else:
+            return [0,0]
+
+    print(grid)
+    ANSWER = []
+    # for x in grid:
+    #     print(x)
+    FINAL = []
+    FINAL2 = []
+    grid2 = first(grid)
+    ar = []
+    ar2 = []
+    for y in range(len(grid2)):
+        temp = []
+        temp2 = []
+        for x in range(len(grid2[y])):
+            pos = move(grid2,x,y)
+            higher = high(pos)
+            temp.append(higher[0]+grid[y][x])
+            temp2.append(higher[1])
+        ar.append(temp)
+        ar2.append(temp2)
+
+    # for y in ar2:
+    #     print(y)
+    FINAL.append(ar)
+    FINAL.append(ar2)
+    ar3 = []
+    ar4 = []
+    for g in range(1,len(grid[0])-1):
+        for y in range(len(grid)):
+            temp3 = []
+            temp4 = []
+            for x in range(len(grid2[y])):
+                pos = move(ar, x, y)
+                higher = high(pos)
+                temp3.append(higher[0] + grid[y][x])
+                temp4.append(higher[1])
+            ar3.append(temp3)
+            ar4.append(temp4)
+
+        FINAL.append(ar3)
+        FINAL2.append(ar4)
+        ar = ar3
+        ar3 = []
+        ar4 = []
+    # print(&quot;____________&quot;)
+    #for x in ar3:
+        #print(x)
+    # for x in FINAL:
+    #     for y in x:
+    #         print(y)
+    #     print(&quot;____________&quot;)
+    # for x in FINAL2:
+    #     for y in x:
+    #         print(y)
+    #     print(&quot;............&quot;)
+    hi_final = []
+
+    hi = high(FINAL[-1][0])
+    hi2 = high(FINAL[-1][-1])
+    star = 0
+    if hi[0] &gt; hi2[0]:
+        hi_final = hi
+        hi_final.append(1-1)
+        star = 1
+    else:
+        hi_final = hi2
+        hi_final.append(0-1)
+        star = 0
+<A NAME="0"></A>    #ANSWER.append(hi_final[1]+1)
+
+    #print(hi_final)
+    test <FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match21-0.html#0',2,'match21-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>= FINAL[-1][hi_final[2]][hi_final[1]+1]
+
+    test2 = FINAL2[-1][hi_final[2]][hi_final[</B></FONT>1]+1]
+    trav = traverse(FINAL[-2],test2,hi_final[2],hi_final[1]+1)
+    #print(trav)
+    # print(&quot;step :&quot;,test2)
+    # test2 = FINAL2[-2][trav[1]][trav[2]]
+    # trav2 = traverse(FINAL[-3],test2,trav[1],trav[2])
+    # print(trav2)
+    #
+    # test2 = FINAL2[-3][trav2[1]][trav2[2]]
+    # trav3 = traverse(FINAL[-4], test2,trav2[1],trav2[2])
+    # print(trav3)
+    ANSWER.append(test2)
+    #print(trav[1],trav[2])
+    trav_glob = trav
+    for x in range(1,len(FINAL)-1):
+        test2 = FINAL2[-x][trav_glob[1]][trav_glob[2]]
+        trav2 = traverse(FINAL[-(x+1)], test2, trav_glob[1], trav_glob[2])
+        # print(trav2)
+        # print(&quot;Step: &quot;,test2)
+        #print(trav2[1], trav2[2])
+        ANSWER.append(test2)
+        trav_glob = trav2
+
+    lenny = 0
+    if trav2[2] &lt; 0:
+        lenny = trav2[2] + len(grid[0])
+    else:
+        lenny = trav2[2]
+
+    #ANSWER.insert(1,lenny)
+    ANSWER.reverse()
+    ANSWER = [star,lenny] + ANSWER
+    return ANSWER
+
+# print(solve(grid))
+
+</PRE>
+
+</BODY>
+</HTML>

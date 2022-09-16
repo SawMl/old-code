@@ -1,0 +1,402 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>401882019</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+import java.util.ArrayList;
+import java.util.Random;
+
+public class StudentSolver {
+    /**
+     * TESTING PURPOSES USING EXAMPLE FROM DOCUMENT
+     */
+    public static void main(String[] args){
+
+
+
+        boolean test = true;
+        while(true){
+            Random randomGen = new Random();
+
+            ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs = new ArrayList&lt;&gt;();
+            int m = randomGen.nextInt(1000);
+            int n = randomGen.nextInt(100);
+            for(int i = 0; i &lt; n; i++){
+                bulbs.add(new ArrayList());
+                for(int j = 0; j &lt; 3; j++){
+                    int randomNumber = randomGen.nextInt(m + 1);
+                    while(randomNumber &lt; 1){
+                        randomNumber = randomGen.nextInt(m + 1);
+                    }
+                    if(randomGen.nextInt(2) == 0){
+                        randomNumber = -randomNumber;
+                    }
+
+                    bulbs.get(i).add(randomNumber);
+                }
+
+            }
+
+
+            ArrayList&lt;Boolean&gt; bulbsSolution = solve(bulbs);
+            test = verifySolution(bulbs, bulbsSolution);
+            if(!test){
+                for(int i = 0; i &lt; bulbs.size(); i++){
+                    System.out.printf(&quot;%s\t%s\n&quot;, i, bulbs.get(i));
+                }
+                for(int i = 0; i &lt; bulbsSolution.size(); i++){
+                    System.out.printf(&quot;%s\t%s\n&quot;, i + 1, bulbsSolution.get(i));
+                }
+            }
+        }
+    }
+
+    public static boolean verifySolution(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs, ArrayList&lt;Boolean&gt; solution){
+        boolean solutionValid = true;
+        int invalidRows = 0;
+        int index = 0;
+        for(ArrayList&lt;Integer&gt; row: bulbs){
+            boolean rowValid = false;
+            for(int element: row){
+                if(element &lt; 0){
+                    if(!solution.get(Math.abs(element) - 1)){
+                        rowValid = true;
+                    }
+                }
+                else {
+                    if(solution.get(Math.abs(element) - 1)){
+                        rowValid = true;
+                    }
+                }
+            }
+            if(!rowValid){
+                solutionValid = false;
+                invalidRows++;
+<A NAME="0"></A>                System.out.printf(&quot;Invalid row: %s\n&quot;, index);
+            }
+            index++;
+        <FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match895-0.html#0',2,'match895-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>}
+        System.out.printf(&quot;Invalid rows: %s \n&quot;, invalidRows);
+        return solutionValid;
+    }
+
+    /**
+     * main method for algorithm
+     * @param bulbs
+     * @return
+     */
+
+    public static ArrayList&lt;Boolean&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs) {
+        
+        int m = 0</B></FONT>;
+        for(ArrayList&lt;Integer&gt; row: bulbs){
+            for(int element: row){
+                m = Math.max(m, Math.abs(element));
+            }
+        }
+
+        
+        int n = bulbs.size();
+
+        
+        ArrayList&lt;Boolean&gt; solution = new ArrayList&lt;&gt;();
+        for(int i = 0; i &lt; m; i++){
+            solution.add(false);
+        }
+
+        
+        ArrayList&lt;Integer&gt; wireSetIndexes = new ArrayList&lt;&gt;();
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; wireSetRowsPos = new ArrayList&lt;&gt;();
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; wireSetRowsNeg = new ArrayList&lt;&gt;();
+
+        for(int i = 0; i &lt; n; i++){
+            for(int e: bulbs.get(i)){
+                int wireSetIndex = wireSetIndexes.indexOf(Math.abs(e));
+                if(wireSetIndex == -1){
+                    wireSetIndex = wireSetIndexes.size();
+                    wireSetIndexes.add(Math.abs(e));
+                    wireSetRowsPos.add(new ArrayList&lt;&gt;());
+                    wireSetRowsNeg.add(new ArrayList&lt;&gt;());
+                }
+                if(e &gt; 0){
+                    wireSetRowsPos.get(wireSetIndex).add(i);
+                }
+                else{
+                    wireSetRowsNeg.get(wireSetIndex).add(i);
+                }
+            }
+        }
+
+        /*
+        for(int i = 0; i &lt; wireSetIndexes.size(); i++){
+            System.out.printf(&quot;Bulb Number: %s\n&quot;, wireSetIndexes.get(i));
+            System.out.println(wireSetRowsPos.get(i));
+            System.out.println(wireSetRowsNeg.get(i));
+        }
+
+         */
+
+        
+        for(int i = 0; i &lt; n; i++){
+            if(bulbs.get(i).get(0) == bulbs.get(i).get(1) &amp;&amp;  bulbs.get(i).get(1) == bulbs.get(i).get(2)){
+                int bulbNumber = Math.abs(bulbs.get(i).get(0));
+                int bulbIndex = wireSetIndexes.indexOf(bulbNumber);
+                if(bulbIndex == -1){
+                    continue;
+                }
+
+                
+                if(bulbs.get(i).get(0) &gt; 0){
+                    solution.set(bulbs.get(i).get(0) - 1, true);
+
+                    
+                    for(int j = 0; j &lt; wireSetRowsPos.get(bulbIndex).size(); j++){
+                        int rowNumber = wireSetRowsPos.get(bulbIndex).get(j);
+                        
+                        for(int x = 0; x &lt; bulbs.get(rowNumber).size(); x++){
+                            int bulbNumberRemove = bulbs.get(rowNumber).get(x);
+                            if(bulbNumberRemove == bulbNumber){
+                                continue;
+                            }
+                            
+
+                            if(bulbNumberRemove &gt; 0){
+                                int bulbIndexRemove = wireSetIndexes.indexOf(bulbNumberRemove);
+                                if(bulbIndexRemove == -1){
+                                    continue;
+                                }
+                                int bulbIndexRemovePos = wireSetRowsPos.get(bulbIndexRemove).indexOf(rowNumber);
+                                if(bulbIndexRemovePos &gt; -1){
+                                    
+                                    wireSetRowsPos.get(bulbIndexRemove).remove(bulbIndexRemovePos);
+                                }
+                            }
+                            else {
+                                bulbNumberRemove = Math.abs(bulbNumberRemove);
+                                int bulbIndexRemove = wireSetIndexes.indexOf(bulbNumberRemove);
+                                if(bulbIndexRemove == -1){
+                                    continue;
+                                }
+                                int bulbIndexRemoveNeg = wireSetRowsNeg.get(bulbIndexRemove).indexOf(rowNumber);
+
+                                if(bulbIndexRemoveNeg &gt; -1){
+                                    
+                                    wireSetRowsNeg.get(bulbIndexRemove).remove(bulbIndexRemoveNeg);
+                                }
+                            }
+                        }
+                    }
+                }
+                else{
+                    
+                    for(int j = 0; j &lt; wireSetRowsNeg.get(bulbIndex).size(); j++){
+                        int rowNumber = wireSetRowsNeg.get(bulbIndex).get(j);
+                        
+                        for(int x = 0; x &lt; bulbs.get(rowNumber).size(); x++){
+                            int bulbNumberRemove = bulbs.get(rowNumber).get(x);
+                            if(bulbNumberRemove == bulbNumber){
+                                continue;
+                            }
+                            
+
+                            if(bulbNumberRemove &gt; 0){
+                                int bulbIndexRemove = wireSetIndexes.indexOf(bulbNumberRemove);
+                                if(bulbIndexRemove == -1){
+                                    continue;
+                                }
+                                int bulbIndexRemovePos = wireSetRowsPos.get(bulbIndexRemove).indexOf(rowNumber);
+                                if(bulbIndexRemovePos &gt; -1){
+                                    
+                                    wireSetRowsPos.get(bulbIndexRemove).remove(bulbIndexRemovePos);
+                                }
+                            }
+                            else {
+                                bulbNumberRemove = Math.abs(bulbNumberRemove);
+                                int bulbIndexRemove = wireSetIndexes.indexOf(bulbNumberRemove);
+                                if(bulbIndexRemove == -1){
+                                    continue;
+                                }
+                                int bulbIndexRemoveNeg = wireSetRowsNeg.get(bulbIndexRemove).indexOf(rowNumber);
+
+                                if(bulbIndexRemoveNeg &gt; -1){
+                                    
+                                    wireSetRowsNeg.get(bulbIndexRemove).remove(bulbIndexRemoveNeg);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                
+                wireSetIndexes.remove(bulbIndex);
+                wireSetRowsPos.remove(bulbIndex);
+                wireSetRowsNeg.remove(bulbIndex);
+            }
+        }
+
+        
+        for(int bulbIndex = 0; bulbIndex &lt; wireSetIndexes.size(); bulbIndex++){
+            if(wireSetRowsPos.get(bulbIndex).size() == 0 &amp;&amp; wireSetRowsNeg.get(bulbIndex).size() == 0){
+                
+                wireSetIndexes.remove(bulbIndex);
+                wireSetRowsPos.remove(bulbIndex);
+                wireSetRowsNeg.remove(bulbIndex);
+                bulbIndex--;
+            }
+        }
+
+        /*
+        for(int i = 0; i &lt; wireSetIndexes.size(); i++){
+            System.out.printf(&quot;Bulb Number: %s\n&quot;, wireSetIndexes.get(i));
+            System.out.println(wireSetRowsPos.get(i));
+            System.out.println(wireSetRowsNeg.get(i));
+        }
+
+         */
+
+        
+        while(wireSetIndexes.size() &gt; 0){
+            int startBulbIndex = 0;
+            
+            for(int bulbIndex = 0; bulbIndex &lt; wireSetIndexes.size(); bulbIndex++){
+                if(wireSetRowsPos.get(bulbIndex).size() + wireSetRowsNeg.get(bulbIndex).size() &gt; wireSetRowsPos.get(startBulbIndex).size() + wireSetRowsNeg.get(startBulbIndex).size()){
+                    startBulbIndex = bulbIndex;
+                }
+            }
+
+            int bulbNumber = wireSetIndexes.get(startBulbIndex);
+            
+
+            if(wireSetRowsPos.get(startBulbIndex).size() &gt; wireSetRowsNeg.get(startBulbIndex).size()) {
+                solution.set(wireSetIndexes.get(startBulbIndex) - 1, true);
+
+                
+                for(int j = 0; j &lt; wireSetRowsPos.get(startBulbIndex).size(); j++){
+                    int rowNumber = wireSetRowsPos.get(startBulbIndex).get(j);
+                    
+                    for(int x = 0; x &lt; bulbs.get(rowNumber).size(); x++){
+                        int bulbNumberRemove = bulbs.get(rowNumber).get(x);
+                        if(bulbNumberRemove == bulbNumber){
+                            continue;
+                        }
+
+                        if(bulbNumberRemove &gt; 0){
+                            int bulbIndexRemove = wireSetIndexes.indexOf(bulbNumberRemove);
+                            if(bulbIndexRemove == -1){
+                                continue;
+                            }
+                            int bulbIndexRemovePos = wireSetRowsPos.get(bulbIndexRemove).indexOf(rowNumber);
+                            if(bulbIndexRemovePos &gt; -1){
+                                
+                                wireSetRowsPos.get(bulbIndexRemove).remove(bulbIndexRemovePos);
+                            }
+                        }
+                        else {
+                            bulbNumberRemove = Math.abs(bulbNumberRemove);
+                            int bulbIndexRemove = wireSetIndexes.indexOf(bulbNumberRemove);
+                            if(bulbIndexRemove == -1){
+                                continue;
+                            }
+                            int bulbIndexRemoveNeg = wireSetRowsNeg.get(bulbIndexRemove).indexOf(rowNumber);
+
+                            if(bulbIndexRemoveNeg &gt; -1){
+                                
+                                wireSetRowsNeg.get(bulbIndexRemove).remove(bulbIndexRemoveNeg);
+                            }
+                        }
+                    }
+                }
+            }
+            else{
+                
+                for(int j = 0; j &lt; wireSetRowsNeg.get(startBulbIndex).size(); j++){
+                    int rowNumber = wireSetRowsNeg.get(startBulbIndex).get(j);
+                    
+                    for(int x = 0; x &lt; bulbs.get(rowNumber).size(); x++){
+                        int bulbNumberRemove = bulbs.get(rowNumber).get(x);
+                        if(bulbNumberRemove == bulbNumber){
+                            continue;
+                        }
+
+                        if(bulbNumberRemove &gt; 0){
+                            int bulbIndexRemove = wireSetIndexes.indexOf(bulbNumberRemove);
+                            if(bulbIndexRemove == -1){
+                                continue;
+                            }
+                            int bulbIndexRemovePos = wireSetRowsPos.get(bulbIndexRemove).indexOf(rowNumber);
+                            if(bulbIndexRemovePos &gt; -1){
+                                
+                                wireSetRowsPos.get(bulbIndexRemove).remove(bulbIndexRemovePos);
+                            }
+                        }
+                        else {
+                            bulbNumberRemove = Math.abs(bulbNumberRemove);
+                            int bulbIndexRemove = wireSetIndexes.indexOf(bulbNumberRemove);
+                            if(bulbIndexRemove == -1){
+                                continue;
+                            }
+                            int bulbIndexRemoveNeg = wireSetRowsNeg.get(bulbIndexRemove).indexOf(rowNumber);
+
+                            if(bulbIndexRemoveNeg &gt; -1){
+                                
+                                wireSetRowsNeg.get(bulbIndexRemove).remove(bulbIndexRemoveNeg);
+                            }
+                        }
+                    }
+                }
+            }
+
+            
+            wireSetIndexes.remove(startBulbIndex);
+            wireSetRowsPos.remove(startBulbIndex);
+            wireSetRowsNeg.remove(startBulbIndex);
+
+            
+            for(int bulbIndex = 0; bulbIndex &lt; wireSetIndexes.size(); bulbIndex++){
+                if(wireSetRowsPos.get(bulbIndex).size() == 0 &amp;&amp; wireSetRowsNeg.get(bulbIndex).size() == 0){
+                    
+                    wireSetIndexes.remove(bulbIndex);
+                    wireSetRowsPos.remove(bulbIndex);
+                    wireSetRowsNeg.remove(bulbIndex);
+                    bulbIndex--;
+                }
+            }
+        }
+
+        /*
+        System.out.println(&quot;\nAfter removing trios&quot;);
+        for(int i = 0; i &lt; wireSetIndexes.size(); i++){
+            System.out.printf(&quot;Bulb Number: %s\n&quot;, wireSetIndexes.get(i));
+            System.out.println(wireSetRowsPos.get(i));
+            System.out.println(wireSetRowsNeg.get(i));
+        }
+        */
+
+
+
+
+
+
+        System.out.println(&quot;\nUltimate Solution&quot;);
+        System.out.println(solution);
+        return solution;
+    }
+}
+</PRE>
+
+</BODY>
+</HTML>

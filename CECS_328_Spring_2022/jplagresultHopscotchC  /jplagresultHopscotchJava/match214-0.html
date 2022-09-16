@@ -1,0 +1,486 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>785650403</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+
+
+
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public class StudentSolver{
+    public static void main(String[] args){
+                
+        
+  
+    
+        
+        
+        
+
+
+
+        ArrayList&lt;Integer&gt; a1  = new ArrayList&lt;Integer&gt;(Arrays.asList(5,8,1,9,6));
+        ArrayList&lt;Integer&gt; a2  = new ArrayList&lt;Integer&gt;(Arrays.asList(3,6,1,8,1));
+        ArrayList&lt;Integer&gt; a3  = new ArrayList&lt;Integer&gt;(Arrays.asList(7,8,9,9,7));
+        ArrayList&lt;Integer&gt; a4  = new ArrayList&lt;Integer&gt;(Arrays.asList(9,1,7,3,9));
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;(Arrays.asList(a1,a2,a3,a4));
+        
+        
+        System.out.println(&quot;\n&quot; + solve(grid));
+        
+        
+        
+        
+        
+    }
+
+    public static ArrayList&lt;Integer&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid){
+        ArrayList&lt;Integer&gt; ans = new ArrayList&lt;Integer&gt;();
+        int ansval = 0;
+        ArrayList&lt;Integer&gt; realAns = new ArrayList&lt;Integer&gt;();
+        int realAnsVal = 0;
+        int n = grid.get(0).size();
+        int m = grid.size();
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; entryPoints = bestEntry(grid);
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; maxValuesList = maxOfEachColumn(grid, n, m);
+        int locx = 0;
+        int locy = 0;
+        System.out.println(&quot;enty:&quot; + entryPoints);
+        for(ArrayList&lt;Integer&gt; entry : entryPoints){
+            ans.clear();
+            ans.add(entry.get(0));
+            ans.add(entry.get(1));
+            
+            locx = entry.get(1);
+            if(entry.get(0)==1){
+                locy = 0;
+            }
+            else{
+                locy = m-1;
+            }
+            int exitcol = xminus(entry.get(1),n);
+            
+            ArrayList&lt;Integer&gt; funans = new ArrayList&lt;Integer&gt;();
+            funans.add(0,entry.get(0));
+            funans.add(1,entry.get(1));
+            ArrayList&lt;ArrayList&lt;Integer&gt;&gt; fun = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();
+            fun = pathingfun(grid, funans, exitcol, locx, locy, n, m, maxValuesList);
+            int funval = valueofans(grid, fun.get(0), n, m);
+            
+            
+            if(funval&gt;realAnsVal){
+                realAnsVal = funval;
+                realAns = new ArrayList&lt;Integer&gt;(fun.get(0));
+                
+                
+            }
+
+            while(locx != exitcol){
+                
+                
+                
+                
+                
+                
+                
+                
+                int xup = xplus(locx,n);
+                if(maxValuesList.get(xup).contains(locy)){
+                    ans.add(0);
+                }
+                else if(maxValuesList.get(xup).contains(yminus(locy,m))){
+                    ans.add(-1);
+                    locy = yminus(locy,m);
+                }
+                else if(maxValuesList.get(xup).contains(yplus(locy,m))){
+                    ans.add(1);
+                    locy = yplus(locy,m);
+                }
+                else{
+                    int upright,right,downright = 0;
+                    upright = grid.get(yplus(locy,m)).get(xup);
+                    right = grid.get(locy).get(xup);
+                    downright = grid.get(yminus(locy,m)).get(xup);
+                    int path = pathout3(upright,right,downright);
+                    ans.add(path);
+                    switch(path){
+                        case 1:
+                            locy = yplus(locy,m);
+                            break;
+                        case -1:
+                            locy = yminus(locy,m);
+                            break;
+                    }
+                }
+                locx = xup;
+            }
+
+            ans = ensurefudan(ans,m);
+            
+            ansval = valueofans(grid, ans, n, m);
+            
+            if(ansval &gt; realAnsVal){
+                realAnsVal = ansval;
+                realAns = new ArrayList&lt;Integer&gt;(ans);
+            }
+
+        }
+        System.out.println(&quot;ans: &quot; + realAns + &quot; val: &quot; + realAnsVal);
+        return realAns;
+    }
+
+    
+    public static ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bestEntry(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid){
+        ArrayList&lt;Integer&gt; tachi = new ArrayList&lt;Integer&gt;(grid.get(0));  
+        int n = tachi.size();
+        tachi.add(0,tachi.get(n-1));
+        ArrayList&lt;Integer&gt; neko = new ArrayList&lt;Integer&gt;(grid.get(grid.size()-1)); 
+        neko.add(0,neko.get(n-1));
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; shou = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;(); 
+        ArrayList&lt;Integer&gt; gong = new ArrayList&lt;Integer&gt;(); 
+        gong.add(0);
+        gong.add(0);
+        gong.add(0);
+
+        int currentMax = 0;
+        int added = 0;
+        
+        for(int i = 0;i&lt;n;i++){
+            int j = i+1;
+            
+            added = tachi.get(i) + tachi.get(j);
+            if(added &gt;= currentMax ){
+                gong.set(0,1);
+                gong.set(1,i);
+                gong.set(2,1);
+                if(added&gt;currentMax+3){
+                    shou.clear();
+                }
+                shou.add(new ArrayList&lt;Integer&gt;(gong));
+                currentMax = added;
+            }
+            
+            added = tachi.get(i) + neko.get(j);
+            if(added &gt;= currentMax){
+                gong.set(0,0);
+                gong.set(1,i);
+                gong.set(2,1);
+                if(added&gt;currentMax+3){
+                    shou.clear();
+                }
+                shou.add(new ArrayList&lt;Integer&gt;(gong));
+                currentMax = added;
+            }
+        }
+
+        
+        for(int i = 0;i&lt;n;i++){
+            int j = i+1;
+            
+            added = neko.get(i) + tachi.get(j);
+            if(added &gt; currentMax){
+                gong.set(0,1);
+                gong.set(1,i);
+                gong.set(2,0);
+                if(added&gt;currentMax+3){
+                    shou.clear();
+                }
+                shou.add(new ArrayList&lt;Integer&gt;(gong));
+                currentMax = added;
+            }
+            
+            added = neko.get(i) + neko.get(j);
+            if(added &gt; currentMax){
+                gong.set(0,0);
+                gong.set(1,i);
+                gong.set(2,0);
+                if(added&gt;currentMax+3){
+                    shou.clear();
+                }
+                shou.add(new ArrayList&lt;Integer&gt;(gong));
+                currentMax = added;
+            }
+        }
+        
+        return shou;
+    }
+
+    public static ArrayList&lt;ArrayList&lt;Integer&gt;&gt; maxOfEachColumn(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid, int n,int m){
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; listofMax = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();
+        ArrayList&lt;Integer&gt; maxbuilder = new ArrayList&lt;Integer&gt;();
+        int currmax = 0;
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; columns = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();
+        ArrayList&lt;Integer&gt; columnbuilder = new ArrayList&lt;Integer&gt;();
+        
+        for(int i = 0;i&lt;n;i++){
+            columnbuilder.clear();
+            for(ArrayList&lt;Integer&gt; lis:grid){
+                columnbuilder.add(lis.get(i));
+            }
+            columns.add(new ArrayList&lt;Integer&gt;(columnbuilder));
+        }
+        
+        for(int i = 0;i&lt;n;i++){
+            ArrayList&lt;Integer&gt; currentTest = columns.get(i);
+            currmax = maxVal(currentTest);
+            while(currentTest.contains(currmax)){
+                int maxIdx = currentTest.indexOf(currmax);
+                maxbuilder.add(maxIdx);
+                currentTest.set(maxIdx,-1);
+            }
+<A NAME="0"></A>            listofMax.add(new ArrayList&lt;Integer&gt;(maxbuilder));
+            maxbuilder.clear();
+        }
+        <FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match214-1.html#0',3,'match214-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>return listofMax;
+    }
+
+    public static int maxVal(ArrayList&lt;Integer&gt; arrlis){
+        int currmax = 0;
+        for (int i:arrlis){
+            if(i &gt; currmax){
+                currmax = i;
+            }
+        }
+        return currmax;
+    }
+
+    public static int yminus(int locy</B></FONT>,int m){
+        int cury = locy+1;
+        if(cury&gt;=m){
+            cury = 0;
+        }
+        return cury;
+    }
+
+    public static int yplus(int locy,int m){
+        int cury = locy-1;
+        if(cury &lt;0){
+            cury = m-1;
+        }
+        return cury;
+    }
+
+    public static int xplus(int locx,int n){
+        int curx = locx + 1;
+        if(curx &gt;= n){
+            curx = 0;
+        }
+        return curx;
+    }
+
+    public static int xminus(int locx,int n){
+        int curx = locx - 1;
+        if(curx &lt; 0){
+            curx = n-1;
+        }
+        return curx;
+    }
+
+    public static int pathout3(int up, int right, int down){
+        int path = 1;
+        int bigvalu = up;
+        if(right&gt;bigvalu){
+            bigvalu = right;
+            path = 0;
+        }
+        if(down&gt;bigvalu){
+            bigvalu = down;
+            path = -1;
+        }
+        return path;
+    }
+
+    public static int valueofans(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid,ArrayList&lt;Integer&gt; potans,int n,int m){
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; columns = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();
+        ArrayList&lt;Integer&gt; columnbuilder = new ArrayList&lt;Integer&gt;();
+        
+        for(int i = 0;i&lt;n;i++){
+            columnbuilder.clear();
+            for(ArrayList&lt;Integer&gt; lis:grid){
+                columnbuilder.add(lis.get(i));
+            }
+            columns.add(new ArrayList&lt;Integer&gt;(columnbuilder));
+        }
+        int val = 0;
+        int cury =0;
+        if(potans.get(0)==1){
+            cury = 0;
+        }
+        else if(potans.get(0) == 0){
+            cury = m-1;
+        }
+        for(int i = 0;i&lt;potans.get(1);i++){
+            columns.add(columns.get(0));
+            columns.remove(0);
+        }
+        ArrayList&lt;Integer&gt;restopotans = new ArrayList&lt;Integer&gt;(potans);
+        restopotans.remove(1);
+        restopotans.set(0,0);
+        int x = 0;
+        for(int i:restopotans){
+            switch(i){
+                case -1:
+                    cury = yminus(cury,m);
+                    break;
+                case 1:
+                    cury = yplus(cury,m);
+                    break;
+            }
+            val += columns.get(x).get(cury);
+            x++;
+        }
+        return val;
+    }
+
+    public static ArrayList&lt;Integer&gt; ensurefudan(ArrayList&lt;Integer&gt; potans,int m){
+        ArrayList&lt;Integer&gt; fixedans = new ArrayList&lt;Integer&gt;();
+        fixedans.add(potans.get(0));
+        fixedans.add(potans.get(1));
+        ArrayList&lt;Integer&gt; restopotans = new ArrayList&lt;Integer&gt;(potans);
+        restopotans.remove(0);
+        restopotans.remove(0);
+        int netloc = 0;
+        int fixing = 0;
+        int idx = restopotans.size();
+        ArrayList&lt;Integer&gt; possans = new ArrayList&lt;Integer&gt;();
+        possans.add(0);
+        int role = potans.get(0);
+        if(role == 0){
+            possans.add(-1);
+        }
+        else{
+            possans.add(1);
+        }
+        for(int i:restopotans){
+            netloc += i;
+        }
+        if(netloc &lt; 0){
+            fixing = 1;
+        }
+        else{
+            fixing = -1;
+        }
+        while(!possans.contains(netloc%(m-1))){
+            idx-=1;
+            if(restopotans.get(idx) != fixing){
+                netloc -= restopotans.get(idx);
+                restopotans.set(idx,fixing);
+                netloc += fixing;
+            }
+        }
+        fixedans.addAll(restopotans);
+        return fixedans;
+    }
+
+    public static ArrayList&lt;ArrayList&lt;Integer&gt;&gt; pathingfun(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid, ArrayList&lt;Integer&gt; rerun,int exitcol,
+                                                            int locx, int locy,int n, int m, ArrayList&lt;ArrayList&lt;Integer&gt;&gt; maxValuesList){
+
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; reruncont = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; reruncont1 = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; reruncont2 = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; reruncont3 = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();
+        ArrayList&lt;Integer&gt; rerunans1 = new ArrayList&lt;Integer&gt;(rerun);
+        ArrayList&lt;Integer&gt; rerunans2 = new ArrayList&lt;Integer&gt;(rerunans1);
+        ArrayList&lt;Integer&gt; rerunans3 = new ArrayList&lt;Integer&gt;(rerunans1);
+        boolean nopathtaken = true;
+        if(locx != exitcol){
+            int xup = xplus(locx,n);
+            if(maxValuesList.get(xup).contains(locy)){
+                rerunans1.add(0);
+                nopathtaken = false;
+                locx = xup;
+                
+                reruncont1 = pathingfun(grid, rerunans1, exitcol, locx, locy, n, m, maxValuesList);
+            }
+            if(maxValuesList.get(xup).contains(yminus(locy,m))){
+                rerunans2.add(-1);
+                locy = yminus(locy,m);
+                nopathtaken = false;
+                locx = xup;
+                reruncont2 = pathingfun(grid, rerunans2, exitcol, locx, locy, n, m, maxValuesList);
+            }
+            if(maxValuesList.get(xup).contains(yplus(locy,m))){
+                rerunans3.add(1);
+                locy = yplus(locy,m);
+                nopathtaken = false;
+                locx = xup;
+                reruncont3 = pathingfun(grid, rerunans3, exitcol, locx, locy, n, m, maxValuesList);
+            }
+            if(nopathtaken){
+                int upright,right,downright = 0;
+                upright = grid.get(yplus(locy,m)).get(xup);
+                right = grid.get(locy).get(xup);
+                downright = grid.get(yminus(locy,m)).get(xup);
+                int path = pathout3(upright,right,downright);
+                rerunans1.add(path);
+                switch(path){
+                    case 1:
+                        locy = yplus(locy,m);
+                        break;
+                    case -1:
+                        locy = yminus(locy,m);
+                        break;
+                }
+                locx = xup;
+                reruncont1 = pathingfun(grid, rerunans1, exitcol, locx, locy, n, m, maxValuesList);    
+            }
+        }
+        else{
+            int rerunvalue = valueofans(grid, rerun, n, m);
+            rerun = ensurefudan(rerun,m);
+            reruncont.add(rerun);
+            ArrayList&lt;Integer&gt; rerunvalarr = new ArrayList&lt;Integer&gt;();
+            rerunvalarr.add(rerunvalue);
+            reruncont.add(rerunvalarr);
+            return reruncont;
+        }
+
+        int hival = 0;
+        int compval = 0;
+        
+        if(!reruncont1.isEmpty()){
+            compval = reruncont1.get(1).get(0);
+            if(compval &gt; hival){
+                hival = compval;
+                reruncont = reruncont1;
+            }
+        }
+        if(!reruncont2.isEmpty()){
+            compval = reruncont2.get(1).get(0);
+            if(compval &gt; hival){
+                hival = compval;
+                reruncont = reruncont2;
+            }
+        }
+        if(!reruncont3.isEmpty()){
+            compval = reruncont3.get(1).get(0);
+            if(compval &gt; hival){
+                hival = compval;
+                reruncont = reruncont3;
+            }
+        }
+        
+        return reruncont;
+    }
+}
+</PRE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>564913001</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+import math
+import copy
+
+def combinations(c, b, a, x, n):
+  global arr
+  global cnt
+  if x &gt; n and cnt &lt; 1:
+    ct = 0
+    for k in range(len(a)):
+      if True in a[k]:
+        ct += 1
+    if ct == len(a):
+      cnt += 1
+      arr = copy.deepcopy(c)
+    return
+  
+  if x &gt; n:
+    return
+    
+  if any(x in r for r in b) == False and any(-x in s for s in b) == False:
+    c[x-1] = False
+    combinations(c, b, a, x+1, n)
+  else:
+    for i in range(len(b)):
+      if (x in b[i] or -x in b[i]):
+        for j in range(3):
+          if (b[i][j] == -x):
+            a[i][j] = True
+          elif (b[i][j] == x):
+            a[i][j] = False
+      else:
+        continue
+    c[x-1] = False
+    combinations(c, b, a, x+1, n)
+    for i in range(len(b)):
+      if (x in b[i] or -x in b[i]):
+        for j in range(3):
+          if (b[i][j] == (x*(-1))):
+            a[i][j] = False
+          elif (b[i][j] == x):
+            a[i][j] = True
+      else:
+        continue
+    c[x-1] = True
+    combinations(c, b, a, x+1, n)
+<A NAME="0"></A>  
+def solve(bulbs):
+  max = 0
+  num <FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match81-0.html#0',2,'match81-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>= 0
+  for o in range(len(bulbs)):
+    for p in range(len(bulbs[o])):
+      num = abs(bulbs[o][p])
+      if num &gt; max:
+        max = num
+  a_bool =</B></FONT> [[True for j in range(3)] for i in range(len(bulbs))]
+  ans = [True for k in range(max)]
+  x = 1
+  combinations(ans, bulbs, a_bool, x, max)
+  return arr
+      
+  
+arr = []
+cnt = 0
+
+</PRE>
+
+</BODY>
+</HTML>

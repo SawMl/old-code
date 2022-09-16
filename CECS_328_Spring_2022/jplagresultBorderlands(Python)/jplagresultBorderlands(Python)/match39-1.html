@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>530652138</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+
+def maxM(bulbs):
+    #absolute = [abs(b) for b in bulbs]
+
+
+    #sublist = []
+    #for i in bulbs:
+        #for bulb in bulbs:
+            #print(bulbs[i])
+            
+            #absolute = abs(bulbs[i])
+            #sublist.append(absolute)
+
+
+    #sublist = list(map(max, absolute))
+
+
+    #absolute = list(map(abs, bulbs))
+    #sublist = list(map(max, absolute))
+    #this goes through each row and finds the largest int there
+    #it does this before it looks for the absolute values
+    #will have to find the absolute values before going through each row to find the max
+
+
+    flat_list = []
+    for sublist in bulbs:
+        for item in sublist:
+            flat_list.append(abs(item))
+        
+    flat_list.sort()
+    
+
+
+    #sublist = []
+    #positiveList = list(map(max, bulbs))
+    #print(positiveList)
+    #positiveList.sort()
+    #print(positiveList)
+    #for i in positiveList:
+        #sublist.append(abs(i))
+    
+    #sublist.sort()
+    #print(sublist)
+    #print(flat_list)
+    return flat_list[-1]
+
+def solve(bulbs):
+
+    #declare both N and M
+    #N is number of rows with 3 bulbs each
+    #M is number of wire sets
+    N = len(bulbs)
+    #print(N)
+    M = maxM(bulbs)
+    #print(M)
+
+    #print(&quot;hello world 2&quot;)  
+   
+    OnBulb = [0] * N
+    booleanList = [False] * M
+    solution = [0] * N
+
+
+    #print(&quot;hello world 4&quot;)  
+<A NAME="0"></A>
+
+    #base cases:
+    <FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match39-0.html#0',2,'match39-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>for a in range(M):
+        for b in range(N):
+
+            
+            if OnBulb[b]:
+                continue
+
+            #else if the current wire is there but the light bulb had red paint (negative)
+            if (-1 * a in bulbs[b]):
+                booleanList[a] =</B></FONT> False
+                #print(&quot;1&quot;)
+                #print(booleanList)
+                OnBulb[b] = 1
+                break
+                
+            #print(&quot;hello world 5&quot;)   
+
+            
+            #if the current wire is there and the light bulb does not have red paint (positive)
+            if(a in bulbs[b]):
+                booleanList[a] = True
+                #print(&quot;2&quot;)
+                #print(booleanList)
+                break
+
+
+            #print(&quot;hello world 6&quot;)  
+
+            #print(&quot;hello world 7 &quot;)  
+    #print(&quot;hello world 8&quot;)           
+    #print(booleanList)
+
+    #check to see if there is a row with a 1
+    #not all rows have a bulb that is turned on 
+
+        
+    for i in range(N):
+        for j in range(3):
+            if bulbs[i][j] &lt; 0:
+                if booleanList[abs(bulbs[i][j]) - 1] == False:
+                    solution[i] = 1
+            elif bulbs[i][j] &gt; 0:
+                if booleanList[bulbs[i][j] - 1] == True:
+                    solution[i] = 1
+
+
+    return booleanList
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+
+</BODY>
+</HTML>

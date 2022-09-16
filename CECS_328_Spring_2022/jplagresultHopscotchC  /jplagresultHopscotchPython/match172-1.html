@@ -1,0 +1,244 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>223980076</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+import math
+
+
+class Grid:
+    grid = [[0]]
+
+    def __init__(self, grid):
+        self.grid = grid
+
+    def x_grid_len(self):
+        return len(self.grid[0])
+
+    def y_grid_len(self):
+        return len(self.grid)
+
+
+  
+    def find_position_within_bounds(self, position):
+        pos_on_x = position[0]
+        pos_on_y = position[1]
+
+        while pos_on_x &lt; 0:
+            pos_on_x += self.x_grid_len()
+        while pos_on_x &gt;= self.x_grid_len():
+            pos_on_x -= self.x_grid_len()
+
+        while pos_on_y &lt; 0:
+            pos_on_y += self.y_grid_len()
+        while pos_on_y &gt;= self.y_grid_len():
+            pos_on_y -= self.y_grid_len()
+
+        new_current_position = (pos_on_x, pos_on_y)
+        return new_current_position
+
+
+
+  
+    def get_value_at_position(self, position):
+        temp_position = self.find_position_within_bounds(position)
+        return self.grid[temp_position[1]][temp_position[0]]
+
+
+  
+    def get_distance_2(self, position_a, position_b):
+        xDist = math.inf
+        xDistA = position_b[0] - position_a[0]
+        xDistB = position_b[0] - position_a[0] - len(self.grid[0])
+        xDistC = position_b[0] - position_a[0] + len(self.grid[0])
+        if abs(xDistA)&lt;abs(xDist):
+            xDist = xDistA
+        if abs(xDistB)&lt;abs(xDist):
+            xDist = xDistB
+        if abs(xDistC) &lt; abs(xDist):
+            xDist = xDistC
+
+        yDist = math.inf
+        yDistA = position_b[1] - position_a[1]
+        yDistB = position_b[1] - position_a[1] - len(self.grid)
+        yDistC = position_b[1] - position_a[1] + len(self.grid)
+        if abs(yDistA)&lt;abs(yDist):
+            yDist = yDistA
+        if abs(yDistB)&lt;abs(yDist):
+            yDist = yDistB
+        if abs(yDistC) &lt; abs(yDist):
+            yDist = yDistC
+
+        return (xDist, yDist)
+
+
+  
+    def position_is_reachable(self, position, target_position):
+        reachable = False
+        dist = self.get_distance_2(position_a=position, position_b=target_position)
+        if abs(dist[0]) &gt;= abs(dist[1]):
+            reachable = True
+        if (dist[0]==1):
+            if (position[1]!=0) and (position[1]!=self.y_grid_len()-1):
+                reachable = False
+
+        return reachable
+
+    @staticmethod
+    def add_positions(a, b):
+        return_value = (a[0]+b[0], a[1]+b[1])
+        return return_value
+
+
+  
+    @staticmethod
+    def subtract_positions(a, b):
+        return_value = (a[0]-b[0], a[1]-b[1])
+        return return_value
+
+
+
+def get_empty_grid(width, height):
+    empty_grid = []
+    for x in range(width):
+        empty_row = []
+        for y in range(height):
+            empty_row.append([])
+    for x in range(width):
+        for y in range(height):
+            empty_grid[y][x].append(((x, y),-math.inf))
+    return empty_grid
+
+
+
+def set_value_with_position(array, position:tuple, value):
+    array[position[1]][position[0]] = value
+    pass
+
+
+
+#def get_value_from_position(array, position:tuple):
+ #   return array[position[1]][position[0]]
+
+
+
+def solve_position(grid: Grid, start_position: tuple):
+    start_position = grid.find_position_within_bounds(start_position)
+    max_potentials = {}
+    for x in range(1, grid.x_grid_len()+1):
+        for y in range(grid.y_grid_len()):
+            temporary_position = grid.find_position_within_bounds((x + start_position[0], y + start_position[1]))
+            if not grid.position_is_reachable(temporary_position, start_position):
+                continue
+            max_potentials[temporary_position] = []
+            offsets = [(-1,-1), (-1,0), (-1, 1)]
+            for offset in offsets:
+                offset_position = grid.find_position_within_bounds(grid.add_positions(offset, temporary_position))
+                if not grid.position_is_reachable(offset_position, start_position):
+                    continue
+                    potential_value = 0
+                offset_value = -1
+                if offset_position in max_potentials:
+                    max_val = -math.inf
+                    for value in max_potentials[offset_position]:
+                        if value[2] &gt; max_val:
+                            max_val = value[2]
+                    offset_value = max_val
+                else:
+                    offset_value = grid.get_value_at_position(offset_position)
+                source_value = grid.get_value_at_position(temporary_position)
+                potential_value = source_value + offset_value
+                offset_info_tuple = (offset_position, offset, potential_value)
+                max_potentials[temporary_position].append(offset_info_tuple)
+    #Max_Potentials_Found
+    solution = [0]*(grid.x_grid_len()+1)
+    if start_position[1] == 0:      #IF y index of start is 0, that means top, therefore 1
+        solution[0] = 1
+    else:
+        solution[0] = 0
+    solution[1] = start_position[0] #the entry column is the x position of start
+    backtrack_position = start_position
+    solved = False
+    solution_route = []
+    while not solved:
+        possible_routes = max_potentials[backtrack_position]
+        max_value = -1
+        max_route = (start_position, 0)
+        for route in possible_routes:
+            value = route[2]
+
+            if value &gt; max_value:
+                max_value = value
+                max_route = route
+        solution_route.append(max_route)
+        #new_backtrack_position
+        #print(backtrack_position)
+        #print(max_route)
+        backtrack_position = max_route[0]
+        if backtrack_position == start_position:
+            solved = True
+    #print(solution_route)
+    #print(&quot;solution_route len: &quot;,end='')
+    #print(len(solution_route))
+    #convert solution route into solution
+    for iter in range(grid.x_grid_len()-1):
+        i = len(solution_route)+1+iter
+        if i &gt;= len(solution_route):
+            i -= len(solution_route)
+
+<A NAME="0"></A>        #print(solution_route[i])
+
+        converted_value = -5
+        <FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match172-0.html#0',2,'match172-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>if solution_route[i][1] == (-1, 1):
+            converted_value = 1
+        if solution_route[i][1] == (-1, 0):
+            converted_value =</B></FONT> 0
+        if solution_route[i][1] == (-1, -1):
+            converted_value = -1
+        solution[(len(solution)-1)-iter] = converted_value
+    #print(&quot;Solution: &quot;, end='')
+    #print(solution)
+    #print(&quot;Solution Points: &quot;, end='')
+
+            #print (route)
+            #print(temporary_position)
+            #print(max_potentials)
+            #format(offset(int,int), value up to this point)
+    return (solution_route[0][2], solution)
+
+
+def solve(grid_array):
+    grid = Grid(grid_array)
+    potential_max = {}
+
+    maxPossiblePoints = -1
+    solutionArray = []
+    for x in range(grid.x_grid_len()):
+        solution_tuple = solve_position(grid, (x, 0))
+        if solution_tuple[0]&gt;maxPossiblePoints:
+            maxPossiblePoints = solution_tuple[0]
+            solutionArray = solution_tuple[1]
+    for x in range(grid.x_grid_len()):
+        solution_tuple = solve_position(grid, (x, grid.y_grid_len()-1))
+        if solution_tuple[0]&gt;maxPossiblePoints:
+            maxPossiblePoints = solution_tuple[0]
+            solutionArray = solution_tuple[1]
+    return solutionArray
+</PRE>
+
+</BODY>
+</HTML>

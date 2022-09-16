@@ -1,0 +1,249 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>929267377</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+
+def increment(val,minVal,maxVal):
+    if val &gt; maxVal:
+      val = val - (maxVal-minVal + 1)
+    if val &lt; minVal:
+      val = val + (maxVal-minVal + 1)
+    return val
+
+def copyPath(cPath):
+  newPath = []
+  for i in range(len(cPath)):
+    newPath.append(cPath[i])
+  return newPath
+
+def createGrid(m,n):
+  ret = []
+  for y in range(m):
+    ret.append([])
+    for x in range(n):
+      ret[y].append(0)
+  return ret
+
+def printGrid(g):
+  print(&quot;[&quot;)
+  for x in range(len(g)):
+    print(str(g[x]))
+  print(&quot;]&quot;)
+
+def findPath(grid,topOrBottom,x):
+
+  print(&quot;Checking New Path!&quot;)
+  print(&quot;----------------------------------------&quot;)
+  m = len(grid)
+  n = len(grid[0])
+  pathScores = createGrid(m,n)
+
+
+
+  cCol = x
+  cRow = m-1
+  tRow = 0
+
+  startVal = grid[cRow][cCol]
+  topVal = grid[tRow][cCol]
+  moves = n-1
+  paths = [[],[]]
+  pathRows = [cRow,tRow]
+  pathSums = [startVal,topVal]
+  pathNums = [[startVal],[topVal]]
+  pathStarts = [0,1]
+
+  pathScores[cRow][cCol] = startVal
+  pathScores[tRow][cCol] = topVal
+
+  print(&quot;Starting value: &quot;+str(startVal))
+  
+  for move in range(moves):
+    #print(&quot;--------------------------------------------&quot;)
+      
+    #print(str(pathSums))
+    #  printGrid(pathScores)
+    
+    cCol = increment(cCol+1,0,n-1)
+    movesLeft = moves-move
+      
+
+    #printGrid(pathScores)
+
+    
+
+    
+    
+    
+    for p in range(len(paths)):
+      cPath = paths[p]
+      pathNum = pathNums[p]
+      cRow = pathRows[p]
+      pVal = pathSums[p]
+      pStart = pathStarts[p]
+
+      val = grid[cRow][cCol]
+      
+      uRow = increment(cRow-1,0,m-1)
+      uVal = grid[uRow][cCol]
+      
+      dRow = increment(cRow+1,0,m-1)
+      dVal = grid[dRow][cCol]
+
+      #print(&quot;UV/MV/DV: &quot;+str(uVal)+&quot;/&quot;+str(val)+&quot;/&quot;+str(dVal))
+      
+      uPath = copyPath(cPath)
+      uNums = copyPath(pathNum)
+      uNums.append(uVal)
+      uPath.append(1)
+      pathRows.append(uRow)
+      paths.append(uPath)
+      pathSums.append(pathSums[p]+uVal)
+      pathNums.append(uNums)
+      pathStarts.append(pStart)
+
+
+      
+      dPath = copyPath(cPath)
+      dNums = copyPath(pathNum)
+      dNums.append(dVal)
+      dPath.append(-1)
+      pathRows.append(dRow)
+      paths.append(dPath)
+      pathSums.append(pathSums[p]+dVal)
+      pathNums.append(dNums)
+      pathStarts.append(pStart)
+
+
+      
+      mPath = cPath
+      mPath.append(0)
+      #pathRows.append(cRow)
+      #paths.append(mPath)
+      #pathSums.append(pathSums[p]+val)
+      pathSums[p] = pathSums[p]+val;
+      pathNum.append(val)
+
+      #print(&quot;Rows at end of path: &quot;+str(uRow)+&quot;/&quot;+str(cRow)+&quot;/&quot;+str(dRow))
+
+
+    for p in range(len(paths)):
+      #print(&quot;Max is: &quot;+str(max(pathScores[cRow][cCol],pathSums[p])))
+      cRow = pathRows[p]
+      pathScores[cRow][cCol] = max(pathScores[cRow][cCol],pathSums[p])
+      
+    remRows = []
+
+    #printGrid(pathScores)
+    
+    
+    for p in range(len(paths)):
+      cRow = pathRows[p]
+      
+      bigDist = min(cRow,(m-1)-cRow)
+      
+      cSum = pathSums[p]
+      cScore = pathScores[cRow][cCol]
+      if (cSum &lt; cScore or bigDist &gt;= movesLeft or cScore &lt; 0):
+        remRows.append(p)
+      else:
+        pathScores[cRow][cCol] = -pathScores[cRow][cCol]
+
+    for y in range(m):
+      for x in range(n):
+        pathScores[y][x] = abs(pathScores[y][x])
+
+    for i in reversed(range(len(remRows))):
+      remRow = remRows[i]
+      paths.pop(remRow)
+      pathRows.pop(remRow)
+      pathSums.pop(remRow)
+      pathNums.pop(remRow)
+      pathStarts.pop(remRow)
+      
+      
+  print(str(pathSums))    
+
+  print(&quot;Final grid-----------------&quot;)
+  printGrid(pathScores)
+  
+  bestSum = 0
+  bestPath = []
+  bestNums = []
+  bestStart = 0
+  for i in range(len(paths)):
+    path = paths[i]
+    sum = pathSums[i]
+    nums = pathNums[i]
+    start = pathStarts[i]
+    if sum &gt; bestSum:
+      bestPath = path
+      bestSum = sum
+      bestNums = nums
+      bestStart = start
+  print(&quot;BestNums: &quot;+str(bestNums))
+  return bestStart, bestPath, bestSum
+    
+    
+  
+
+def solve(grid):
+  m = len(grid)
+  n = len(grid[0])
+  print(&quot;Grid Size: &quot;)
+  bestPath = []
+  maxSum = 0;
+
+  bestEntry = 0
+<A NAME="0"></A>  bestCol = 0
+  
+  for x in range(n): #n
+    for y in range<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match39-1.html#0',3,'match39-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>(1): # 2
+      pathStart,newSolution,sum = findPath(grid,y,x)
+      print(&quot;Checking sum: &quot;+str(sum))
+      print(&quot;Checking path: &quot;+str(pathStart)+&quot;, &quot;+str(x)+&quot;
+      if sum &gt; maxSum:
+        print(&quot;New best sum!&quot;)
+        maxSum = sum
+        bestPath = newSolution
+        bestEntry =</B></FONT> pathStart
+        bestCol = x
+  print(&quot;Done!&quot;)
+  print(str(bestEntry))
+  print(str(bestCol))
+  print(str(bestPath))
+  retStart = [bestEntry,bestCol]
+  return retStart+bestPath
+  
+
+
+
+
+
+test1 = [
+[3, 4, 1, 2, 8, 6],
+[6, 1, 8, 2, 7, 4],
+[5, 4, 3, 9, 9, 5],
+[5, 9, 8, 3, 2, 6],
+[8, 7, 2, 9, 6, 4]]
+
+#print(str(solve(test1)))
+</PRE>
+
+</BODY>
+</HTML>

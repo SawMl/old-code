@@ -1,0 +1,207 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>570903457</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+import java.util.ArrayList;
+
+public class StudentSolver {
+	public static ArrayList&lt;Integer&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt;grid){
+			
+		
+		ArrayList&lt;Integer&gt; answers = new ArrayList&lt;Integer&gt;();
+		
+		ArrayList&lt;Integer&gt; path = new ArrayList&lt;Integer&gt;();
+		
+		
+		int daSize = 0;
+		
+		
+		int greatest = 0;
+		
+		
+		int daRow = 0;
+		int daCol = 0;
+		
+		
+		for(ArrayList&lt;Integer&gt; row : grid) {
+				System.out.println(row);
+		}
+		
+		
+	   /* 
+	    * STARTING POINT
+	    */
+		
+		int top = 0;	
+		int tIndex = 0;
+		ArrayList&lt;Integer&gt; topRow = grid.get(0);
+		for (int i = 0; i &lt; topRow.size(); i++) {
+			int n = topRow.get(i);
+			if(n &gt; top) {
+				top = n;	
+				tIndex = i;
+			}
+		}
+		
+
+		
+		int bott = 0; 
+		int bIndex = 0;
+		ArrayList&lt;Integer&gt; bottRow = grid.get(grid.size()-1);
+		for (int i = 0; i &lt; bottRow.size(); i++) {
+			int n = bottRow.get(i);
+			if(n &gt; bott) {
+				bott = n;
+				bIndex = i;
+			}
+<A NAME="0"></A>		}
+		
+		
+		if (top &gt;= bot<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match593-1.html#0',3,'match593-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>t) {
+			greatest = top;
+		}else {
+			greatest = (bott*-1);
+		}
+	
+		
+		if(greatest &gt;= 0) {
+			answers.add(1); </B></FONT>
+			answers.add(tIndex);
+			daRow = 0;
+			daCol = tIndex;
+		} else {
+			answers.add(0); 
+			answers.add(bIndex);
+			daRow = (grid.size()-1);
+			daCol = bIndex;
+		}
+		
+		path.add(grid.get(daRow).get(daCol));
+		
+			
+	   		
+		int right = 0;
+		int up = 0;
+		int uRow = 0; 
+		int down = 0;
+		int dRow = 0; 
+		
+		
+		
+		daSize = grid.get(0).size();
+		while(daSize &gt; 1) {	
+			
+			ArrayList&lt;Integer&gt; atRow = grid.get(daRow);
+
+			
+			
+			System.out.println(&quot;at &quot; + atRow.get(daCol));
+
+
+			daCol+= 1;
+			
+			
+			if(daCol &lt; atRow.size()) {
+				right = atRow.get(daCol);
+			} else {
+				daCol = 0;
+				right = atRow.get(daCol);
+			} 
+			System.out.print(&quot;right &quot;+ right+&quot;, &quot;);
+			
+			
+			
+			if(daRow &gt; 0) {
+				uRow = daRow - 1;
+				ArrayList&lt;Integer&gt; upRow = grid.get(uRow);
+				up = upRow.get(daCol);
+			} else {
+				uRow = (grid.size()-1);
+				ArrayList&lt;Integer&gt; upRow = grid.get(uRow);
+				up = upRow.get(daCol);			
+			} System.out.print(&quot;up &quot;+ up+&quot;, &quot;);
+			
+			
+			
+			
+			if(daRow &lt; (grid.size()-1)) {
+				dRow = daRow + 1;
+				ArrayList&lt;Integer&gt; downRow = grid.get(dRow);
+				down = downRow.get(daCol);
+			} else {
+				dRow = 0;
+				ArrayList&lt;Integer&gt; downRow = grid.get(dRow);
+				down = downRow.get(daCol);
+			} System.out.print(&quot;down &quot; + down+ &quot;\n&quot;);
+			
+			
+			
+			if (right &gt;= up &amp;&amp; right &gt;= down) {
+				answers.add(0);
+				
+				System.out.println(&quot;move right&quot;);
+				
+			} else if (up &gt;= right &amp;&amp; up &gt;= down) {
+				answers.add(1);
+				daRow = uRow;
+				System.out.println(&quot;move up&quot;);
+			} else {
+				answers.add(-1);
+				daRow = dRow;
+				System.out.println(&quot;move down&quot;);
+			}
+			
+			
+			if (daRow == 0) {
+				System.out.println(&quot;at top&quot;);
+				path.add(grid.get(daRow).get(daCol));
+			} else if(daRow == (grid.size()-1)) {
+				System.out.println(&quot;at bottom&quot;);
+				path.add((grid.get(daRow).get(daCol))*-1);
+			} else {
+				System.out.println(&quot;at middle&quot;);
+				path.add(0);
+			}
+			
+				
+			
+
+
+			
+			System.out.println(&quot;\n&quot;);
+			for(ArrayList&lt;Integer&gt; row : grid) {
+					System.out.println(row);
+			}
+			
+			daSize -=1;
+		}
+			
+		
+		
+			
+		
+		System.out.println(&quot;\npath: &quot; +path);
+		
+		System.out.println(&quot;RETURN: &quot; +answers);
+		return answers;
+	}	
+}
+</PRE>
+
+</BODY>
+</HTML>

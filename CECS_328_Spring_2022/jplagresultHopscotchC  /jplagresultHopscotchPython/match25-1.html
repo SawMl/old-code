@@ -1,0 +1,263 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>033188931</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+def solve(grid):
+    # print(grid)
+
+    if not grid:
+        return []
+
+    res = []
+
+
+    left = 0
+    right = 1
+
+    offsetsum = 0
+    start = left
+    end = right
+
+    # 1 == top, 2 == bottom
+
+    pos1 = 1
+    pos2 = 1
+
+    #check top row
+    while right &lt; len(grid[0]):
+        temp = grid[0][left] + grid[0][right]
+        if temp &gt; offsetsum:
+            offsetsum = temp
+            start, end = right, left
+            pos1 = 1
+            pos2 = 1
+        left += 1
+        right += 1
+
+    left = 0
+    right = 1
+
+    #check bottom row
+    while right &lt; len(grid[0]):
+        temp = grid[len(grid) - 1][left] + grid[len(grid) - 1][right]
+        if temp &gt; offsetsum:
+            offsetsum = temp
+            start, end = right, left
+            pos1 = 2
+            pos2 = 2
+        left += 1
+        right += 1
+
+    left = 0
+    right = 1
+
+    while right &lt; len(grid[0]):
+        curOffsetSum = grid[0][left] + grid[len(grid) - 1][right]
+        if curOffsetSum &gt; offsetsum:
+            offsetsum = curOffsetSum
+            start, end = right, left
+            pos1 = 2
+            pos2 = 1
+        left += 1
+        right += 1
+
+    if grid[0][left] + grid[len(grid) - 1][0] &gt; offsetsum:
+        offsetsum = grid[0][left] + grid[len(grid) - 1][0]
+        start, end = left, 0
+        pos1 = 2
+        pos2 = 1
+
+    left = 0
+    right = 1
+
+    while right &lt; len(grid[0]):
+        curOffsetSum = grid[0][right] + grid[len(grid) - 1][left]
+        if curOffsetSum &gt; offsetsum:
+            offsetsum = curOffsetSum
+            start, end = right, left
+            pos1 = 1
+            pos2 = 2
+
+        left += 1
+        right += 1
+
+
+    # print(offsetsum)
+    # if pos1 == 1:
+    #     print(&quot;start:&quot;, start, &quot;top    &quot;)
+    # else:
+    #     print(&quot;start:&quot;, start, &quot;bottom    &quot;)
+    # if pos2 == 1:
+    #     print(&quot;end:&quot;, end, &quot;top    &quot;, end=&quot; &quot;)
+    # else:
+    #     print(&quot;end:&quot;, end, &quot;bottom    &quot;, end=&quot; &quot;)
+
+    # for i in range(len(grid[0])):
+    #     print(i)
+
+
+
+    if pos1 == 1:
+        # print(&quot;start:&quot;, start, &quot;top    &quot;)
+        res.append(1)
+        res.append(start)
+        row, col = 0, start
+    else:
+        # print(&quot;start:&quot;, start, &quot;bottom    &quot;)
+        res.append(0)
+        res.append(start)
+        row, col = len(grid) - 1, start
+    # if pos2 == 1:
+    #     print(&quot;end:&quot;, end, &quot;top    &quot;, end=&quot; &quot;)
+    # else:
+    #     print(&quot;end:&quot;, end, &quot;bottom    &quot;, end=&quot; &quot;)
+
+
+    #row = 0
+    #col = 4
+
+    temp = 0
+    direction = 0
+
+    # print(res)
+    for x in range(len(grid[0]) - 1):
+        # print(res, &quot;row:&quot;, row, &quot;col:&quot;, col)
+        #go (up + right,            right,      down and right)
+
+        #    row - 1, col + 1,     row, col + 1,    row + 1, col + 1,
+
+        #update position
+
+        #direction map
+        # 1 - right
+        # 2 - up + right
+        # 3 - down + right
+        # 4 - right out of bounds
+
+        # can go right
+        if col + 1 &lt;= len(grid[0]) - 1:
+            if grid[row][col + 1] &gt;= temp:
+                temp = grid[row][col + 1]
+                direction = 1
+        else:
+            # col = 0
+            if grid[row][0] &gt;= temp:
+                temp = grid[row][0]
+                direction = 4
+
+        # can go right and up
+        if row - 1 &gt;= 0 and col + 1 &lt;= len(grid[0]) - 1:
+            if grid[row - 1][col + 1] &gt;= temp:
+                temp = grid[row - 1][col + 1]
+                direction = 2
+        # can go up but not right
+        elif row - 1 &gt;= 0:
+            if grid[row - 1][0] &gt;= temp:
+                temp = grid[row - 1][0]
+                direction = 5
+        # can go right but not up
+        elif col + 1 &lt;= len(grid[0]) - 1:
+            if grid[len(grid) - 1][col + 1] &gt;= temp:
+                temp = grid[len(grid) - 1][col + 1]
+                direction = 6
+
+        # cannot go right or up
+        else:
+            if grid[len(grid) - 1][0] &gt;= temp:
+                temp = grid[len(grid) - 1][0]
+                direction = 7
+
+        # can go down and right
+        if row + 1 &lt;= len(grid) - 1 and col + 1 &lt;= len(grid[0]) - 1:
+            if grid[row + 1][col + 1] &gt;= temp:
+                direction = 3
+
+        # can go down but not right
+        elif row + 1 &lt;= len(grid) - 1:
+            if grid[row + 1][0] &gt;= temp:
+                direction = 8
+
+        # can go right but not down
+        elif col + 1 &lt;= len(grid[0]) - 1:
+            if grid[0][col + 1] &gt;= temp:
+                direction = 9
+
+<A NAME="0"></A>        # cannot go right or down
+        else:
+            if grid[0][0] &gt;= temp:
+                direction = <FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match25-0.html#0',2,'match25-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>10
+
+        if direction == 1:
+            col += 1
+            res.append(0)
+        elif direction == 2:
+            row -= 1
+            col += 1
+            res.append(1)
+        elif direction == 3:
+            row += 1
+            col += 1
+            res.append(</B></FONT>-1)
+        elif direction == 4:
+            col = 0
+            res.append(0)
+        elif direction == 5:
+            row -= 1
+            col = 0
+            res.append(1)
+        elif direction == 6:
+            row = len(grid) - 1
+            col += 1
+            res.append(1)
+        elif direction == 7:
+            row = len(grid) - 1
+            col = 0
+<A NAME="1"></A>            res.append(1)
+        elif direction == 8:
+            row += 1
+            col <FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match25-0.html#1',2,'match25-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>= 0
+            res.append(-1)
+        elif direction == 9:
+            row = 0
+            col += 1
+            res.append(-1)
+        elif direction == 10:
+            row = 0
+            col = 0
+            res.append(</B></FONT>-1)
+
+
+        direction = 0
+        temp = 0
+
+    return res
+
+grid = [[3, 4, 1, 2, 8, 6],
+        [6, 1, 8, 2, 7, 4],
+        [5, 4, 3, 9, 9, 5],
+        [5, 9, 8, 3, 2, 6],
+        [8, 7, 2, 9, 6, 4]]
+
+
+
+
+
+</PRE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,567 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>790787938</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+import copy
+import itertools
+import math
+
+possible = [[True, True, True],
+            [False, False, False],
+            [False, True, False],
+            [False, False, True],
+            [True, False, True],
+            [True, True, False],
+            [True, False, False],
+            [False, True, True]]
+
+
+def checker3(og, possibl, sets: dict, impossible):
+    wrong = []
+    yes = True
+    index = 0
+    for i in og:
+        row = []
+        for j in i:
+            onOfff = possibl[abs(j)-1]
+            if j &lt; 0:
+                if onOfff == False:
+                    row.append(True)
+                else:
+                    row.append(False)
+            elif j &gt; 0:
+                if onOfff == True:
+                    row.append(True)
+                else:
+                    row.append(False)
+
+        if not any(row):
+            print(&quot;Row:&quot;, i, &quot;=&quot;, row)
+            print(sets.get(abs(i[0])))
+            print(sets.get(abs(i[1])))
+            print(sets.get(abs(i[2])))
+
+            index = 0
+            for k in i:
+                signSwitch = not(row[index])
+                rowSwitch = i
+                rowSwitch[index] = signSwitch
+                count = 0
+                temp = sets.get(abs(k))
+                new  = []
+                orig = []
+                for o in temp:
+                    builder = [possibl[abs(i[0]) - 1], possibl[abs(i[1]) - 1], possibl[abs(i[2]) - 1]]
+                    cmpre = impossible[(o[0])][0]
+                    builder[o[1]] = signSwitch
+                    new.append(builder)
+                    orig.append(cmpre)
+                    # print(cmpre)
+                    count += 1
+                OI = 0
+                for i in new:
+                    if i == orig[OI]:
+                        break
+                    else:
+                        OI += 1
+
+                if OI == count:
+                    possibl[abs(k) - 1] = signSwitch
+
+                break
+
+                print(temp)
+            this = [i, index]
+            wrong.append(this)
+            yes = False
+        index += 1
+
+    return yes, possibl
+
+def checker1(og, possibl):
+
+    wrong = []
+    for k in possibl:
+        for i in og:
+            row = []
+            for j in i:
+                onOfff = k[abs(j) - 1]
+                if j &lt; 0:
+                    if onOfff == False:
+                        row.append(True)
+                    else:
+                        row.append(False)
+                elif j &gt; 0:
+                    if onOfff == True:
+                        row.append(True)
+                    else:
+                        row.append(False)
+
+            if not any(row):
+                wrong.append(k)
+                break
+
+    return wrong
+
+def largeCombo(max, wrong):
+    # mid = math.floor(max / 2)
+    # TF = [True, False]
+
+    check = list(range(1, max + 1))
+    setp2 = {}
+
+    maybe = []
+    for i in wrong:
+        # print(i)
+        if (i[1][0] in check) and (i[1][1] in check) and (i[1][2] in check):
+            setp2[i[1][0]] = i[0][0]
+            setp2[i[1][1]] = i[0][1]
+            setp2[i[1][2]] = i[0][2]
+            maybe.append(i)
+            if len(i) &lt; 3:
+                check.remove(i[1][0])
+                check.remove(i[1][1])
+                check.remove(i[1][2])
+            else:
+                temNum = i[2]
+                if temNum == 1:
+                    check.remove(i[1][0])
+                elif temNum == 2:
+                    check.remove(i[1][0])
+                    check.remove(i[1][2])
+                elif temNum == 3:
+                    check.remove(i[1][0])
+                    check.remove(i[1][1])
+                elif temNum == 4:
+                    check.remove(i[1][0])
+                    check.remove(i[1][1])
+        elif (i[1][0] in check) and (i[1][1] in check) and (i[0][2] == (setp2.get(i[1][2]))):
+            setp2[i[1][0]] = i[0][0]
+            setp2[i[1][1]] = i[0][1]
+            # setp2[i[1][2]] = i[0][2]
+            maybe.append(i)
+            if len(i) &lt; 3:
+                check.remove(i[1][0])
+                # check.remove(i[1][1])
+                # check.remove(i[1][2])
+            else:
+                check.remove(i[1][0])
+        elif (i[1][0] in check) and (i[0][1] == (setp2.get(i[1][1]))) and (i[1][2] in check):
+            setp2[i[1][0]] = i[0][0]
+            # setp2[i[1][1]] = i[0][1]
+            setp2[i[1][2]] = i[0][2]
+            maybe.append(i)
+            if len(i) &lt; 3:
+                check.remove(i[1][0])
+                # check.remove(i[1][1])
+                # check.remove(i[1][2])
+            else:
+                check.remove(i[1][0])
+        elif (i[1][0] == (setp2.get(i[0][0]))) and (i[1][1] in check) and (i[1][2] in check):
+            # setp2[i[1][0]] = i[0][0]
+            setp2[i[1][1]] = i[0][1]
+            setp2[i[1][2]] = i[0][2]
+            maybe.append(i)
+            if len(i) &lt; 3:
+                # check.remove(i[1][0])
+                check.remove(i[1][1])
+                check.remove(i[1][2])
+            else:
+                check.remove(i[1][1])
+
+        # elif (i[1][0] == setp2.get([0][0])) and (i[1][1] in check) and (i[1][2] in check):
+    check = list(range(1, max + 1))
+    returnThis = []
+    for i in check:
+        returnThis.append(True)
+
+    for i in maybe:
+        index= 0
+        for k in i[1]:
+            temp = (i[0][index])
+            # print(&quot;setting&quot;, k, &quot;to&quot;, not(i[0][index]))
+            returnThis[k-1] = not(temp)
+            index += 1
+    return returnThis
+
+    # for i in range(max, max+1):
+    #     multiply.append(TF)
+    #
+    # for i in multiply:
+    #     for j in i:
+
+
+
+
+def solve(bulbs):
+    M = max(*map(max, bulbs))
+    M1 = min(*map(min, bulbs))
+    if abs(M1) &gt; abs(M):
+        M = abs(M1)
+
+    N = len(bulbs)
+
+
+
+    check4empty = list(range(1, M + 1))
+    # print(check4empty)
+
+
+
+    sets = {}
+    answer = []
+    ON = [False] * N
+
+    OFF = []
+
+    all = []
+    tempOFF = []
+#Can get location of each
+    rowIndex = 0
+    for row in bulbs:
+        signs = []
+        # sames = [&quot;False&quot;] * 3
+        column = 0
+        temNum = -1
+
+        # same finder
+        if abs(row[0]) == abs(row[1]) == abs(row[2]):
+            temNum = 1
+            # sames[0],sames[1], sames[2] = True, True, True
+        elif abs(row[0]) == abs(row[1]):
+            temNum = 2
+            # sames[0],sames[1] = True, True
+        elif abs(row[0]) == abs(row[2]):
+            temNum = 3
+            # sames[0], sames[2] = True, True
+        elif abs(row[1]) == abs(row[2]):
+            temNum = 4
+            # sames[1], sames[2] = True, True
+
+        absNum= []
+
+        for num in row:
+            index = rowIndex
+            temp = [index, column]
+            column += 1
+            sign = True
+            absNum.append(abs(num))
+            if num &lt; 0:
+                sign = False
+            signs.append(not sign)
+            temp.append(sign)
+            if abs(num) not in sets:
+                check4empty.remove(abs(num))
+                sets[abs(num)] = [temp]
+            else:
+                sets[abs(num)].append(temp)
+
+
+        temp = copy.deepcopy(possible)
+
+        #deletes the not avalible ones
+        if temNum &lt; 0:
+            temp.remove(signs)
+            OFF.append([signs, absNum])
+
+        #dont really need
+        if temNum &gt; 0:
+            # temp2 = []
+            remove = []
+            if temNum == 1:
+                for i in temp:
+                    if i[0] != i[1] != i[2]:
+                        remove.append(i)
+            elif temNum == 2:
+                for i in temp:
+                    if i[0] != i[1]:
+                        remove.append(i)
+            elif temNum == 3:
+                for i in temp:
+                    if i[0] != i[2]:
+                        remove.append(i)
+            elif temNum == 4:
+                for i in temp:
+                    if i[1] != i[2]:
+                        remove.append(i)
+            if signs not in remove:
+                OFF.append([signs, absNum, temNum])
+            else:
+                tempOFF.append([signs, absNum, temNum])
+
+
+            for i in remove:
+                temp.remove(i)
+        rowIndex += 1
+        all.append(temp)
+
+
+    for i in check4empty:
+        sets[i] = None
+
+    if M &gt; 20:
+        for i in tempOFF:
+            OFF.insert(rowIndex - 2, i)
+        returnThis = largeCombo(M, OFF)
+        TFalse, acombo = checker3(bulbs, returnThis, sets, OFF)
+        if TFalse == True:
+            return returnThis
+        else:
+            return acombo
+
+
+
+        # returnThis, test = largeCombo(M, OFF)
+        # yes, wrong = checker3(bulbs, returnThis)
+        # if yes:
+        #     return returnThis
+        # else:
+        #     print(&quot;-&quot;,sorted(test))
+    else:
+    # Mtemp = [True] * (M)
+    # Mtemp1 = [False] * (M)
+    # matrix = [[Mtemp,Mtemp, Mtemp1,Mtemp1]] * M
+    # print(&quot;1&quot;)
+        combos = list(itertools.product([True, False], repeat = M))
+        # print(&quot;2&quot;)
+        #
+        testRemove = []
+        for i in combos:
+            for k in OFF:
+                if (k[0][0] == i[k[1][0] -1]) and (k[0][1] == i[k[1][1] -1]) and (k[0][2] == i[k[1][2] -1]):
+                    testRemove.append(i)
+                    break
+
+        r = set(testRemove)
+
+
+        answer = list(set(combos) - set(testRemove))
+
+        answer = list(map(list, answer))
+
+        # testing = []
+        #
+        # for i in sets:
+        #     testing.append([])
+        #
+        #
+        # # for k in sorted(sets):
+        #
+        # for i in answer:
+        #     index = 0
+        #     for j in i:
+        #         testing[index].append(j)
+        #         index += 1
+
+        # print(len(testing[3]))
+
+        # for i in sorted(sets):
+        #     print(i)
+
+        return answer[0]
+    return M
+
+def myLastStraw(og, possibl):
+    wrong = []
+    yes = True
+    index = 0
+    for i in og:
+        row = []
+        for j in i:
+            onOfff = possibl[abs(j)-1]
+            if j &lt; 0:
+                if onOfff == False:
+                    row.append(True)
+                else:
+                    row.append(False)
+            elif j &gt; 0:
+                if onOfff == True:
+                    row.append(True)
+                else:
+                    row.append(False)
+
+        if not any(row):
+            print(&quot;Row:&quot;, i, &quot;=&quot;, row)
+            wrong.append(i)
+            yes = False
+        index += 1
+
+    return yes
+
+
+
+def checker2(og, notpossibl):
+
+    wrong = []
+    round2 =[]
+    for k in notpossibl:
+        round2 = []
+        for i in og:
+            row = []
+            for j in i:
+                onOfff = k[abs(j) - 1]
+                if j &lt; 0:
+                    if onOfff == False:
+                        row.append(True)
+                    else:
+                        row.append(False)
+                elif j &gt; 0:
+                    if onOfff == True:
+                        row.append(True)
+                    else:
+                        row.append(False)
+
+<A NAME="0"></A>            if any(row):
+                round2.append(row)
+        if len(round2) == len(og):
+            wrong.append(<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match126-1.html#0',3,'match126-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>k)
+
+    return wrong
+
+
+
+TestBulbs = [[-4, -4, -1],
+             [13, -9, -14],
+             [4, -7, -2],
+             [-2, 6, 3],
+             [-6, -8, 11],
+             [-4, -3, -6],
+             [7, 11, -10],
+             [4, -7, 6],
+             [5, 6, 4],
+             [10</B></FONT>, 14, -9]]
+
+Test = [[2, 6, -1],
+        [-1, -5, 5],
+        [6, 4, -3],
+        [-6, 2, -6],
+        [3, -5, 7]
+        ]
+
+test1 = [[-1, -1, -2],
+         [-3, -1, -3],
+         [-5, -10, -10]]
+
+#
+Excel = [[1,-2,1],
+         [5,-3,-1],
+         [-5,5,2]]
+
+small = [[1,2,3],
+         [25,-100, -100]]
+
+test2 = [[12, 13, 11],
+            [11, 9, -9],
+            [8, 11, 9],
+            [11, -14, 12],
+            [5, 7, 10],
+            [7, 10, 8],
+            [11, 9, 12],
+            [-6, -2, 6],
+            [12, 14, 12],
+            [-2, 3, 3]]
+
+large = [[1, -2, 3],
+         [50, -55, 48],
+         [-100, 105, -100],
+         [101, -100, 103],
+         [-101, -2, 3],
+         [-1, -3, -2],
+        [7, 10, 8],
+        [11, 9, 12],
+        [-6, -2, 6],
+        [12, 14, 12]
+         ]
+
+ok = [[1, -2, 3],
+         [50, -55, 48],
+         [-100, 105, -100],
+         [101, -100, 103],
+         [-101, -2, 3],
+         [-1, -3, -2],
+        [7, 10, 8],
+        [11, 9, 12],
+        [-6, -2, 6],
+        [12, 14, 12],
+      [-100, 100, 101],
+      [-99, 100, 101],
+      [100,100,-100],
+      [120, 125,-115],
+      [115, -110, 112],
+      [-105, 105, 110],
+      [100,121,-102],
+     [-3,2,5],
+        [-3,2,-5],
+      [2, 7, 5],
+      [-101,-101,-101],
+      [-101,-102,-101],
+      [100, 119,-115],
+      [-100, 119,-115],
+      [105, -105, 110],
+      [200,101,102]
+      ]
+# tester = ok
+# right = solve(tester)
+# print(right)
+#
+# print(myLastStraw(tester, right))
+# print(checker2(tester, wrong))
+
+#
+# debug = solve(small)
+# #
+#
+# print(len(debug))
+# index = 1
+
+
+
+# for i in debug:
+#     print(&quot; - Combo &quot;, index, &quot; - &quot;)
+#     ind = 1
+#     for j in i:
+#         print(ind, &quot;:&quot;, j)
+#         ind += 1
+#     index +=1
+#
+#
+# print(debug)
+#
+#
+# sameness = len(list(set(debug)))
+# wrongg = len(wrong)
+#
+# for i in wrong:
+#     print(&quot; - Wrong Combo &quot;, index, &quot; - &quot;)
+#     ind = 1
+#     for j in i:
+#         print(ind, &quot;:&quot;, j)
+#         ind += 1
+#     index +=1
+
+
+# answer = [False, False, False, True, True, False, True, False, False, False, True, False, True, True]
+#
+# if answer in debug:
+#     print(&quot;yay&quot;)
+# else:
+#     print(&quot;damn&quot;)
+</PRE>
+
+</BODY>
+</HTML>

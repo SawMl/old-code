@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>918559128</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+import java.util.*;
+import java.lang.Math;
+
+public class StudentSolver {
+    public static ArrayList&lt;Boolean&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs){
+        int rows = bulbs.size(), mid = rows / 2, max = 0;
+
+        
+        for(int i = 0; i &lt; rows; i++){
+            for(int j = 0; j &lt; 3; j++) {
+                if (Math.abs(i) &gt; max)
+                    max = Math.abs(i);
+            }
+        }
+
+        ArrayList&lt;Boolean&gt; switches = new ArrayList&lt;&gt;(max);
+        
+        boolean[] test = new boolean[max];
+        
+        int[] check = new int[max];
+
+        while(Arrays.asList(test).contains(false)){
+            
+            for(int i = 0; i &lt; rows; i++){
+                
+                ArrayList&lt;Integer&gt; wireset = bulbs.get(i);
+                
+                for(int j : wireset){
+                    int ab = Math.abs(j);
+                    
+                    if(test[i] = false){
+                        if(check[j - 1] != 1){
+                            if(j &lt; 0) {
+                                switches.set(j - 1, false);
+                                check[j - 1] = 1;
+                            }
+                            else {
+                                switches.set(j - 1, true);
+                                check[j - 1] = 1;
+<A NAME="0"></A>                            }
+                        }
+                        test[i] = true;
+                    <FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match523-0.html#0',2,'match523-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>}
+                }
+            }
+
+        }
+        return switches;
+    }
+}</B></FONT>
+
+
+</PRE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>354731204</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+import math
+def onOffRows(bulbs):
+    for line in range(len(bulbs)):
+        # if every bulb in the row is off, we return false 
+<A NAME="0"></A>        if bulbs[line][0] == False and bulbs[line][1] == False and bulbs[line][2] == False:
+            return False
+        
+    r<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match148-0.html#0',2,'match148-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>eturn False
+
+def determineMaxBulbNumber(bulbs):
+    maxi = 0
+    for line in bulbs:
+        for bulb in line:
+            maxi = abs(bulb) if maxi &lt; abs(bulb) else maxi
+
+    return maxi
+
+def</B></FONT> determineWireSet(bulbOnOff, bulbs, bulbCount, wireSet, maxBulbCount):
+    # The number of bulbs currently on
+    onCount = 0
+    print(&quot;Bulbcount: &quot; , bulbCount)
+
+    # If the bulbCount goes out of bounds of the wireSet, return the set
+    if bulbCount == len(wireSet) + 1: return wireSet
+
+    # Nested for loop to find the number of bulbs currently on
+    for row in bulbs:
+        for col in row:
+            if col &lt; 0:
+                onCount += 1
+    
+    # Turn the bulb on if the bulbCount is off, or off if the bulbCount is on and adjust the onCount to the number of lights currently on
+    for bulbRow in range(len(bulbs)):
+        for bulbCol in range(len(bulbs[bulbRow])):
+            if bulbs[bulbRow][bulbCol] == bulbCount:
+                bulbOnOff[bulbRow][bulbCol] = -bulbCount
+                onCount += 1
+            
+            elif bulbOnOff[bulbRow][bulbCol] == -bulbCount:
+                bulbOnOff[bulbRow][bulbCol] = bulbCount
+                onCount -= 1  
+
+    # Because that particular bulbCount is on, we make it True in the wireSet 
+    wireSet[bulbCount - 1] = True
+
+    # Assign the current number of bulbs on as our maximum
+    maxBulbCount = onCount
+    
+    # Temp variable to store our bulb set for reverting the bulbs back to a previous state if a particular combination fails
+    tempBulbList = bulbOnOff
+    
+    for bulb in range(1, len(wireSet) + 1):
+        # Skip the bulb if its already been iterated through or if it doesnt exist in the bulbset
+        if bulb == bulbCount or bulb not in bulbs or -bulb not in bulbs:
+            continue
+
+        for bulbRow in range(len(bulbs)):
+            for bulbCol in range(len(bulbs[bulbRow])):
+                if bulbs[bulbRow][bulbCol] == bulb:
+                    bulbOnOff[bulbRow][bulbCol] = -bulb
+                    onCount += 1
+                
+                elif bulbOnOff[bulbRow][bulbCol] == -bulb:
+                    bulbOnOff[bulbRow][bulbCol] = bulb
+                    onCount -= 1  
+        
+        # Replace the max bulb count with the current number of bulbs on if it exceeds our previous maximum number
+        if onCount &gt;= len(bulbs):
+            maxBulbCount = onCount
+            wireSet[bulb - 1] = True
+            
+            tempBulbList = bulbOnOff
+
+        # If its not greater than the max bulb count, we revert back to the previous number of max bulbs on and change the bulbOnOff set to its previous set
+        else:
+            onCount = maxBulbCount
+            bulbOnOff = tempBulbList
+        
+        if onOffRows(bulbOnOff) == True:
+            return wireSet
+    
+    # If the for loop is unable to find a combination of bulb wires to turn on, we reset the wireSet 
+    # and bulbOnOff set and run through the function again, starting at a new bulbCount that is ON in the list and testing its possible combinations
+    bulbOnOff = tempBulbList
+    wireSet = [False for i in range(len(wireSet))]
+    return determineWireSet(bulbOnOff, bulbs, bulbCount + 1, wireSet, maxBulbCount)
+
+def solve(bulbs):
+    # Determine the biggest bulb in the bulb set
+    maximumBulb = determineMaxBulbNumber(bulbs)
+
+    # Make a boolean list of bulbs
+    wireSet = [False for i in range(maximumBulb)]
+    
+    # checkRows function checks if each row has atleast one light on (if the light is negative to show its on)
+
+    if onOffRows(bulbs) == True: 
+        return wireSet
+    
+    # Assign bulb list to a temporary variable that we want to change and edit
+    bulbOnOff = bulbs
+
+    # Recursive function to find configurations to turn on the bulb set
+    wireSet = determineWireSet(bulbOnOff, bulbs, 1, wireSet, 0)
+
+    return wireSet
+
+
+bulbs = [[8, -10, 10], [15, 13, -11], [3, 4, 3], [11, -9, -14], [6, 4, 6], [4, -3, 7], [13, -9, -14], [-6, 5, -5], [7, 5, -5], [-8, 12, 10]] 
+print(solve(bulbs))
+
+
+'''
+Test case for bulbset:
+[[8, -10, 10], [15, 13, -11], [3, 4, 3], [11, -9, -14], [6, 4, 6], [4, -3, 7], [13, -9, -14], [-6, 5, -5], [7, 5, -5], [-8, 12, 10]]
+
+[[5, 5, -8], [-11, -9, 10], [-11, -11, -9], [-6, 7, -7], [-7, 8, -11], [-5, 3, 2], [-8, -11, -8], [-11, -14, -11], [-11, -15, -15], [-12, 7, -8], 
+[-6, 4, -3], [8, -10, -8], [-8, -7, -9], [-5, -6, -5], [-11, 9, 9], [-8, -7, -10], [6, 11, -8], [10, -8, 8], [-7, -11, 9], [9, -8, -4]]
+
+[[-4, -2, -3], [-6, 3, -6], [-8, -9, -12]]
+
+[[8, 8, -9], [-8, 3, 6], [14, 17, -16], [-18, 19, -16], [8, -10, 11], [17, 17, 13], [-8, -6, -10], [17, -15, -20], [-6, -7, -6], [5, -7, -5], [-18, -17, -18], 
+[-7, -7, 8], [3, -5, -7], [17, 16, -16], [13, -16, -13], [12, 16, 15], [-8, 5, -5], [-7, -6, -5], [14, -18, -19], [5, -5, 8], [14, -13, 13], [-19, -16, -16], 
+[12, 17, -12], [2, -2, -2], [-7, -8, -7], [13, -14, -9], [-16, -15, 17], [-11, 6, -10], [11, 8, -8], [-14, 10, -12], [11, -13, 15], [1, 6, -6], [-11, -13, -11], 
+[-20, 17, -18], [16, 17, 19], [-7, 7, -11], [-18, 17, 18], [-11, 9, -12], [8, -3, 7], [-4, 8, 3], [-9, 6, -7], [-17, -17, 17], [13, 9, 13], [15, 12, 17], [-5, 6, 5], 
+[16, 19, 17], [-18, -18, -14], [-11, 8, 11], [6, -5, -7], [7, -5, -4], [-4, -4, -2], [16, -16, 16], [-8, 5, -9], [-4, 3, -2], [-5, -5, -1], [16, 11, 13], [-4, 4, 6], 
+[-14, 15, -16], [-10, 13, -13], [7, -9, -7], [7, 8, 5], [-12, 14, -10], [-17, 16, 13], [11, -12, 15], [-12, -11, -16], [3, 5, 3], [15, -12, 13], [8, 6, -8], [16, 17, 14], 
+[-12, -13, -13], [-9, 5, 10], [-7, -6, -9], [-13, 13, 8], [-8, -10, 10], [-18, -17, 14], [17, 17, -16], [12, 13, -17], [2, 6, 3], [6, -11, 6], [13, -11, 10], [14, 16, 16], 
+[14, 13, 15], [12, -15, -16], [-2, 1, -4], [-17, 17, 17], [-4, -6, -3], [-10, -13, 11], [-10, 10, -9], [-5, -4, -5], [-10, -11, 8], [17, 17, -19], [18, 14, 17], [-5, 9, -8], 
+[-10, -6, -9], [14, 19, 14], [4, 4, 3], [7, -7, -6], [-10, -13, -10], [17, -18, -18], [17, 17, -15]]
+'''
+</PRE>
+
+</BODY>
+</HTML>

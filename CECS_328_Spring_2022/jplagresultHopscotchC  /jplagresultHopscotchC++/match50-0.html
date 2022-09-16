@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>902731280</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>StudentSolver.cpp</CENTER></H3><HR>
+<PRE>
+#include &quot;StudentSolver.h&quot;
+
+using namespace std;
+
+vector&lt;int&gt; possible = {};
+
+vector&lt;vector&lt;int&gt;&gt; shiftLeft(int count, vector&lt;vector&lt;int&gt;&gt; given) {
+  int len = given[0].size();
+  for (int x = 0; x &lt; given.size(); x++) {
+    for (int l = 0; l &lt; count; l++) {
+      int first = given[x][0];
+      for (int k = 0; k &lt; len - 1; k++) {
+        given[x][k] = given[x][k + 1];
+      }
+      given[x][len - 1] = first;
+    }
+  }
+<A NAME="0"></A>  return given;
+};
+
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match50-1.html#0',3,'match50-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>void createPath(vector&lt;vector&lt;int&gt;&gt; g, int x, int y, int score, vector&lt;int&gt; ans) {
+  int height = g.size();
+  int length = g[0].size();
+  if (y == length - 1) {
+    ans.push_back(score);
+    if (possible.size() == 0) {
+      possible = ans;
+    } else {</B></FONT>
+      if (score &gt;= possible.back() &amp;&amp; (x == height - 1 || x == 0)) {
+        possible = ans;
+      }
+    }
+    return;
+  }
+  if (x &gt; 0 and x &lt; height - 1) {
+    ans.push_back(0);
+    createPath(g, x, y + 1, score + g[x][y + 1], ans);
+    ans.pop_back();
+    ans.push_back(1);
+    createPath(g, x - 1, y + 1, score + g[x - 1][y + 1], ans);
+    ans.pop_back();
+    ans.push_back(-1);
+    createPath(g, x + 1, y + 1, score + g[x + 1][y + 1], ans);
+  } else if (x == height - 1) {
+    ans.push_back(0);
+    createPath(g, x, y + 1, score + g[x][y + 1], ans);
+    ans.pop_back();
+    ans.push_back(1);
+    createPath(g, x - 1, y + 1, score + g[x - 1][y + 1], ans);
+    ans.pop_back();
+    ans.push_back(-1);
+    createPath(g, 0, y + 1, score + g[0][y + 1], ans);
+  } else if (x == 0) {
+    ans.push_back(0);
+    createPath(g, x, y + 1, score + g[x][y + 1], ans);
+    ans.pop_back();
+    ans.push_back(-1);
+    createPath(g, x + 1, y + 1, score + g[x + 1][y + 1], ans);
+    ans.pop_back();
+    ans.push_back(1);
+    createPath(g, height - 1, y + 1, score + g[height - 1][y + 1], ans);
+  }
+};
+
+vector&lt;int&gt; StudentSolver::solve(vector&lt;vector&lt;int&gt;&gt; grid) {
+  int height = grid.size();
+  int length = grid[0].size();
+  for (int x = 0; x &lt; length; x++) {
+    createPath(grid, 0, 0, grid[0][0], {1, x});
+    createPath(grid, height - 1, 0, grid[height - 1][0], {0, x});
+    grid = shiftLeft(1, grid);
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  }
+  possible.pop_back();
+  return possible;
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

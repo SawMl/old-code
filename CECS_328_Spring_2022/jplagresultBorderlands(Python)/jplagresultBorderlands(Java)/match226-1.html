@@ -1,0 +1,340 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>303544179</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+<A NAME="0"></A><FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match226-0.html#0',2,'match226-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>import java.util.ArrayList;
+import java.lang.Math;
+public class StudentSolver {
+	/*public static void main(String args[])
+	{
+		ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs = new ArrayList&lt;&gt;();
+		ArrayList&lt;Integer&gt; a = new ArrayList&lt;&gt;();
+		a.add(-4);
+		a.add(-4);
+		a.add(-1);
+		ArrayList&lt;Integer&gt; b = new ArrayList&lt;&gt;();
+		b.add(13);
+		b.add(-9);
+		b.add(-14);
+		ArrayList&lt;Integer&gt; c = new ArrayList&lt;&gt;();
+		c.add(4);
+		c.add(-7);
+		c.add(-2);
+		ArrayList&lt;Integer&gt; d = new ArrayList&lt;&gt;();
+		d.add(-2);
+		d.add(6);
+		d.add(-3);
+		ArrayList&lt;Integer&gt; e = new ArrayList&lt;&gt;();
+		e.add(-6);
+		e.add(-8);
+		e.add(11);
+		ArrayList&lt;Integer&gt; f = new ArrayList&lt;&gt;();
+		f.add(-4);
+		f.add(-3);
+		f.add(-6);
+		ArrayList&lt;Integer&gt; g = new ArrayList&lt;&gt;();
+		g.add(7);
+		g.add(11);
+		g.add(-10);
+		ArrayList&lt;Integer&gt; h = new ArrayList&lt;&gt;();
+		h.add(4);
+		h.add(-7);
+		h.add(6);
+		ArrayList&lt;Integer&gt; i = new ArrayList&lt;&gt;();
+		i.add(5);
+		i.add(6);
+		i.add(4);
+		ArrayList&lt;Integer&gt; j = new ArrayList&lt;&gt;();
+		j.add(10);
+		j.add(14);
+		j.add(-9);
+		bulbs.add(a);
+		bulbs.add(b);
+		bulbs.add(c);
+		bulbs.add(d);
+		bulbs.add(e);
+		bulbs.add(f);
+		bulbs.add(g);
+		bulbs.add(h);
+		bulbs.add(i);
+		bulbs.add(j);
+		
+		for(int k = 0 ; k &lt; bulbs.size(); k++)
+		{
+			for(int l = 0 ; l &lt; 3 ; l++)
+			{
+				System.out.print(bulbs.get(k).get(l) + &quot;, &quot;);
+			}
+			System.out.println();
+		}
+		
+	}*/
+	public static ArrayList&lt;Boolean&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt;
+	bulbs)
+	{
+		ArrayList&lt;Boolean&gt; a = new ArrayList&lt;&gt;();
+		int highest = 0;</B></FONT>
+<A NAME="1"></A>		for(int i = 0 ; i &lt; bulbs.size(); i ++)
+		{
+			for(int j = 0 ; j &lt; 3 ; j  ++)
+			{<FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match226-0.html#1',2,'match226-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>
+				int temp = bulbs.get(i).get(j);
+				if(temp&lt;0)
+				{
+					temp = -(temp);
+				}</B></FONT>
+				if(temp&gt;highest)
+				{
+					highest = temp;
+				}
+			}
+		}
+		
+		/*int [][] table = new int [bulbs.size()+1][highest+1];
+		/*find M/2
+		int mid = highest/2;
+		int negativeMid = -mid;
+		ArrayList&lt;Integer&gt; b = new ArrayList&lt;&gt;();
+		for(int i = 0 ; i &lt; bulbs.size(); i++)
+		{
+			if(bulbs.get(i).contains(mid) || bulbs.get(i).contains(negativeMid))
+			{
+				
+				b.add(i); 
+			}
+		}*/
+		
+		
+		for(int i = 0 ; i &lt; highest; i++)
+		{
+			a.add(true);
+		}
+		
+		
+		
+		/*for(int i = 1 ; i &lt; bulbs.size()+1; i++)
+		{
+			for(int j = 1; j &lt; highest+1; j++)
+			{
+				table[i][j] = 2;
+			}
+			for(int j = 0 ; j &lt; 3; j++)
+			{
+				int t = bulbs.get(i-1).get(j);
+				boolean t1 = a.get(Math.abs(t)-1);
+				if(t &lt; 0)
+				{
+					t1 = !t1;
+				}
+				if(t1)
+				{
+					table[i][Math.abs(t)] = 1;
+				}
+				else if(!t1)
+				{
+					table[i][Math.abs(t)] = 0;
+				}
+			}
+		}
+		
+		for(int i = 1 ; i &lt; bulbs.size()+1; i++)
+		{
+			for(int j = 1; j &lt; highest+1; j++)
+			{
+				System.out.print(table[i][j] + &quot; &quot;);
+			}
+			System.out.println();
+		}
+		
+		
+		ArrayList&lt;Boolean&gt; row = new ArrayList&lt;&gt;();
+		for(int i = 0 ; i &lt; bulbs.size(); i++)
+		{
+			boolean on = false;
+			for(int j = 0 ; j &lt; 3; j++)
+			{
+				if(table[i+1][Math.abs(bulbs.get(i).get(j))] == 0)
+				{
+					on = on || false;
+				}
+				else
+				{
+					on = on || true;
+				}
+			}
+			row.add(on);
+		}
+		
+		
+		for(int m = 0; m &lt;row.size(); m++)
+		{
+			for(int i = 1 ; i &lt; highest+1; i++)
+			{	
+				boolean ok = false;
+				if(table[m][i] == 0)
+				{
+					boolean change = true;
+					for(int j = 0 ; j &lt; bulbs.size(); j++)
+					{
+						if(table[j][i] == 1)
+						{
+							int down = ((i-5)&lt;1) ? 1 : i-5;
+							int up = ((i+5)&gt;highest) ? highest : i+5;
+							for(int k = down ; k &lt; up+1; k++)
+							{
+								if(k!= i &amp;&amp; table[j][k] == 1)
+								{
+									k = up+1;
+								}
+								else if(k==up &amp;&amp; table[j][k]!=1)
+								{
+									change = change &amp;&amp; false;
+								}
+							}
+						}
+						else if(j == bulbs.size())
+						{
+							
+						}
+					}
+				}
+			}
+		}*/
+		/*for(int m = 0; m &lt;row.size(); m++)
+		{
+			int offRow = m+1;
+			int offWireSet;
+			for(int i = 1; i &lt; highest+1; i++)
+			{
+				if(table[offRow][i] == 0)
+				{
+					offWireSet = i;
+					int one = 0;
+					ArrayList&lt;Integer&gt; row1 = new ArrayList&lt;&gt;();
+					for(int j = 1 ; j &lt; bulbs.size()+1; j++)
+					{
+						if(j!=offRow &amp;&amp; table[j][offWireSet] == 1)
+						{
+							one++;
+							row1.add(j);
+						}
+					}
+					if(one == 0)
+					{
+						a.set(offWireSet+1, !a.get(offWireSet+1));
+					}
+					else if(one &gt; 0)
+					{
+						boolean ok = true;
+						int lower = ((offWireSet-5)&lt; 1) ? 1 : offWireSet-5;
+						int upper = ((offWireSet+5)&gt; highest ? highest : offWireSet+5) ;
+						for(int k = 0 ; k &lt; row1.size(); k++)
+						{
+							for(int l = lower; l &lt;= upper ; l++)
+							{
+								if(l!=offWireSet&amp;&amp;table[row1.get(k)][l] == 1)
+								{
+									l = upper+1;
+								}
+								else if(l!=offWireSet&amp;&amp;table[row1.get(k)][l] == 0)
+								{
+									l = upper+1;
+									k=row1.size();
+									ok = false;
+								}
+							}
+						}
+						if(ok)
+						{
+							a.set(offWireSet+1, !a.get(offWireSet+1));
+						}
+					}
+				}
+			}
+			
+		}*/
+		
+		/*for(int i = 0 ; i &lt; row.size(); i++)
+		{
+			boolean on = false;
+			for(int j = 0 ; j &lt; 3; j++)
+			{
+				if(table[i+1][Math.abs(bulbs.get(i).get(j))] == 0)
+				{
+					on = on || false;
+				}
+				else
+				{
+					on = on || true;
+				}
+			}
+			row.set(i, on);
+		}
+		
+		System.out.println(&quot;At least 1 bulbs turn on&quot;);
+		
+		for(boolean r : row)
+		{
+			System.out.println(r);
+		}
+		
+		System.out.println();
+		System.out.println(&quot;Wire set&quot;);
+		for(boolean set : a)
+		{
+			System.out.println(set);
+		}*/
+		return a;
+	}
+	/*public static void fix(ArrayList&lt;Boolean&gt; a, ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs)
+	{
+		ArrayList&lt;Integer&gt; offRow = new ArrayList&lt;&gt;();
+		for(int i =0 ; i &lt;bulbs.size(); i++)
+		{
+			boolean on = false;
+			
+			for(int j = 0; j &lt; 3; j++)
+			{
+				int temp = bulbs.get(i).get(j);
+				if(temp&lt;0)
+				{
+					temp = -(temp);
+				}
+				on = on || a.get(temp);
+			}
+			if(!on)
+			{
+				offRow.add(i);
+			}
+		}
+		
+		
+		for(int i = 0 ; i &lt; offRow.size(); i++)
+		{
+			for(int j = 0 ; j &lt; 3 ; j++)
+			{
+				
+			}
+		}
+		
+	}*/
+}
+</PRE>
+
+</BODY>
+</HTML>

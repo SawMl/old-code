@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>018979372</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+def solve(grid):
+    numRows = len(grid)
+    numCols = len(grid[0])
+    greatestPath = [0]
+    for i in range(numCols):
+        if i == 0:
+            end1 = [0, numCols-1]
+            end2 = [numRows-1, numCols-1]
+        else:
+            end1 = [0, i-1]
+            end2 = [numRows-1, i-1]
+        instructions1 = [grid[0][i], 1, i]
+        instructions1 = findPath(grid, [0,i], end1, instructions1)
+        instructions2 = [grid[0][i], 1, i]
+        instructions2 = findPath(grid, [0,i], end2, instructions2)
+<A NAME="0"></A>        instructions3 = [grid[numRows - 1][i], 0, i]
+        instructions3 = findPath(grid, [numRows-1, i], end1, instructions3)
+        instructions4 = [grid[numRows - 1][i], 0, i]
+        instructions4 = findPath<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match90-0.html#0',2,'match90-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>(grid, [numRows-1, i], end2, instructions4)
+ 
+        if instructions1[0] &gt; greatestPath[0]:
+            greatestPath = instructions1
+        if instructions2[0] &gt; greatestPath[0]:
+            greatestPath =</B></FONT> instructions2
+        if instructions3[0] &gt; greatestPath[0]:
+            greatestPath = instructions3
+        if instructions4[0] &gt; greatestPath[0]:
+            greatestPath = instructions4
+
+    greatestPath.pop(0)
+    return greatestPath
+
+def findPath(grid, startIndex, endIndex, instructions):
+    numRows = len(grid)
+    numCols = len(grid[0])
+    if(startIndex[0] == endIndex[0] and startIndex[1] == endIndex[1]):
+        return instructions
+    if validIndex(numRows, numCols, startIndex, endIndex):
+        copyUp = []
+        copyStraight = []
+        copyDown = []
+        for i in instructions:
+            copyUp.append(i)
+            copyStraight.append(i)
+            copyDown.append(i)
+
+        newRow = startIndex[0] - 1
+        if newRow &lt; 0:
+            newRow = numRows - 1
+        newCol = startIndex[1] + 1
+        if newCol == numCols:
+            newCol = 0
+        copyUp[0] += grid[newRow][newCol]
+        copyUp.append(1)
+        copyUp = findPath(grid, [newRow, newCol], endIndex, copyUp)
+
+        copyStraight[0] += grid[startIndex[0]][newCol]
+        copyStraight.append(0)
+        copyStraight = findPath(grid, [startIndex[0], newCol], endIndex, copyStraight)
+
+        newRow = startIndex[0] + 1
+        if newRow &gt; numRows - 1:
+            newRow = 0
+        copyDown[0] += grid[newRow][newCol]
+        copyDown.append(-1)
+        copyDown = findPath(grid, [newRow, newCol], endIndex, copyDown)
+
+        if copyUp[0] &gt; instructions[0]:
+            instructions = copyUp
+        if copyStraight[0] &gt; instructions[0]:
+            instructions = copyStraight
+        if copyDown[0] &gt; instructions[0]:
+            instructions = copyDown
+        return instructions
+    else:
+        instructions[0] -= grid[startIndex[0]][startIndex[1]]
+        return instructions
+
+def validIndex(numRows, numCols, startIndex, endIndex):
+    if startIndex[1] == endIndex[1]:
+        return False
+    shift = (endIndex[1] + 1) % numCols
+    lowerBound = (numCols - 1 - startIndex[1] + shift) % numCols
+    upperBound = (numRows - (numCols - startIndex[1] + shift) % numCols) % numRows
+    if numRows % 2 == 0:
+        if startIndex[0] &lt;= lowerBound or startIndex[0] &gt;= upperBound:
+            return True
+    else:
+        if startIndex[0] &lt;= lowerBound or startIndex[0] &gt;= upperBound:
+            return True
+    return False
+
+grid = [[3,4,1,2,8,6], [6,1,8,2,7,4], [5,4,3,9,9,5], [5,9,8,3,2,6], [8,7,2,9,6,4]]
+print(solve(grid))
+'''
+for i in range(3):
+    for j in range(3):
+        if validIndex(3, 3, [i,j], [0,2]):
+            print(&quot; / &quot;, end = &quot;&quot;)
+        else:
+            print(&quot; X &quot;, end = &quot;&quot;)
+    print()
+    '''
+</PRE>
+
+</BODY>
+</HTML>

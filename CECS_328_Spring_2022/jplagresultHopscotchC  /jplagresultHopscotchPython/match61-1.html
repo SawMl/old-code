@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>099114769</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+import copy
+from collections import deque
+
+def solve(grid):
+    tempGrid = []
+    for i in range(len(grid)):
+
+        tempGrid.append(deque(grid[i]))
+    
+    highestSum = 0
+    highestPath = []
+    for i in range(len(grid[0])):
+        topPath, topSum = findPath(tempGrid, 0, 0, tempGrid[0][0], [1, i], highestSum)
+        if topSum &gt; highestSum:
+            highestPath = topPath
+            highestSum = topSum
+        botPath, botSum = findPath(tempGrid, -1, 0, tempGrid[-1][0], [0, i], highestSum)
+        if botSum &gt; highestSum:
+            highestPath = botPath
+            highestSum = botSum
+        for j in range(len(grid)):
+            tempGrid[j].rotate(-1)
+
+
+    return highestPath
+
+def findPath(grid,row,column, sum, path, highestSum):
+
+    if row &lt; 0:
+        while (0 &gt;= row) and (row &lt;= len(grid)):
+            row = len(grid) + row
+                
+                
+    if column == (len(grid[0])-1):
+        if (row == 0) or (row == (len(grid)-1)):
+            return path, sum
+        else:
+            return path, 0
+    
+<A NAME="0"></A>    
+    #Saves paths
+    
+    up = copy<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match61-0.html#0',2,'match61-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>.deepcopy(path)
+    up.append(1)
+    mid = copy.deepcopy(path)
+    mid.append(0)
+    down = copy.deepcopy(path)
+    down.append(</B></FONT>-1)
+    
+    
+    #Recursion
+    upPath, upSum = findPath(grid,row - 1,column + 1, sum + grid[row-1][column+1], up, highestSum)
+    del up
+    midPath, midSum = findPath(grid,row,column + 1, sum + grid[row][column+1], mid, highestSum)
+    del mid
+    #just in case:
+    if row == len(grid)-1:
+        downPath, downSum = findPath(grid, 0,column + 1, sum + grid[0][column+1], down, highestSum)
+    else:
+        downPath, downSum = findPath(grid,row + 1,column + 1, sum + grid[row+1][column+1], down, highestSum)
+    del down
+
+    if upSum &gt;= midSum and upSum &gt;= downSum:
+        return upPath,upSum
+    elif midSum &gt;= upSum and midSum &gt;= downSum:
+        return midPath,midSum
+    elif downSum &gt;= midSum and downSum &gt;= upSum:
+        return downPath,downSum
+    else:
+        return None, 0
+    
+</PRE>
+
+</BODY>
+</HTML>

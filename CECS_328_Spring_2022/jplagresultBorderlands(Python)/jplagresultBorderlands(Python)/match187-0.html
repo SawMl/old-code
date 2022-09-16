@@ -1,0 +1,195 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>778589098</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+import random
+import time
+
+def rand_number(min, max):
+    r = random.randint(min, max-1)+1
+    if random.random()&gt;0.5:
+        return -r
+    return r
+
+
+def gen_bulbs(row=200, m=40):
+    bulbs = []
+    wires = []
+    random.seed(time.time())
+
+    for i in range(m):
+        wires.append(random.random()&gt;0.5)
+    
+    SEP = 15 if m&gt;30 else m
+    mn = 0
+    mx = SEP
+    rf = row
+    rf = rf or 1
+
+    for i in range(row):
+        r = []
+        solved = False
+        while not solved:
+            r = [ rand_number(mn, mx), rand_number(mn, mx), rand_number(mn, mx) ]
+            for b in r:
+                if (wires[abs(b)-1] and b&gt;0) or (not wires[abs(b)-1] and b&lt;0):
+                    solved = True
+            if abs(abs(r[0])-abs(r[1]))&gt;5 or\
+                abs(abs(r[1])-abs(r[2]))&gt;5 or\
+                abs(abs(r[0])-abs(r[2]))&gt;5:
+                solved = False
+        
+        if i%rf == 0 and i!=0:
+            mn = min(mn+SEP, m-SEP)
+            mx = min(mx+SEP, m-1)
+        
+        bulbs.append(r)
+
+    return bulbs
+
+
+def is_solved(bulbs, wires):
+    for row in bulbs:
+        # At least one bulb in a row must glow
+        solved = False
+<A NAME="0"></A>        for b in row:
+            ab = abs(b)
+            if (wires[ab-1] and b&gt;0) or (not wires[ab-1] and b&lt;0):
+                solved =<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match187-1.html#0',3,'match187-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B> True
+            
+        if not solved:
+            return False
+        
+    return True
+
+
+def unsolved_indices(bulbs, wires):
+    unsolved = []
+    for i in range(</B></FONT>len(bulbs)):
+        row = bulbs[i]
+        # At least one bulb in a row must glow
+        solved = False
+        for b in row:
+            ab = abs(b)
+            if (wires[ab-1] and b&gt;0) or (not wires[ab-1] and b&lt;0):
+                solved = True
+        if not solved:
+            unsolved.append(i)
+    return unsolved
+
+
+def is_row_solved(row, wires):
+    for b in row:
+        ab = abs(b)
+        if wires[ab-1] != None and ((wires[ab-1] and b&gt;0) or (not wires[ab-1] and b&lt;0)):
+            return True
+    return False
+
+
+def solve(bulbs):
+    # Ha!
+    # This is the best possible way found
+    #
+    #   Given the following:
+    #   0:    -4, -4, -1
+    #   1:   13, -9, -14
+    #   2:    4, -7, -2
+    #   3:    -2, 6, 3
+    #   4:    -6, -8, 11
+    #   5:    -4, -3, -6
+    #   6:    7, 11, -10
+    #   7:    4, -7, 6
+    #   8:    5, 6, 4
+    #   9:    10, 14, -9
+    #
+    #   Solution:
+    #   r = 0,  -4 = False
+    #   r = 1,  13 = True
+    #   r = 2,  4 already False so -7 = False
+    #   r = 3,  -2 = False 
+    #   r = 4,  -6 = False
+    #   r = 5,  This row is already solved
+    #   r = 6,  7 already False so 11 = True
+    #   r = 7,  4 already False, 7 already False so, 6 = True
+    #   
+    #   In case all wires in a row are already assigned and the row is not solved, 
+    #   we randomly assign one of its wires such that it is solved 
+    #   and resolve all the rows containing this wire !!
+
+    # Flatten the rows
+    bulb_flt = []
+    for bulb_row in bulbs:
+        bulb_flt.extend(bulb_row)
+
+    # Find the available wires
+    wire_set = set([abs(a) for a in bulb_flt])
+    max_wire = max(wire_set)
+
+    all_indices = []
+    all_shifts = [0]*len(bulbs)
+    for i in range(max_wire):
+        all_indices.append([])
+    
+    # Find all the indices
+    for i in range(len(bulbs)):
+        row = bulbs[i]
+        all_indices[abs(row[0])-1].append(i)
+        all_indices[abs(row[1])-1].append(i)
+        all_indices[abs(row[2])-1].append(i)
+        
+
+    wires = [None]*max_wire
+    indices_to_solve = set(list(range(len(bulbs))))
+    lock_count = 0
+    while len(indices_to_solve):
+        r_index = indices_to_solve.pop()
+        r = bulbs[r_index]
+        if is_row_solved(r, wires):
+            continue
+        
+        could_solve = False
+        for e in r:
+            i = abs(e)-1
+            if wires[i] == None:
+                wires[i] = e &gt; 0
+                could_solve = True
+                break
+        
+        if not could_solve:            
+            all_shifts[r_index] += 1
+
+            c_index = random.randint(0, 2)
+            wires[abs(r[c_index])-1] = r[c_index] &gt; 0
+
+            indices_to_solve.update(all_indices[abs(r[c_index])-1])
+            lock_count += 1
+
+    print(f&quot;Solved after: {lock_count} locks&quot;)
+    return [not not a for a in wires]
+
+
+def check():
+    t1 = time.perf_counter()
+    bulbs = gen_bulbs(500000, 100000)
+    wires = solve(bulbs)
+    print(is_solved(bulbs, wires))
+    print(f'Took {time.perf_counter()-t1} to solve the problem')
+</PRE>
+
+</BODY>
+</HTML>

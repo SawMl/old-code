@@ -1,0 +1,272 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>076727843</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+def solve(bulbs):
+    def maxValue():
+        temp = []
+        for list in bulbs:
+            temp += list
+        maxVal = temp[0] * -1
+        for num in temp:
+            if maxVal &lt; (num * -1):
+                maxVal = (num * -1)
+        return maxVal
+
+    switches = []
+    for num in range(0, len(bulbs)):
+        switches.append( [0] * (maxValue() + 1))
+    def displayList(switches):
+        row = 0
+        for list in switches:
+            print(row, end = ' ')
+            print(list)
+            row += 1
+            
+
+    def populateSwitch(key, switches, bulbs):
+        row = -1
+        for list in bulbs:
+            row += 1
+            for num in list:
+                # print(f'num: {(num)} key: {key[abs(num) - 1]} row: {row}')
+                if key[(abs(num)) - 1] == False:
+                    if num &lt; 0:
+                        switches[row][(abs(num))] = 1
+                    elif num &gt; 0:
+                        switches[row][num] = 0
+                else:
+                    if num &lt; 0:
+                        switches[row][(abs(num))] = 0
+                    elif num &gt; 0:
+                        switches[row][num] = 1				
+        return switches
+
+    def checkSwitch(switches):
+        row = -1
+        counter = 0
+        for list in switches:
+            row += 1
+            # print(f'row: {row}', 1 in list)
+            if (1 in list) == True:
+                switches[row][0] = 1
+                counter += 1
+        if counter == len(switches):
+            return True
+        return False
+		
+    def frequency(bulbs):
+        # First get the Frequency of the numbers per row
+        positive = [0] * (maxValue()+1)
+        negative = [0] * (maxValue()+1)
+        numList = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14] #This is a test list
+
+        numbers = []
+        for list in bulbs:
+            numbers += list
+
+        row = 1
+        occurrence = []
+
+        for num in range(len(numbers)):   
+            if row &lt; 3:
+                if row == 1:
+                    # print(f'numbers: {numbers[num]}, row {row}, prev: {numbers[num+1]}, prevPrev {numbers[num+2]}')
+                    if numbers[num] not in occurrence:
+                        if numbers[num] != numbers[num+1] or numbers[num] != numbers[num+2]:
+                            if numbers[num] &gt; 0:
+                                positive[numbers[num]] += 1
+                                occurrence.append(numbers[num])
+                            elif numbers[num] &lt; 0:
+                                negative[(numbers[num] * -1)] += 1
+                                occurrence.append(numbers[num])
+                        else:
+                            pass
+                    # print(occurrence)s
+
+                if row == 2:
+                    # print(f'numbers: {numbers[num]}, row {row}, prev: {numbers[num-1]}, prevPrev {numbers[num+1]}')
+                    if numbers[num] not in occurrence:
+                        if numbers[num] != numbers[num+1] or numbers[num] != numbers[num-1]:
+                            if numbers[num] &gt; 0:
+                                positive[numbers[num]] += 1
+                                occurrence.append(numbers[num])
+                            elif numbers[num] &lt; 0:
+                                negative[(numbers[num] * -1)] += 1
+                                occurrence.append(numbers[num])
+                        else:
+                            pass
+                    # print(occurrence)
+
+            
+            if row == 3:
+                # print(f'numbers: {numbers[num]}, row {row}, prev: {numbers[num-1]}, prevPrev {numbers[num-2]}')
+                # print(occurrence)
+                if numbers[num] not in occurrence:
+                    if numbers[num] != numbers[num-1] or numbers[num] != numbers[num-2]:
+                        if numbers[num] &gt; 0:
+                            positive[numbers[num]] += 1
+                        elif numbers[num] &lt; 0:
+                            negative[numbers[num] * -1] += 1
+                    else: 
+                        pass
+                occurrence = []
+                row = 0            
+            row += 1
+            # print(positive)
+            # print(numList)
+            # print(negative)
+            # print()
+
+        # print(&quot;OUTPUT&quot;)
+        # print(f'Positive: {positive}')
+        # print(f'Numbers:  {numList}')
+        # print(f'Negative: {negative}')
+        return positive, negative, numbers
+
+    def key(positive, negative, numbers, switches, bulbs):
+        # Get total of the two lists
+        total = []
+        for i in range(len(positive)):
+            total.append(positive[i] + negative[i])
+        
+        key = [0] * (maxValue())
+        
+        # DEBUG
+        # print(&quot;STARTING HERE&quot;)
+        # print('max value', maxValue())
+        # print(f'Positive: {positive}')
+        # print(f'Negative: {negative}')
+        # print(f'Total   : {total}')
+        # print(f'KEY-----: {key}')
+        # print(len(key))
+        # print()
+        
+        numIndex = 1
+        temp = []
+        tempNum = []
+        prev = None
+        actualRow= 0
+        usedNumbers = []
+        
+        currentRow = []
+        switch = 0
+        # num1 = currentRow[0]
+        # num2 = currentRow[1]
+        # num3 = currentRow[2]
+        for num in range(len(numbers)):
+            currentRow.append(numbers[num])
+            # print(f'currentNumber: {numbers[num]} numIndex: {numIndex} currentRow {currentRow}')
+
+            if numIndex == 3:
+                # print(&quot;&quot;)
+                actualRow += 1
+                rowLight = min(total[currentRow[0]], total[currentRow[1]], total[currentRow[2]])
+                if total[currentRow [0]] &lt; total[currentRow[1]] and total[currentRow [0]] &lt; total[currentRow[2]]:
+                    switch = currentRow[0]
+                elif total[currentRow [1]] &lt; total[currentRow[2]] and total[currentRow [1]] &lt; total[currentRow[0]]:
+                    switch = currentRow[1]
+                elif total[currentRow [2]] &lt; total[currentRow[1]] and total[currentRow [2]] &lt; total[currentRow[0]]:
+                    switch = currentRow[2]
+
+                elif total[currentRow[0]] == total[currentRow[1]] or total[currentRow[0]] == total[currentRow[2]]:
+                    switch = currentRow[0]
+                elif total[currentRow[1]] == total[currentRow[2]] or total[currentRow[1]] == total[currentRow[0]]:
+                    switch = currentRow[1]
+                elif total[currentRow[2]] == total[currentRow[0]] or total[currentRow[2]] == total[currentRow[1]]:
+                    switch = currentRow[2]
+
+                currentKey = key
+                populateSwitch(currentKey,switches,bulbs)
+                checkSwitch(switches)
+                if switches[actualRow - 1][0] == 1:
+                    pass
+                else:
+                    if switch &gt; 0:
+                        key[abs(switch) - 1] = True
+                        # print(key)
+                    elif switch &lt; 0:
+                        key[abs(switch) - 1] = False
+                        # print(key)
+
+                # print('switch:', switch)
+                if (currentRow[0]) == (currentRow[1]) and (currentRow[1]) == (currentRow[2]) and (currentRow[0]) == (currentRow[2]):
+                    # print(&quot;option 1&quot;)
+                    total[abs(currentRow[0])] -= 1
+
+                elif (currentRow[0]) == (currentRow[1]):
+                    # print(&quot;option 2&quot;)
+                    total[abs(currentRow[0])] -= 1
+                    total[abs(currentRow[2])] -= 1
+
+                elif (currentRow[0]) == (currentRow[2]):
+                    # print(&quot;option 3&quot;)
+                    total[abs(currentRow[0])] -= 1
+                    total[abs(currentRow[1])] -= 1
+
+                elif (currentRow[1]) == (currentRow[0]):
+                    # print(&quot;option 4&quot;)
+                    total[abs(currentRow[1])] -= 1
+                    total[abs(currentRow[2])] -= 1
+
+                elif (currentRow[1]) == (currentRow[2]):
+                    # print(&quot;option 5&quot;)
+                    total[abs(currentRow[1])] -= 1
+                    total[abs(currentRow[0])] -= 1
+
+                elif (currentRow[2]) == (currentRow[0]):
+                    # print(&quot;option 6&quot;)
+                    total[abs(currentRow[2])] -= 1
+                    total[abs(currentRow[1])] -= 1
+
+                elif (currentRow[2]) == (currentRow[1]):
+                    # print(&quot;option 7&quot;)
+                    total[abs(currentRow[2])] -= 1
+                    total[abs(currentRow[0])] -= 1
+
+                else:
+                    # print(&quot;option 8&quot;)
+                    total[abs(currentRow[0])] -= 1
+                    total[abs(currentRow[1])] -= 1
+                    total[abs(currentRow[2])] -= 1
+
+                numList = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14] #This is a test list
+                # print(numList)
+                # print(total)
+                numIndex = 0
+                currentRow = []
+            numIndex += 1
+        return key
+    
+    
+    DC = False
+    keys = key(frequency(bulbs)[0], frequency(bulbs)[1], frequency(bulbs)[2], switches, bulbs)
+
+    res = []
+<A NAME="0"></A>    for key in keys:
+        if key == 0:
+            key = False
+        res.append(<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match139-0.html#0',2,'match139-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>key)
+    return res
+		
+testcase = [[6, -8, -9], [3, 4, -3], [-16, 13, -14], [-11, 12, 12], [12, -14, -10], [15, 15, -17], [3, -3, 4], [-6, -10, -8], [5, 6, -10], [11</B></FONT>, 13, 15], [-14, 12, -9], [9, -6, 8], [-8, -7, -7], [16, 15, 19], [6, -2, -6], [17, -15, 17], [5, -4, -3], [17, 17, 17], [-6, 9, 5], [-3, -4, 8], [13, 10, 9], [-5, -6, -7], [8, 12, -11], [17, -14, 14], [15, 13, 15], [-6, -4, -6], [-13, 13, -8], [-2, -3, -2], [-6, 6, -5], [-6, 5, 7], [-15, -12, 16], [-13, -13, 13], [-7, 9, 4], [-15, 19, -15], [10, -12, 11], [6, 5, -10], [17, -17, 17], [17, 17, 17], [15, 13, -14], [4, 1, 1], [12, -10, -14], [15, 16, 17], [-10, -13, -10], [-6, 5, 8], [6, 4, 3], [11, -12, -11], [-3, -2, -6], [-19, -16, -14], [-13, -12, 9], [9, -13, -12], [13, -13, 11], [-6, 11, -11], [11, 8, 9], [16, 18, 15], [11, 11, 9], [-14, 15, -13], [-6, 8, -6], [7, -3, 8], [-4, -2, 3], [17, -15, 14], [-12, 13, 9], [19, 15, 15], [5, -6, -1], [9, 13, 11], [5, -3, -6], [15, 14, 14], [2, 5, 2], [16, 18, -17], [-8, -3, 6], [-4, 3, 4], [8, 12, -7], [5, 6, -4], [17, -14, 17], [-20, 20, 20], [11, -8, 11], [6, 5, -8], [5, 7, -8], [-9, 9, 5], [15, 16, 17], [-6, -7, -10], [4, 7, 4], [-1, 1, -6], [7, -7, 5], [5, -5, 4], [13, -9, -13], [6, 5, 1], [10, -6, 11], [4, -7, 6], [4, 4, 4], [-14, 12, 13], [11, 11, 11], [12, -12, -14], [-12, -14, 10], [-7, -8, -7], [19, 16, 15], [10, -10, -10], [-11, -14, 16], [-14, 18, 14], [-7, -9, -8], [19, 18, 17]]
+print(solve(testcase))
+</PRE>
+
+</BODY>
+</HTML>

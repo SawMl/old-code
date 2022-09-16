@@ -1,0 +1,1101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>385160026</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+import java.util.*;
+import java.awt.*;
+public class StudentSolver
+{
+	public static void main(String[] args)
+	{
+		
+		int[] a1 = {3, 4, 1, 2, 8, 6};
+		int[] a2 = {6, 1, 8, 2, 7, 4};
+		int[] a3 = {5, 4, 3, 9, 9, 5};
+		int[] a4 = {5, 9, 8, 3, 2, 6};
+		int[] a5 = {8, 7, 2, 9, 6, 4};
+		int[][] aa = new int[5][6];
+		aa[0] = a1;
+		aa[1] = a2;
+		aa[2] = a3;
+		aa[3] = a4;
+		aa[4] = a5;
+		int[] b0 = {9, 3, 5, 7, 5, 8, 6, 7, 7, 5, 5, 7, 5, 8, 3, 5, 6, 2};
+		int[] b1 = {8, 8, 8, 5, 3, 4, 3, 7, 7, 4, 4, 7, 7, 8, 4, 4, 5, 6};
+		int[] b2 = {8, 6, 9, 3, 3, 2, 9, 2, 7, 5, 6, 2, 9, 9, 1, 9, 4, 1};
+		int[] b3 = {6, 2, 6, 4, 1, 9, 4, 5, 3, 9, 7, 7, 8, 7, 6, 4, 4, 5};
+		int[] b4 = {5, 4, 1, 5, 8, 6, 8, 7, 1, 3, 1, 3, 5, 7, 4, 7, 1, 7};
+		int[] b5 = {8, 7, 1, 4, 7, 2, 8, 6, 6, 8, 3, 6, 8, 6, 3, 7, 8, 1};
+		int[] b6 = {9, 2, 2, 6, 6, 3, 5, 8, 8, 9, 6, 7, 8, 1, 9, 5, 7, 9};
+		int[] b7 = {1, 9, 5, 7, 8, 9, 4, 2, 8, 7, 8, 2, 8, 5, 2, 9, 6, 3};
+		int[] b8 = {8, 7, 9, 6, 1, 6, 9, 7, 3, 5, 6, 6, 1, 4, 6, 2, 8, 3};
+		int[] b9 = {5, 9, 6, 6, 8, 7, 1, 8, 6, 4, 1, 3, 5, 2, 4, 9, 8, 1};
+		int[][] bb = new int[10][18];
+		bb[0] = b0;
+		bb[1] = b1;
+		bb[2] = b2;
+		bb[3] = b3;
+		bb[4] = b4;
+		bb[5] = b5;
+		bb[6] = b6;
+		bb[7] = b7;
+		bb[8] = b8;
+		bb[9] = b9;
+		int[] c0 =  {9, 9, 1, 9, 6, 1, 7, 5, 3, 7, 8, 2, 6, 3, 5, 5, 7, 4};
+		int[] c1 =  {4, 2, 9, 7, 5, 1, 8, 9, 5, 8, 7, 8, 3, 4, 9, 1, 6, 5};
+		int[] c2 =  {7, 3, 7, 9, 6, 2, 6, 8, 1, 6, 4, 1, 5, 7, 8, 8, 5, 1};
+		int[] c3 =  {5, 2, 2, 5, 6, 1, 8, 8, 9, 6, 5, 1, 1, 7, 1, 7, 8, 4};
+		int[] c4 =  {7, 5, 3, 4, 4, 4, 6, 3, 4, 1, 6, 4, 5, 5, 6, 2, 6, 4};
+		int[] c5 =  {2, 6, 4, 5, 2, 2, 3, 6, 8, 7, 1, 4, 6, 1, 5, 9, 1, 5};
+		int[] c6 =  {2, 5, 6, 7, 7, 6, 3, 2, 4, 6, 5, 1, 3, 4, 8, 1, 8, 3};
+		int[] c7 =  {1, 7, 6, 7, 3, 6, 9, 7, 3, 7, 5, 4, 2, 6, 3, 7, 4, 7};
+		int[] c8 =  {1, 3, 2, 1, 2, 1, 7, 7, 6, 2, 7, 2, 2, 3, 9, 3, 7, 2};
+		int[] c9 =  {2, 2, 7, 3, 8, 3, 2, 7, 6, 5, 2, 8, 5, 1, 3, 3, 6, 4};
+		int[] c10 = {5, 8, 9, 8, 7, 5, 4, 8, 4, 7, 6, 1, 8, 9, 5, 2, 3, 1};
+		int[] c11 = {5, 6, 2, 9, 7, 5, 3, 7, 6, 9, 7, 4, 9, 1, 6, 1, 3, 7};
+		int[] c12 = {3, 8, 9, 9, 2, 6, 4, 9, 7, 9, 6, 6, 6, 6, 9, 6, 5, 2};
+		int[] c13 = {1, 8, 4, 9, 2, 9, 7, 5, 1, 1, 7, 2, 3, 9, 5, 9, 7, 9};
+		int[] c14 = {7, 9, 5, 5, 8, 2, 8, 2, 8, 3, 1, 4, 4, 5, 6, 5, 2, 8};
+		int[] c15 = {5, 5, 4, 7, 7, 9, 4, 9, 3, 9, 6, 5, 3, 9, 4, 5, 8, 2};
+		int[] c16 = {9, 9, 8, 1, 3, 3, 1, 5, 4, 4, 9, 2, 5, 6, 8, 3, 2, 8};
+		int[] c17 = {3, 1, 8, 3, 9, 3, 7, 4, 4, 7, 2, 2, 4, 8, 5, 1, 5, 6};
+		int[][] cc = new int[18][18];
+		cc[0] = c0;
+		cc[1] = c1;
+		cc[2] = c2;
+		cc[3] = c3;
+		cc[4] = c4;
+		cc[5] = c5;
+		cc[6] = c6;
+		cc[7] = c7;
+		cc[8] = c8;
+		cc[9] = c9;
+		cc[10] = c10;
+		cc[11] = c11;
+		cc[12] = c12;
+		cc[13] = c13;
+		cc[14] = c14;
+		cc[15] = c15;
+		cc[16] = c16;
+		cc[17] = c17;
+		int example = 2;
+		ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid = new ArrayList&lt;&gt;();
+		if (example == 1)
+		{
+			grid = loadExample(5, 6, aa);
+			
+		}
+		else if (example == 2)
+		{
+			grid = loadExample(10, 18, bb);
+		}
+		else if (example == 3)
+		{
+			grid = loadExample(18, 18, cc);
+		}
+		else {}
+		ArrayList&lt;Integer&gt; answer = solve(grid);
+		System.out.println(answer);
+		
+	}
+	public static ArrayList&lt;ArrayList&lt;Integer&gt;&gt; loadExample(int rows, int columns, int[][] arrayGrid) 
+	{
+		ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid = new ArrayList&lt;&gt;();
+		for (int i = 0; i &lt; rows; i++)
+		{
+			ArrayList&lt;Integer&gt; gridRow = new ArrayList&lt;&gt;();
+			for (int j = 0; j &lt; columns; j++)
+			{
+				gridRow.add(arrayGrid[i][j]);
+			}
+			grid.add(gridRow);
+		}
+		for (int i = 0; i &lt; grid.size(); i++)
+		{
+			for (int j = 0; j &lt; grid.get(i).size(); j++)
+			{
+				if (j &lt; grid.get(i).size() - 1)
+				{
+					System.out.print(grid.get(i).get(j) + &quot;, &quot;);
+				}
+				else
+				{
+					System.out.print(grid.get(i).get(j));
+				}
+			}
+			System.out.println();
+		}
+		return grid;
+	}
+	public static ArrayList&lt;Integer&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid)
+	{
+		int test = 0;
+		if (test == 1)
+		{
+			return generateSolutions(grid);
+		}
+<A NAME="0"></A>		if (test == 2)
+		{
+			ArrayList&lt;ArrayList&lt;Integer&gt;&gt; answers = tertiaryNumbers(8);
+			for (int i = 0; i &lt; a<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match737-1.html#0',3,'match737-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>nswers.size(); i++)
+			{
+				for (int j = 0; j &lt; answers.get(0).size(); j++)
+				{
+					System.out.print(answers.get(i).get(j) + &quot;, &quot;);</B></FONT>
+				}
+				System.out.println();
+			}
+			System.out.println(answers.size());
+			return answers.get(0);
+		}
+		System.out.println(&quot;----------------------------------------------&quot;);		
+		if (grid.get(0).size() == 1) 
+		{
+			ArrayList&lt;Integer&gt; width1 = new ArrayList&lt;&gt;();
+			if (grid.get(0).get(0) &gt; grid.get(grid.size() - 1).get(0))
+			{
+				width1.add(1);
+				width1.add(0);
+			}
+			else
+			{
+				width1.add(0);
+				width1.add(0);
+			}
+			return width1;
+		}
+		for (int i = 0; i &lt; grid.size(); i ++) 
+		{
+			for (int j = 0; j &lt; grid.get(0).size(); j++)
+			{
+				System.out.print(grid.get(i).get(j) + &quot;, &quot;);
+			}
+			System.out.println();
+		}
+		
+		
+		
+		
+		ArrayList&lt;ArrayList&lt;Point&gt;&gt; paths = new ArrayList&lt;&gt;(); 
+		for (int l = 0; l &lt; 2; l++)
+		{
+			ArrayList&lt;ArrayList&lt;ArrayList&lt;Integer&gt;&gt;&gt; sums = new ArrayList&lt;&gt;(); 
+			ArrayList&lt;ArrayList&lt;ArrayList&lt;Point&gt;&gt;&gt; coord = new ArrayList&lt;&gt;(); 
+			sums.add(grid); 
+			
+			
+			
+			
+			ArrayList&lt;ArrayList&lt;Integer&gt;&gt; A_0 = new ArrayList&lt;&gt;(); 
+			ArrayList&lt;ArrayList&lt;Point&gt;&gt; B_0 = new ArrayList&lt;&gt;();
+			
+			
+			ArrayList&lt;ArrayList&lt;Integer&gt;&gt; forceStart = new ArrayList&lt;&gt;(); 
+			ArrayList&lt;Integer&gt; dummy1 = new ArrayList&lt;&gt;(); 
+			ArrayList&lt;Integer&gt; dummy2 = new ArrayList&lt;&gt;(); 
+			for (int i = 0; i &lt; grid.get(0).size(); i++) 
+			{											
+				if (l == 0)                             
+				{										
+					dummy1.add(grid.get(0).get(i)); 
+					dummy2.add(0); 
+				}				  
+				else 
+				{				 
+					dummy1.add(0); 
+					dummy2.add(grid.get(grid.size() - 1).get(i)); 
+				}        
+			}             
+			forceStart.add(dummy1); 
+			if (grid.size() &gt; 2) 
+			{                    
+				for (int i = 0; i &lt; grid.size() - 2; i++) 
+				{										
+					ArrayList&lt;Integer&gt; dummy3 = new ArrayList&lt;&gt;(); 
+					for (int j = 0; j &lt; grid.get(0).size(); j++) 
+					{											
+						dummy3.add(0); 
+					} 					
+					forceStart.add(dummy3); 
+				} 						
+			}						
+			forceStart.add(dummy2); 
+			
+			
+			
+			System.out.println(&quot;---------------------------------------------&quot;);
+			for (int i = 0; i &lt; forceStart.size(); i++)
+			{
+				for (int j = 0; j &lt; forceStart.get(0).size(); j++)
+				{
+					System.out.print(forceStart.get(i).get(j) + &quot;, &quot;);
+				}
+				System.out.println();
+			}
+			for (int i = 0; i &lt; grid.size(); i++)
+			{
+				ArrayList&lt;Integer&gt; row = new ArrayList&lt;&gt;();
+				ArrayList&lt;Point&gt; posit = new ArrayList&lt;&gt;();
+				for (int j = 0; j &lt; grid.get(0).size(); j++)
+				{
+					Point m = new Point();
+					Point n = new Point();
+					Point o = new Point();
+					if (j &gt; 0) {
+						if (i &gt; 0) {
+							m.setLocation(i - 1, j - 1);
+						}
+						else {
+							m.setLocation(grid.size() - 1, j - 1);
+						}
+						n.setLocation(i, j - 1);
+						if (i &lt; grid.size() - 1) {
+							o.setLocation(i + 1, j - 1);
+						}
+						else {
+							o.setLocation(0, j - 1);
+						}
+					}
+					else {
+						if (i &gt; 0) {
+							m.setLocation(i - 1, grid.get(0).size() - 1);
+						}
+						else {
+							m.setLocation(grid.size() - 1, grid.get(0).size() - 1);
+						}
+						n.setLocation(i, grid.get(0).size() - 1);
+						if (i &lt; grid.size() - 1) {
+							o.setLocation(i + 1, grid.get(0).size() - 1);
+						}
+						else {
+							o.setLocation(0, grid.get(0).size() - 1);
+						}
+					}
+					
+					
+					
+					
+					if (forceStart.get(m.x).get(m.y) &gt; forceStart.get(n.x).get(n.y) &amp;&amp; forceStart.get(m.x).get(m.y) &gt;= forceStart.get(o.x).get(o.y))
+					{
+						row.add(grid.get(i).get(j) + forceStart.get(m.x).get(m.y));
+						posit.add(m);
+					}
+					else if (forceStart.get(n.x).get(n.y) &gt; forceStart.get(m.x).get(m.y) &amp;&amp; forceStart.get(n.x).get(n.y) &gt;= forceStart.get(o.x).get(o.y))
+					{
+						row.add(grid.get(i).get(j) + forceStart.get(n.x).get(n.y));
+						posit.add(n);
+					}
+					else
+					{
+						row.add(grid.get(i).get(j) + forceStart.get(o.x).get(o.y));
+						posit.add(o);
+					}
+				}
+				A_0.add(row);
+				B_0.add(posit);
+				
+				
+			}
+			sums.add(A_0);
+			coord.add(B_0);
+			
+			
+			
+			
+			for (int k = 2; k &lt; grid.get(0).size(); k++)
+			{
+				ArrayList&lt;ArrayList&lt;Integer&gt;&gt; A_k = new ArrayList&lt;&gt;();
+				ArrayList&lt;ArrayList&lt;Point&gt;&gt; B_k = new ArrayList&lt;&gt;();
+				for (int i = 0; i &lt; grid.size(); i++)
+				{
+					ArrayList&lt;Integer&gt; row = new ArrayList&lt;&gt;();
+					ArrayList&lt;Point&gt; posit = new ArrayList&lt;&gt;();
+					for (int j = 0; j &lt; grid.get(0).size(); j++)
+					{
+						Point m = new Point();
+						Point n = new Point();
+						Point o = new Point();
+						if (j &gt; 0) {
+							if (i &gt; 0) {
+								m.setLocation(i - 1, j - 1);
+							}
+							else {
+								m.setLocation(grid.size() - 1, j - 1);
+							}
+							n.setLocation(i, j - 1);
+							if (i &lt; grid.size() - 1) {
+								o.setLocation(i + 1, j - 1);
+							}
+							else {
+								o.setLocation(0, j - 1);
+							}
+						}
+						else {
+							if (i &gt; 0) {
+								m.setLocation(i - 1, grid.get(0).size() - 1);
+							}
+							else {
+								m.setLocation(grid.size() - 1, grid.get(0).size() - 1);
+							}
+							n.setLocation(i, grid.get(0).size() - 1);
+							if (i &lt; grid.size() - 1) {
+								o.setLocation(i + 1, grid.get(0).size() - 1);
+							}
+							else {
+								o.setLocation(0, grid.get(0).size() - 1);
+							}
+						}
+						if (sums.get(k - 1).get(m.x).get(m.y) &gt; sums.get(k - 1).get(n.x).get(n.y) &amp;&amp; sums.get(k - 1).get(m.x).get(m.y) &gt; sums.get(k - 1).get(o.x).get(o.y))
+						{
+							
+							
+								row.add(sums.get(k - 1).get(m.x).get(m.y) + grid.get(i).get(j));
+								posit.add(m);
+							
+							
+							
+							
+							
+							
+						}
+						else if (sums.get(k - 1).get(n.x).get(n.y) &gt; sums.get(k - 1).get(m.x).get(m.y) &amp;&amp; sums.get(k - 1).get(n.x).get(n.y) &gt; sums.get(k - 1).get(o.x).get(o.y))
+						{
+							
+							
+								row.add(sums.get(k - 1).get(n.x).get(n.y) + grid.get(i).get(j));
+								posit.add(n);
+							
+							
+							
+							
+							
+							
+						}
+						else if (sums.get(k - 1).get(o.x).get(o.y) &gt; sums.get(k - 1).get(m.x).get(m.y) &amp;&amp; sums.get(k - 1).get(o.x).get(o.y) &gt; sums.get(k - 1).get(n.x).get(n.y))
+						{
+							
+							
+								row.add(sums.get(k - 1).get(n.x).get(n.y) + grid.get(i).get(j));
+								posit.add(o);
+							
+							
+							
+							
+							
+							
+						}
+						else 
+						{
+							
+							
+							if (sums.get(k - 1).get(m.x).get(m.y) == sums.get(k - 1).get(n.x).get(n.y) &amp;&amp; sums.get(k - 1).get(m.x).get(m.y) &gt; sums.get(k - 1).get(o.x).get(o.y))
+							{
+								
+								
+								row.add(sums.get(k - 1).get(m.x).get(m.y) + grid.get(i).get(j));
+								posit.add(m);
+							}
+							else if (sums.get(k - 1).get(m.x).get(m.y) == sums.get(k - 1).get(o.x).get(o.y) &amp;&amp; sums.get(k - 1).get(m.x).get(m.y) &gt; sums.get(k - 1).get(n.x).get(n.y))
+							{
+								
+								row.add(sums.get(k - 1).get(m.x).get(m.y) + grid.get(i).get(j));
+								posit.add(m);
+							}
+							else if (sums.get(k - 1).get(n.x).get(n.y) == sums.get(k - 1).get(o.x).get(o.y) &amp;&amp; sums.get(k - 1).get(n.x).get(n.y) &gt; sums.get(k - 1).get(m.x).get(m.y))
+							{
+								
+								row.add(sums.get(k - 1).get(n.x).get(n.y) + grid.get(i).get(j));
+								posit.add(n);
+							}
+							else 
+							{
+								row.add(sums.get(k - 1).get(n.x).get(n.y) + grid.get(i).get(j));
+								posit.add(n);
+							}
+						}	
+					}
+					A_k.add(row);
+					B_k.add(posit);
+				}
+				sums.add(A_k);
+				coord.add(B_k);
+			}
+			
+			
+			
+			for (int i = 0; i &lt; sums.size(); i ++)
+			{
+				System.out.println(&quot;A_&quot; + i + &quot;:&quot;);
+				for (int j = 0; j &lt; grid.size(); j++)
+				{
+					for (int k = 0; k &lt; grid.get(0).size(); k++)
+					{
+						if (k &lt; grid.get(0).size() - 1)
+						{
+							System.out.print(sums.get(i).get(j).get(k) + &quot;, &quot;);
+						}
+						else
+						{
+							System.out.print(sums.get(i).get(j).get(k));
+						}
+					}
+					System.out.println();
+				}
+				System.out.println(&quot;------------------------------------&quot;);
+			}
+			for (int i = 0; i &lt; coord.size(); i ++)
+			{
+				System.out.println(&quot;B_&quot; + i + &quot;:&quot;);
+				for (int j = 0; j &lt; grid.size(); j++)
+				{
+					for (int k = 0; k &lt; grid.get(0).size(); k++)
+					{
+						System.out.print(&quot;(&quot; + coord.get(i).get(j).get(k).x + &quot;, &quot; + coord.get(i).get(j).get(k).y + &quot;) ; &quot;);
+					}
+					System.out.println();
+				}
+				System.out.println(&quot;------------------------------------&quot;);
+			}
+		
+		
+		
+		
+			
+			for (int i = 0; i &lt; grid.get(0).size(); i++)
+			{
+				ArrayList&lt;Point&gt; path = new ArrayList&lt;&gt;();
+				Point r = new Point();
+				r.setLocation(0, i);
+				path.add(r);
+				for (int j = coord.size() - 1; j &gt; -1; j--)
+				{
+					Point s = new Point();
+					s.setLocation(coord.get(j).get(path.get(path.size() - 1).x).get(path.get(path.size() - 1).y));
+					path.add(s);
+	
+				}
+				if (path.get(path.size() - 1).x == 0 || path.get(path.size() - 1).x == grid.size() - 1)
+				{
+					
+					paths.add(path);
+				}
+			}
+			for (int i = 0; i &lt; grid.get(grid.size() - 1).size(); i++)
+			{
+				ArrayList&lt;Point&gt; path = new ArrayList&lt;&gt;();
+				Point r = new Point();
+				r.setLocation(grid.size() - 1, i);
+				path.add(r);
+				for (int j = coord.size() - 1; j &gt; -1; j--)
+				{
+					Point s = new Point();
+					s.setLocation(coord.get(j).get(path.get(path.size() - 1).x).get(path.get(path.size() - 1).y));
+					path.add(s);
+				}
+				if (path.get(path.size() - 1).x == 0 || path.get(path.size() - 1).x == grid.size() - 1)
+				{
+					
+					paths.add(path);
+				}
+			}
+		}
+		
+		/**
+		for (int i = 0; i &lt; paths.size(); i++)
+		{
+			for (int j = 0; j &lt; paths.get(i).size(); j++)
+			{
+				System.out.print(&quot;(&quot; + paths.get(i).get(j).x + &quot;, &quot; + paths.get(i).get(j).y + &quot;) ; &quot;);
+			}
+			System.out.println();
+		} **/
+		
+		ArrayList&lt;Integer&gt; scores = new ArrayList&lt;&gt;(); 
+		for (int i = 0; i &lt; paths.size(); i++)
+		{
+			int score = 0;
+			for (int j = 0; j &lt; paths.get(i).size(); j++)
+			{
+				score += grid.get(paths.get(i).get(j).x).get(paths.get(i).get(j).y);
+			}
+			scores.add(score);
+		}
+		int highest = 0;
+		int indexOfHighest = 0;
+		for (int i = 0; i &lt; scores.size(); i++)
+		{
+			if (scores.get(i) &gt; highest)
+			{
+				highest = scores.get(i);
+				indexOfHighest = i;
+			}
+			System.out.println(scores.get(i));
+		}
+		System.out.println(&quot;---------------&quot;);
+		System.out.println(highest);
+		System.out.println(indexOfHighest);
+		ArrayList&lt;Point&gt; optimalPath = new ArrayList&lt;&gt;();
+		
+		for (int i = paths.get(indexOfHighest).size() - 1; i &gt; - 1; i--)
+		{
+			optimalPath.add(paths.get(indexOfHighest).get(i));
+		}
+		int z = 0;
+		for (int i = 0; i &lt; optimalPath.size(); i++)
+		{
+			System.out.print(&quot;(&quot; + optimalPath.get(i).x + &quot;, &quot; + optimalPath.get(i).y + &quot;): &quot; + grid.get(optimalPath.get(i).x).get(optimalPath.get(i).y) + &quot;; &quot;);
+			z += grid.get(optimalPath.get(i).x).get(optimalPath.get(i).y);
+		}
+		System.out.println();
+		System.out.println(&quot;score: &quot; + z);
+		
+		ArrayList&lt;Integer&gt; answer = new ArrayList&lt;&gt;();
+		if (optimalPath.get(0).x == 0)
+		{
+			answer.add(1);
+		}
+		else
+		{
+			answer.add(0);
+		}
+		answer.add(optimalPath.get(0).y);
+		for (int i = 1; i &lt; optimalPath.size(); i++)
+		{
+			if (optimalPath.get(i).x == 0) 
+			{
+				if (optimalPath.get(i - 1).x == grid.size() - 1)
+				{
+					answer.add(-1);
+				}
+				else if (optimalPath.get(i - 1).x == 1)
+				{
+					answer.add(1);
+				}
+				else
+				{
+					answer.add(0);
+				}
+			}
+			else if (optimalPath.get(i).x == grid.size() - 1) 
+			{
+				if (optimalPath.get(i - 1).x == 0)
+				{
+					answer.add(1);
+				}
+				else if (optimalPath.get(i - 1).x == grid.size() - 2)
+				{
+					answer.add(-1);
+				}
+				else
+				{
+					answer.add(0);
+				}
+			}
+			else 
+			{
+				if (optimalPath.get(i - 1).x &lt; optimalPath.get(i).x)
+				{
+					answer.add(-1);
+				}
+				else if (optimalPath.get(i - 1).x &gt; optimalPath.get(i).x)
+				{
+					answer.add(1);
+				}
+				else
+				{
+					answer.add(0);
+				}
+			}
+		}
+		
+		/**
+		ArrayList&lt;Point&gt; steps = new ArrayList&lt;&gt;();
+		Point p = new Point();
+		p.setLocation(0, index);
+		steps.add(p);
+		for (int i = coord.size() - 1; i &gt; -1; i++)
+		{
+			if (i == coord.size() - 1)
+			{
+				steps.add(coord.get(i).get(p.x).get(p.y));
+			}
+			else
+			{
+				Point q = new Point();
+				q.setLocation(steps.get(steps.size() - 1));
+				steps.add(coord.get(i).get(q.x).get(q.y));
+			}
+		}
+		**/
+		System.out.println(&quot;=======================================&quot;);
+		System.out.println(answer);
+		return answer;
+	}
+	
+	public static ArrayList&lt;Integer&gt; generateSolutions(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid)
+	{
+		
+		ArrayList&lt;SolutionList&gt; solutionListsBySeed = new ArrayList&lt;&gt;();
+		for (int i = 0; i &lt; grid.get(0).size(); i++)
+		{
+			solutionListsBySeed.add(findSolutionDriver(0, i, grid));
+		}
+		
+		for (int i = 0; i &lt; grid.get(grid.size() - 1).size(); i++)
+		{
+			solutionListsBySeed.add(findSolutionDriver(grid.size() - 1, i, grid));
+		}
+		int highestScore = 0;
+		ArrayList&lt;Solution&gt; highScore = new ArrayList&lt;&gt;();
+		SolutionList highestScores = new SolutionList(highScore);
+		for (int i = 0; i &lt; solutionListsBySeed.size(); i++)
+		{
+			for (int j = 0; j &lt; solutionListsBySeed.get(i).getSolutionListSize(solutionListsBySeed.get(i)); j++)
+			{
+				if (solutionListsBySeed.get(i).getSolution(solutionListsBySeed.get(i), j).getScore(solutionListsBySeed.get(i).getSolution(solutionListsBySeed.get(i), j)) &gt; highestScore)
+				{
+					highestScore = solutionListsBySeed.get(i).getSolution(solutionListsBySeed.get(i), j).getScore(solutionListsBySeed.get(i).getSolution(solutionListsBySeed.get(i), j));
+					System.out.println(highestScore);
+					highestScores.addSolution(solutionListsBySeed.get(i).getSolution(solutionListsBySeed.get(i), j));
+				}
+			}
+		}
+		return highestScores.getSolution(highestScores, highestScores.getSolutionListSize(highestScores)).getMoves(highestScores.getSolution(highestScores, highestScores.getSolutionListSize(highestScores)));
+	}
+	public static SolutionList findSolutionDriver(int seedRow, int seedIndex, ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid)
+	{
+		ArrayList&lt;Integer&gt; moves = new ArrayList&lt;&gt;();
+		if (seedRow == 0)
+		{
+			moves.add(1);
+		}
+		else
+		{
+			moves.add(0);
+		}
+		moves.add(seedIndex);
+		int score = 0;
+		int[] currentPosition = new int[2];
+		currentPosition[0] = seedRow; 
+		currentPosition[1] = seedIndex; 
+		
+		
+		
+		ArrayList&lt;Solution&gt; backingSolutionArray = new ArrayList&lt;&gt;();
+		SolutionList solutionList = new SolutionList(backingSolutionArray);
+		Point p = new Point();
+		p.setLocation(currentPosition[0], currentPosition[1]);
+		ArrayList&lt;Point&gt; positions = new ArrayList&lt;&gt;();
+		positions.add(p);
+		solutionList = findSolution(grid.get(0).size() - 1, solutionList, grid, currentPosition, 0, moves, positions, score, seedRow);
+		return solutionList;
+	}
+	public static SolutionList findSolution(int stepsLeft, SolutionList solutionList, ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid, int[] currentPosition, int step, ArrayList&lt;Integer&gt; moves, ArrayList&lt;Point&gt; positions, int score, int seedRow)
+	{
+		step++;
+		if (stepsLeft == 0)
+		{
+			if (currentPosition[0] == 0 || currentPosition[0] == grid.size() - 1)
+			{
+				Solution solution = new Solution(moves, score, seedRow, positions);
+				solutionList.addSolution(solution);
+				System.out.println(solution.getMoves(solution));
+				System.out.println(solution.getScore(solution));
+				
+				return solutionList;
+			}
+		}
+		else
+		{
+			
+			
+			
+			moves.add(1);
+			if (currentPosition[0] == 0)
+			{
+				currentPosition[0] = grid.size() - 1;
+			}
+			else 
+			{
+				currentPosition[0]--;
+			}
+			currentPosition[1] = nextIndex(grid, currentPosition);
+			score += grid.get(currentPosition[0]).get(currentPosition[1]);
+			Point p = new Point();
+			p.setLocation(currentPosition[0], currentPosition[1]);
+			positions.add(p);
+			
+			
+			
+			solutionList = findSolution(stepsLeft - 1, solutionList, grid, currentPosition, step, moves, positions, score, seedRow);
+			for (int i = 0; i &lt; stepsLeft; i++)
+			{
+				moves.remove(moves.size() - 1);
+			}
+			System.out.println(&quot;==&quot; + currentPosition[0]);
+			
+
+			
+			
+			
+			moves.add(0);
+			
+			currentPosition[1] = nextIndex(grid, currentPosition);
+			System.out.println(currentPosition[0]);
+			System.out.println(currentPosition[1]);
+			score += grid.get(currentPosition[0]).get(currentPosition[1]);
+			Point q = new Point();
+			q.setLocation(currentPosition[0], currentPosition[1]);
+			positions.add(q);
+			
+			
+			solutionList = findSolution(stepsLeft - 1, solutionList, grid, currentPosition, step, moves, positions, score, seedRow);
+			for (int i = 0; i &lt; stepsLeft; i++)
+			{
+				moves.remove(moves.size() - 1);
+			}		
+			
+
+			
+			
+			
+			moves.add(0);
+			if (currentPosition[0] == grid.size() - 1)
+			{
+				currentPosition[0] = 0;
+			}
+			else
+			{
+				currentPosition[0]++;
+			}
+			currentPosition[1] = nextIndex(grid, currentPosition);
+			score += grid.get(currentPosition[0]).get(currentPosition[1]);
+			Point r = new Point();
+			r.setLocation(currentPosition[0], currentPosition[1]);
+			positions.add(r);
+			
+			
+			solutionList = findSolution(stepsLeft - 1, solutionList, grid, currentPosition, step, moves, positions, score, seedRow);
+			
+			if (currentPosition[0] == grid.size() - 1)
+			{
+				currentPosition[0] = 0;
+			}
+			else
+			{
+				currentPosition[0]--;
+			} 
+			
+		}
+		return solutionList;
+	}
+	
+	
+	public static int nextIndex(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid, int[] currentPosition) 
+	{
+		int nextIndex = 0;
+		nextIndex = (currentPosition[1] + 1) % (grid.get(0).size());
+		return nextIndex;
+	}
+	public static int inverseNextIndex(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid, int[] currentPosition)
+	{
+		if (currentPosition[1] == 0)
+		{
+			return grid.size() - 1;
+		}
+		else
+		{
+			return currentPosition[1]--;
+		}
+	}
+	public static int readMoves(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid, Solution solution)
+	{
+		int previousRow = 0;
+		for (int i = 0; i &lt; solution.getMoves(solution).size(); i++)
+		{
+			if (i == 0)
+			{
+				if (solution.getMoves(solution).get(0) != 1)
+				{
+					previousRow = grid.size() - 1;
+				}
+			}
+			else if (i == 1)
+			{
+				
+			}
+			else
+			{
+				if (previousRow == 0) 
+				{
+					if (solution.getMoves(solution).get(i) == 1)
+					{
+						previousRow = grid.size() - 1;
+					}
+					else if (solution.getMoves(solution).get(i) == -1)
+					{
+						previousRow++;
+					}
+					else
+					{
+						
+					}
+				}
+				else if (previousRow == grid.size() - 1) 
+				{
+					if (solution.getMoves(solution).get(i) == -1)
+					{
+						previousRow = 0;
+					}
+					else if (solution.getMoves(solution).get(i) == 1)
+					{
+						previousRow--;
+					}
+					else
+					{
+						
+					}
+				}
+				else 
+				{
+					if (solution.getMoves(solution).get(i) == 1)
+					{
+						previousRow--;
+					}
+					else if (solution.getMoves(solution).get(i) == -1)
+					{
+						previousRow++;
+					}
+					else
+					{
+						
+					}
+				}
+			}
+		}
+		return previousRow;
+	}
+	public static ArrayList&lt;ArrayList&lt;Integer&gt;&gt; tertiaryNumbers(int gridWidth)
+	{
+		ArrayList&lt;ArrayList&lt;Integer&gt;&gt; possibleSolutions = new ArrayList&lt;&gt;();
+		for (int i = 0; i &lt; Math.pow(3, gridWidth); i++)
+		{
+			ArrayList&lt;Integer&gt; possibleSolution = new ArrayList&lt;&gt;();
+			for (int j = gridWidth - 1; j &gt;= 0; j--)
+			{
+				if (i / (int) Math.pow(3, j) % 3 == 0)
+				{
+					possibleSolution.add(0);
+				}
+				else if (i / (int) Math.pow(3, j) % 3 == 1)
+				{
+					possibleSolution.add(1);
+				}
+				else
+				{
+					possibleSolution.add(-1);
+				}
+			}
+			possibleSolutions.add(possibleSolution);
+		}
+		return possibleSolutions;
+	}
+	/**
+	public static ArrayList&lt;Integer&gt; crawler(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid, int startingIndex, int startingRow, int score)
+	{
+		ArrayList&lt;Integer&gt; moves = new ArrayList&lt;&gt;();
+		int[] currentPosition = new int[2];
+		int row = 0;
+		if (startingRow == 0)
+		{
+			row = grid.size() - 1;
+		}
+		currentPosition[0] = row; 
+		currentPosition[1] = startingIndex; 
+		
+		int n = grid.get(0).size() + startingIndex;
+		int stepsLeft = grid.get(0).size();
+		for (int i = startingIndex; i &lt; n - 1; i++)
+		{
+
+			stepsLeft--; 
+
+			
+			System.out.println(&quot;------------------------------------&quot;);
+			System.out.println(&quot;Steps Left: &quot; + stepsLeft);
+			System.out.println(&quot;Distance from bottom row: &quot; + Math.abs(currentPosition[0] - grid.size() - 1));
+			System.out.println(&quot;Distance from top row: &quot; + currentPosition[0]);
+			
+
+			boolean endOnEdge = false;
+			if (stepsLeft &lt;= grid.size() / 2) 
+			{
+				endOnEdge = true;
+				System.out.println(&quot;End on edge override&quot;);
+			}
+			if (endOnEdge &amp;&amp; (currentPosition[0] != 0 &amp;&amp; currentPosition[0] != grid.size() - 1)) 
+			{
+				if (currentPosition[0] &gt; grid.size() / 2)
+				{
+					
+					moves.add(-1);
+					System.out.println(&quot;Move is: -1&quot;);
+					currentPosition[0]++;
+				}
+				else
+				{
+					moves.add(1);
+					System.out.println(&quot;Move is: 1&quot;);
+					currentPosition[0]--;
+				}
+			}
+			else if ((endOnEdge &amp;&amp; (currentPosition[0] == 0 || currentPosition[0] == grid.size() - 1)) &amp;&amp; stepsLeft == 0) 
+			{
+				if (currentPosition[0] == 0)
+				{
+					
+					if (grid.get(0).get(nextIndex(grid, currentPosition)) &gt; grid.get(grid.size() - 1).get(nextIndex(grid, currentPosition)))
+					{
+						moves.add(0);
+						System.out.println(&quot;Move is: 0&quot;);
+						
+					}
+					else
+					{
+						moves.add(1);
+						System.out.println(&quot;Move is: 1&quot;);
+						currentPosition[0] = grid.size() - 1;
+					}
+				}
+				else
+				{
+					
+					if (grid.get(grid.size() - 1).get(nextIndex(grid, currentPosition)) &gt; grid.get(0).get(nextIndex(grid, currentPosition)))
+					{
+						moves.add(0);
+						System.out.println(&quot;Move is: 0&quot;);
+						
+					}
+					else
+					{
+						moves.add(-1);
+						System.out.println(&quot;Move is: -1&quot;);
+						currentPosition[0] = -1;
+					}
+				}
+			}
+			else 
+			{
+				int move = 0;
+				if (currentPosition[0] == 0) 
+				{
+					if (grid.get(grid.size() - 1).get(nextIndex(grid, currentPosition)) &gt;= grid.get(0).get(nextIndex(grid, currentPosition)))
+					{
+						move = 1; 
+						currentPosition[0] = grid.size() - 1;
+					}
+					else if (grid.get(0).get(nextIndex(grid, currentPosition)) &gt;= grid.get(1).get(nextIndex(grid, currentPosition)))
+					{
+						move = 0;  
+						
+					}
+					else
+					{
+						move = -1; 
+						currentPosition[0] = 1; 
+					}
+				}
+				else if (currentPosition[0] &gt; 0 &amp;&amp; currentPosition[0] &lt; grid.size() - 1) 
+				{
+					if (grid.get(currentPosition[0] - 1).get(nextIndex(grid, currentPosition)) &gt;= grid.get(currentPosition[0]).get(nextIndex(grid, currentPosition)))
+					{
+						move = 1; 
+						currentPosition[0] = currentPosition[0] - 1; 
+					}
+					else if (grid.get(currentPosition[0]).get(nextIndex(grid, currentPosition)) &gt;= grid.get(currentPosition[0] + 1).get(nextIndex(grid, currentPosition)))
+					{
+						move = 0; 
+						currentPosition[0] = currentPosition[0] + 1; 
+					}
+					else
+					{
+						move = -1; 
+						
+					}
+				}
+				else 
+				{
+					if (grid.get(currentPosition[0] - 1).get(nextIndex(grid, currentPosition)) &gt;= grid.get(grid.size() - 1).get(nextIndex(grid, currentPosition)))
+					{
+						move = 1; 
+						currentPosition[0] = currentPosition[0] - 1; 
+					}
+					else if (grid.get(grid.size() - 1).get(nextIndex(grid, currentPosition)) &gt;= grid.get(0).get(nextIndex(grid, currentPosition)))
+					{
+						move = 0; 
+						
+					}
+					else
+					{
+						move = -1; 
+						currentPosition[0] = 0; 
+					}
+				}
+				moves.add(move); 
+				System.out.println(&quot;Move is: &quot; + move); 
+			}
+
+			
+			System.out.print(&quot;going from index &quot; + currentPosition[1]);
+
+			
+			currentPosition[1] = nextIndex(grid, currentPosition); 
+
+			
+			System.out.println(&quot; to index &quot; + currentPosition[1]);
+			if (stepsLeft &gt; 1)
+			{
+				System.out.println(&quot;Next Position: (&quot; + currentPosition[0] + &quot;, &quot; + currentPosition[1] + &quot;)&quot;);
+			}
+			else
+			{
+				System.out.println(&quot;Final Position: (&quot; + currentPosition[0] + &quot;, &quot; + currentPosition[1] + &quot;)&quot;);
+			}
+			int value = grid.get(currentPosition[0]).get(currentPosition[1]);
+			System.out.println(&quot;Score is: &quot; + score + &quot; + &quot; + value + &quot; = &quot; + (score + value));
+			score += grid.get(currentPosition[0]).get(currentPosition[1]);
+		}
+		
+		System.out.println(&quot;------------------------------------&quot;);
+		Solution solution1 = new Solution(moves, score, currentPosition[0], 0);
+		System.out.println(solution1.moves);
+		System.out.println(solution1.score);
+		System.out.println(solution1.finalRow);
+		System.out.println(&quot;----------------------------------------------------&quot;);
+		System.out.println(&quot;Final score is: &quot; + score);
+		System.out.print(&quot;Path is: &quot;);
+
+		return moves;
+	}
+	 **/
+
+}
+</PRE>
+
+</BODY>
+</HTML>

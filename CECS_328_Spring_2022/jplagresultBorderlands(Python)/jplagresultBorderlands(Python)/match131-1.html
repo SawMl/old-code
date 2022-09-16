@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>435495532</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+import math
+
+# number of rows, each with 3 lightbulbs
+N = 10
+<A NAME="0"></A># number of wire sets; lightbulbs can be -M through M non zero
+M = 14
+
+testList <FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match131-0.html#0',2,'match131-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>= [ [-4,-4,-1], [13,-9,-14], [4,-7,-2], [-2,6,3], [-6,-8,11], [-4,-3,-6], [7,11,-10], [4,-7,6], [5,6,4], [10</B></FONT>,14,-9] ]
+
+# bulbs parameter will be a list of lists
+# solve will return a list of booleans of size M
+def solve(bulbs):
+    # first, determine M, which is also the maximum integer value
+    if len(bulbs) == 0:
+        return []
+
+    M = max(bulbs[0])
+
+    for bulbRow in range(1, len(bulbs)):
+        if max(bulbs[bulbRow]) &gt; M:
+            M = max(bulbs[bulbRow])
+
+    # list of booleans representing whether the current is on (True) or off (False) for each bulb set (sets 1 through M)
+    # index + 1 represents the set; ex. index 0 represents set 1
+    currentOnBulbSet = [False for p in range(M)]
+
+    # list that denotes which rows have at least one light on, 0 through rows - 1
+    rowHasAtLeastOneLightOn = [False for b in range(len(bulbs))]
+
+    # first check bulbs in the middle wire set floor(M/2)
+
+    middleWireSet = math.floor(M / 2)
+
+    # keeps track of how many times an element appears in a  unique row, index 0 is
+    posWirePerRowCount = [0 for b in range(M)]
+    negWirePerRowCount = [0 for b in range(M)]
+
+    negMidWireCount = 0
+    posMidWireCount = 0
+
+    # count every negative and positive occurrence in unique rows, whichever is more gets turned on
+    for bulbRow in range(len(bulbs)):
+        # denotes if the bulb has already been seen in a row, for example, if 1 was seen then countedAlready[0] = True
+        countedAlreadyPos = [False for p in range(M)]
+        countedAlreadyNeg = [False for p in range(M)]
+        for lightBulb in range(3):
+            if bulbs[bulbRow][lightBulb] &lt; 0:
+                if countedAlreadyNeg[abs(bulbs[bulbRow][lightBulb]) - 1] == False:
+                    negWirePerRowCount[abs(bulbs[bulbRow][lightBulb]) - 1] += 1
+                    countedAlreadyNeg[abs(bulbs[bulbRow][lightBulb]) - 1] = True
+            elif bulbs[bulbRow][lightBulb] &gt; 0:
+                if countedAlreadyPos[bulbs[bulbRow][lightBulb] - 1] == False:
+                    posWirePerRowCount[bulbs[bulbRow][lightBulb] - 1] += 1
+                    countedAlreadyPos[bulbs[bulbRow][lightBulb] - 1] = True
+
+    # change the value of currentOn boolean set based on whether there are more positive or negative values
+    for bulb in range(M):
+        if posWirePerRowCount[bulb] &gt; negWirePerRowCount[bulb]:
+            currentOnBulbSet[bulb] = True
+
+    print(&quot;posWireCount:&quot;, posWirePerRowCount, &quot;negWireCount:&quot;, negWirePerRowCount)
+
+    # check if every row has at least one light on
+    for bulbRow in range(len(bulbs)):
+        for lightBulb in range(3):
+            if bulbs[bulbRow][lightBulb] &lt; 0:
+                if currentOnBulbSet[abs(bulbs[bulbRow][lightBulb]) - 1] == False:
+                    rowHasAtLeastOneLightOn[bulbRow] = True
+                    break
+            if bulbs[bulbRow][lightBulb] &gt; 0:
+                if currentOnBulbSet[bulbs[bulbRow][lightBulb] - 1] == True:
+                    rowHasAtLeastOneLightOn[bulbRow] = True
+                    break
+
+    return currentOnBulbSet
+
+#print(solve(testList))
+
+'''
+    for bulbRow in range(len(bulbs)):
+        # only check the lights in the row if there is no light on, it always checks the first time
+        if rowHasAtLeastOneLightOn[bulbRow] == False:
+            for lightBulb in range(3):
+                #check the rest of the wires, don't change middle wire set
+                # if the middle wire number is negative
+                if bulbs[bulbRow][lightBulb] &lt; 0:
+                    # if the currentOnSet of that location is False then the negative light has current
+                    if currentOnBulbSet[abs(bulbs[bulbRow][lightBulb]) - 1] == False:
+                        rowHasAtLeastOneLightOn[bulbRow] = True
+                    # if the currentOnSet of that location is True then the negative light has no current;
+                    # give it current by making currentOnSet False for the location
+                    elif currentOnBulbSet[abs(bulbs[bulbRow][lightBulb]) - 1] == True:
+                        currentOnBulbSet[abs(bulbs[bulbRow][lightBulb]) - 1] = False
+                        rowHasAtLeastOneLightOn[bulbRow] = True
+                        break
+                # else if the middle wire number is positive
+                elif bulbs[bulbRow][lightBulb] &gt; 0:
+                    # if the light has current
+                    if currentOnBulbSet[abs(bulbs[bulbRow][lightBulb]) - 1] == True:
+                        rowHasAtLeastOneLightOn[bulbRow] = True
+                    # if the light does not have current
+                    elif currentOnBulbSet[abs(bulbs[bulbRow][lightBulb]) - 1] == False:
+                        currentOnBulbSet[abs(bulbs[bulbRow][lightBulb]) - 1] = True
+                        rowHasAtLeastOneLightOn[bulbRow] = True
+                        break
+'''
+
+'''
+# first do middle wire set
+for bulbRow in range(len(bulbs)):
+    # only check the lights in the row if there is no light on, it always checks the first time
+    if rowHasAtLeastOneLightOn[bulbRow] == False:
+        for lightBulb in range(3):
+            # first count how many positive and negative middle wire set bulbs appear
+            if abs(bulbs[bulbRow][lightBulb]) == middleWireSet:
+                # if the middle wire number is negative
+                if bulbs[bulbRow][lightBulb] &lt; 0:
+                    # if the currentOnSet of that location is False then the negative light has current
+                    negMidWireCount += 1
+                # else if the middle wire number is positive
+                elif bulbs[bulbRow][lightBulb] &gt; 0:
+                    posMidWireCount += 1
+    if posMidWireCount &gt; negMidWireCount:
+        currentOnBulbSet[middleWireSet - 1] = True
+    else:
+        currentOnBulbSet[middleWireSet - 1] = False
+        '''
+</PRE>
+
+</BODY>
+</HTML>

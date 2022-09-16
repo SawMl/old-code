@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>989781482</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>chegg5.java</CENTER></H3><HR>
+<PRE>
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
+
+
+public class StudentSolver {
+    static Scanner in = new Scanner(System.in);
+  
+    public static void main(String[] args) {
+        
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid = new ArrayList(new ArrayList&lt;&gt;());
+        
+        ArrayList&lt;Integer&gt; col = new ArrayList&lt;&gt;(Arrays.asList(3,4,1,2,8,6));
+        grid.add(col);
+        col = new ArrayList&lt;&gt;(Arrays.asList(6,1,8,2,7,4));
+        grid.add(col);
+        col = new ArrayList&lt;&gt;(Arrays.asList(5,4,3,9,9,5));
+        grid.add(col);
+        col = new ArrayList&lt;&gt;(Arrays.asList(5,9,8,3,2,6));
+        grid.add(col);
+        col = new ArrayList&lt;&gt;(Arrays.asList(8,7,2,9,6,4));
+        grid.add(col);
+      
+        int highestScore = 0;
+        
+        while(true){
+            
+            col = solve(grid);
+            
+            int score = 0;
+            for(int i=0; i&lt;col.size(); i++){
+                score = score+col.get(i);
+            }
+            
+            System.out.println(&quot;Score: &quot;+score);
+            
+            if(score&gt;highestScore)
+                highestScore = score;
+            
+            System.out.println(&quot;Highest Score: &quot;+highestScore);
+            
+            System.out.print(&quot;Play again? Yes(Y) No(N): &quot;);
+            String input = in.next();
+            if(input.equalsIgnoreCase(&quot;N&quot;))
+                break;
+        }
+    }
+  
+    
+    public static ArrayList&lt;Integer&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid){
+        
+        ArrayList&lt;Integer&gt; answer = new ArrayList&lt;&gt;();
+        
+        ArrayList&lt;Integer&gt; indexCol = new ArrayList&lt;&gt;();
+        
+        ArrayList&lt;Integer&gt; path = new ArrayList&lt;&gt;();
+        int rows = grid.size();
+        int cols = grid.get(0).size();
+        
+        for(int i=0; i&lt;rows; i++){
+            for (int j=0; j&lt;cols; j++){
+                System.out.print(grid.get(i).get(j)+&quot; &quot;);
+            }
+            System.out.println();
+        }
+        
+        System.out.print(&quot;Enter start position top (1) or bottom (0): &quot;);
+        int top = in.nextInt();
+        path.add(top);
+        int row = 0;
+        if(top==0)
+            row = rows-1;
+        else
+            row=0;
+        System.out.print(&quot;Enter start colum index: &quot;);
+        int col = in.nextInt();
+        path.add(col);
+        
+        while(true){
+            answer.add(grid.get(row).get(col));
+            indexCol.add(col);
+            int flag=1;
+            for(int i=0; i&lt;cols; i++){
+                if(!indexCol.contains(i))
+                    flag=0;
+            }
+            if(flag==1){
+                System.out.println(&quot;One revolution is done.&quot;);
+                break;
+            }
+            System.out.print(&quot;Enter move: rigth(0)or up-right(1) or down-right(-1): &quot;);
+            int move = in.nextInt();
+            path.add(move);
+            switch(move){
+                case 0:
+                    col = updateCell(col, cols);
+                    break;
+                case 1:
+                    col = updateCell(col, cols);
+                    row--;
+                    if(row==-1)
+                        row=rows-1;
+                    break;
+                case -1:
+                    col = updateCell(col, cols);
+                    row = updateCell(row, rows);
+                    break;
+            }
+       
+        }
+        
+        System.out.print(&quot;Path: &quot;);
+<A NAME="0"></A>        for(int i=0; i&lt;path.size();i++){
+            System.out.print(path.get(i)+&quot; &quot;);
+        }
+        <FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match639-1.html#0',3,'match639-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>System.out.println();
+        return answer;
+    }
+
+    
+    public static int updateCell(int col, int cols) {
+        col++;
+        if</B></FONT>(col==cols)
+            col=0;
+        return col;
+    }
+}
+</PRE>
+
+</BODY>
+</HTML>

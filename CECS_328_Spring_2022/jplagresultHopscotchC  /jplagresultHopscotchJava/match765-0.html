@@ -1,0 +1,1490 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>599876762</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class StudentSolver {
+
+    public static void main(String[] args) {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+        System.out.println(&quot;Enter N (rows): &quot;);
+        Scanner inputN = new Scanner(System.in);
+        int n = inputN.nextInt();
+        System.out.println(&quot;Enter M (cols): &quot;);
+        Scanner inputM = new Scanner(System.in);
+        int m = inputM.nextInt();
+
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; b = new ArrayList&lt;&gt;();
+
+        for(int i = 0; i &lt; n; i++){
+            System.out.println(&quot;New Row&quot;);
+            ArrayList&lt;Integer&gt; a = new ArrayList&lt;&gt;();
+
+            for(int j = 0; j &lt; m; j++){
+                System.out.println(&quot;Enter number: &quot;);
+                Scanner num = new Scanner(System.in);
+                int number = num.nextInt();
+                a.add(number);
+            }
+            b.add(a);
+        }
+        System.out.println(b);
+        System.out.println(solve(b));
+    }
+
+    public static ArrayList&lt;Integer&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid){
+
+        ArrayList&lt;Integer&gt; moves = new ArrayList&lt;&gt;();
+
+        int jStart = 0;
+        int jCount = 0;
+        int pathSum = 0;
+        int col = 0;
+        int row = 0;
+        int startTop = grid.get(0).get(0);
+        int startBottom = grid.get(grid.size()-1).get(0);
+        int startCol = 0;
+        int startRow = 0;
+        int i = 0;
+        int j = 0;
+        int jT = 0;
+        int jB = 0;
+        int iR = 0;
+        int iUR = 0;
+        int iDR = 0;
+        int jR = 0;
+        int jUR = 0;
+        int jDR = 0;
+        int score1 = 0;
+<A NAME="0"></A>
+        for(int m=0; m &lt; grid.get(0).size()-1; m++){
+            
+            int next = <FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match765-1.html#0',3,'match765-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>grid.get(0).get(m+1);
+            if(next &gt; startTop){
+                startTop = next;
+                jT = m+1;
+            }
+        }</B></FONT>
+<A NAME="1"></A>
+        for(int n=0; n &lt; grid.get(0).size()-1; n++){
+            
+            int next = grid.get(<FONT color="#f63526"><A HREF="javascript:ZweiFrames('match765-1.html#1',3,'match765-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>grid.size()-1).get(n+1);
+            if(next &gt; startBottom){
+                startBottom = next;
+                jB = n+1;
+            }
+        }</B></FONT>
+
+
+
+
+
+
+
+
+
+
+
+        startRow = 1;
+        i = 0;
+        j = jT;
+
+        jStart = j;
+
+        moves.add(startRow);
+        moves.add(j);
+        score1 += grid.get(i).get(j);
+
+        while(moves.size() &lt; grid.get(0).size() + 1) {
+
+
+
+
+            int pathSumR = 0;
+            int minStepsRd = 0;
+            int maxStepsRd = 0;
+            int minStepsRu = 0;
+            int maxStepsRu = 0;
+            if(j+1 &lt;= grid.get(0).size()-1){
+                pathSumR = grid.get(i).get(j) + grid.get(i).get(j+1);
+                iR = i;
+                jR += 1;
+
+            } else {
+                pathSumR = grid.get(i).get(j) + grid.get(i).get(0);
+
+                iR = i;
+                jR = 0;
+                int psr2 = pathSumR;
+            }
+            if(jR &gt; jStart){
+
+                maxStepsRd = (grid.get(0).size()-jR) + (jStart-0) - 1;
+            } else {
+
+                maxStepsRd = jStart - jR - 1;
+            }
+            minStepsRd = (grid.size()-1) - iR;
+
+            if(jR &gt; jStart){
+                maxStepsRu = (grid.get(0).size()-jR) + (jStart-0) - 1;
+            } else{
+                maxStepsRu = jStart - jR - 1;
+            }
+            minStepsRu = iR;
+
+            int pathSumUR = 0;
+            int minStepsURd = 0;
+            int maxStepsURd = 0;
+            int minStepsURu = 0;
+            int maxStepsURu = 0;
+            if(i-1 &gt;= 0){
+                if(j+1 &lt;= grid.get(0).size()-1){
+                    pathSumUR = grid.get(i).get(j) + grid.get(i-1).get(j+1);
+                    iUR = i-1;
+                    jUR = j+1;
+                } else {
+                    pathSumUR = grid.get(i).get(j) + grid.get(i-1).get(0);
+
+                    iUR = i-1;
+                    jUR = 0;
+                }
+            } else {
+                if(j+1 &lt;= grid.get(0).size()-1){
+                    pathSumUR = grid.get(i).get(j) + grid.get(grid.size()-1).get(j+1);
+                    iUR = grid.size()-1;
+                    jUR = j+1;
+                } else {
+                    pathSumUR = grid.get(i).get(j) + grid.get(grid.size()-1).get(0);
+
+                    iUR = grid.size()-1;
+                    jUR = 0;
+                }
+            }
+            if(jR &gt; jStart){
+
+                maxStepsURd = (grid.get(0).size()-jUR) + (jStart-0) - 1;
+            } else {
+
+                maxStepsURd = jStart - jUR - 1;
+            }
+            minStepsURd = (grid.size()-1) - iUR;
+
+            if(jR &gt; jStart){
+                maxStepsURu = (grid.get(0).size()-jUR) + (jStart-0) - 1;
+            } else{
+                maxStepsURu = jStart - jUR - 1;
+            }
+            minStepsURu = iUR;
+
+            int pathSumDR = 0;
+            int minStepsDRd = 0;
+            int maxStepsDRd = 0;
+            int minStepsDRu = 0;
+            int maxStepsDRu = 0;
+            if(i+1 &lt;= grid.size()-1){
+                if(j+1 &lt;= grid.get(0).size()-1){
+                    pathSumDR = grid.get(i).get(j) + grid.get(i+1).get(j+1);
+                    iDR = i+1;
+                    jDR = j+1;
+                } else {
+                    pathSumDR = grid.get(i).get(j) + grid.get(i+1).get(0);
+
+                    iDR = i+1;
+                    jDR = 0;
+                }
+            } else {
+                if(j+1 &lt;= grid.get(0).size()-1){
+                    pathSumDR = grid.get(i).get(j) + grid.get(0).get(j+1);
+                    iDR = 0;
+                    jDR = j+1;
+                } else {
+                    pathSumDR = grid.get(i).get(j) + grid.get(0).get(0);
+
+                    iDR = 0;
+                    jDR = 0;
+                }
+            }
+            if(jR &gt; jStart){
+
+                maxStepsDRd = (grid.get(0).size()-jDR) + (jStart-0) - 1;
+            } else {
+
+                maxStepsDRd = jStart - jDR - 1;
+            }
+            minStepsDRd = (grid.size()-1) - iDR;
+
+            if(jR &gt; jStart){
+                maxStepsDRu = (grid.get(0).size()-jDR) + (jStart-0) - 1;
+            } else{
+                maxStepsDRu = jStart - jDR - 1;
+            }
+            minStepsDRu = iDR;
+
+            
+            boolean validRd = false;
+            boolean validURd = false;
+            boolean validDRd = false;
+<A NAME="2"></A>            boolean validRu = false;
+            boolean validURu = false;
+            boolean validDRu = false;
+            <FONT color="#77bfc7"><A HREF="javascript:ZweiFrames('match765-1.html#2',3,'match765-top.html#2',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>if(maxStepsRd &gt;= minStepsRd){
+                validRd = true;
+            } else {
+                validRu = true;
+            }
+            if(maxStepsURd &gt;= minStepsURd){</B></FONT>
+                validURd = true;
+            } else {
+                validURu = true;
+            }
+            if(maxStepsDRd &gt;= minStepsDRd){
+                validDRd = true;
+            } else {
+                validDRu = true;
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            System.out.println(&quot;R: &quot; + pathSumR + pathSum);
+            System.out.println(&quot;UR: &quot; + pathSumUR + pathSum);
+            System.out.println(&quot;DR: &quot; + pathSumDR + pathSum);
+
+            if(jR == jStart - 1 &amp;&amp; i == grid.size()-1){
+                if(pathSumR &gt; pathSumDR &amp;&amp; validRd){
+                    pathSum += pathSumR;
+                    if(j+1 &lt;= grid.get(0).size()-1){
+                        i = i;
+                        j += 1;
+                    } else {
+                        i = i;
+                        j = 0;
+                    }
+                    score1+= grid.get(i).get(j);
+                    moves.add(0);
+                } else if(pathSumR &lt; pathSumDR &amp;&amp; validDRd){
+                    pathSum += pathSumDR;
+                    if(i+1 &lt;= grid.size()-1){
+                        if(j+1 &lt;= grid.get(0).size()-1){
+                            i += 1;
+                            j += 1;
+                        } else {
+                            i += 1;
+                            j = 0;
+                        }
+                    } else {
+                        if(j+1 &lt;= grid.get(0).size()-1){
+                            i = 0;
+                            j += 1;
+                        } else {
+                            i = 1;
+                            j = 0;
+                        }
+                    }
+                    score1+= grid.get(i).get(j);
+                    moves.add(-1);
+                }
+            } else if(jR == jStart - 1 &amp;&amp; i == 0){
+                if(pathSumR &gt; pathSumUR &amp;&amp; validRd){
+                    pathSum += pathSumR;
+                    if(j+1 &lt;= grid.get(0).size()-1){
+                        i = i;
+                        j += 1;
+                    } else {
+                        i = i;
+                        j = 0;
+                    }
+                    score1+= grid.get(i).get(j);
+                    moves.add(0);
+                } else if(pathSumR &lt; pathSumUR &amp;&amp; validURd){
+                    pathSum += pathSumUR;
+                    if(i-1 &gt;= 0){
+                        if(j+1 &lt;= grid.get(0).size()-1){
+                            i -= 1;
+                            j += 1;
+                        } else {
+                            i -= 1;
+                            j = 0;
+                        }
+                    } else {
+                        if(j+1 &lt;= grid.get(0).size()-1){
+                            i = grid.size()-1;
+                            j += 1;
+                        } else {
+                            i = grid.size()-1;
+                            j = 0;
+                        }
+                    }
+                    score1+= grid.get(i).get(j);
+                    moves.add(1);
+                }
+            }
+
+
+
+            else if(pathSumR &gt; pathSumUR &amp;&amp; pathSumR &gt; pathSumDR &amp;&amp; validRd
+                    &amp;&amp; pathSumDR != pathSumR &amp;&amp; pathSumR != pathSumUR){
+                pathSum += pathSumR;
+                if(j+1 &lt;= grid.get(0).size()-1){
+                    i = i;
+                    j += 1;
+                } else {
+                    i = i;
+                    j = 0;
+                }
+                score1+= grid.get(i).get(j);
+                moves.add(0);
+
+
+
+            } else if(pathSumUR &gt; pathSumR &amp;&amp; pathSumUR &gt; pathSumDR &amp;&amp; validURd
+                    &amp;&amp; pathSumDR != pathSumUR &amp;&amp; pathSumDR != pathSumUR){
+                pathSum += pathSumUR;
+                System.out.println(&quot;yes&quot;);
+                if(i-1 &gt;= 0){
+                    if(j+1 &lt;= grid.get(0).size()-1){
+                        i -= 1;
+                        j += 1;
+                    } else {
+                        i -= 1;
+                        j = 0;
+                    }
+                } else {
+                    if(j+1 &lt;= grid.get(0).size()-1){
+                        i = grid.size()-1;
+                        j += 1;
+                    } else {
+                        i = grid.size()-1;
+                        j = 0;
+                    }
+                }
+                score1+= grid.get(i).get(j);
+                moves.add(1);
+
+
+
+            } else if(pathSumDR &gt; pathSumR &amp;&amp; pathSumDR &gt; pathSumUR &amp;&amp; validDRd
+                    &amp;&amp; pathSumDR != pathSumR &amp;&amp; pathSumDR != pathSumUR){
+                pathSum += pathSumDR;
+                if(i+1 &lt;= grid.size()-1){
+                    if(j+1 &lt;= grid.get(0).size()-1){
+                        i += 1;
+                        j += 1;
+                    } else {
+                        i += 1;
+                        j = 0;
+                    }
+                } else {
+                    if(j+1 &lt;= grid.get(0).size()-1){
+                        i = 0;
+                        j += 1;
+                    } else {
+                        i = 1;
+                        j = 0;
+                    }
+                }
+                score1+= grid.get(i).get(j);
+                moves.add(-1);
+
+            }
+
+            else if(pathSumR == pathSumUR){
+                if((grid.size()-1) - iR &lt;= (grid.size()-1) - iUR &amp;&amp; validRd){
+                    pathSum += pathSumR;
+                    if(j+1 &lt;= grid.get(0).size()-1){
+                        i = i;
+                        j += 1;
+                    } else{
+                        i = i;
+                        j = 0;
+                    }
+                    score1+= grid.get(i).get(j);
+                    moves.add(0);
+                } else if ((grid.size()-1) - iR &gt; (grid.size()-1) - iUR &amp;&amp; validURd
+                        &amp;&amp; iUR != (grid.size()-1) &amp;&amp; maxStepsURd != 1){
+                    pathSum += pathSumUR;
+                    if(i-1 &lt;= grid.size()-1){
+                        if(j+1 &lt;= grid.get(0).size()-1){
+                            i -= 1;
+                            j += 1;
+                        } else {
+                            i -= 1;
+                            j = 0;
+                        }
+                    } else {
+                        if(j+1 &lt;= grid.get(0).size()-1){
+                            i = grid.size()-1;
+                            j += 1;
+                        } else{
+                            i = grid.size()-1;
+                            j = 0;
+                        }
+                    }
+                    score1+= grid.get(i).get(j);
+                    moves.add(1);
+                }
+            } else if(pathSumR == pathSumDR){
+                if((grid.size()-1) - iR &lt;= (grid.size()-1) - iDR  &amp;&amp; validRd){
+                    pathSum += pathSumR;
+                    if(j+1 &lt;= grid.get(0).size()-1){
+                        i = i;
+                        j += 1;
+                    } else{
+                        i = i;
+                        j = 0;
+                    }
+                    score1+= grid.get(i).get(j);
+                    moves.add(0);
+                } else if((grid.size()-1) - iR &gt; (grid.size()-1) - iDR  &amp;&amp; validDRd){
+                    pathSum += pathSumDR;
+                    if(i+1 &lt;= grid.size()-1){
+                        if(j+1 &lt;= grid.get(0).size()-1){
+                            i += 1;
+                            j += 1;
+                        } else {
+                            i += 1;
+                            j = 0;
+                        }
+                    } else {
+                        if(j+1 &lt;= grid.get(0).size()-1){
+                            i = 0;
+                            j += 1;
+                        } else{
+                            i = 0;
+                            j = 0;
+                        }
+                    }
+                    score1+= grid.get(i).get(j);
+                    moves.add(-1);
+                }
+            } else if(pathSumUR == pathSumDR){
+                if((grid.size()-1) - iUR &lt;= (grid.size()-1) - iDR &amp;&amp; validURd
+                        &amp;&amp; iUR != (grid.size()-1) &amp;&amp; maxStepsURd != 1){
+                    pathSum += pathSumUR;
+                    if(i-1 &lt;= grid.size()-1){
+                        if(j+1 &lt;= grid.get(0).size()-1){
+                            i -= 1;
+                            j += 1;
+                        } else {
+                            i -= 1;
+                            j = 0;
+                        }
+                    } else {
+                        if(j+1 &lt;= grid.get(0).size()-1){
+                            i = grid.size()-1;
+                            j += 1;
+                        } else{
+                            i = grid.size()-1;
+                            j = 0;
+                        }
+                    }
+                    score1+= grid.get(i).get(j);
+                    moves.add(1);
+                } else if((grid.size()-1) - iUR &gt; (grid.size()-1) - iDR &amp;&amp; validDRd){
+                    pathSum += pathSumDR;
+                    if(i+1 &lt;= grid.size()-1){
+                        if(j+1 &lt;= grid.get(0).size()-1){
+                            i += 1;
+                            j += 1;
+                        } else {
+                            i += 1;
+                            j = 0;
+                        }
+                    } else {
+                        if(j+1 &lt;= grid.get(0).size()-1){
+                            i = 0;
+                            j += 1;
+                        } else{
+                            i = 0;
+                            j = 0;
+                        }
+                    }
+                    score1+= grid.get(i).get(j);
+                    moves.add(-1);
+                }
+            }
+
+            
+
+            if(jR == jStart - 1 &amp;&amp; i == grid.size()-1){
+                if(pathSumR &gt; pathSumDR &amp;&amp; validRd){
+                    pathSum += pathSumR;
+                    if(j+1 &lt;= grid.get(0).size()-1){
+                        i = i;
+                        j += 1;
+                    } else {
+                        i = i;
+                        j = 0;
+                    }
+                    score1+= grid.get(i).get(j);
+                    moves.add(0);
+                } else if(pathSumR &lt; pathSumDR &amp;&amp; validDRd){
+                    pathSum += pathSumDR;
+                    if(i+1 &lt;= grid.size()-1){
+                        if(j+1 &lt;= grid.get(0).size()-1){
+                            i += 1;
+                            j += 1;
+                        } else {
+                            i += 1;
+                            j = 0;
+                        }
+                    } else {
+                        if(j+1 &lt;= grid.get(0).size()-1){
+                            i = 0;
+                            j += 1;
+                        } else {
+                            i = 1;
+                            j = 0;
+                        }
+                    }
+                    score1+= grid.get(i).get(j);
+                    moves.add(-1);
+                }
+            } else if(jR == jStart - 1 &amp;&amp; i == 0){
+                if(pathSumR &gt; pathSumUR &amp;&amp; validRu){
+                    pathSum += pathSumR;
+                    if(j+1 &lt;= grid.get(0).size()-1){
+                        i = i;
+                        j += 1;
+                    } else {
+                        i = i;
+                        j = 0;
+                    }
+                    score1+= grid.get(i).get(j);
+                    moves.add(0);
+                } else if(pathSumR &lt; pathSumUR &amp;&amp; validURu){
+                    pathSum += pathSumUR;
+                    if(i-1 &gt;= 0){
+                        if(j+1 &lt;= grid.get(0).size()-1){
+                            i -= 1;
+                            j += 1;
+                        } else {
+                            i -= 1;
+                            j = 0;
+                        }
+                    } else {
+                        if(j+1 &lt;= grid.get(0).size()-1){
+                            i = grid.size()-1;
+                            j += 1;
+                        } else {
+                            i = grid.size()-1;
+                            j = 0;
+                        }
+                    }
+                    score1+= grid.get(i).get(j);
+                    moves.add(1);
+                }
+            }
+
+
+
+            else if(pathSumR &gt; pathSumUR &amp;&amp; pathSumR &gt; pathSumDR &amp;&amp; validRu
+                    &amp;&amp; pathSumDR != pathSumR &amp;&amp; pathSumR != pathSumUR){
+                pathSum += pathSumR;
+                if(j+1 &lt;= grid.get(0).size()-1){
+                    i = i;
+                    j += 1;
+                } else {
+                    i = i;
+                    j = 0;
+                }
+                score1+= grid.get(i).get(j);
+                moves.add(0);
+
+
+
+            } else if(pathSumUR &gt; pathSumR &amp;&amp; pathSumUR &gt; pathSumDR &amp;&amp; validURu
+                    &amp;&amp; pathSumDR != pathSumUR &amp;&amp; pathSumDR != pathSumUR){
+                pathSum += pathSumUR;
+                if(i-1 &gt;= 0){
+                    if(j+1 &lt;= grid.get(0).size()-1){
+                        i -= 1;
+                        j += 1;
+                    } else {
+                        i -= 1;
+                        j = 0;
+                    }
+                } else {
+                    if(j+1 &lt;= grid.get(0).size()-1){
+                        i = grid.size()-1;
+                        j += 1;
+                    } else {
+                        i = grid.size()-1;
+                        j = 0;
+                    }
+                }
+                score1+= grid.get(i).get(j);
+                moves.add(1);
+
+
+
+            } else if(pathSumDR &gt; pathSumR &amp;&amp; pathSumDR &gt; pathSumUR &amp;&amp; validDRu
+                    &amp;&amp; pathSumDR != pathSumR &amp;&amp; pathSumDR != pathSumUR){
+                pathSum += pathSumDR;
+                if(i+1 &lt;= grid.size()-1){
+                    if(j+1 &lt;= grid.get(0).size()-1){
+                        i += 1;
+                        j += 1;
+                    } else {
+                        i += 1;
+                        j = 0;
+                    }
+                } else {
+                    if(j+1 &lt;= grid.get(0).size()-1){
+                        i = 0;
+                        j += 1;
+                    } else {
+                        i = 1;
+                        j = 0;
+                    }
+                }
+                score1+= grid.get(i).get(j);
+                moves.add(-1);
+
+            }
+
+            else if(pathSumR == pathSumUR){
+                if((grid.size()-1) - iR &lt;= (grid.size()-1) - iUR &amp;&amp; validRu){
+                    pathSum += pathSumR;
+                    i = i;
+                    j += 1;
+                    score1+= grid.get(i).get(j);
+                    moves.add(0);
+                } else if ((grid.size()-1) - iR &gt; (grid.size()-1) - iUR &amp;&amp; validURu
+                        &amp;&amp; iUR != (grid.size()-1) &amp;&amp; maxStepsURu != 1){
+                    pathSum += pathSumUR;
+                    i -= 1;
+                    j += 1;
+                    score1+= grid.get(i).get(j);
+                    moves.add(1);
+                }
+            } else if(pathSumR == pathSumDR){
+                if((grid.size()-1) - iR &lt;= (grid.size()-1) - iDR  &amp;&amp; validRu){
+                    pathSum += pathSumR;
+                    i = i;
+                    j += 1;
+                    score1+= grid.get(i).get(j);
+                    moves.add(0);
+                } else if((grid.size()-1) - iR &gt; (grid.size()-1) - iDR  &amp;&amp; validDRu){
+                    pathSum += pathSumDR;
+                    i += 1;
+                    j += 1;
+                    score1+= grid.get(i).get(j);
+                    moves.add(-1);
+                }
+            } else if(pathSumUR == pathSumDR){
+                if((grid.size()-1) - iUR &lt;= (grid.size()-1) - iDR &amp;&amp; validURu
+                        &amp;&amp; iUR != (grid.size()-1) &amp;&amp; maxStepsURu != 1){
+                    pathSum += pathSumUR;
+                    i -= 1;
+                    j += 1;
+                    score1+= grid.get(i).get(j);
+                    moves.add(1);
+                } else if((grid.size()-1) - iUR &gt; (grid.size()-1) - iDR &amp;&amp; validDRu){
+                    pathSum += pathSumDR;
+                    i += 1;
+                    j += 1;
+                    score1+= grid.get(i).get(j);
+                    moves.add(-1);
+                }
+            }
+
+            
+
+            if(jStart == 0){
+                if(i == grid.size()-2 &amp;&amp; j-1 == grid.get(0).size()-2){
+                    moves.remove(moves.size()-1);
+                    moves.add(-1);
+                } else if(i == grid.size()-1 &amp;&amp; j-1 == grid.get(0).size()-2){
+                    if(grid.get(grid.size()-1).get(j) &gt; grid.get(0).get(j)){
+                        moves.remove(moves.size()-1);
+                        moves.add(0);
+                    } else {
+                        moves.remove(moves.size()-1);
+                        moves.add(-1);
+                    }
+                } else if(i == 1 &amp;&amp; j-1 == grid.get(0).size()-2){
+                    moves.remove(moves.size()-1);
+                    moves.add(1);
+                } else if(i == 0 &amp;&amp; j-1 == grid.get(0).size()-2){
+                    if(grid.get(0).get(j) &gt; grid.get(grid.size()-1).get(j)){
+                        moves.remove(moves.size()-1);
+                        moves.add(0);
+                    } else {
+                        moves.remove(moves.size()-1);
+                        moves.add(1);
+                    }
+                }
+            } else {
+                if(i == grid.size()-2 &amp;&amp; j-1 == jStart-2){
+                    moves.remove(moves.size()-1);
+                    moves.add(-1);
+                } else if(i == grid.size()-1 &amp;&amp; j-1 == jStart-2){
+                    if(grid.get(grid.size()-1).get(j) &gt; grid.get(0).get(j)){
+                        moves.remove(moves.size()-1);
+                        moves.add(0);
+                    } else {
+                        moves.remove(moves.size()-1);
+                        moves.add(-1);
+                    }
+                } else if(i == 1 &amp;&amp; j-1 == jStart-2){
+                    moves.remove(moves.size()-1);
+                    moves.add(1);
+                } else if(i == 0 &amp;&amp; j-1 == jStart-2){
+                    if(grid.get(0).get(j) &gt; grid.get(grid.size()-1).get(j)){
+                        moves.remove(moves.size()-1);
+                        moves.add(0);
+                    } else {
+                        moves.remove(moves.size()-1);
+                        moves.add(1);
+                    }
+                }
+            }
+
+
+            System.out.println(&quot;Total Score: &quot; + score1);
+            System.out.println(&quot;Sol: &quot; + moves);
+            System.out.println(&quot;i: &quot; + i);
+            System.out.println(&quot;j: &quot; + j);
+            jCount += 1;
+            System.out.println(&quot;Moves: &quot; + jCount);
+            System.out.println(&quot;---------&quot;);
+        }
+
+        
+        
+
+
+        ArrayList&lt;Integer&gt; moves2 = new ArrayList&lt;&gt;();
+
+        int jStart2 = 0;
+        int jCount2 = 0;
+        int pathSum2 = 0;
+        int col2 = 0;
+        int row2 = 0;
+        int startTop2  = grid.get(0).get(0);
+        int startBottom2 = grid.get(grid.size()-1).get(0);
+        int startCol2 = 0;
+        int startRow2 = 0;
+        int i2 = 0;
+        int j2 = 0;
+
+
+        int iR2 = 0;
+        int iUR2 = 0;
+        int iDR2 = 0;
+        int jR2 = 0;
+        int jUR2 = 0;
+        int jDR2 = 0;
+        int score2= 0;
+
+        startRow2 = 0;
+        i2 =  grid.size() - 1;
+        j2 = jB;
+
+        jStart2 = j2;
+
+        moves2.add(startRow2);
+        moves2.add(j2);
+        score2 += grid.get(i2).get(j2);
+
+
+
+        while(moves2.size() &lt; grid.get(0).size() + 1) {
+
+
+            int pathSumR = 0;
+            int minStepsRd = 0;
+            int maxStepsRd = 0;
+            int minStepsRu = 0;
+            int maxStepsRu = 0;
+            if (j + 1 &lt;= grid.get(0).size() - 1) {
+                pathSumR = grid.get(i).get(j) + grid.get(i).get(j + 1);
+                iR2 = i;
+                jR2 += 1;
+
+            } else {
+                pathSumR = grid.get(i).get(j) + grid.get(i).get(0);
+
+                iR2 = i;
+                jR2 = 0;
+                int psr2 = pathSumR;
+            }
+            if (jR2 &gt; jStart2) {
+
+                maxStepsRd = (grid.get(0).size() - jR2) + (jStart2 - 0) - 1;
+            } else {
+
+                maxStepsRd = jStart2 - jR2 - 1;
+            }
+            minStepsRd = (grid.size() - 1) - iR2;
+
+            if (jR2 &gt; jStart2) {
+                maxStepsRu = (grid.get(0).size() - jR2) + (jStart2 - 0) - 1;
+            } else {
+                maxStepsRu = jStart2 - jR2 - 1;
+            }
+            minStepsRu = iR2;
+
+            int pathSumUR = 0;
+            int minStepsURd = 0;
+            int maxStepsURd = 0;
+            int minStepsURu = 0;
+            int maxStepsURu = 0;
+            if (i - 1 &gt;= 0) {
+                if (j + 1 &lt;= grid.get(0).size() - 1) {
+                    pathSumUR = grid.get(i).get(j) + grid.get(i - 1).get(j + 1);
+                    iUR2 = i - 1;
+                    jUR2 = j + 1;
+                } else {
+                    pathSumUR = grid.get(i).get(j) + grid.get(i - 1).get(0);
+
+                    iUR2 = i - 1;
+                    jUR2 = 0;
+                }
+            } else {
+                if (j + 1 &lt;= grid.get(0).size() - 1) {
+                    pathSumUR = grid.get(i).get(j) + grid.get(grid.size() - 1).get(j + 1);
+                    iUR2 = grid.size() - 1;
+                    jUR2 = j + 1;
+                } else {
+                    pathSumUR = grid.get(i).get(j) + grid.get(grid.size() - 1).get(0);
+
+                    iUR2 = grid.size() - 1;
+                    jUR2 = 0;
+                }
+            }
+            if (jR2 &gt; jStart2) {
+
+                maxStepsURd = (grid.get(0).size() - jUR2) + (jStart2 - 0) - 1;
+            } else {
+
+                maxStepsURd = jStart2 - jUR2 - 1;
+            }
+            minStepsURd = (grid.size() - 1) - iUR2;
+
+            if (jR2 &gt; jStart2) {
+                maxStepsURu = (grid.get(0).size() - jUR2) + (jStart2 - 0) - 1;
+            } else {
+                maxStepsURu = jStart2 - jUR2 - 1;
+            }
+            minStepsURu = iUR2;
+
+            int pathSumDR = 0;
+            int minStepsDRd = 0;
+            int maxStepsDRd = 0;
+            int minStepsDRu = 0;
+            int maxStepsDRu = 0;
+            if (i + 1 &lt;= grid.size() - 1) {
+                if (j + 1 &lt;= grid.get(0).size() - 1) {
+                    pathSumDR = grid.get(i).get(j) + grid.get(i + 1).get(j + 1);
+                    iDR2 = i + 1;
+                    jDR2 = j + 1;
+                } else {
+                    pathSumDR = grid.get(i).get(j) + grid.get(i + 1).get(0);
+
+                    iDR2 = i + 1;
+                    jDR2 = 0;
+                }
+            } else {
+                if (j + 1 &lt;= grid.get(0).size() - 1) {
+                    pathSumDR = grid.get(i).get(j) + grid.get(0).get(j + 1);
+                    iDR2 = 0;
+                    jDR2 = j + 1;
+                } else {
+                    pathSumDR = grid.get(i).get(j) + grid.get(0).get(0);
+
+                    iDR2 = 0;
+                    jDR2 = 0;
+                }
+            }
+            if (jR2 &gt; jStart2) {
+
+                maxStepsDRd = (grid.get(0).size() - jDR2) + (jStart2 - 0) - 1;
+            } else {
+
+                maxStepsDRd = jStart2 - jDR2 - 1;
+            }
+            minStepsDRd = (grid.size() - 1) - iDR2;
+
+            if (jR2 &gt; jStart2) {
+                maxStepsDRu = (grid.get(0).size() - jDR2) + (jStart2 - 0) - 1;
+            } else {
+                maxStepsDRu = jStart2 - jDR2 - 1;
+            }
+            minStepsDRu = iDR2;
+
+            
+            boolean valiDR2d = false;
+            boolean validURd = false;
+            boolean validDRd = false;
+            boolean valiDR2u = false;
+            boolean validURu = false;
+            boolean validDRu = false;
+            if (maxStepsRd &gt;= minStepsRd) {
+                valiDR2d = true;
+            } else {
+                valiDR2u = true;
+            }
+            if (maxStepsURd &gt;= minStepsURd) {
+                validURd = true;
+            } else {
+                validURu = true;
+            }
+            if (maxStepsDRd &gt;= minStepsDRd) {
+                validDRd = true;
+            } else {
+                validDRu = true;
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            System.out.println(&quot;R: &quot; + pathSumR + pathSum);
+            System.out.println(&quot;UR: &quot; + pathSumUR + pathSum);
+            System.out.println(&quot;DR: &quot; + pathSumDR + pathSum);
+
+            if (jR2 == jStart2 - 1 &amp;&amp; i2 == grid.size() - 1) {
+                if (pathSumR &gt; pathSumDR &amp;&amp; valiDR2d) {
+                    pathSum2 += pathSumR;
+                    if (j + 1 &lt;= grid.get(0).size() - 1) {
+                        i2 = i;
+                        j2 += 1;
+                    } else {
+                        i2 = i;
+                        j2 = 0;
+                    }
+                    score2 += grid.get(i).get(j);
+                    moves2.add(0);
+                } else if (pathSumR &lt; pathSumDR &amp;&amp; validDRd) {
+                    pathSum2 += pathSumDR;
+                    if (i + 1 &lt;= grid.size() - 1) {
+                        if (j + 1 &lt;= grid.get(0).size() - 1) {
+                            i2 += 1;
+                            j2 += 1;
+                        } else {
+                            i2 += 1;
+                            j2 = 0;
+                        }
+                    } else {
+                        if (j + 1 &lt;= grid.get(0).size() - 1) {
+                            i2 = 0;
+                            j2 += 1;
+                        } else {
+                            i2 = 1;
+                            j2 = 0;
+                        }
+                    }
+                    score2 += grid.get(i).get(j);
+                    moves2.add(-1);
+                }
+            } else if (jR2 == jStart2 - 1 &amp;&amp; i2 == 0) {
+                if (pathSumR &gt; pathSumUR &amp;&amp; valiDR2d) {
+                    pathSum2 += pathSumR;
+                    if (j + 1 &lt;= grid.get(0).size() - 1) {
+                        i2 = i;
+                        j2 += 1;
+                    } else {
+                        i2 = i;
+                        j2 = 0;
+                    }
+                    score2 += grid.get(i).get(j);
+                    moves2.add(0);
+                } else if (pathSumR &lt; pathSumUR &amp;&amp; validURd) {
+                    pathSum2 += pathSumUR;
+                    if (i - 1 &gt;= 0) {
+                        if (j + 1 &lt;= grid.get(0).size() - 1) {
+                            i2 -= 1;
+                            j2 += 1;
+                        } else {
+                            i2 -= 1;
+                            j2 = 0;
+                        }
+                    } else {
+                        if (j + 1 &lt;= grid.get(0).size() - 1) {
+                            i2 = grid.size() - 1;
+                            j2 += 1;
+                        } else {
+                            i2 = grid.size() - 1;
+                            j2 = 0;
+                        }
+                    }
+                    score2 += grid.get(i).get(j);
+                    moves2.add(1);
+                }
+            }
+
+
+
+            else if (pathSumR &gt; pathSumUR &amp;&amp; pathSumR &gt; pathSumDR &amp;&amp; valiDR2d
+                    &amp;&amp; pathSumDR != pathSumR &amp;&amp; pathSumR != pathSumUR) {
+                pathSum2 += pathSumR;
+                if (j + 1 &lt;= grid.get(0).size() - 1) {
+                    i2 = i;
+                    j2 += 1;
+                } else {
+                    i2 = i;
+                    j2 = 0;
+                }
+                score2 += grid.get(i).get(j);
+                moves2.add(0);
+
+
+
+            } else if (pathSumUR &gt; pathSumR &amp;&amp; pathSumUR &gt; pathSumDR &amp;&amp; validURd
+                    &amp;&amp; pathSumDR != pathSumUR &amp;&amp; pathSumDR != pathSumUR) {
+                pathSum2 += pathSumUR;
+                System.out.println(&quot;yes&quot;);
+                if (i - 1 &gt;= 0) {
+                    if (j + 1 &lt;= grid.get(0).size() - 1) {
+                        i2 -= 1;
+                        j2 += 1;
+                    } else {
+                        i2 -= 1;
+                        j2 = 0;
+                    }
+                } else {
+                    if (j + 1 &lt;= grid.get(0).size() - 1) {
+                        i2 = grid.size() - 1;
+                        j2 += 1;
+                    } else {
+                        i2 = grid.size() - 1;
+                        j2 = 0;
+                    }
+                }
+                score2 += grid.get(i).get(j);
+                moves2.add(1);
+
+
+
+            } else if (pathSumDR &gt; pathSumR &amp;&amp; pathSumDR &gt; pathSumUR &amp;&amp; validDRd
+                    &amp;&amp; pathSumDR != pathSumR &amp;&amp; pathSumDR != pathSumUR) {
+                pathSum2 += pathSumDR;
+                if (i + 1 &lt;= grid.size() - 1) {
+                    if (j + 1 &lt;= grid.get(0).size() - 1) {
+                        i2 += 1;
+                        j2 += 1;
+                    } else {
+                        i2 += 1;
+                        j2 = 0;
+                    }
+                } else {
+                    if (j + 1 &lt;= grid.get(0).size() - 1) {
+                        i2 = 0;
+                        j2 += 1;
+                    } else {
+                        i2 = 1;
+                        j2 = 0;
+                    }
+                }
+                score2 += grid.get(i).get(j);
+                moves2.add(-1);
+
+            } else if (pathSumR == pathSumUR) {
+                if ((grid.size() - 1) - iR2 &lt;= (grid.size() - 1) - iUR2 &amp;&amp; valiDR2d) {
+                    pathSum2 += pathSumR;
+                    i2 = i;
+                    j2 += 1;
+                    score2 += grid.get(i).get(j);
+                    moves2.add(0);
+                } else if ((grid.size() - 1) - iR2 &gt; (grid.size() - 1) - iUR2 &amp;&amp; validURd
+                        &amp;&amp; iUR2 != (grid.size() - 1) &amp;&amp; maxStepsURd != 1) {
+                    pathSum2 += pathSumUR;
+                    i2 -= 1;
+                    j2 += 1;
+                    score2 += grid.get(i).get(j);
+                    moves2.add(1);
+                }
+            } else if (pathSumR == pathSumDR) {
+                if ((grid.size() - 1) - iR2 &lt;= (grid.size() - 1) - iDR2 &amp;&amp; valiDR2d) {
+                    pathSum2 += pathSumR;
+                    i2 = i;
+                    j2 += 1;
+                    score2 += grid.get(i).get(j);
+                    moves2.add(0);
+                } else if ((grid.size() - 1) - iR2 &gt; (grid.size() - 1) - iDR2 &amp;&amp; validDRd) {
+                    pathSum2 += pathSumDR;
+                    i2 += 1;
+                    j2 += 1;
+                    score2 += grid.get(i).get(j);
+                    moves2.add(-1);
+                }
+            } else if (pathSumUR == pathSumDR) {
+                if ((grid.size() - 1) - iUR2 &lt;= (grid.size() - 1) - iDR2 &amp;&amp; validURd
+                        &amp;&amp; iUR2 != (grid.size() - 1) &amp;&amp; maxStepsURd != 1) {
+                    pathSum2 += pathSumUR;
+                    i2 -= 1;
+                    j2 += 1;
+                    score2 += grid.get(i).get(j);
+                    moves2.add(1);
+                } else if ((grid.size() - 1) - iUR2 &gt; (grid.size() - 1) - iDR2 &amp;&amp; validDRd) {
+                    pathSum2 += pathSumDR;
+                    i2 += 1;
+                    j2 += 1;
+                    score2 += grid.get(i).get(j);
+                    moves2.add(-1);
+                }
+            }
+
+            
+
+            if (jR2 == jStart2 - 1 &amp;&amp; i2 == grid.size() - 1) {
+                if (pathSumR &gt; pathSumDR &amp;&amp; valiDR2d) {
+                    pathSum2 += pathSumR;
+                    if (j + 1 &lt;= grid.get(0).size() - 1) {
+                        i2 = i;
+                        j2 += 1;
+                    } else {
+                        i2 = i;
+                        j2 = 0;
+                    }
+                    score2 += grid.get(i).get(j);
+                    moves2.add(0);
+                } else if (pathSumR &lt; pathSumDR &amp;&amp; validDRd) {
+                    pathSum2 += pathSumDR;
+                    if (i + 1 &lt;= grid.size() - 1) {
+                        if (j + 1 &lt;= grid.get(0).size() - 1) {
+                            i2 += 1;
+                            j2 += 1;
+                        } else {
+                            i2 += 1;
+                            j2 = 0;
+                        }
+                    } else {
+                        if (j + 1 &lt;= grid.get(0).size() - 1) {
+                            i2 = 0;
+                            j2 += 1;
+                        } else {
+                            i2 = 1;
+                            j2 = 0;
+                        }
+                    }
+                    score2 += grid.get(i).get(j);
+                    moves2.add(-1);
+                }
+            } else if (jR2 == jStart2 - 1 &amp;&amp; i2 == 0) {
+                if (pathSumR &gt; pathSumUR &amp;&amp; valiDR2u) {
+                    pathSum2 += pathSumR;
+                    if (j + 1 &lt;= grid.get(0).size() - 1) {
+                        i2 = i;
+                        j2 += 1;
+                    } else {
+                        i2 = i;
+                        j2 = 0;
+                    }
+                    score2 += grid.get(i).get(j);
+                    moves2.add(0);
+                } else if (pathSumR &lt; pathSumUR &amp;&amp; validURu) {
+                    pathSum2 += pathSumUR;
+                    if (i - 1 &gt;= 0) {
+                        if (j + 1 &lt;= grid.get(0).size() - 1) {
+                            i2 -= 1;
+                            j2 += 1;
+                        } else {
+                            i2 -= 1;
+                            j2 = 0;
+                        }
+                    } else {
+                        if (j + 1 &lt;= grid.get(0).size() - 1) {
+                            i2 = grid.size() - 1;
+                            j2 += 1;
+                        } else {
+                            i2 = grid.size() - 1;
+                            j2 = 0;
+                        }
+                    }
+                    score2 += grid.get(i).get(j);
+                    moves2.add(1);
+                }
+            }
+
+
+
+            else if (pathSumR &gt; pathSumUR &amp;&amp; pathSumR &gt; pathSumDR &amp;&amp; valiDR2u
+                    &amp;&amp; pathSumDR != pathSumR &amp;&amp; pathSumR != pathSumUR) {
+                pathSum2 += pathSumR;
+                if (j + 1 &lt;= grid.get(0).size() - 1) {
+                    i2 = i;
+                    j2 += 1;
+                } else {
+                    i2 = i;
+                    j2 = 0;
+                }
+                score2 += grid.get(i).get(j);
+                moves2.add(0);
+
+
+
+            } else if (pathSumUR &gt; pathSumR &amp;&amp; pathSumUR &gt; pathSumDR &amp;&amp; validURu
+                    &amp;&amp; pathSumDR != pathSumUR &amp;&amp; pathSumDR != pathSumUR) {
+                pathSum2 += pathSumUR;
+                if (i - 1 &gt;= 0) {
+                    if (j + 1 &lt;= grid.get(0).size() - 1) {
+                        i2 -= 1;
+                        j2 += 1;
+                    } else {
+                        i2 -= 1;
+                        j2 = 0;
+                    }
+                } else {
+                    if (j + 1 &lt;= grid.get(0).size() - 1) {
+                        i2 = grid.size() - 1;
+                        j2 += 1;
+                    } else {
+                        i2 = grid.size() - 1;
+                        j2 = 0;
+                    }
+                }
+                score2 += grid.get(i).get(j);
+                moves2.add(1);
+
+
+
+            } else if (pathSumDR &gt; pathSumR &amp;&amp; pathSumDR &gt; pathSumUR &amp;&amp; validDRu
+                    &amp;&amp; pathSumDR != pathSumR &amp;&amp; pathSumDR != pathSumUR) {
+                pathSum2 += pathSumDR;
+                if (i + 1 &lt;= grid.size() - 1) {
+                    if (j + 1 &lt;= grid.get(0).size() - 1) {
+                        i2 += 1;
+                        j2 += 1;
+                    } else {
+                        i2 += 1;
+                        j2 = 0;
+                    }
+                } else {
+                    if (j + 1 &lt;= grid.get(0).size() - 1) {
+                        i2 = 0;
+                        j2 += 1;
+                    } else {
+                        i2 = 1;
+                        j2 = 0;
+                    }
+                }
+                score2 += grid.get(i).get(j);
+                moves2.add(-1);
+
+            } else if (pathSumR == pathSumUR) {
+                if ((grid.size() - 1) - iR2 &lt;= (grid.size() - 1) - iUR2 &amp;&amp; valiDR2u) {
+                    pathSum2 += pathSumR;
+                    i2 = i;
+                    j2 += 1;
+                    score2 += grid.get(i).get(j);
+                    moves2.add(0);
+                } else if ((grid.size() - 1) - iR2 &gt; (grid.size() - 1) - iUR2 &amp;&amp; validURu
+                        &amp;&amp; iUR2 != (grid.size() - 1) &amp;&amp; maxStepsURu != 1) {
+                    pathSum2 += pathSumUR;
+                    i2 -= 1;
+                    j2 += 1;
+                    score2 += grid.get(i).get(j);
+                    moves2.add(1);
+                }
+            } else if (pathSumR == pathSumDR) {
+                if ((grid.size() - 1) - iR2 &lt;= (grid.size() - 1) - iDR2 &amp;&amp; valiDR2u) {
+                    pathSum2 += pathSumR;
+                    i2 = i;
+                    j2 += 1;
+                    score2 += grid.get(i).get(j);
+                    moves2.add(0);
+                } else if ((grid.size() - 1) - iR2 &gt; (grid.size() - 1) - iDR2 &amp;&amp; validDRu) {
+                    pathSum2 += pathSumDR;
+                    i2 += 1;
+                    j2 += 1;
+                    score2 += grid.get(i).get(j);
+                    moves2.add(-1);
+                }
+            } else if (pathSumUR == pathSumDR) {
+                if ((grid.size() - 1) - iUR2 &lt;= (grid.size() - 1) - iDR2 &amp;&amp; validURu
+                        &amp;&amp; iUR2 != (grid.size() - 1) &amp;&amp; maxStepsURu != 1) {
+                    pathSum2 += pathSumUR;
+                    i2 -= 1;
+                    j2 += 1;
+                    score2 += grid.get(i).get(j);
+                    moves2.add(1);
+                } else if ((grid.size() - 1) - iUR2 &gt; (grid.size() - 1) - iDR2 &amp;&amp; validDRu) {
+                    pathSum2 += pathSumDR;
+                    i2 += 1;
+                    j2 += 1;
+                    score2 += grid.get(i).get(j);
+                    moves2.add(-1);
+                }
+            }
+
+            
+
+            if(jStart2 == 0){
+                if(i == grid.size()-2 &amp;&amp; j-1 == grid.get(0).size()-2){
+                    moves2.remove(moves2.size()-1);
+                    moves2.add(-1);
+                } else if(i == grid.size()-1 &amp;&amp; j-1 == grid.get(0).size()-2){
+                    if(grid.get(grid.size()-1).get(j) &gt; grid.get(0).get(j)){
+                        moves2.remove(moves2.size()-1);
+                        moves2.add(0);
+                    } else {
+                        moves2.remove(moves2.size()-1);
+                        moves2.add(-1);
+                    }
+                } else if(i == 1 &amp;&amp; j-1 == grid.get(0).size()-2){
+                    moves2.remove(moves2.size()-1);
+                    moves2.add(1);
+                } else if(i == 0 &amp;&amp; j-1 == grid.get(0).size()-2){
+                    if(grid.get(0).get(j) &gt; grid.get(grid.size()-1).get(j)){
+                        moves2.remove(moves2.size()-1);
+                        moves2.add(0);
+                    } else {
+                        moves2.remove(moves2.size()-1);
+                        moves2.add(1);
+                    }
+                }
+            } else {
+                if(i == grid.size()-2 &amp;&amp; j-1 == jStart2-2){
+                    moves2.remove(moves2.size()-1);
+                    moves2.add(-1);
+                } else if(i == grid.size()-1 &amp;&amp; j-1 == jStart2-2){
+                    if(grid.get(grid.size()-1).get(j) &gt; grid.get(0).get(j)){
+                        moves2.remove(moves2.size()-1);
+                        moves2.add(0);
+                    } else {
+                        moves2.remove(moves2.size()-1);
+                        moves2.add(-1);
+                    }
+                } else if(i == 1 &amp;&amp; j-1 == jStart2-2){
+                    moves2.remove(moves2.size()-1);
+                    moves2.add(1);
+                } else if(i == 0 &amp;&amp; j-1 == jStart2-2){
+                    if(grid.get(0).get(j) &gt; grid.get(grid.size()-1).get(j)){
+                        moves2.remove(moves2.size()-1);
+                        moves2.add(0);
+                    } else {
+                        moves2.remove(moves2.size()-1);
+                        moves2.add(1);
+                    }
+                }
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            System.out.println(&quot;Total Score: &quot; + score2);
+            System.out.println(&quot;Sol: &quot; + moves2);
+            System.out.println(&quot;i: &quot; + i);
+            System.out.println(&quot;j: &quot; + j);
+            jCount2 += 1;
+            System.out.println(&quot;moves2: &quot; + jCount2);
+            System.out.println(&quot;---------&quot;);
+
+
+
+
+
+
+
+
+        }
+
+        if(score1 &gt; score2){
+            return moves;
+        } else {
+            return moves2;
+        }
+
+        
+    }
+}
+</PRE>
+
+</BODY>
+</HTML>

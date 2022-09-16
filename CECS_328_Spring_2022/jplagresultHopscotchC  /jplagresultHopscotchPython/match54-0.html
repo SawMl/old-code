@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>382287003</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+def solve(grid):
+    steps = []
+    stepsIndex = 0
+    maxSum = 0
+    rowSize = len(grid)
+    columnSize = len(grid[0])
+    maxMoves = columnSize - 1
+    while stepsIndex &lt; 2:
+        for l in range(columnSize):
+            tempSteps = []
+            j = l
+            tempSum = 0
+            # starts from top
+            if stepsIndex == 0:
+                tempSteps.append(1)
+                tempSteps.append(j)
+                i = rowSize
+            # starts from bottom
+            else:
+                tempSteps.append(0)
+                tempSteps.append(j)
+                i = rowSize - 1
+
+            tempSum += grid[i % rowSize][j % columnSize]
+            for moves in range(maxMoves):
+                # 0 = right
+                if grid[(rowSize + i) % rowSize][(j + 1) % columnSize] &gt;= grid[(rowSize + i + 1) % rowSize][
+                    (j + 1) % columnSize] and grid[(rowSize + i) % rowSize][(j + 1) % columnSize] &gt;= \
+                        grid[(rowSize + i + -1) % rowSize][(j + 1) % columnSize]:
+                    j += 1
+<A NAME="0"></A>                    tempSteps.append(0)
+                # -1 = right down
+                elif grid[(rowSize + i + 1) % rowSize][(j + 1) % columnSize] &gt;= grid[(rowSize + i) % rowSize][
+                    (j + 1) % columnSize] and grid<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match54-1.html#0',3,'match54-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>[(rowSize + i + 1) % rowSize][(j + 1) % columnSize] &gt;= \
+                        grid[(rowSize + i + -1) % rowSize][(j + 1) % columnSize]:
+                    i += 1
+                    j += 1
+                    tempSteps.append(-1)
+                # 1 = right up
+                elif grid[(rowSize + i - 1) % rowSize][(j + 1) % columnSize] &gt;= grid[(rowSize + i) % rowSize][</B></FONT>
+                    (j + 1) % columnSize] and grid[(rowSize + i + -1) % rowSize][(j + 1) % columnSize] &gt;= \
+                        grid[(rowSize + i + 1) % rowSize][(j + 1) % columnSize]:
+                    i -= 1
+                    j += 1
+                    tempSteps.append(1)
+
+                tempSum += grid[i % rowSize][j % columnSize]
+            # check if it ends up at top or bottom row
+            if i % rowSize == 0 or i % rowSize == rowSize - 1:
+                if tempSum &gt; maxSum:
+                    maxSum = tempSum
+                    steps = tempSteps
+
+        stepsIndex += 1
+
+    print(&quot;Total Score:&quot;, maxSum)
+    print(steps)
+    return steps
+
+
+# grid = [
+#     [3, 4, 1, 2, 8, 6],
+#     [6, 1, 8, 2, 7, 4],
+#     [5, 4, 3, 9, 9, 5],
+#     [5, 9, 8, 3, 2, 6],
+#     [8, 7, 2, 9, 6, 4]
+# ]
+#
+# solve(grid)
+</PRE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,189 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>814365534</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+import random  # imports random
+
+
+def max_b(tf, bulbs):  # finds the maximum number and creates a key for each positive bulb
+    max_bulb = 0  # max wire set number
+    for j in bulbs:  # runs through each row in bulbs
+        for k in j:
+            if abs(k) &gt; max_bulb:
+                max_bulb = abs(k)
+    for i in range(max_bulb):  # creates a key for each bulb value and create a value in the form of an array
+        tf[i+1] = []
+    return tf
+
+
+def tfi(tf, bulbs):  # checks through each bulb and checks if it is pos or neg and append true or false for each key
+    for rows in bulbs:  # runs through each row in bulbs
+        for bulb in rows:  # runs through each bulb in rows
+            if bulb &gt; 0:  # if the bulb is negative append false into that key
+                if True not in tf[bulb]:  # if True is already in that key then move on
+                    tf[bulb].append(True)
+            elif bulb &lt; 0:  # if the bulb is negative append false into that key
+                key = abs(bulb)
+                if False not in tf[key]:   # if False is already in that key then move on
+                    tf[key].append(False)
+    return tf
+
+
+def row_check(bulbs, tf, check):  # checks each row if there is a light bulb lit up and append 1 else append 0
+    check.clear()  # clears the check array for a new clean check
+    check = [0 for i in range(1, len(bulbs) + 1)]  # fills up check with zeroes to start
+    for i in range(len(bulbs)):  # runs through each row in bulbs
+        count = 0  # counts how many times a light bulb is lit up in that row
+        num = 0  # used to check if all three light bulbs in each row are checked
+
+        for j in range(len(bulbs[i])):  # runs through each bulb in the rows
+            if len(tf[abs(bulbs[i][j])]) == 1:  # if the bulb key has one value in tf then the wire currently has a defined value
+                if bulbs[i][j] &gt; 0 and check[i] == 0 and tf[abs(bulbs[i][j])][0] is True:  # checks if the bulb is pos, if the row is lit up, and if the wire value is true
+                    count += 1  # increment count because the bulb is lit up
+                    num += 1
+                elif bulbs[i][j] &lt; 0 and check[i] == 0 and tf[abs(bulbs[i][j])][0] is False:  # checks if the bulb is neg, if the row is lit up, and if the wire value is false
+                    count += 1  # increment count because the bulb is lit up
+                    num += 1
+                else:
+                    num += 1
+            elif len(tf[abs(bulbs[i][j])]) == 2:  # if the bulb key has two value in tf then the wire currently does not have a defined value to light up the bulb
+                num += 1
+            if num == 3 and count &gt; 0:  # when all three bulbs in that row is checked and if there is at least one bulb that is lit up in that row, set the row as 1
+                check[i] = 1
+                break  # break and move on to check the next row
+            elif num == 3 and count == 0:  # when all three bulbs in that row is checked and none of the bulbs are lit up then break and keep the row set at 0
+                break
+    recheck(bulbs, tf, check)  # calls recheck to check the rows that arent lit up and change the values for those wire sets in those rows
+    return check
+
+
+def recheck(bulbs, tf, check):  # checks each &quot;row&quot; in array check and sees which rows need to be lit up and changes the values of some of the bulbs to make them light up
+    lines_off = []  # array of rows without a bulb turned on
+
+    for row in range(len(check)):  # runs through each checked &quot;row&quot; in check array
+        if check[row] == 0:  # if the value for that row is 0 than the row is off and append the row into lines_off
+            lines_off.append(bulbs[row])
+    loop = 0  # used to check if every bulb in that row can't turn on because of the current values in tf
+    if len(lines_off) &gt; 0:  # if there are rows not on then it will run through here, else each row is on and each wire set has a value
+        for i in lines_off[0]:  # runs through each bulb in the first row in lines_off
+            if len(tf[abs(i)]) == 1:  # if the value for the bulb key is determined then increment loop and move on to check the next bulb key
+                loop += 1
+                continue
+            elif len(tf[abs(i)]) == 2:  # if the value for the bulb key is 2 then the value for the wire set is undefined and can be set
+                if i &gt; 0:  # if it is greater than 0 and then clear and append true to that wire set
+                    tf[i].clear()
+                    tf[i].append(True)
+                elif i &lt; 0:  # if it is less than 0 and then clear and append false to that wire set
+                    tf[abs(i)].clear()
+                    tf[abs(i)].append(False)
+        if loop == 3:  # if loop is equal to three than neither bulb in that row can be turned on from the current values in tf
+            counter0 = 0  # how many times element at index 0 in that row (pos or neg) appear in bulbs
+            counter1 = 0  # how many times element at index 1 in that row (pos or neg) appear in bulbs
+            counter2 = 0  # how many times element at index 2 in that row (pos or neg) appear in bulbs
+            for rows in bulbs:  # runs through each row in bulbs
+<A NAME="0"></A>                if lines_off[0][0] &gt; 0 or lines_off[0][1] &gt; 0 or lines_off[0][2] &gt; 0:  # if the bulb &gt; 0 then gets the count of that bulb number and its negative
+                    counter0 = counter0 + rows.count(lines_off[0][0]) + rows.count(-1 * lines_off[0][0])
+                    counter1 = counter1 + rows.count(lines_off[0][1]) + rows.count(-1 * lines_off[0][1])
+                    counter2 = counter2 + rows.count(lines_off<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match183-0.html#0',2,'match183-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>[0][2]) + rows.count(-1 * lines_off[0][2])
+                elif lines_off[0][0] &lt; 0 or lines_off[0][1] &lt; 0 or lines_off[0][</B></FONT>2] &lt; 0:   # if the bulb &lt; 0 then gets the count of that bulb number and its positive
+                    counter0 = counter0 + rows.count(lines_off[0][0]) + rows.count(abs(lines_off[0][0]))
+                    counter1 = counter1 + rows.count(lines_off[0][1]) + rows.count(abs(lines_off[0][1]))
+                    counter2 = counter2 + rows.count(lines_off[0][2]) + rows.count(abs(lines_off[0][2]))
+            if counter0 &lt; counter1 and counter0 &lt; counter2:  # everything below up to the row_check call, checks the count of each bulb key in that off row
+                if lines_off[0][0] &gt; 0:                      # then clears and appends true or false depending if the respective bulb is pos or neg
+                    tf[lines_off[0][0]].clear()
+                    tf[lines_off[0][0]].append(True)
+                elif lines_off[0][0] &lt; 0:
+                    tf[abs(lines_off[0][0])].clear()
+                    tf[abs(lines_off[0][0])].append(False)
+            elif counter1 &lt; counter0 and counter1 &lt; counter2:
+                if lines_off[0][1] &gt; 0:
+                    tf[lines_off[0][1]].clear()
+                    tf[lines_off[0][1]].append(True)
+                elif lines_off[0][1] &lt; 0:
+                    tf[abs(lines_off[0][1])].clear()
+                    tf[abs(lines_off[0][1])].append(False)
+            elif counter2 &lt; counter0 and counter2 &lt; counter1:
+                if lines_off[0][2] &gt; 0:
+                    tf[lines_off[0][2]].clear()
+                    tf[lines_off[0][2]].append(True)
+                elif lines_off[0][2] &lt; 0:
+                    tf[abs(lines_off[0][2])].clear()
+                    tf[abs(lines_off[0][2])].append(False)
+            elif counter0 == counter1:
+                choose = [0, 1]  # allows random to choose only between these two indexes in the first lines_off row
+                ran = random.choice(choose)  # chooses random number in array choose
+                if lines_off[0][ran] &gt; 0:
+                    tf[lines_off[0][ran]].clear()
+                    tf[lines_off[0][ran]].append(True)
+                elif lines_off[0][ran] &lt; 0:
+                    tf[abs(lines_off[0][ran])].clear()
+                    tf[abs(lines_off[0][ran])].append(False)
+            elif counter1 == counter2:
+                choose = [1, 2]  # allows random to choose only between these two indexes in the first lines_off row
+                ran = random.choice(choose)  # chooses random number in array choose
+                if lines_off[0][ran] &gt; 0:
+                    tf[lines_off[0][ran]].clear()
+                    tf[lines_off[0][ran]].append(True)
+                elif lines_off[0][ran] &lt; 0:
+                    tf[abs(lines_off[0][ran])].clear()
+                    tf[abs(lines_off[0][ran])].append(False)
+            elif counter0 == counter2:
+                choose = [0, 2]  # allows random to choose only between these two indexes in the first lines_off row
+                ran = random.choice(choose)  # chooses random number in array choose
+                if lines_off[0][ran] &gt; 0:
+                    tf[lines_off[0][ran]].clear()
+                    tf[lines_off[0][ran]].append(True)
+                elif lines_off[0][ran] &lt; 0:
+                    tf[abs(lines_off[0][ran])].clear()
+                    tf[abs(lines_off[0][ran])].append(False)
+            elif counter0 == counter1 and counter1 == counter2:
+                choose = [0, 1, 2]  # allows random to choose only between these three indexes in the first lines_off row
+                ran = random.choice(choose)  # chooses random number in array choose
+                if lines_off[0][ran] &gt; 0:
+                    tf[lines_off[0][ran]].clear()
+                    tf[lines_off[0][ran]].append(True)
+                elif lines_off[0][ran] &lt; 0:
+                    tf[abs(lines_off[0][ran])].clear()
+                    tf[abs(lines_off[0][ran])].append(False)
+        row_check(bulbs, tf, check)  # calls row_check with the new tf dictionary with changed or added values for some of the keys
+    else:  # if all &quot;rows&quot; in checks has the value of 1 then return the tf dictionary with the defined values that makes all the rows light up
+        return tf
+
+
+def solve(bulbs):
+    tf = {}  # a dictionary that holds a key (wire set/bulb key) and True/False values for each key. (if length of values for it's key is 1 then wire set has a defined value)
+    tf = max_b(tf, bulbs)  # calls max_bulb (check comments at the function for description)
+    tf = tfi(tf, bulbs)  # calls tfi (check comments at the function for description)
+    final = []  # final array that will hold the final values from each key(wire set) in the tf dictionary
+    check = [0 for i in range(1, len(bulbs) + 1)]  # initial array creation for check and appends 0 for each row
+    check = row_check(bulbs, tf, check)  # calls row_check (check comments at the function for description)
+    tf = recheck(bulbs, tf, check)  # calls recheck to get the final tf dictionary with set values for each wire set (check comments at the function for description)
+
+    for key in tf:  # runs through each key/wire set in the tf dictionary
+        if len(tf[key]) == 0:  # length of values for the key is 0, the wire set is not used and the values does not matter, so append false to final array
+            final.append(False)
+        elif len(tf[key]) == 1:  # length of values for the key is 1, the wire set has a final defined value of True or False, so append that value to final array
+            final.append(tf[key][0])
+        else:  # length of values for the key is 2, the wire set/bulb is not used to light up a row, so the value does not matter, therefore append first value to final array
+            final.append(tf[key][0])
+    return final  # returns the final array of wire set values!
+</PRE>
+
+</BODY>
+</HTML>

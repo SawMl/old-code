@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>554639663</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+import numpy as np
+def solve(grid, r):
+    a=np.array(grid)
+    print(a)
+    print(r)
+    rows = len(a)
+    print(rows)
+    columns = len(a[0])
+    print(columns)
+    a4 = np.roll(a,-r,axis=1)
+    print(a4)
+    reach_matrix_a = np.zeros((rows,columns))
+    for i in range(rows):
+        for j in range(columns):
+            if (j &gt;= i or j &gt;= (rows - 1 - i)):
+                reach_matrix_a[i][j] = 1
+    print(reach_matrix_a)
+    reach_matrix_b = np.zeros((rows,columns))
+    for i1 in range(rows):
+        for j1 in range(columns):
+            if (j1 &lt;= columns - 1 - i1 or j1 &lt;= columns - 1 - (rows -1 - i1)):
+                reach_matrix_b[i1][j1] = 1
+    print(reach_matrix_b)
+    reach_matrix_sum = reach_matrix_a + reach_matrix_b
+    print(reach_matrix_sum)
+    reach_matrix = np.zeros((rows, columns))
+    for i2 in range(rows):
+        for j2 in range(columns):
+            if (reach_matrix_sum[i2][j2] &gt;= 2):
+                reach_matrix[i2][j2] = 1
+    print(reach_matrix)
+    score_matrix = np.zeros((rows, columns))
+    score_sel= np.zeros(columns)
+    for j3 in range(columns):
+<A NAME="0"></A>        if (j3 == 0):
+            for i3 in range(rows):
+                if (i3 == 0):
+                    score_matrix<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match146-0.html#0',2,'match146-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>[i3][j3] = a4[i3][j3]
+                elif (i3 == rows-1):
+                    score_matrix[i3][j3] = a4[i3][j3]
+                else:
+                    score_matrix[i3][</B></FONT>j3] = 0
+        else:
+            max_score_temp=0
+            max_score_pre_select=0
+            for i3 in range(rows):
+                if (i3+1 &lt;= rows-1):
+                    i3plus = i3+1
+                else:
+                    i3plus =0
+                if (i3 == 0):
+                    i3minus = rows-1
+                else:
+                    i3minus=i3-1
+                max_score_temp = max(score_matrix[i3][j3-1], score_matrix[i3plus][j3-1], score_matrix[i3minus][j3-1])
+                if (max_score_temp == score_matrix[i3][j3-1]):
+                    max_score_pre_select = i3
+                elif (max_score_temp == score_matrix[i3plus][j3-1]):
+                    max_score_pre_select = i3plus
+                else:
+                    max_score_pre_select = i3minus
+                score_matrix[i3][j3] = (a4[i3][j3] + max_score_temp)*reach_matrix[i3][j3]
+                score_sel[j3]= max_score_pre_select
+    print(score_matrix)
+    print(score_sel)
+    max_score = max(score_matrix[0][columns-1], score_matrix[rows-1][columns-1])
+    max_position = np.argmax(score_matrix, axis=0)
+    print(max_position)
+    position_exit = max_position[columns-1]
+    if (score_sel[1] == 0):
+        position_enter = 1
+    else:
+        position_enter = 0
+    move = np.zeros(columns-1)
+    for j4 in range(columns-1):
+        if (j4 == columns-2):
+            if (score_sel[columns-1] == position_exit):
+                move[j4] = 0
+            elif (score_sel[columns-1] &lt; position_exit or (score_sel[columns-1]==0 and position_exit == rows-1)):
+                move[j4]= -1
+            else:
+                move[j4]=1
+        elif (score_sel[j4+2] == score_sel[j4+1]):
+            move[j4] = 0
+        elif (score_sel[j4+1] == 0 and score_sel[j4+2] == rows-1):
+            move[j4] = 1
+        elif (score_sel[j4+1] == rows-1 and score_sel[j4+2] == 0):
+            move[j4] = -1
+        elif (score_sel[j4+1] &lt; score_sel[j4+2]):
+            move[j4] = -1
+        else:
+            move[j4]= 1
+
+
+    return max_score, position_enter, r, move
+
+
+grid_in = [[3,4,1,2,8,6],
+           [6,1,8,2,7,4],
+           [5,4,3,9,9,5],
+           [5,9,8,3,2,6],
+           [8,7,2,9,6,4]]
+
+x = solve(grid_in, 4)
+print(x)
+</PRE>
+
+</BODY>
+</HTML>

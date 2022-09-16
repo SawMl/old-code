@@ -1,0 +1,235 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>520554018</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>StudentSolver.cpp</CENTER></H3><HR>
+<PRE>
+#include &lt;iostream&gt;
+
+
+
+#include &quot;StudentSolver.h&quot;
+
+vector&lt;int&gt; StudentSolver::solve(vector&lt;vector&lt;int&gt;&gt; grid) {
+    vector&lt;int&gt; opt_path;
+    int current_max = 0;
+    vector&lt;vector&lt;int&gt;&gt; starting_pos;
+    for (int i = 0; i &lt; 2; i++) {
+        for (int j = 0; j &lt; (int)grid[0].size(); j++) {
+            vector&lt;int&gt; pos;
+            pos.push_back(i);
+            pos.push_back(j);
+            starting_pos.push_back(pos);
+        }
+    }
+
+    for (vector&lt;int&gt; pos : starting_pos) {
+        int current_score = 0;
+        int steps = 1;
+        vector&lt;int&gt; path;
+        if (pos[0] == 0) {
+            path.push_back(1);
+        }
+        else {
+            path.push_back(0);
+            pos[0] = grid.size() - 1;
+        }
+        path.push_back(pos[1]);
+        for (int i = 0; i &lt; (int)grid[0].size() - 1; i++) {
+            path.push_back(0);
+<A NAME="1"></A>        }
+        tuple&lt;int, vector&lt;int&gt;&gt; current_path = traverse(grid, pos, steps, current_score, path);
+        if (get&lt;0&gt;(current_path) &gt; current_max) {
+<FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match64-0.html#1',2,'match64-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>            current_max = get&lt;0&gt;(current_path);
+            opt_path = get&lt;1&gt;(current_path);
+        }
+    }
+    return opt_path;
+}
+
+
+vector&lt;int&gt; StudentSolver::goUp(vector&lt;vector&lt;int&gt;&gt; grid, vector&lt;int&gt; position) {
+    int row = position[0];
+    int col = position[1];
+    
+    int next_row = row - 1;</B></FONT>
+    if (next_row == -1) {
+        next_row = (int)grid.size() - 1;
+    }
+    
+    int next_col = col + 1;
+<A NAME="2"></A>    if (next_col == (int)grid[0].size()) {
+        next_col = 0;
+    }
+<FONT color="#77bfc7"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match64-0.html#2',2,'match64-top.html#2',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>    vector&lt;int&gt; new_position = { next_row, next_col };
+    return new_position;
+}
+
+
+vector&lt;int&gt; StudentSolver::goRight(vector&lt;vector&lt;int&gt;&gt; grid, vector&lt;int&gt; position) {
+    int row = position[0];
+    int col = position[1];
+    int next_col = col + 1;
+    
+<A NAME="3"></A>    if (next_col == (int)grid[0].size()) {</B></FONT>
+        next_col = 0;
+    }
+<FONT color="#6cc417"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match64-0.html#3',2,'match64-top.html#3',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>    vector&lt;int&gt; new_position = { row, next_col };
+    return new_position;
+}
+
+
+vector&lt;int&gt; StudentSolver::goDown(vector&lt;vector&lt;int&gt;&gt; grid, vector&lt;int&gt; position) {
+    int row = position[0];
+    int col = position[1];
+    int next_row = row + 1;</B></FONT>
+    
+    if (next_row == (int)grid.size()) {
+        next_row = 0;
+    }
+    position[0] = next_row;
+    
+    vector&lt;int&gt; new_position = StudentSolver::goRight(grid, position);
+    return new_position;
+}
+<A NAME="0"></A>
+
+bool StudentSolver::checkEnd(vector&lt;vector&lt;int&gt;&gt; grid, vector&lt;int&gt; position) {
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match64-0.html#0',2,'match64-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>    return (position[0] == 0 || position[0] == grid.size() - 1);
+}
+
+/*using recursion to see all possible path routes
+  will take the value of position you land on and add it to a score at the end of the round
+  will compare all scores from each path
+  will return score, path, and positon from the path with the highest score*/
+tuple&lt;int, vector&lt;int&gt;&gt; StudentSolver::traverse(vector&lt;vector&lt;int&gt;&gt; grid, vector&lt;int&gt; pos, int steps, int score, vector&lt;int&gt; path) {
+    int s = score + grid[pos[0]][pos[1]];</B></FONT>
+
+    if (steps == grid[0].size()) {
+        if (StudentSolver::checkEnd(grid, pos))
+            return make_tuple(s, path);
+        else
+            return make_tuple(-1, path);
+    }
+    else {
+        vector&lt;int&gt; scores;
+
+        vector&lt;int&gt; p = StudentSolver::goRight(grid, pos);
+        path[steps + 1] = 0;
+        tuple&lt;int, vector&lt;int&gt;&gt; right_path = traverse(grid, p, steps + 1, s, path);
+        int right_score = get&lt;0&gt;(right_path);
+        scores.push_back(right_score);
+
+        p = StudentSolver::goUp(grid, pos);
+        path[steps + 1] = 1;
+        tuple&lt;int, vector&lt;int&gt;&gt; up_path = traverse(grid, p, steps + 1, s, path);
+        int up_score = get&lt;0&gt;(up_path);
+        scores.push_back(up_score);
+
+        p = StudentSolver::goDown(grid, pos);
+        path[steps + 1] = -1;
+        tuple&lt;int, vector&lt;int&gt;&gt; down_path = traverse(grid, p, steps + 1, s, path);
+        int down_score = get&lt;0&gt;(down_path);
+        scores.push_back(down_score);
+
+        int max_index = max_element(scores.begin(), scores.end()) - scores.begin();
+        if (max_index == 0) {
+            return right_path;
+        }
+        else if (max_index == 1) {
+            return up_path;
+        }
+        else {
+            return down_path;
+        }
+    }
+}
+
+/*
+int StudentSolver::getScore(vector&lt;vector&lt;int&gt;&gt; grid, vector&lt;int&gt; path) {
+    int starting_row = path[0];
+    int starting_col = path[1];
+    vector&lt;int&gt; pos;
+
+    if (starting_row == 1)
+        pos = { 0, starting_col };
+    else
+        pos = { (int)grid.size() - 1, starting_col };
+
+    int score = 0;
+    score += grid[pos[0]][pos[1]];
+
+    int path_index = 2;
+    for (int i = 0; i &lt; (int)grid[0].size() - 1; i++) {
+        int direction = path[path_index];
+        if (direction == 0) {
+            pos = StudentSolver::goRight(grid, pos);
+        }
+        else if (direction == 1) {
+            pos = StudentSolver::goUp(grid, pos);
+        }
+        else {
+            pos = StudentSolver::goDown(grid, pos);
+        }
+        score += grid[pos[0]][pos[1]];
+        path_index++;
+    }
+    return score;
+}
+
+int main(int argc, char* argv[])
+{
+    vector&lt;vector&lt;int&gt;&gt; hopscotch;
+    vector&lt;int&gt; row;
+
+    fstream inputfile;
+    inputfile.open(argv[1], ios::in);
+    while (inputfile.is_open()) {
+        string r;
+        while (getline(inputfile, r)) {
+            stringstream text_stream(r);
+            string item;
+            while (getline(text_stream, item, ',')) {
+                row.push_back(stoi(item));
+            }
+            hopscotch.push_back(row);
+            row.clear();
+        }
+        inputfile.close();
+    }
+
+    for (vector&lt;int&gt; r : hopscotch) {
+        for (int num : r) {
+            cout &lt;&lt; num &lt;&lt; &quot; &quot;;
+        }
+        cout &lt;&lt; endl;
+    }
+
+    vector&lt;int&gt; optimal_path = StudentSolver::solve(hopscotch);
+    cout &lt;&lt; endl;
+    cout &lt;&lt; &quot;Optimal path: &quot;;
+    for (int direction : optimal_path) {
+        cout &lt;&lt; direction &lt;&lt; &quot; &quot;;
+    }
+
+    cout &lt;&lt; &quot;Score: &quot; &lt;&lt; StudentSolver::getScore(hopscotch, optimal_path);
+    cout &lt;&lt; &quot; Path length: &quot; &lt;&lt; optimal_path.size();
+
+    return 0;
+} */
+</PRE>
+</BODY>
+</HTML>

@@ -1,0 +1,301 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>739539474</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+
+public class StudentSolver {
+    public static ArrayList&lt;Integer&gt; solve (ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid){
+        
+
+
+
+        
+        ArrayList&lt;Integer&gt; winningPathForPlayer = new ArrayList&lt;&gt;();
+
+        
+        int numberOfRows = grid.size();
+        int numberOfColumns = grid.get(grid.size() - 1).size();
+
+
+        
+        if (numberOfRows == 1) {
+            winningPathForPlayer.add(1);
+            winningPathForPlayer.add(0);
+            for (int i = 0; i &lt; numberOfColumns - 1; i++){
+                winningPathForPlayer.add(0);
+            }
+            return winningPathForPlayer;
+        }
+
+        
+        if (numberOfColumns == 1){
+            winningPathForPlayer.add(1);
+            return winningPathForPlayer;
+        }
+
+        /**Task A: For top*/
+        
+        ArrayList&lt;Integer&gt; topRowOfGrid = new ArrayList&lt;&gt;();
+        for (int i = 0; i &lt; numberOfColumns; i++) {
+            topRowOfGrid.add(grid.get(0).get(i));
+        }
+        int maxValueFromTopRow = Collections.max(topRowOfGrid);
+        int indexOfMaxValue = topRowOfGrid.indexOf(maxValueFromTopRow);
+
+
+
+
+        
+
+        
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; rankingOfGrid = new ArrayList&lt;&gt;();
+
+        
+<A NAME="0"></A>        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; copyOfGridCols = new ArrayList&lt;&gt;();
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; copyOfSortGridCols = new ArrayList&lt;&gt;();
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; unarrangedRankingGridCols = new ArrayList&lt;&gt;();
+        for (<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match793-0.html#0',2,'match793-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>int i = 0; i &lt; numberOfColumns; i++) {
+            ArrayList&lt;Integer&gt; tempCols = new ArrayList&lt;&gt;();
+            ArrayList&lt;Integer&gt; copyOfTempCols = new ArrayList&lt;&gt;();
+
+            
+            for (int j = 0; j &lt; numberOfRows; j++) {
+                tempCols.add</B></FONT>(grid.get(j).get(i));
+                copyOfTempCols.add(grid.get(j).get(i));
+            }
+            Collections.sort(copyOfTempCols);
+            copyOfGridCols.add(tempCols);
+            copyOfSortGridCols.add(copyOfTempCols);
+
+
+        }
+
+        for (int i = 0; i &lt; copyOfGridCols.size(); i++) {
+            ArrayList&lt;Integer&gt; rowForRankedGrid = new ArrayList&lt;&gt;();
+            ArrayList&lt;Integer&gt; tempRow = copyOfGridCols.get(i);
+            for (int j = 0; j &lt; numberOfRows; j++) {
+                int currentIndexFromTempRow = tempRow.get(j);
+                int rankingNumber = 1;
+                ArrayList&lt;Integer&gt; checkedNum = new ArrayList&lt;&gt;();
+                for (int k = 0; k &lt; numberOfRows; k++) {
+                    
+                    if(currentIndexFromTempRow &lt; tempRow.get(k) &amp;&amp; !checkedNum.contains(tempRow.get(k))){
+                        rankingNumber++;
+                        checkedNum.add(tempRow.get(k));
+                    }
+                }
+                rowForRankedGrid.add(rankingNumber);
+            }
+            unarrangedRankingGridCols.add(rowForRankedGrid);
+        }
+        
+
+
+
+
+
+
+<A NAME="1"></A>        
+        for (int i = 0; i &lt; unarrangedRankingGridCols.get(0).size(); i++) {
+            ArrayList&lt;Integer&gt; tempRow = new ArrayList&lt;&gt;();
+            <FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match793-0.html#1',2,'match793-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>for (int j = 0; j &lt; unarrangedRankingGridCols.size(); j++) {
+                tempRow.add(unarrangedRankingGridCols.get(j).get(i));
+            }</B></FONT>
+            rankingOfGrid.add(tempRow);
+        }
+
+        
+
+        
+        ArrayList&lt;Integer&gt; topRowOfOriginalGrid = grid.get(0);
+        int startingIndex = topRowOfOriginalGrid.indexOf(Collections.max(topRowOfOriginalGrid));
+
+        winningPathForPlayer.add(1);
+        winningPathForPlayer.add(startingIndex);
+        
+
+        
+        int startingRow = 0;
+        int nextRowTop = startingRow - 1;
+        int nextRowMiddle = startingRow;
+        int nextRowBottom = startingRow + 1;
+
+        int startingCol = startingIndex;
+        int nextColPath = startingCol + 1;
+
+        boolean isMiddleAwayFromBottom = false;
+        boolean isMiddleAwayFromTop = false;
+
+        for (int i = 0; i &lt; numberOfColumns - 1; i++) {
+            ArrayList&lt;Integer&gt; listOfValidPaths = new ArrayList&lt;&gt;();
+            if (nextColPath &gt;= numberOfColumns){
+                nextColPath = 0;
+            }
+
+            if (nextRowTop &lt; 0){
+
+
+                nextRowTop = numberOfRows - 1;
+            }
+            if(nextRowMiddle &gt; numberOfRows - 1){
+
+                nextRowMiddle = 0;
+            }
+            if (nextRowBottom &gt; numberOfRows - 1){
+
+                nextRowBottom = 0;
+            }
+
+
+
+
+
+
+
+            int topPath = rankingOfGrid.get(nextRowTop).get(nextColPath);
+            int middlePath = rankingOfGrid.get(nextRowMiddle).get(nextColPath);
+            int bottomPath = rankingOfGrid.get(nextRowBottom).get(nextColPath);
+
+            listOfValidPaths.add(topPath);
+            listOfValidPaths.add(middlePath);
+            listOfValidPaths.add(bottomPath);
+
+
+
+
+
+
+
+
+
+
+
+
+            int minValueFromListOfValidPaths = Collections.min(listOfValidPaths);
+            int indexOfMinValue = listOfValidPaths.indexOf(minValueFromListOfValidPaths);
+
+
+
+
+
+            if ( (numberOfRows - nextRowMiddle) == 2 ){
+                isMiddleAwayFromBottom = true;
+
+            }
+
+            if ( nextRowMiddle == 1) {
+                isMiddleAwayFromTop = true;
+
+            }
+
+
+
+
+            if (isMiddleAwayFromBottom) {
+                if (middlePath == bottomPath || topPath == bottomPath) {
+                    indexOfMinValue = 2;
+                }
+                if ((i + 1) == (numberOfColumns - 1)) {
+                    indexOfMinValue = 2;
+                }
+                isMiddleAwayFromBottom = false;
+            }
+
+            if (isMiddleAwayFromTop){
+                if (middlePath == topPath || bottomPath == topPath) {
+                    indexOfMinValue = 0;
+                }
+                if ((i + 1) == (numberOfColumns - 1)) {
+                    indexOfMinValue = 0;
+                }
+                isMiddleAwayFromTop = false;
+            }
+
+            switch (indexOfMinValue){
+                case 0:
+                    winningPathForPlayer.add(1);
+                    startingRow = nextRowTop;
+                    break;
+                case 1:
+                    winningPathForPlayer.add(0);
+                    startingRow = nextRowMiddle;
+                    break;
+                case 2:
+                    winningPathForPlayer.add(-1);
+                    startingRow = nextRowBottom;
+                    break;
+                default:
+                    break;
+            }
+
+
+
+
+            nextRowTop = startingRow - 1;
+            nextRowMiddle = startingRow;
+            nextRowBottom = startingRow + 1;
+
+            startingCol = nextColPath;
+            nextColPath = startingCol + 1;
+
+        }
+
+        return winningPathForPlayer;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+</PRE>
+
+</BODY>
+</HTML>

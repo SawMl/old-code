@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>877539637</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+import math
+import copy
+
+
+
+def solve(bulbs):
+	print(bulbs)
+	mCleared = [] # m clear and counting up
+	rowCleared = [] # sub list #clear for each int M
+	determinedRow = []
+
+	mQueue = []
+	rowQueue = [] # sub list #clear for each int M
+
+	result = []
+
+	i = 0 # for testing stuff
+
+	sortedList = copy.deepcopy(bulbs) # sort list with absolute value for all sub list
+	for x in range(len(bulbs)):
+		sortedList[x] = [abs(num) for num in sortedList[x]]
+		sortedList[x].sort()
+
+	mVal = 0
+<A NAME="0"></A>
+	for x in range(len(bulbs)): #Find max M
+		for y in range(3):
+			findM = sortedList<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match82-1.html#0',3,'match82-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>[x][y]
+			if findM &gt; mVal:
+				mVal = findM
+
+	testNum = 0
+	for x in range(mVal): #fill a list &quot;result&quot; to M elements
+		result.append(</B></FONT>True)
+		#print(testNum)
+		# testNum += 1
+
+	############################################
+	#Objective: to find wich column have light on when all set is True (no saved value)
+	#loop to check default state.
+	#Output to be a list of index starting at 0 for corresponding row
+	lightList = [] #index start at 0 for light set starting at 1. 1 = on and 0 = off
+	vitalRow = [] # this will be use later to determine rows that are all off and is too vital to change
+	lightOn = False
+	for onRow in range(len(bulbs)): #length of total row in list
+		for onCol in range(3): # bulb column
+			if bulbs[onRow][onCol] &gt; 0:
+				lightOn = True
+
+		if lightOn == True:
+			lightList.append(1)
+		else:
+			lightList.append(0)
+
+		lightOn = False
+			
+	print(lightList)
+		
+	#############################
+		
+	#print(range(1, mVal))
+	remainSet = list(range(1, mVal + 1)) # remaining set to do, counting down !!
+
+		
+	mVal = math.floor(mVal/2) # find M/2 floor
+	mQueue.append(mVal) # add M/2 floor to mQ
+
+			
+	# !!!might need to make case when M/2 floor isn't used
+
+			
+	# print(&quot;Stage 1 Cleared&quot;)
+	#Mechanic starting at M/2 floor
+	intProcessed = 0
+	while intProcessed != len(bulbs): # 0 MAY HAVE TO CHANGE for LOGIC
+		print(&quot;#########New Loop######### Number = &quot;, intProcessed)
+		print(&quot;mQueue = &quot;, mQueue)
+		
+		if len(mQueue) != 0:
+			currInt = mQueue[0] # current integer of a set of bulbs (Starts with mVal)
+			mQueue.remove(currInt)
+		else:
+			if len(remainSet) != 0:
+				currInt = remainSet[0]
+			else:
+				break
+				
+		# print(&quot;Stage 2 Cleared&quot;)
+		#print(&quot;currInt = &quot;,currInt)
+		#print(&quot;remainSet before = &quot;, remainSet)
+			
+		# mQueue.remove(currInt)
+		mCleared.append(currInt) # add currInt to mCleared
+		if currInt in remainSet:
+			remainSet.remove(currInt) #use for case of no mQ
+		
+		for currSubL in range(len(bulbs)): #index start at 0 (sub list)
+
+			if currInt in sortedList[currSubL] and currSubL not in rowCleared: #populate rowQ (no past row)
+				rowQueue.append(currSubL) #rowQ
+				#rowCleared.append(currSubL) #tags along with rowQ but more permanent values
+
+				for columnBulb in sortedList[currSubL]: #populate mQ to be process only when mSet is found
+					if columnBulb not in mQueue and columnBulb not in mCleared: #add only if not in mQ or clearQ
+						mQueue.append(columnBulb) #mQ
+						if columnBulb in remainSet:				 # remove int set from remainVal
+							remainSet.remove(columnBulb)
+
+		# print(&quot;Stage 3 Cleared&quot;)
+		for rowQ in rowQueue: #Now determine if the currInt should be true/fasle for result append
+			if rowQ not in rowCleared: # current row is already resolved, move on
+
+				if currInt not in bulbs[rowQ]: # if value is negative
+					
+					#change if row is not vital to another?
+					if currInt not in vitalRow:
+						if lightList[rowQ] != 1:
+							result[currInt - 1] = False
+
+				rowCleared.append(rowQ)
+			#rowQueue.remove(rowQ) # this is gonna clear the rowQueue list at the end of loop
+
+		#print(&quot;rowCleared = &quot;, rowCleared)
+		# print(&quot;Stage 4 Cleared&quot;)
+		rowQueue.clear()
+		intProcessed += 1 # end loop make sure it runs total bulbs row amount of time
+
+		#print(&quot;remainSet after = &quot;, remainSet)
+
+	# print(&quot;Stage 5 Cleared&quot;)
+	print(result)
+	return result
+
+
+
+# Need to figure out where to add int for mCleared
+
+
+
+##############################################################################################
+# testList = [ [-4,-4, -1], [13, -9, -14], [4, -7, -2], [-2, 6, 3], [-6, -8, 11], [-4, -3, -6],
+# 						[7, 11, -10], [4, -7, 6], [5, 6, 4], [10, 14, -9]]
+
+# # testList = [ [1, 2, 3], [-1, -1, -2], [ 2, -3, 3]]
+
+
+# solve(testList)
+
+
+	
+	
+	
+	
+</PRE>
+
+</BODY>
+</HTML>

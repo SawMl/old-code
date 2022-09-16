@@ -1,0 +1,188 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>722720882</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+def solve(bulbs):
+    largest_digit = 0
+    for element in bulbs:
+        for element1 in element:
+            largest_digit = max(largest_digit, abs(element1))
+
+    number_list = []
+    for n in range(largest_digit):
+        number_list.append(n + 1)
+    poppo = number_list.copy()
+    # first_half = bulbs[0:len(bulbs)/2]
+    # second_half = bulbs[len(bulbs)/2:len(bulbs)]
+    number_list2 = []
+    for element1 in number_list:
+        same_set = []
+        for element in bulbs:
+            for element2 in element:
+                if abs(element2) == element1:
+                    same_set.append(element2)
+        number_list2.append(same_set)
+
+    for i in range(len(number_list2)):
+        pair_of_numbers = number_list2[i]
+        print(pair_of_numbers)
+        all_negative = True
+        all_positive = True
+        for num in pair_of_numbers:
+            if num &lt; 0:
+                all_positive = False
+            if num &gt; 0:
+                all_negative = False
+        print(all_positive)
+        print(all_negative)
+        if all_positive is True:
+            number_list[i] = True
+        if all_negative is True:
+            number_list[i] = False
+
+    print(number_list2)
+    print(poppo)
+    print(number_list)
+    for element in bulbs:
+        goodlight = 0
+        oposite = False
+        light = False
+        first = 0
+        second = 0
+        index = 0
+        index2 = 0
+        for i in range(len(element)):
+            for j in range(i, len(element)):
+                if element[i] == -(element[j]):
+                    first = element[i]
+                    second = element[j]
+                    oposite = True
+        for i in range(len(element)):
+            if element[i] &lt; 0 and number_list[-(element[i]) - 1] is False:
+                goodlight = element[i]
+                light = True
+            if element[i] &gt; 0 and number_list[element[i] - 1] is True:
+                light = True
+        if light is True or ((light is True) and (oposite is True)):
+            for element1 in element:
+                if element1 != goodlight:
+                    i = 0
+                    for element2 in number_list2[abs(element1) - 1]:
+                        if element2 == element1:
+                            index = i
+                        i = i + 1
+                    print(number_list2[abs(element1) - 1])
+                    if len(number_list2[abs(element1) - 1]) &gt; 1:
+                        number_list2[abs(element1) - 1].pop(index)
+                        print(number_list2)
+        elif oposite is True:
+            i = 0
+            print(first)
+            print(second)
+            for element1 in number_list2[abs(first) - 1]:
+                if element1 == first:
+                    index = i
+
+                if element1 == second:
+                    index2 = i
+
+                i = i + 1
+            number_list2[abs(first) - 1].pop(index)
+            if index2 &gt; index:
+                index2 = index2 - 1
+            number_list2[abs(first) - 1].pop(index2)
+            print(number_list2[abs(first) - 1])
+            print(number_list2)
+    print(number_list2)
+    for i in range(len(number_list2)):
+        pair_of_numbers = number_list2[i]
+        print(pair_of_numbers)
+        all_negative = True
+        all_positive = True
+        for num in pair_of_numbers:
+            if num &lt; 0:
+                all_positive = False
+            if num &gt; 0:
+                all_negative = False
+        print(all_positive)
+        print(all_negative)
+        if all_positive is True:
+            number_list[i] = True
+        if all_negative is True:
+            number_list[i] = False
+
+    print(number_list2)
+    print(poppo)
+    print(number_list)
+    All_in_bool = False
+    while All_in_bool is False:
+        for element in bulbs:
+            goodlight = 0
+            oposite = False
+            light = False
+            first = 0
+            second = 0
+            index = 0
+            index2 = 0
+
+            for i in range(len(element)):
+                if element[i] &lt; 0 and number_list[-(element[i]) - 1] is False:
+                    goodlight = element[i]
+                    light = True
+                if element[i] &gt; 0 and number_list[element[i] - 1] is True:
+                    light = True
+            if light is True or ((light is True) and (oposite is True)):
+                for element1 in element:
+                    if element1 != goodlight:
+                        i = 0
+                        for element2 in number_list2[abs(element1) - 1]:
+                            if element2 == element1:
+                                index = i
+                            i = i + 1
+                        if len(number_list2[abs(element1) - 1]) &gt; 1 and element1 in number_list2[abs(element1) - 1]:
+<A NAME="0"></A>                            number_list2[abs(element1) - 1].pop(index)
+        for i in range(len(number_list2)):
+            pair_of_numbers = number_list2[i]
+            all_negative <FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match178-1.html#0',3,'match178-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>= True
+            all_positive = True
+            for num in pair_of_numbers:
+                if num &lt; 0:
+                    all_positive = False
+                if num &gt; 0:
+                    all_negative = False
+            if all_positive is True:
+                number_list[i] =</B></FONT> True
+            if all_negative is True:
+                number_list[i] = False
+
+            all_bool = True
+            int_identified = False
+            for truc in number_list:
+                if not (truc is True or truc is False):
+                    all_bool = False
+            if all_bool is True:
+                All_in_bool = True
+
+    print(number_list2)
+    print(poppo)
+    print(number_list)
+    return number_list
+</PRE>
+
+</BODY>
+</HTML>

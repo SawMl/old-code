@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>241398428</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+def solve(input_array):
+    best_path = []
+    cur_high_score = -1
+    start_row = 0   # Since we starting from top
+    start_col = 0
+    
+    valid_paths_list = []      # To find all valid paths
+    valid_moves = ['-1', '0', '1']
+    size = len(valid_moves)
+    
+    def get_all_valid_paths(prefix, k):    # method to valid paths
+        if (k == 0) :                                                       # This is the base case. If path of given length found and if it is valid then add that path to paths_list
+            moves = prefix.strip().split(&quot; &quot;)
+            if len(moves) == 0:
+<A NAME="0"></A>                return []
+            moves = list(map(int, moves))
+            if (sum(moves) == 1):     # Since we start from bottom, we need to end from top. Therefore, sum of moves list must be equal to -1.
+                valid_paths_list<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match2-1.html#0',3,'match2-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>.append(moves)
+            return
+        for i in range(size):
+            new_prefix = prefix + valid_moves[i] + &quot; &quot;
+            get_all_valid_paths(new_prefix, k - 1)
+
+    def calculate_score_for_given_valid_path(start_row, start_col, path, input_array):     # Helper method to find the score for given valid path
+<A NAME="1"></A>        sum_score =</B></FONT> input_array[start_row][start_col]
+        for move in path:
+            if (move == -1):       # Then move right and down
+                <FONT color="#f63526"><A HREF="javascript:ZweiFrames('match2-1.html#1',3,'match2-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>if (start_col == (len(input_array[0]) - 1)): 
+                    start_col = 0
+                else:
+                    start_col += 1
+
+                if (start_row == (len(input_array) - 1)):
+                    start_row = 0
+                else:
+<A NAME="2"></A>                    start_row += 1
+                sum_score += input_array[start_row][</B></FONT>start_col]
+            elif (move == 0):         # Then move directly to the right
+                <FONT color="#77bfc7"><A HREF="javascript:ZweiFrames('match2-1.html#2',3,'match2-top.html#2',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>if (start_col == (len(input_array[0]) - 1)):
+                    start_col = 0
+                else:
+                    start_col += 1
+                sum_score += input_array[start_row][start_col]
+            elif (move == 1):       # Then move right and up
+                if (start_col == (len(input_array[0]) - 1)): 
+                    start_col = 0
+                else:
+                    start_col += 1
+
+                if (start_row == 0):
+                    start_row = len(input_array) - 1
+                else:
+                    start_row -= 1
+                sum_score += input_array[start_row][</B></FONT>start_col]
+        return sum_score
+    
+    get_all_valid_paths(&quot;&quot;, len(input_array[start_row]) - 1)       # In order to find all valid paths where  
+    
+    for row_index in range(len(input_array[start_row])):
+        for valid_path in valid_paths_list:
+            score = calculate_score_for_given_valid_path(start_row, row_index , valid_path, input_array)
+            if (score &gt; cur_high_score):
+                cur_high_score = score
+                best_path = valid_path
+                start_col = row_index
+    final_path = []
+    final_path.append(1)            # Since we starting from top row
+    final_path.append(start_col)    # Then appending the best startng column
+    final_path.extend(best_path)    # Finally append all moves of the best path to the result
+    print (final_path)
+    return final_path
+
+    
+input_array = [[3, 4, 1, 2, 8, 6],[6, 1, 8, 2, 7, 4],[5, 4, 3, 9, 9, 5],[5, 9, 8, 3, 2, 6],[8, 7, 2, 9, 6, 4]]
+solve(input_array)
+    
+
+</PRE>
+
+</BODY>
+</HTML>

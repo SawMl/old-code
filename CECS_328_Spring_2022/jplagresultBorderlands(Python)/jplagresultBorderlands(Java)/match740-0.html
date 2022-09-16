@@ -1,0 +1,307 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>996258289</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
+public class StudentSolver {
+	public static ArrayList&lt;ArrayList&lt;Integer&gt;&gt; test = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();
+	public static ArrayList&lt;Integer&gt; a = new ArrayList&lt;Integer&gt;();
+	public static ArrayList&lt;Integer&gt; b = new ArrayList&lt;Integer&gt;();
+	public static ArrayList&lt;Integer&gt; c = new ArrayList&lt;Integer&gt;();
+	public static ArrayList&lt;Integer&gt; d = new ArrayList&lt;Integer&gt;();
+	public static ArrayList&lt;Integer&gt; e = new ArrayList&lt;Integer&gt;();
+	public static ArrayList&lt;Integer&gt; f = new ArrayList&lt;Integer&gt;();
+	public static ArrayList&lt;Integer&gt; g = new ArrayList&lt;Integer&gt;();
+	public static ArrayList&lt;Integer&gt; h = new ArrayList&lt;Integer&gt;();
+	public static ArrayList&lt;Integer&gt; i = new ArrayList&lt;Integer&gt;();
+	public static ArrayList&lt;Integer&gt; j = new ArrayList&lt;Integer&gt;();
+
+	public static void main(String[] args) {
+
+		/*
+		a.add(-4);
+		a.add(7);
+		a.add(-7);
+		b.add(12);
+		b.add(-10);
+		b.add(-11);
+		c.add(9);
+		c.add(-11);
+		c.add(9);
+		d.add(5);
+		d.add(-4);
+		d.add(-4);
+		
+		e.add(12);
+		e.add(-15);
+		e.add(12);
+		
+		f.add(-10);
+		f.add(-9);
+		f.add(12);
+		
+		g.add(12);
+		g.add(-12);
+		g.add(10);
+		
+		h.add(-2);
+		h.add(-4);
+		h.add(2);
+		
+		i.add(9);
+		i.add(7);
+		i.add(-6);
+		
+		j.add(-7);
+		j.add(9);
+		j.add(8);
+		
+		
+		test.add(a);
+		test.add(b);
+		test.add(c);
+		test.add(d);
+		test.add(e);
+		test.add(f);
+		test.add(g);
+		test.add(h);
+		test.add(i);
+		test.add(j);
+		System.out.println(&quot;Start: &quot; + test.toString());
+		solve(test);
+		*/
+		
+	}
+	public static ArrayList&lt;Boolean&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt;
+	bulbs){
+		
+		
+		return itterator(bulbs,populateTruthTable(bulbs));
+	}
+	
+	
+<A NAME="0"></A>
+public static int getHighest(ArrayList&lt;ArrayList&lt;Integer&gt;&gt;
+bulbs) {
+	int hig<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match740-1.html#0',3,'match740-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>hest =0;
+	for(int i =0; i &lt; bulbs.size();i++) {
+		
+		for (int z =0; z &lt; 3;z++) {
+			int loc = Math.abs(bulbs.get(i).get(z));</B></FONT>
+			highest = highest &lt; loc ? loc: highest;
+		
+		}
+	}
+	return highest;
+	
+}
+
+public static ArrayList&lt;Boolean&gt; itterator(ArrayList&lt;ArrayList&lt;Integer&gt;&gt;
+bulbs,ArrayList&lt;Boolean&gt; table){
+	ArrayList&lt;Integer&gt; check = scanInitial(bulbs, table);
+	if (check == null) {
+		return table;
+	}else{
+		for(int i=1; i&lt;check.size();i++) {
+			int change = determineWeight(bulbs, bulbs.get(check.get(i)), table);
+			table.set(change,!(table.get(change)));
+		}			
+			if (checkComplete(bulbs, table)) {
+				return table;
+			}else{
+				return itterator(bulbs,table);
+		}
+	}
+}
+	
+public static ArrayList&lt;Integer&gt; scanInitial(ArrayList&lt;ArrayList&lt;Integer&gt;&gt;
+bulbs,ArrayList&lt;Boolean&gt; power){
+	ArrayList&lt;Integer&gt; notPoweredRows = new ArrayList&lt;Integer&gt;();
+	
+	for(int i =0; i &lt; bulbs.size();i++) {
+			if (rowSingulaur(bulbs.get(i),power)) {
+			}else{
+				notPoweredRows.add(i);
+			}
+	}
+	return notPoweredRows;
+}
+public static boolean rowSingulaur(ArrayList&lt;Integer&gt;
+bulbs,ArrayList&lt;Boolean&gt; power) {
+	for (int z =0; z &lt; 3;z++) {
+		int c = Math.abs(z);
+		
+		
+		
+		if ( isOn(power.get(Math.abs( bulbs.get(c))-1), bulbs.get(z))){
+			return true;
+		}
+}
+	return false;
+	
+}
+public static Set&lt;Integer&gt;  getPhysicalBulbs(ArrayList&lt;ArrayList&lt;Integer&gt;&gt;
+bulbs){
+	ArrayList&lt;Integer&gt; actual = new ArrayList&lt;Integer&gt;();
+	for(int i =0; i &lt; bulbs.size();i++) {
+		
+		for (int z =0; z &lt; 3;z++) {
+			actual.add(Math.abs(bulbs.get(i).get(z)));
+
+		}
+	}
+		Set&lt;Integer&gt; actualUnique = new HashSet&lt;Integer&gt;(actual);
+		return actualUnique;
+
+
+	}
+public static boolean checkComplete(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs,ArrayList&lt;Boolean&gt; power) {
+	for(int i =0; i &lt; bulbs.size();i++) {
+		if (!(rowSingulaur(bulbs.get(i), power))) {
+				return false;
+			}
+		}
+			
+		
+	return true;
+
+	
+}
+public static ArrayList&lt;Integer&gt;  getAllBulbs(ArrayList&lt;ArrayList&lt;Integer&gt;&gt;
+	bulbs){
+		ArrayList&lt;Integer&gt; actual = new ArrayList&lt;Integer&gt;();
+		for(int i =0; i &lt; bulbs.size();i++) {
+			
+			for (int z =0; z &lt; 3;z++) {
+				actual.add(bulbs.get(i).get(z));
+
+			}
+		}
+			return actual;
+
+
+		}
+public static ArrayList&lt;Boolean&gt; populateTruthTable(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs) {
+	ArrayList&lt;Boolean&gt; table = new ArrayList&lt;Boolean&gt;();    
+	ArrayList&lt;Integer&gt; dt = getAllBulbs(bulbs);
+	Set&lt;Integer&gt; pb = getPhysicalBulbs(bulbs);
+	int high = getHighest(bulbs);
+	int count =0;
+	for(int i =1; i &lt;= high ;i++) {
+		count++;
+		if(pb.contains(i)){
+			
+			
+			
+			table.add(determineMajority(i,dt));
+		}else {
+			
+
+			table.add(false);
+		
+	}
+		
+	}
+	
+	System.out.println(&quot;test: &quot; + dt.toString());
+	System.out.println(pb.toString());
+	System.out.println(table.toString());
+	
+	return table;
+	
+}
+public static int determineWeight(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs, ArrayList&lt;Integer&gt; series, 
+ArrayList&lt;Boolean&gt; power) {
+	int lowest = Integer.MAX_VALUE;
+	int returnValue = 0;
+	
+	for (int i=0; i &lt; series.size(); i++) {
+			power.set(Math.abs(series.get(i))-1,!(power.get(Math.abs(series.get(i))-1)));
+			
+
+		 int current = scanInitial(bulbs,power).size();
+				if( current &lt; lowest ) {
+					lowest = current;
+					returnValue= i;
+				
+		}
+		if (i&gt;1) {
+			power.set(Math.abs(series.get(i)-1),!(power.get(Math.abs(series.get(i)-1))));
+			
+
+		}
+	}
+	
+	return returnValue;
+	
+	
+}
+public static boolean determineMajority(int check,ArrayList&lt;Integer&gt; bulbs) {
+	int neg = check * -1;
+	int nCount = 0;
+	int pCount = 0;
+	System.out.println(&quot;Count: &quot; + check);
+		for (int i =0;i&lt;bulbs.size();i++) {
+			if (bulbs.get(i) == check) {
+				pCount ++;
+			}else if (bulbs.get(i)  ==  neg) {
+				nCount++;
+			}
+		}
+			System.out.println(nCount + &quot;- :+ &quot; + pCount);
+
+			if (nCount &gt; pCount) {
+				System.out.println(&quot;negative&quot;);
+				return false;
+			}else{
+				System.out.println(&quot;positive&quot;);
+
+				return true;
+				
+			}
+			
+		
+}
+public static boolean isOn(boolean powered,int bulb) {
+	int current= Integer.signum(bulb);
+
+	
+if (current == 1) {
+	if (powered) {
+		return true;
+	}else{
+		return false;
+		}
+	}else if (current == -1) {
+		if(powered) {
+			return false;
+		}else{
+			return true;		
+
+		}
+		}
+return powered;
+		}
+}
+</PRE>
+
+</BODY>
+</HTML>

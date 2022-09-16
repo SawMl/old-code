@@ -1,0 +1,191 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>232742918</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+
+
+
+def moveLeft(row, column, grid):
+    column = column - 1
+    if column &lt; 0:
+        column = (column % len(grid[0]))
+    move = 0
+    return row, column, grid[row][column], move
+
+def leftDown(row, column, grid):
+    row = row + 1
+    if row &gt; len(grid) - 1:
+        row = row % (len(grid))
+    column = column - 1
+    if column &lt; 0:
+        column = (column % len(grid[0]))
+    move = 1                                        # left down = right up
+    return row, column, grid[row][column], move
+
+def leftUp(row, column, grid):
+    row = row - 1
+    if row &lt; 0:
+        row = len(grid) - 1                         # goes to the very last row
+    column = column - 1
+    if column &lt; 0:
+        column = (column % len(grid[0]))
+    move = -1                                       # left up = right down
+    return row, column, grid[row][column], move
+
+
+def solve(grid):
+    '''
+    grid: a 2-d list of
+    first number of returned list: 1 = top, 0 = bottom
+    second: index (which column)
+    '''
+    print(grid)
+
+    moves = []
+    rows = len(grid)
+<A NAME="0"></A>    columns = len(grid[0])
+
+    # start from the bottom/end
+    maxNum <FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match150-0.html#0',2,'match150-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>= max(grid[rows - 1])                                            # goes to the end row and finds the max
+    # print(maxNum)
+    maxNumTop = max(grid[0])
+    # print(maxNumTop)
+
+
+    indexStart = grid[rows - 1].index(maxNum)                               # included in case there's multiple max's
+    indexStartTop = grid[0].index(</B></FONT>maxNumTop)
+
+    for i in range(columns - 1):
+        if i &lt; columns - 1:
+            if maxNum == grid[rows-1][i] and grid[rows-1][i+1] == maxNum:   # makes it so that you can maximize the sum just by shifting left
+                indexStart = i + 1
+                continue
+            if maxNumTop == grid[0][i] and grid[0][i+1] == maxNumTop:       # makes it so that you can maximize the sum just by shifting left
+                indexStartTop = i + 1
+                continue
+
+
+
+    rowIndex = rows - 1                                                 # starts from last row
+    columnIndex = indexStart
+    j = 1
+    sumBottom = maxNum
+    while j &lt;= columns - 1:
+        r1, c1, v1, m1 = moveLeft(rowIndex, columnIndex, grid)
+        r2, c2, v2, m2 = leftDown(rowIndex, columnIndex, grid)
+        r3, c3, v3, m3 = leftUp(rowIndex, columnIndex, grid)
+        maxEle = max(v1, v2, v3)                                        # checks which move yields the maximum number
+        if maxEle == v1:
+            moves.append(m1)
+            rowIndex = r1
+            columnIndex = c1
+            sumBottom += v1
+        elif maxEle == v2:
+            moves.append(m2)
+            rowIndex = r2
+            columnIndex = c2
+            sumBottom += v2
+        else:
+            moves.append(m3)
+            rowIndex = r3
+            columnIndex = c3
+            sumBottom += v3
+        j += 1
+
+    moves.append(columnIndex)
+    if rowIndex == rows - 1:                                            # start from top = 1; start from bottom = 0
+        index = 0
+    else:
+        index = 1
+    moves.append(index)
+    print(&quot;sumBottom:&quot;, sumBottom)
+    print(&quot;rowIndex:&quot;, rowIndex)
+
+    movesTop = []                                                       # starts from row 0
+    rowIndexTop = 0
+    # print(&quot;rowIndex: &quot;, rowIndex)
+    columnIndex = indexStartTop
+    # for i in range(columns - 1):
+    j = 1
+    sumTop = maxNumTop
+    while j &lt;= columns - 1:
+        r1, c1, v1, m1 = moveLeft(rowIndexTop, columnIndex, grid)
+        r2, c2, v2, m2 = leftDown(rowIndexTop, columnIndex, grid)
+        r3, c3, v3, m3 = leftUp(rowIndexTop, columnIndex, grid)
+        maxEle = max(v1, v2, v3)                                        # checks which move yields the maximum number
+        print(maxEle)
+        if maxEle == v1:
+            movesTop.append(m1)
+            rowIndexTop = r1
+            columnIndex = c1
+            sumTop += v1
+        elif maxEle == v2:
+            movesTop.append(m2)
+            rowIndexTop = r2
+            columnIndex = c2
+            sumTop += v2
+        else:
+            movesTop.append(m3)
+            rowIndexTop = r3
+            columnIndex = c3
+            sumTop += v3
+        j += 1
+    print(&quot;sumTop:&quot;, sumTop)
+    print(&quot;rowIndexTop:&quot;, rowIndexTop)
+
+    movesTop.append(columnIndex)
+    if rowIndexTop == rows - 1:     # start from top = 1; start from bottom = 0
+        index = 0
+    else:
+        index = 1
+    movesTop.append(index)
+
+
+
+    finalMoves = moves[::-1]        # reverses list bc we started from a possible end and moved backwards; now we have to make it so that the moves are right-bound
+    finalMovesTop = movesTop[::-1]
+    print(&quot;finalMoves: &quot;, finalMoves, &quot;finalMovesTop: &quot;, finalMovesTop)
+
+    if sumTop &lt;= sumBottom:
+        print(&quot;finalMoves&quot;)
+        return finalMoves
+    else:
+        print(&quot;finalMovesTop&quot;)
+        return finalMovesTop
+
+
+
+
+# if __name__ == '__main__':
+#     grid = [[3, 4, 1, 2, 8, 6],
+#             [6, 1, 8, 2, 7, 4],
+#             [5, 4, 3, 9, 9, 5],
+#             [5, 9, 8, 3, 2, 6],
+#             [8, 7, 2, 9, 6, 4]]
+#
+#     grid = [[8, 3, 3, 4],
+#             [2, 2, 6, 9],
+#             [2, 6, 8, 2],
+#             [3, 7, 7, 9]] #passed
+#
+#
+#     print(solve(grid))
+</PRE>
+
+</BODY>
+</HTML>

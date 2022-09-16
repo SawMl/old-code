@@ -1,0 +1,321 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>514493787</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+import java.util.ArrayList;
+import java.util.Stack;
+
+public class StudentSolver {
+
+    public static void main(String[] args) {
+	
+<A NAME="0"></A>
+
+
+    <FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match473-1.html#0',3,'match473-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>}
+
+    public static ArrayList&lt;Integer&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid){
+        int rowsAmount = grid.size();
+        int columnsAmount = grid.get(0).size();
+        int topRow = 0</B></FONT>;
+        int bottomRow = rowsAmount -1;
+        int largest = -20;
+        ArrayList&lt;Integer&gt; runner = new ArrayList&lt;&gt;();
+        ArrayList&lt;Integer&gt; bestList = new ArrayList&lt;&gt;();
+        int topOrBottom = -7;
+        int startPoint = -8;
+
+        for (int i= 0;  i&lt;columnsAmount;i++){
+            runner = shortestPath(grid,topRow,i);
+            if (runner.get(0) &gt; largest){
+                largest = runner.get(0);
+                bestList = runner;
+                topOrBottom = 1;
+                startPoint = i;
+            }
+        }
+
+        for (int i= 0;  i&lt;columnsAmount;i++){
+            runner = shortestPath(grid,bottomRow,i);
+            if (runner.get(0) &gt; largest){
+                largest = runner.get(0);
+                bestList = runner;
+                topOrBottom = 0;
+                startPoint = i;
+            }
+        }
+
+
+        bestList.set(0, topOrBottom);
+        bestList.set(1, startPoint);
+
+        return bestList;
+    }
+
+    public static ArrayList&lt;Integer&gt; shortestPath(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; gridParam, int startRow, int startCol){
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; table = new ArrayList&lt;&gt;();
+        table.add(new ArrayList&lt;&gt;());
+        table.get(0).add(gridParam.get(startRow).get(startCol));
+        table.get(0).add(startRow);
+        table.get(0).add(startCol);
+        table.get(0).add(gridParam.get(startRow).get(startCol));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        int rowsAmount = gridParam.size();
+        int colsAmount = gridParam.get(0).size();
+        ArrayList&lt;Integer&gt; batchStartIndex = new ArrayList&lt;&gt;();
+        
+        batchStartIndex.add(0);
+        int lastBatchSize = 1;
+        int lastColumn = startCol -1;
+        if (startCol == 0){
+            lastColumn = colsAmount-1;
+        }
+
+        int columnCounter = startCol+1;
+        if (columnCounter &gt; colsAmount-1){
+            columnCounter = 0;
+        }
+        while (columnCounter != startCol){
+            int batchSize = 0;
+            int previousColumn = columnCounter - 1;
+            if (columnCounter == 0){
+                previousColumn = colsAmount-1;
+            }
+
+
+            for (int i = 0;i&lt;gridParam.size();i++){
+
+                if (columnCounter == lastColumn){
+                    if (!(i==0 || i==rowsAmount-1)){
+                        continue;
+                    }
+                }
+                int best = -5;
+
+                for (int t = batchStartIndex.get(batchStartIndex.size()-1); t&lt;batchStartIndex.get(batchStartIndex.size()-1)+lastBatchSize; t++) {
+
+
+
+                    
+
+                    
+                    if (i == 0 &amp;&amp; i + rowsAmount - 1 == table.get(t).get(1) &amp;&amp; previousColumn == table.get(t).get(2)) {
+<A NAME="1"></A>                        int currentNumber = gridParam.get(i).get(columnCounter);
+                        if (currentNumber + table.get(t).get(3) &gt; best){
+                            best = currentNumber + table.get(t).get(3);
+                            if (table.get(table.size()-1).get(1) == i &amp;&amp; table.get(table.size()-1).get(2) == columnCounter)<FONT color="#f63526"><A HREF="javascript:ZweiFrames('match473-1.html#1',3,'match473-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>{
+                                table.get(table.size()-1).set(3, best);
+                                table.get(table.size()-1).set(4, table.get(t).get(1));
+                                table.get(table.size()-1).set(5, table.get(t).get</B></FONT>(2));
+                                table.get(table.size()-1).set(6, -1);
+                                table.get(table.size()-1).set(7, t);
+                            }
+<A NAME="2"></A>                            else {
+                                table.add(new ArrayList&lt;&gt;());
+                                table.get(table.size() - 1).add(currentNumber);
+                                table.get(<FONT color="#77bfc7"><A HREF="javascript:ZweiFrames('match473-1.html#2',3,'match473-top.html#2',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>table.size() - 1).add(i);
+                                table.get(table.size() - 1).add(columnCounter);
+                                table.get(table.size() - 1).add(table.get(t).get(3) + currentNumber);
+                                table.get(table.size() - 1).add(table.get(t).get(1));
+                                table.get(table.size() - 1).add(table.get(t).get(2));
+                                table.get(table.size() - 1).add(-1);
+                                table.get(table.size() - 1).add(t);
+                                batchSize++;
+                            }</B></FONT>
+                        }
+
+
+                    } else if (i - 1 == table.get(t).get(1) &amp;&amp; previousColumn == table.get(t).get(2)) {
+                        int currentNumber = gridParam.get(i).get(columnCounter);
+                        if (currentNumber + table.get(t).get(3) &gt; best) {
+                            best = currentNumber + table.get(t).get(3);
+                            if (table.get(table.size()-1).get(1) == i &amp;&amp; table.get(table.size()-1).get(2) == columnCounter){
+                                table.get(table.size()-1).set(3, best);
+                                table.get(table.size()-1).set(4, table.get(t).get(1));
+                                table.get(table.size()-1).set(5, table.get(t).get(2));
+                                table.get(table.size()-1).set(6, -1);
+                                table.get(table.size()-1).set(7, t);
+                            }
+                            else {
+                                table.add(new ArrayList&lt;&gt;());
+                                table.get(table.size() - 1).add(currentNumber);
+                                table.get(table.size() - 1).add(i);
+                                table.get(table.size() - 1).add(columnCounter);
+                                table.get(table.size() - 1).add(table.get(t).get(3) + currentNumber);
+                                table.get(table.size() - 1).add(table.get(t).get(1));
+                                table.get(table.size() - 1).add(table.get(t).get(2));
+                                table.get(table.size() - 1).add(-1);
+                                table.get(table.size() - 1).add(t);
+                                batchSize++;
+                            }
+                        }
+                    }
+
+                    
+                    if (i == table.get(t).get(1) &amp;&amp; previousColumn == table.get(t).get(2)) {
+                        int currentNumber = gridParam.get(i).get(columnCounter);
+                        if (currentNumber + table.get(t).get(3) &gt; best) {
+                            best = currentNumber + table.get(t).get(3);
+                            if (table.get(table.size()-1).get(1) == i &amp;&amp; table.get(table.size()-1).get(2) == columnCounter){
+                                table.get(table.size()-1).set(3, best);
+                                table.get(table.size()-1).set(4, table.get(t).get(1));
+                                table.get(table.size()-1).set(5, table.get(t).get(2));
+                                table.get(table.size()-1).set(6, 0);
+                                table.get(table.size()-1).set(7, t);
+                            }
+                            else {
+                                table.add(new ArrayList&lt;&gt;());
+                                table.get(table.size() - 1).add(currentNumber);
+                                table.get(table.size() - 1).add(i);
+                                table.get(table.size() - 1).add(columnCounter);
+                                table.get(table.size() - 1).add(table.get(t).get(3) + currentNumber);
+                                table.get(table.size() - 1).add(table.get(t).get(1));
+                                table.get(table.size() - 1).add(table.get(t).get(2));
+                                table.get(table.size() - 1).add(0);
+                                table.get(table.size() - 1).add(t);
+                                batchSize++;
+                            }
+                        }
+                    }
+
+                    
+                    if (i == rowsAmount-1 &amp;&amp; i - rowsAmount + 1 == table.get(t).get(1) &amp;&amp; previousColumn == table.get(t).get(2)) {
+                        int currentNumber = gridParam.get(i).get(columnCounter);
+                        if (currentNumber + table.get(t).get(3) &gt; best) {
+                            best = currentNumber + table.get(t).get(3);
+                            if (table.get(table.size()-1).get(1) == i &amp;&amp; table.get(table.size()-1).get(2) == columnCounter){
+                                table.get(table.size()-1).set(3, best);
+                                table.get(table.size()-1).set(4, table.get(t).get(1));
+                                table.get(table.size()-1).set(5, table.get(t).get(2));
+                                table.get(table.size()-1).set(6, 1);
+                                table.get(table.size()-1).set(7, t);
+                            }
+                            else {
+                                table.add(new ArrayList&lt;&gt;());
+                                table.get(table.size() - 1).add(currentNumber);
+                                table.get(table.size() - 1).add(i);
+                                table.get(table.size() - 1).add(columnCounter);
+                                table.get(table.size() - 1).add(table.get(t).get(3) + currentNumber);
+                                table.get(table.size() - 1).add(table.get(t).get(1));
+                                table.get(table.size() - 1).add(table.get(t).get(2));
+                                table.get(table.size() - 1).add(1);
+                                table.get(table.size() - 1).add(t);
+                                batchSize++;
+                            }
+                        }
+                    } else if (i + 1 == table.get(t).get(1) &amp;&amp; previousColumn == table.get(t).get(2)) {
+                        int currentNumber = gridParam.get(i).get(columnCounter);
+                        if (currentNumber + table.get(t).get(3) &gt; best) {
+                            best = currentNumber + table.get(t).get(3);
+                            if (table.get(table.size()-1).get(1) == i &amp;&amp; table.get(table.size()-1).get(2) == columnCounter){
+                                table.get(table.size()-1).set(3, best);
+                                table.get(table.size()-1).set(4, table.get(t).get(1));
+                                table.get(table.size()-1).set(5, table.get(t).get(2));
+                                table.get(table.size()-1).set(6, 1);
+                                table.get(table.size()-1).set(7, t);
+                            }
+                            else {
+                                table.add(new ArrayList&lt;&gt;());
+                                table.get(table.size() - 1).add(currentNumber);
+                                table.get(table.size() - 1).add(i);
+                                table.get(table.size() - 1).add(columnCounter);
+                                table.get(table.size() - 1).add(table.get(t).get(3) + currentNumber);
+                                table.get(table.size() - 1).add(table.get(t).get(1));
+                                table.get(table.size() - 1).add(table.get(t).get(2));
+                                table.get(table.size() - 1).add(1);
+                                table.get(table.size() - 1).add(t);
+                                batchSize++;
+                            }
+                        }
+                    }
+
+
+
+                }
+
+            }
+            batchStartIndex.add(lastBatchSize + batchStartIndex.get(batchStartIndex.size()-1));
+            lastBatchSize = batchSize;
+            if (columnCounter == colsAmount-1){
+                columnCounter = 0;
+            }
+            else {
+                columnCounter++;
+            }
+        }
+        ArrayList&lt;Integer&gt; bestList = new ArrayList&lt;&gt;();
+        ArrayList&lt;Integer&gt; outputList = new ArrayList&lt;&gt;();
+
+        bestList = table.get(table.size()-1);
+        if (table.get(table.size()-2).get(3) &gt; bestList.get(3) ){
+            bestList = table.get(table.size()-2);
+        }
+        outputList.add(bestList.get(3));
+        outputList.add(-10);
+        Stack&lt;Integer&gt; stackReverse = new Stack&lt;&gt;();
+        stackReverse.add(bestList.get(6));
+        int i = bestList.get(7);
+        if (batchStartIndex.size()&gt;2){
+
+
+            while (table.get(i).get(7) != 0) {
+                stackReverse.add(table.get(i).get(6));
+                i = table.get(i).get(7);
+            }
+            stackReverse.add(table.get(i).get(6));
+
+        }
+        while (!stackReverse.isEmpty()){
+            outputList.add(stackReverse.pop());
+        }
+
+
+
+        return outputList;
+    }
+
+
+
+}
+</PRE>
+
+</BODY>
+</HTML>

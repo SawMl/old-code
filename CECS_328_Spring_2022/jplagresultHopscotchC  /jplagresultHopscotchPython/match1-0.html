@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>781446567</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+def solve(grid):
+    
+    start_row = 0  # To keep track of the starting value
+    start_col = 0
+    highest_score = 0   # To find the highest score
+    optimal_path = []   # To find the optimal path
+
+    all_paths = []      # To find all valid paths
+    valid_values_set = ['1', '0', '-1']
+<A NAME="0"></A>    k = len(grid[start_row]) - 1
+    getAllPathsRecursion(valid_values_set, &quot;&quot;, len(valid_values_set), k, all_paths)
+
+    <FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match1-1.html#0',3,'match1-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>for i in range(len(grid[start_row])):
+        for path in all_paths:
+            score = getScore(start_row, i, path, grid)
+            if (score &gt; highest_score):
+                highest_score = score
+                optimal_path = path
+                start_col = i
+    optimal_path =</B></FONT> list(map(str, optimal_path))     # Convert int list to str list in order to print the path
+    path_str = &quot;, &quot;.join(optimal_path)
+    final_str = &quot;1, &quot; + str(start_col) + &quot;, &quot; + path_str
+    result = final_str.split(&quot;, &quot;)
+    result = list(map(int, result))
+    return result
+    
+def getScore(start_row, start_col, path, grid):
+<A NAME="1"></A>    score = grid[start_row][start_col]
+    for move in path:
+        if (move == 0):         # Then move directly to the right
+            <FONT color="#f63526"><A HREF="javascript:ZweiFrames('match1-1.html#1',3,'match1-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>if (start_col == (len(grid[0]) - 1)):
+                start_col = 0
+            else:
+                start_col += 1
+            score += grid[start_row][start_col]
+        elif (move == 1):       # Then move right and up
+            if (start_col == (len(grid[0]) - 1)): 
+                start_col = 0
+            else:
+                start_col += 1
+
+            if (start_row == 0):
+                start_row = len(grid) - 1
+            else:
+<A NAME="2"></A>                start_row -= 1
+            score += grid[start_row][</B></FONT>start_col]
+        elif (move == -1):       # Then move right and down
+            <FONT color="#77bfc7"><A HREF="javascript:ZweiFrames('match1-1.html#2',3,'match1-top.html#2',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>if (start_col == (len(grid[0]) - 1)): 
+                start_col = 0
+            else:
+                start_col += 1
+
+            if (start_row == (len(grid) - 1)):
+                start_row = 0
+            else:
+                start_row += 1
+            score += grid[start_row][</B></FONT>start_col]
+    return score
+
+def getAllPathsRecursion(valid_values_set, prefix, n, k, all_paths):  # The main recursive method to find all possible valid hopscotch steps which is starting from top (here I took always starting from
+                                                       # top) and ending from bottom while visiting each column exactly once by using 1,0,-1 moves to move right accordingly.
+    if (k == 0) :       # Base case -&gt; k is 0. Then get the path and check whether sum of path is equal to 1. Then only it is a valid path
+        temp_list = prefix.strip().split(&quot; &quot;)
+<A NAME="3"></A>        temp_list = list(map(int, temp_list))
+        sum_of_list = sum(temp_list)
+        if (sum_of_list == 1):      # If sum of the valid path is 1 means then path is ending from the bottom. Then we can take as valid path
+            all_paths<FONT color="#6cc417"><A HREF="javascript:ZweiFrames('match1-1.html#3',3,'match1-top.html#3',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>.append(temp_list)
+        return
+ 
+    for i in range(n):  # add all possible moves one by one from valid moves set and recursively call for k equals to k-1
+ 
+        newPrefix = prefix + valid_values_set[i] + &quot; &quot;  # Next move of input added
+        getAllPathsRecursion(v</B></FONT>alid_values_set, newPrefix, n, k - 1, all_paths) # decreasing the k since we added a new valid move
+ 
+    
+grid = [[3, 4, 1, 2, 8, 6],[6, 1, 8, 2, 7, 4],[5, 4, 3, 9, 9, 5],[5, 9, 8, 3, 2, 6],[8, 7, 2, 9, 6, 4]]
+solve(grid)
+    
+
+</PRE>
+
+</BODY>
+</HTML>

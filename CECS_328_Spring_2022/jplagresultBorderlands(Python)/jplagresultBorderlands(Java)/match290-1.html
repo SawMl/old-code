@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>416168864</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+import java.util.ArrayList;
+
+class StudentSolver {
+
+<A NAME="0"></A>   public static int size(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs) {
+
+    int max = 0;
+    <FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match290-0.html#0',2,'match290-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>ArrayList&lt;ArrayList&lt;Integer&gt;&gt; temp = bulbs;
+    for(int i = 0; i &lt; temp.size(); i++) {
+      for(int j = 0; j &lt; temp.get(i).size(); j++) {
+        if(max &lt; temp.get(i).get(j) || -(max) &gt; temp.get(i).get</B></FONT>(j)) {
+          max = temp.get(i).get(j);
+        }
+      }
+    }
+    if(max &lt; 0){
+      return -max;
+    }
+    return max;
+     
+  }
+
+  public static ArrayList&lt;Boolean&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs) {
+
+    ArrayList&lt;Boolean&gt; firHalf = new ArrayList&lt;Boolean&gt;();
+    ArrayList&lt;Boolean&gt; secHalf = new ArrayList&lt;Boolean&gt;();
+    ArrayList&lt;Boolean&gt; output = new ArrayList&lt;Boolean&gt;();
+    for(int i = 0; i &lt; size(bulbs); i++) {
+      firHalf.add(true);
+<A NAME="1"></A>      secHalf.add(true);
+      output.add(true);
+    }
+    <FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match290-0.html#1',2,'match290-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>for(int i = 0; i &lt; bulbs.size()/2; i++) {
+      for(int j = 0; j &lt; bulbs.get(i).size(); j++) {
+        if(0 &lt; bulbs.get(i).get(j)) {</B></FONT>
+          firHalf.set(bulbs.get(i).get(j) - 1, true);
+        }
+        else if(0 &gt; bulbs.get(i).get(j)) {
+          int pos = -(bulbs.get(i).get(j));
+          firHalf.set(pos - 1, false);
+<A NAME="2"></A>        }
+      }
+    }
+    for(int i = bulbs.size()/2; i &lt; bulbs.size(); i++) <FONT color="#77bfc7"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match290-0.html#2',2,'match290-top.html#2',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>{
+      for(int j = 0; j &lt; bulbs.get(i).size(); j++) {
+        if(0 &lt; bulbs.get</B></FONT>(i).get(j)) {
+          secHalf.set(bulbs.get(i).get(j) - 1, true);
+        }
+        else if(0 &gt; bulbs.get(i).get(j)) {
+          int pos = -(bulbs.get(i).get(j));
+          secHalf.set(pos - 1, false);
+        }
+      }
+    }
+    for(int i = 0; i &lt; size(bulbs); i++) {
+      if(firHalf.get(0) == false &amp;&amp; secHalf.get(0) == false) {
+        output.set(0, false);
+      }
+      if(firHalf.get(0) == false &amp;&amp; secHalf.get(0) == true) {
+        output.set(0, false);
+      }
+    }
+    return output;
+
+  }
+}
+</PRE>
+
+</BODY>
+</HTML>

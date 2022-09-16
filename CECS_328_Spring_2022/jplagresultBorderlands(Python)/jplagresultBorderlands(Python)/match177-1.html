@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>135657498</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+import collections
+from random import randint
+
+def find_m_min(bulbs):
+    m_min = bulbs[0][0]
+    if (m_min &lt; 0):
+        m_min = m_min * -1
+    for i in bulbs:
+        for j in i:
+            if (j &lt; 0):
+                j = j * -1
+            if j &lt; m_min:
+                m_min = j
+    return m_min
+
+def find_m_max(bulbs):
+    m_max = bulbs[0][0]
+    if (m_max &lt; 0):
+        m_max = m_max * -1
+    for i in bulbs:
+        for j in i:
+            if (j &lt; 0):
+                j = j * -1
+            if j &gt; m_max:
+                m_max = j
+    return m_max
+
+def create_sets(bulbs, min, max):
+    sets = {}
+    for i in range(min, max + 1):
+        sets[i] = []
+    for i in range(len(bulbs)):
+        for j in bulbs[i]:
+            idx = j
+            if (idx &lt; 0):
+                idx = idx * -1
+            if (j &gt; 0):
+                sets[idx].append({
+                    'is_red': False,
+                    'row_idx': i,
+                    'is_row_lit': False
+                })
+            else:
+                sets[idx].append({
+                    'is_red': True,
+                    'row_idx': i,
+                    'is_row_lit': False
+                })
+    od = collections.OrderedDict(sorted(sets.items()))           
+    return od
+
+def print_sets(sets):
+    for k, v in sets.items():
+        print(k)
+        for item in v:
+            print(item)
+
+def lit_row(sets, row):
+    for k, v in sets.items():
+        for item in v:
+            if (item['row_idx'] == row):
+                item['is_row_lit'] = True
+    return sets
+
+def is_any_row_not_lit(sets): 
+    for k, v in sets.items():
+        for item in v:
+            if not item['is_row_lit']: return True
+    return False
+
+def lit_them_up(sets):
+    result = []
+    for k, v in sets.items():
+        # print(&quot;--------------------------------------&quot;)
+        # print(&quot;Set:&quot;, v)
+        weight = 0
+        for item in v:
+            if not item['is_row_lit'] and item['is_red']: weight -= 1
+            if not item['is_row_lit'] and not item['is_red']: weight += 1
+        # print(&quot;Weigth = &quot;, weight)
+        if (weight &lt; 0):
+            result.append(False)
+            for item in v:
+                if item['is_red'] and not item['is_row_lit']:
+                    sets = lit_row(sets, item['row_idx'])
+        else:
+            result.append(True)
+            for item in v:
+                if not item['is_red'] and not item['is_row_lit']:
+                    sets = lit_row(sets, item['row_idx'])
+    # print_sets(sets)
+    print(&quot;Are any row not lit ?&quot;, is_any_row_not_lit(sets))
+    print(&quot;Result is: &quot;, result)
+    print(&quot;Result Length is: &quot;, len(result))
+    return result
+
+def solve(bulbs):
+    m_min = 1
+    m_max = find_m_max(bulbs)
+    # print(&quot;m_min = &quot;, m_min)
+    # print(&quot;m_max = &quot;, m_max)
+    n = len(bulbs)
+    sets = create_sets(bulbs, m_min, m_max)
+    print_sets(sets)
+
+    return lit_them_up(sets)
+
+def generate_bulb(max, n):
+<A NAME="0"></A>    bulbs = []
+    for i in range(1, n + 1):
+        bulbs.append([randint(-max, max), randint(-max, max),randint(-max, max)])
+    has_one <FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match177-0.html#0',2,'match177-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>= False
+    has_max = False
+    for i in range(len(bulbs)):
+        for j in range(len(bulbs[i])):
+            if (bulbs[i][j] == 1): 
+                has_one =</B></FONT> True
+            if (bulbs[i][j] == max): 
+                has_max = True
+            if (bulbs[i][j] == 0):
+                while (bulbs[i][j] == 0):
+                    bulbs[i][j] = randint(-max, max)
+    if not has_one:
+        print(&quot;Don't have a one&quot;)
+        bulbs[0][0] = 1
+    if not has_max:
+        print(&quot;Don't have a max&quot;)
+        bulbs[0][1] = max
+    return bulbs
+
+# def main():
+    # bulbs = generate_bulb(150, 500)
+    # print(bulbs)
+    # bulbs = [[1, -2, 2], [1, 1, 1], [-5, -2, 1], [4, -3, 3]]
+    # bulbs = [[-4, -4, -1], [13, -9, -14], [4, -7, -2], [-2, 6, 3], [-6, -8, 11], [-4, -3 -6], [7, 11, -10], [4, -7, 6], [5, 6, 4], [10, 14, -9]]
+    # solve(bulbs)
+
+# main()
+</PRE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,201 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>118358201</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+from copy import deepcopy
+
+arr = [] # Boolean array to keep track of answer
+wire_sets = {} # To keep track of which wire set actually exist in the given input
+modified_lines = {}
+checked_sets = {}
+
+def solve(bulbs):
+
+    # Find m (Naive solution is to just loop thru all lines, there may be a better way to do this
+    # involving checking the first value of each line to determine it's range)
+    m = 0
+    for line in bulbs:
+        for wire_set in line:
+            if wire_set not in wire_sets:
+                wire_sets[abs(wire_set)] = 1
+            if abs(wire_set) &gt; m:
+                m = abs(wire_set)
+    
+    # print(m)
+    if m == 1:
+        if bulbs[0][0] &lt; 0:
+            return [False]
+        else:
+            return [True]
+
+    
+    # Initialize array
+    for i in range(0, m):
+        arr.append(False)
+    
+    recurse(bulbs, 1, m)
+<A NAME="0"></A>
+    check_bulb(bulbs, m)
+
+    ans = deepcopy<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match36-0.html#0',2,'match36-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>(arr)
+    arr.clear()
+    wire_sets.clear()
+    modified_lines.clear()
+    checked_sets.clear()
+
+
+    # print(ans)
+    return ans
+
+
+# A seperate method is needed to keep track of m/2 during recursion
+def recurse(bulbs, start, end):
+    # print('start:' + str(start))
+    # print('end: ' + str(end))
+    
+
+    m =</B></FONT> end + start
+
+    m = int(m/2)
+    
+    check_bulb(bulbs, m)
+
+    if start == end - 1:
+        return
+
+    # Need to figure out how to recurse with correct portion and work out the logic of the recursion
+    recurse(bulbs, m, end)
+    recurse(bulbs, start, m)
+
+
+def check_bulb(bulbs, current_wire_set):
+    if current_wire_set in checked_sets:
+        return
+
+    red_bulbs = 0
+    normal_bulbs = 0
+
+    modified_lines_with_normal = []
+    modified_lines_with_red = []
+
+    if current_wire_set in wire_sets:
+        for i, line in enumerate(bulbs):
+            if i not in modified_lines:
+                # print(current_wire_set)
+                for j, wire_set in enumerate(line):
+                    # Check if first bulb is in range of m/2
+                    if j == 0 and ((abs(wire_set) &lt; current_wire_set - 5) or (abs(wire_set) &gt; current_wire_set + 5)):
+                        break
+                    
+                    elif abs(wire_set) == current_wire_set:
+                        
+                        if wire_set &lt; 0:
+                            red_bulbs = red_bulbs + 1
+                            modified_lines_with_red.append(i)
+                        else:    
+                            normal_bulbs = normal_bulbs + 1
+                            modified_lines_with_normal.append(i)
+
+                        
+                        break
+    
+
+        if normal_bulbs &gt; red_bulbs:
+            for line in modified_lines_with_normal:
+                modified_lines[line] = 1
+            # Update m/2 status to be true
+            arr[current_wire_set-1] = True
+            
+        else:
+            for line in modified_lines_with_red:
+                modified_lines[line] = 1
+            # Update m/2 status to be false
+            arr[current_wire_set-1] = False
+
+    else:
+        arr[current_wire_set-1] = True
+    
+    checked_sets[current_wire_set] = 1
+
+
+
+# To check answer
+def answer_checker(input, ans):
+    ans_dic = {}
+    for i in range(1, len(ans)+1):
+        ans_dic[i] = ans[i-1]
+
+    valid_rows = 0
+    for row in input:
+        for wire_set in row:
+            if wire_set &lt; 0:
+                if not ans_dic[abs(wire_set)]:
+                    # print(row)
+                    valid_rows = valid_rows + 1
+                    break
+            else:
+                if ans_dic[abs(wire_set)]:
+                    # print(row)
+                    valid_rows = valid_rows + 1
+                    break
+    
+    if valid_rows == len(input):
+        return True
+    return False
+
+
+
+# test_ans = [False, False, False, True, True, False, True, False, False, False, True, False, True, True]
+
+# test_input = [[-4, -4, -1],
+#               [13, -9, -14],
+#               [4, -7, -2],
+#               [-2, 6, 3],
+#               [-6, -8, 11],
+#               [-4, -3, -6],
+#               [7, 11, -10],
+#               [4, -7, 6],
+#               [5, 6, 4],
+#               [10, 14, -9],
+#              ]
+# print(answer_checker(test_input, solve(test_input)))
+
+# test_input = [[-4, -4, 2],
+#               [13, 20, -14],
+#               [4, 8, -2]
+#              ]
+# print(answer_checker(test_input, solve(test_input)))
+
+
+# test_input = [[1,2,3], [4],[5]]
+# print(answer_checker(test_input, solve(test_input)))
+
+# test_input = [[1]]
+# print(answer_checker(test_input, solve(test_input)))
+
+# Need to work more on the logic of the program, may be use a set to keep track of the line?
+# test_input = [[1,1,-2], [-2,-2, -2], [2, 2, -1]]
+# print(answer_checker(test_input, solve(test_input)))
+
+# test_input = [[10,10,10], [-2,-2, -2], [2, 2, 1]]
+# print(answer_checker(test_input, solve(test_input)))
+
+</PRE>
+
+</BODY>
+</HTML>

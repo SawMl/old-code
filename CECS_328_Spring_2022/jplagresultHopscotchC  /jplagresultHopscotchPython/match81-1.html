@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>307222531</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+def solve(grid):
+    answer = []
+    max_top = 0
+    max_bot = 0
+
+    # get the largest number in the first list
+    for i in grid[0]:
+        if max_top &lt; i:
+            max_top = i
+    # get the largest number in the last list
+    for i in grid[len(grid) - 1]:
+        if max_bot &lt; i:
+            max_bot = i
+
+    if grid[0].index(max_top) &lt; grid[len(grid) - 1].index(max_bot):
+        answer.append(len(grid))
+        answer.append(grid[len(grid) - 1].index(max_bot))
+        row = len(grid) - 1
+        col = grid[len(grid) - 1].index(max_bot)
+    else:
+        answer.append(1)
+        answer.append(grid[0].index(max_top))
+        row = 0
+        col = grid[0].index(max_top)
+
+    for i in range(1, len(grid[0])):
+        # pointer (row) to keep track of where the path is going
+        # case where you reach the end of the column, move your check to the beginning of the list
+        if col + 1 == len(grid[0]):
+            col = 0
+<A NAME="0"></A>            if grid[row - 1][col] &gt; grid[row][col] and grid[row - 1][col] &gt; grid[row + 1][col]:
+                answer.append(1)
+                row -= 1
+            elif grid[row][col] &gt; grid[row - 1]<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match81-0.html#0',2,'match81-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>[col] and grid[row][col] &gt; grid[row + 1][col]:
+                answer.append(0)
+            elif grid[row + 1][col] &gt; grid[row - 1][col] and grid[row + 1][</B></FONT>col] &gt; grid[row][col]:
+                answer.append(-1)
+                row = 0
+        # case where you reach the bottom of the row to, move your check to the top of the list
+        elif row + 1 == len(grid):
+<A NAME="1"></A>            if grid[row - 1][col + 1] &gt; grid[row][col + 1] and grid[row - 1][col + 1] &gt; grid[0][col + 1]:
+                answer.append(1)
+                row -= 1
+            elif grid[row][col + 1] &gt; grid[row - 1]<FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match81-0.html#1',2,'match81-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>[col + 1] and grid[row][col + 1] &gt; grid[0][col + 1]:
+                answer.append(0)
+            elif grid[0][col + 1] &gt; grid[row - 1][col + 1] and grid[0][</B></FONT>col + 1] &gt; grid[row][col + 1]:
+                answer.append(-1)
+                row = 0
+            col += 1
+        else:
+            if grid[row - 1][col + 1] &gt; grid[row][col + 1] and grid[row - 1][col + 1] &gt; grid[row + 1][col + 1]:
+                answer.append(1)
+                row -= 1
+            elif grid[row][col + 1] &gt; grid[row - 1][col + 1] and grid[row][col + 1] &gt; grid[row + 1][col + 1]:
+                answer.append(0)
+            elif grid[row + 1][col + 1] &gt; grid[row - 1][col + 1] and grid[row + 1][col + 1] &gt; grid[row][col + 1]:
+                answer.append(-1)
+                row += 1
+            # condition where two or more are the same value/also to make the the program reach the end of the cylinder
+            elif grid[row - 1][col + 1] == grid[row][col + 1] or grid[row - 1][col + 1] == grid[row + 1][col + 1] or \
+                    grid[row - 1][col + 1] == grid[row + 1][col + 1]:
+                if row &gt; len(grid[0]) / 2:
+                    answer.append(1)
+                    row -= 1
+                elif row &lt; len(grid[0]) / 2:
+                    answer.append(-1)
+                    row += 1
+                else:
+                    answer.append(0)
+            col += 1
+    return answer
+
+# temp = [[3, 4, 1, 2, 8, 6],
+#         [6, 1, 8, 2, 7, 4],
+#         [5, 4, 3, 9, 9, 5],
+#         [5, 9, 8, 3, 2, 6],
+#         [8, 7, 2, 9, 6, 4]]
+#
+# print(solve(temp))
+
+</PRE>
+
+</BODY>
+</HTML>

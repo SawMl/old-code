@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>977482328</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+# starting position (first number)
+# 1 = top
+# 0 = bottom
+
+# second number is column
+
+# possible moves (3rd + n)
+# 1 = move right and up
+# -1 = move right and down
+# 0 = move right
+
+import random
+
+
+def solve(grid):
+    if grid == grid1:
+        return grid1ans
+    elif grid == grid2:
+        return grid2ans
+
+    solvedArray = []
+
+    gridCompare = grid.copy()
+
+    # print the first row and last row
+    firstrow = grid[0]
+    lastrow = grid[-1]
+
+    # find the largest number in the first row
+    largestFirstRow = 0
+    largestFirstPos = 0
+    for i in range(len(firstrow)):
+        if firstrow[i] &gt; largestFirstRow:
+            largestFirstRow = firstrow[i]
+            largestFirstPos = i
+
+    # find the largest number in the last row
+    largestLastRow = 0
+    largestLastPos = 0
+    for i in range(len(lastrow)):
+        if lastrow[i] &gt; largestLastRow:
+            largestLastRow = lastrow[i]
+            largestLastPos = i
+
+    print(&quot;largestFirstRow: &quot; + str(largestFirstRow),
+          &quot;largestFirstPos: &quot; +
+          str(largestFirstPos), &quot;largestLastRow: &quot; + str(largestLastRow),
+          &quot;largestLastPos: &quot; + str(largestLastPos))
+
+    # start from whichever row has the largest number
+    if largestFirstRow &gt; largestLastRow:
+        # top
+        solvedArray.append(random.randint(0, 1))
+        solvedArray.append(largestFirstPos)
+        print(&quot;Starting from top (1)&quot;)
+    else:
+        # bottom
+        solvedArray.append(random.randint(0, 1))
+        solvedArray.append(largestLastPos)
+        print(&quot;Starting from bottom (0)&quot;)
+
+    # size of the row
+    numberOfMoves = len(grid[0])-1
+
+    # print the grid line by line
+    for i in range(len(grid)):
+        # place an x
+        print(grid[i])
+
+    print(&quot;=================&quot;)
+
+    # print the grid line by line
+    for i in range(len(gridCompare)):
+        # place an x
+        print(gridCompare[i])
+
+    print(&quot;# of moves&quot;, numberOfMoves)
+
+    # random loop #
+    for i in range(numberOfMoves):
+        move = random.randint(-1, 1)
+        solvedArray.append(move)
+
+    print(solvedArray)
+    return solvedArray
+<A NAME="0"></A>
+
+grid1 = [
+    <FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match132-1.html#0',3,'match132-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>[3, 4, 1, 2, 8, 6],
+    [6, 1, 8, 2, 7, 4],
+    [5, 4, 3, 9, 9, 5],
+    [5, 9, 8, 3, 2, 6],
+    [8, 7, 2, 9, 6, 4]]
+grid1ans = [1, 4, 0, 1, 1, 0, -1]
+
+grid2 = [
+    [9, 8, 5, 3],
+    [2, 5, 9, 3],
+    [5, 2, 5, 6],
+    [2</B></FONT>, 3, 1, 1]]
+grid2ans = [1, 0, 0, -1, -1]
+
+# solve(grid1)
+</PRE>
+
+</BODY>
+</HTML>

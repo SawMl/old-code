@@ -1,0 +1,224 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>248957148</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+import java.util.ArrayList;
+import java.util.Stack;
+
+public class StudentSolver{
+	
+	public static void main(String[] args) {
+		ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid = new ArrayList&lt;&gt;();
+		ArrayList&lt;Integer&gt; path = new ArrayList&lt;&gt;();
+		path = solve(grid);
+	}
+	
+	static int optimalSum = 0;
+	static int tally = 0;
+	public static ArrayList&lt;Integer&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid) {
+		if(grid.size()==0 || grid.get(0).size() == 0) {
+			ArrayList&lt;Integer&gt; badPath = new ArrayList&lt;&gt;();
+			badPath.add(0);
+			return badPath;
+<A NAME="0"></A>		}
+		int sum = 0;
+		ArrayList&lt;Integer&gt; path = new ArrayList&lt;&gt;();
+		int rows = gri<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match479-0.html#0',2,'match479-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>d.size();
+		int columns = grid.get(0).size();
+		int rowIn = 0; int colIn = 0; 
+		int moves = 0;
+		ArrayList&lt;ArrayList&lt;Integer&gt;&gt; res = new ArrayList&lt;&gt;()</B></FONT>;
+		res = createRes(rows, columns);
+		ArrayList&lt;Integer&gt; optimalPath = new ArrayList&lt;&gt;();
+		for(int i = 0; i &lt; columns; i++) { 
+			path.clear();
+			path.add(1);
+			path.add(i);
+			colIn = i;
+			rowIn = 0;
+			moves = -1;
+			checkOptions(rowIn, colIn, sum, moves, res, grid, path, optimalPath);
+			incrementRes(res, columns);
+		}
+		tally = 0;
+		res.clear();
+		res = createRes(rows, columns);
+		for(int i = 0; i &lt; columns; i++) { 
+			path.clear();
+			path.add(0);
+			path.add(i);
+			colIn = i;
+			rowIn = rows-1;
+<A NAME="1"></A>			moves = -1;
+			checkOptions(rowIn, colIn, sum, moves, res, grid, path, optimalPath);
+			incrementRes(res, columns);
+		}<FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match479-0.html#1',2,'match479-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>
+		System.out.println(&quot;Sum: &quot; + optimalSum + &quot; Optimal Path: &quot; + optimalPath.toString());
+		return optimalPath;
+	}
+	public static void checkOptions(int rowIn, int colIn, int sum, int m</B></FONT>oves, ArrayList&lt;ArrayList&lt;Integer&gt;&gt; res, ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid, ArrayList&lt;Integer&gt; path, ArrayList&lt;Integer&gt; optimalPath) {
+		int rows = grid.size();
+		int columns = grid.get(0).size();
+		tally++;
+		if(tally &gt;= 9000000) {
+			moves = columns;
+		}
+		Boolean colCap, rowCap = false;
+		Boolean movesDone = false;
+		sum += grid.get(rowIn).get(colIn);
+		moves++;
+		if(moves &gt;= (columns-1)) {
+			movesDone = true;
+			if(sum &gt; optimalSum) {
+				optimalSum = sum;
+				optimalPath.clear();
+				for(int i = 0; i &lt; path.size(); i++) {
+					optimalPath.add(path.get(i));
+				}
+			}
+		}
+		
+		if(canGo(res, rowIn-1, colIn+1, rows, columns) &amp;&amp; !movesDone) {
+			if(colIn+1 == columns) {
+				colIn = 0;
+				colCap = true; 
+			}
+			else {
+				colIn++;
+				colCap = false;
+			}
+			if(rowIn-1 == -1) {
+				rowIn = rows-1;
+				rowCap = true;
+			}
+			else {
+				rowIn--;
+				rowCap = false;
+			}
+			path.add(1);
+			checkOptions(rowIn, colIn, sum, moves, res, grid, path, optimalPath);
+			if(colCap) {
+				colIn = columns -1;
+			}
+<A NAME="2"></A>			else {
+				colIn--;
+			}
+			if(rowCap) {<FONT color="#77bfc7"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match479-0.html#2',2,'match479-top.html#2',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>
+				rowIn = 0;
+			}
+			else {
+				rowIn++;
+			}
+		}</B></FONT>
+		
+		if(canGo(res, rowIn, colIn+1, rows, columns) &amp;&amp; !movesDone) {
+			if(colIn+1 == columns) {
+				colCap = true;
+				colIn = 0;
+			}
+			else {
+				colIn++;
+				colCap = false;
+			}
+			rowCap = false;
+			path.add(0);
+			checkOptions(rowIn, colIn, sum, moves, res, grid, path, optimalPath);
+			
+			if(colCap) {
+				colIn = columns -1;
+			}
+			else {
+				colIn--;
+			}
+		}
+		
+		if(canGo(res, rowIn+1, colIn+1, rows, columns) &amp;&amp; !movesDone) {
+			if(colIn+1 == columns) {
+				colIn = 0;
+				colCap = true;
+			}
+			else {
+				colIn++;
+				colCap = false;
+			}
+			if(rowIn+1 == rows) {
+				rowIn = 0;
+				rowCap = true;
+			}
+			else {
+				rowIn++;
+				rowCap = false;
+			}
+			path.add(-1);
+			checkOptions(rowIn, colIn, sum, moves, res, grid, path, optimalPath);
+			if(colCap) {
+				colIn = columns -1;
+			}
+			else {
+				colIn--;
+			}
+			if(rowCap) {
+				rowIn = rows-1;
+			}
+			else {
+				rowIn--;
+			}
+		}
+		path.remove(path.size()-1);
+	}
+	public static ArrayList&lt;ArrayList&lt;Integer&gt;&gt; createRes(int rows, int columns) {
+		ArrayList&lt;ArrayList&lt;Integer&gt;&gt; res = new ArrayList&lt;&gt;();
+		int rowMin = 1, rowMax = (rows-2), rowNum = (rows-2), colNum = (columns-1);
+		while(rowNum&gt;=1) {
+			for(int i = rowMax; i &gt;= rowMin; i--) {
+				ArrayList&lt;Integer&gt; newRes = new ArrayList&lt;&gt;();
+				newRes.add(i); newRes.add(colNum); res.add(newRes);
+			}
+			colNum--; rowNum -=2; rowMax--; rowMin++;
+		}
+		return res;
+	}
+	public static void incrementRes(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; res, int columns) {
+		for(int i=0; i &lt; res.size(); i++) {
+			if(res.get(i).get(1) +1 == columns) {
+				res.get(i).set(1, 0);
+			}
+			else {
+				res.get(i).set(1, res.get(i).get(1)+1);
+			}
+		}
+	}
+	public static Boolean canGo(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; res, int rowOut, int colOut, int rows, int columns) {
+		if(rowOut == rows)
+			rowOut = 0;
+		if(colOut == columns)
+			colOut = 0;
+		if(rowOut == -1)
+			rowOut = rows-1;
+		for(int n = 0; n &lt; res.size(); n++ ) {
+			if(res.get(n).get(0) == rowOut &amp;&amp; res.get(n).get(1) == colOut) {
+				return false;
+			}
+		}
+		return true;
+	}
+}
+</PRE>
+
+</BODY>
+</HTML>

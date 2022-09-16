@@ -1,0 +1,215 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>226807453</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.Random;
+
+public class StudentSolver {
+    public static ArrayList&lt;Boolean&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs){
+    	ArrayList&lt;Boolean&gt; current = new ArrayList&lt;Boolean&gt; ();
+    	
+    	int redBulbs = 0;
+    	int regBulbs = 0;
+    	Random rGen = new Random();
+    	
+    	/*
+    	for (int r=1; r&lt;=bulbs.size(); r++) { 
+    		for (int c=0; c&lt;bulbs.get(0).size(); c++) {
+    			if(bulbs.get(r-1).get(c) &lt; 0) { 
+    				redBulbs++;
+    			}
+    			else if (bulbs.get(r-1).get(c) &gt;= 0) { 
+    				regBulbs++;
+    			}
+    		}
+    		
+    		if (regBulbs &gt; 0 || regBulbs &gt; redBulbs) {
+    			current.add(true);
+    		}
+    		else {
+    			current.add(false);
+    		}
+    		
+    		redBulbs = 0;
+    		regBulbs = 0;
+    		
+    	}*/
+<A NAME="0"></A>    	int max = bulbs.get(0).get(0);
+    	int currentBulb = 0;
+    	
+    	for<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match548-0.html#0',2,'match548-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B> (int r=1; r&lt;=bulbs.size(); r++) {
+    		for (int c=0; c&lt;bulbs.get(0).size(); c++) {
+    			
+    			if (bulbs.get(r-1).get(c) &gt; max) {
+    				max = bulbs.get(r-1).get(c);
+    			}</B></FONT>
+    		}
+    	}
+    	int rNum = 0;
+    	for (int i=1; i&lt;=max; i++) {
+    		rNum = rGen.nextInt(2);
+    		if (rNum==0) {
+    			current.add(false);
+    		} else {
+    			current.add(true);
+    		}
+    	}
+    	/*
+    	int rNum = 0;
+    	for (int i=1; i&lt;=max; i++) {
+    		rNum = rGen.nextInt(4);
+    		if (rNum==0 || rNum== 1 || rNum==2) {
+    			current.add(false);
+    		} else {
+    			current.add(true);
+    		}
+    	}*/
+    	
+    	/*
+    	for (int i=1; i&lt;=max; i++) { 
+    	    for (int r=1; r&lt;=bulbs.size(); r++) {
+    	        for (int c=0; c&lt;bulbs.get(0).size(); c++) {
+    	            currentBulb = bulbs.get(r-1).get(c);
+    	            if (i!=1 &amp;&amp; isFound.get(i-1)==true) {
+    	            	break;
+    	            }
+    	            if (currentBulb==-1*i || currentBulb == i) {
+    	            	
+    	            	if (isFound.get(r-1))
+    	                
+    	                if (currentBulb &gt; 0) {
+    	                	current.add(true);
+    	                	isFound = 1;
+    	                	System.out.println(&quot;Row &quot; + (r-1) + &quot; is set to: &quot; + true);
+    	                } else if (currentBulb &lt; 0) {
+    	                	current.add(false);
+    	                	isFound = 1;
+    	                	System.out.println(&quot;Row &quot; + (r-1) + &quot; is set to: &quot; + false);
+    	                }
+    	            }
+    	        }
+    	    }
+    	}
+    	*/
+    	/*
+    	for (int i=0; i&lt;max; i++) {
+    		if (rGen.nextInt(2)==0) {
+    			current.add(false);
+    		} else {
+    			current.add(true);
+    		}
+    	}*/
+    	/*
+    	current.add(true);
+    	current.add(true);
+    	for (int i=0; i&lt;11; i++) {
+    		current.add(false);
+    	}
+    	current.add(true);
+    	current.add(false);
+    	for (int i=0; i&lt;9; i++) {
+    		current.add(false);
+    	}
+    	current.add(true);
+    	current.add(true);
+    	for (int i=0; i&lt;7; i++) {
+    		current.add(false);
+    	}*/
+    	return current;
+    }
+    
+    public static void printCurrent(ArrayList&lt;Boolean&gt; wires) {
+    	for (int i=0; i&lt;wires.size(); i++) {
+    		System.out.println(i + &quot;\t&quot; + wires.get(i));
+    	}
+    }
+    
+    public static void printBulbs(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs) {
+    	System.out.println(&quot;----------------------------------------------&quot;);
+    	for (int r=1; r&lt;=bulbs.size(); r++) {
+    		System.out.print(&quot;Wire Set &quot; + r + &quot;\t&quot;);
+    		for (int c=0; c&lt;3; c++) {
+    			System.out.print(bulbs.get(r-1).get(c) + &quot;\t&quot;);
+    		}
+    		System.out.println();
+    	}
+    	System.out.println(&quot;----------------------------------------------&quot;);
+    }
+	
+	public static void main(String[] args){
+	    int N = 0; 
+    	int M = 0; 
+    	int randomNum = 0;
+    	Random randNumGenerator = new Random();
+    	
+    	
+    	Scanner in = new Scanner(System.in);
+    	System.out.print(&quot;Enter an integer value for the number of rows (number of wire sets): &quot;);
+    	N = in.nextInt();
+    	M = N;
+    	ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();
+    	
+    	for (int r=1; r&lt;=N; r++) {
+    		
+    		bulbs.add(new ArrayList&lt;Integer&gt;(3)); 
+    		
+    		for (int c=0; c&lt;3; c++) { 
+    			randomNum = randNumGenerator.nextInt( (M+1) - (-1*M) ) + (-1*M);
+    			if (c == 0) {
+    				bulbs.get(r-1).add(c, randomNum);
+    			}
+    			else {
+    				
+    				int curr = Math.abs(randNumGenerator.nextInt( (M+1) - (-1*M) ) + (-1*M));
+    				int prev = Math.abs(bulbs.get(r-1).get(c-1));
+    				int diff = Math.abs(curr - prev);
+    				
+    				if (diff &lt;= 5) {
+    					bulbs.get(r-1).add(c, randomNum);
+    				}
+    				else if (diff &gt; 5) {
+    					while ( diff &gt; 5 ) {
+        					randomNum = Math.abs(randNumGenerator.nextInt( (M+1) - (-1*M) ) + (-1*M));
+        					if (Math.abs(randomNum-prev) &lt;= 5) { 
+        						bulbs.get(r-1).add(c, randomNum);
+        						break;
+        					}
+        				}
+    				}
+    				
+    			}
+    			
+    		}
+    	};
+    	
+    	System.out.println(bulbs.size());
+    	printCurrent(solve(bulbs));
+    	System.out.println();
+    	printBulbs(bulbs);
+    	
+    	
+	}
+	
+	
+}
+</PRE>
+
+</BODY>
+</HTML>

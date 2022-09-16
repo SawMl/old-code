@@ -1,0 +1,233 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>014607568</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+import java.lang.*;
+import java.util.*;
+
+class StudentSolver
+{
+
+  
+  
+  public static ArrayList&lt;Boolean&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt;
+bulbs)
+  {
+    int largestWireSet=0;
+    ArrayList&lt;ArrayList&lt;Integer&gt;&gt; nums = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();
+    ArrayList &lt;Integer&gt; nu = new ArrayList&lt;Integer&gt;();
+    ArrayList &lt;Integer&gt; numbers = new ArrayList&lt;Integer&gt;();
+   ArrayList &lt;Integer&gt; n = new ArrayList&lt;Integer&gt;();
+    ArrayList &lt;Integer&gt; listOfSetNumbers = new ArrayList&lt;Integer&gt;();
+    
+    
+    readBulbs(bulbs,numbers,nu); 
+    
+    Set&lt;Integer&gt;b  = new HashSet&lt;&gt;();
+    
+    b.addAll(numbers);
+    numbers.clear();
+    numbers.addAll(b);
+    b.clear();
+    b.addAll(nu);
+    nu.addAll(b);
+    System.out.println(numbers.size());
+    
+    
+     
+     
+    ArrayList &lt;Boolean&gt; switches = new ArrayList&lt;Boolean&gt;();
+     
+     for(int i =0;i&lt;numbers.size();i++)
+      {
+        switches.add(false);
+        
+      }
+   getCounts(nu,numbers,switches);
+   
+    
+    for(int i =0;i&lt;switches.size();i++)
+      {
+       
+       System.out.println(switches.get(i));
+      }
+    
+    
+    
+     
+    
+
+
+
+    return switches;
+  }
+  public static void readBulbs(ArrayList&lt;ArrayList&lt;Integer&gt;&gt;bulbs, ArrayList&lt;Integer&gt; numbers,ArrayList&lt;Integer&gt; nu)
+  {
+    Boolean flag = true;
+    int value=0;
+    
+<A NAME="0"></A>    
+    int max=0;
+    
+      <FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match617-0.html#0',2,'match617-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>for(int i=0;i&lt;bulbs.size();i++)
+      {
+        for(int z=0;z&lt;bulbs.get(i).size();z++)
+          {</B></FONT>
+            
+           
+             
+                
+                 numbers.add((Math.abs(bulbs.get(i).get(z))));
+                 nu.add((bulbs.get(i).get(z)));
+                
+                
+                
+                  
+                  
+                  
+                  
+                  
+               
+                
+             
+            
+             
+                 
+           
+        }
+        if(flag=true)
+          {
+         
+           max++;
+          }
+        
+        
+      }  
+
+        
+    
+    
+  }
+
+  public static void getCounts(ArrayList&lt;Integer&gt; nu,ArrayList&lt;Integer&gt; numbers, ArrayList&lt;Boolean&gt; switches)
+  {
+    
+    
+   
+<A NAME="1"></A>    
+   
+
+    for(int g=0;g&lt;<FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match617-0.html#1',2,'match617-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>switches.size();g++)
+      {
+        if(nu.contains(numbers.get(g)))
+        {
+            if(nu.contains(-1*numbers.get</B></FONT>(g))==false)
+              switches.set(g,true);
+        }
+        if(nu.contains(-1*numbers.get(g)))
+        {
+            if(nu.contains(numbers.get(g))==false)
+              switches.set(g,true);
+        }
+      
+      }
+    /*for(int g=0;g&lt;numbers.size();g++)
+     {
+    
+        temp = Math.abs(numbers.get(0));
+      for(int i=0;i&lt;numbers.size();i++)
+        {
+            if(temp == Math.abs(numbers.get(i)))
+            {
+              if(numbers.get(i)&lt;0)
+                nflag=true;
+              else if(numbers.get(i)&gt;0)
+                pflag=true;
+              
+            }
+        }
+          if(pflag==true &amp;&amp; nflag==false)
+          switches.add(1,true);
+          else if(nflag==true &amp;&amp; pflag==false)
+          switches.add((temp-1),false);
+
+          pflag = false;
+          nflag = false;*/
+          
+       
+  }
+
+  /*public static void numberTracker(ArrayList&lt;Integer&gt;n , ArrayList&lt;Integer&gt;numbers)
+  {
+    n.add(numbers.get(0));
+    for(int i =0;i&lt;numbers.size();i++)
+      {
+        
+      }
+    for(int j=0;j&lt;n.size();j++)
+        System.out.println(n.get(j));
+  }*/
+
+  public static void track(ArrayList&lt;Integer&gt;nu,ArrayList &lt;Boolean&gt; switches)
+  {
+    for(int i=0;i&lt;nu.size();i++)
+      {
+        if(nu.get(i)==1)
+          switches.add(true);
+        else if(nu.get(i)==2)
+          switches.add(false);
+        else
+          switches.add(i,false);
+      }
+  }
+
+}
+
+
+
+
+ /*boolean flag = true;
+      for(int i =0;i&lt;nu.size();i++)
+        {
+          if(nu.get(i)==0)
+            break;
+            
+          for(int z =0;z&lt;i+5;z++)
+            {
+              if(nu.get(z)!=0)
+                flag=true;
+              else
+              {
+                flag = false;
+                break;
+              }
+              
+            }
+
+          if(flag)
+          {
+            if(nu.get(i)&gt;1)
+            nu.add(i,1);
+            else
+            nu.add(i,2);
+          }
+        }*/
+</PRE>
+
+</BODY>
+</HTML>

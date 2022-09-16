@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>702224632</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+global nRow, nColumn, road, max_score, answer, final_result
+dx, dy = [0, -1, 1], [1, 1, 1]
+n_size = 3
+max_score = -1e9
+answer, road, final_result = [], [], []
+CONST_VALUE = -5
+
+def solve(grid):
+    global nRow, nColumn, answer, max_score, final_result
+    nRow, nColumn = len(grid), len(grid[0])
+
+    for i in range(nColumn):
+        answer = [CONST_VALUE for i in range(nColumn + 1)]
+        answer[0], answer[1] = 1, i
+        score = get_max_score(grid, 0, i)
+        if score &gt; max_score:
+            max_score = score
+            final_result = answer.copy()
+
+
+    for i in range(nColumn):
+        answer = [CONST_VALUE for i in range(nColumn + 1)]
+        answer[0], answer[1] = 0, i
+        score = get_max_score(grid, nRow - 1, i)
+        if score &gt; max_score:
+            max_score = score
+            final_result = answer.copy()
+<A NAME="0"></A>
+
+    for i in range(2, nColumn + 1):
+        <FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match157-0.html#0',2,'match157-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>if final_result[i] == 1:
+            final_result[i] = -1
+        elif final_result[i] == 2:
+            final_result[i] = 1
+    return final_result
+
+def get_max_score(grid, row, column):
+    global answer
+    start_column =</B></FONT> column
+    number_column = 1
+    dp = [[CONST_VALUE for i in range(nColumn)] for j in range(nRow)]
+    move =[[CONST_VALUE for i in range(nColumn)] for j in range(nRow)]
+
+    dp[row][column] = grid[row][column]
+
+    column += 1
+    while number_column &lt; nColumn:
+        cur_col = column % nColumn
+
+        for i in range(nRow):
+            score, position = CONST_VALUE, CONST_VALUE
+            for j in range(n_size):
+                cur_x = (i + dx[j]) % nRow
+                cur_y = (cur_col - 1) % nColumn
+
+                if dp[cur_x][cur_y] &gt; score:
+                    score = dp[cur_x][cur_y]
+                    position = j
+
+            if score &gt; CONST_VALUE and dp[i][cur_col] &lt; score + grid[i][cur_col]:
+                dp[i][cur_col] = score + grid[i][cur_col]
+
+                move[i][cur_col] = position
+
+        number_column += 1
+        column += 1
+
+    end_column = (start_column - 1) % nColumn
+    move_x, move_y = 0, end_column
+    if dp[0][end_column] &lt; dp[nRow - 1][end_column]:
+        move_x = nRow - 1
+
+    cnt, index = nColumn - 1, nColumn
+    while cnt &gt; 0:
+        step_index = move[move_x][move_y]
+        answer[index] = step_index
+        move_x = (move_x  + dx[step_index]) % nRow
+        move_y = (move_y - 1) % nColumn
+        cnt, index = cnt - 1, index - 1
+
+    return max(dp[0][end_column], dp[nRow - 1][end_column])
+
+
+#response = solve(
+#   [
+#        [3, 4, 1, 2, 8, 6],
+#        [6, 1, 8, 2, 7, 4],
+#        [5, 4, 3, 9, 9, 5],
+#        [5, 9, 8, 3, 2, 6],
+#        [8, 7, 2, 9, 6, 4]
+#    ]
+#)
+# response = solve(
+#     [
+#         [9],
+#         [6],
+#         [5],
+#         [5],
+#         [8]
+#     ]
+# )
+#print(response)
+
+
+</PRE>
+
+</BODY>
+</HTML>

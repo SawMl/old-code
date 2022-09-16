@@ -1,0 +1,228 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>680457864</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+import java.util.ArrayList;
+
+<A NAME="0"></A>public class StudentSolver {
+	private static ArrayList&lt;ArrayList&lt;Place&gt;&gt; GRID;
+	
+	private<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match756-1.html#0',3,'match756-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B> static class Place{
+		public final int val;
+		public final int r, c;
+		public ArrayList&lt;Place&gt; maxPath = null;
+		public int maxScore = Integer.MIN_VALUE;
+		
+		public Place(int val, int r, int c) {</B></FONT>
+			this.val = val;
+			this.r = r;
+			this.c = c;
+		}
+		
+		public Place withPath(int wt) {
+			Place node = new Place(val, r, c);
+			node.maxPath = new ArrayList&lt;&gt;();
+			node.maxPath.add(node);
+			node.maxScore = wt;
+			return node;
+		}
+		
+		public void reset() {
+			this.maxScore = Integer.MIN_VALUE;
+			this.maxPath = null;
+		}
+		
+		@Override
+		public boolean equals(Object n) {
+			if(n instanceof Place) {
+				Place node = (Place) n;
+				return (this.r == node.r &amp;&amp; this.c == node.c);
+			}
+			return false;
+		}
+		
+		public String toString() {
+			return &quot;(&quot; + r + &quot;, &quot; + c + &quot;)&quot;;
+		}
+		
+		public Place clone() {
+			Place node = new Place(val, r, c);
+			node.maxScore = this.maxScore;
+			node.maxPath = (ArrayList&lt;Place&gt;) this.maxPath.clone();
+			return node;
+		}
+	}
+	
+	private static ArrayList&lt;Place&gt; nextPlaces(Place node) {
+		int r = node.r;
+		int c = node.c;
+		
+	    ArrayList&lt;Place&gt; list = new ArrayList&lt;&gt;();
+		c = (c + 1) % GRID.get(0).size();
+	    
+	    
+	    list.add(PLACE(r,c));
+	    
+	    
+	    int ru = r-1;
+	    if(ru&lt;0) 
+	    	ru = GRID.size() - 1;
+	    
+<A NAME="1"></A>	    list.add(PLACE(ru,c));
+	    
+	    
+	    int rd = (r + 1) % GRID.si<FONT color="#f63526"><A HREF="javascript:ZweiFrames('match756-1.html#1',3,'match756-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>ze();
+	    list.add(PLACE(rd,c));
+	    
+	    return list;
+<A NAME="2"></A>	}
+	
+	private static Place PLACE(int r, int c) {</B></FONT>
+		return GRID.get(r).ge<FONT color="#77bfc7"><A HREF="javascript:ZweiFrames('match756-1.html#2',3,'match756-top.html#2',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>t(c);
+	}
+	
+	private static Place depthFirst(Place start, Place end, int k) {		</B></FONT>
+		
+		if(start.maxPath != null) {
+			return start;
+		}
+		
+		
+		if(k==1) {
+			if(start.equals(end)) 
+				return start.withPath(start.val);
+			
+			return start.withPath(Integer.MIN_VALUE);
+		}
+		
+		start.maxPath = new ArrayList&lt;&gt;();
+		int maxValue = Integer.MIN_VALUE;
+		
+		
+		for(Place next:nextPlaces(start)) {
+			Place nxt = depthFirst(next, end, k-1);
+			
+			if(maxValue&lt;nxt.maxScore) {
+				maxValue = nxt.maxScore;
+				start.maxPath = (ArrayList&lt;Place&gt;) nxt.maxPath.clone();
+			}		
+		}
+		
+		
+		
+		start.maxPath.add(0, start);
+		start.maxScore = start.val + maxValue;
+		return start;
+	}
+	
+	private static void resetAllPlaces() {
+		for(ArrayList&lt;Place&gt; column: GRID) {
+			for(Place node: column) {
+				node.reset();
+			}
+		}
+	}
+	
+	private static void setGrid(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid) {
+		GRID = new ArrayList&lt;&gt;();
+		
+		int r = 0;
+		for(ArrayList&lt;Integer&gt; column: grid) {
+			int c = 0;
+			
+			ArrayList&lt;Place&gt; GRID_COLUMN = new ArrayList&lt;&gt;();
+			for(Integer val: column) {
+				GRID_COLUMN.add(new Place(val, r, c));
+				c++;
+			}
+			
+			GRID.add(GRID_COLUMN);
+			r++;
+		}
+	}
+	
+	private static Place _solve() {
+	    int k = GRID.get(0).size();
+	    int lr = GRID.size()-1;
+	    
+	    Place best = new Place(Integer.MIN_VALUE,-1,-1);
+	    Place newBest = new Place(Integer.MIN_VALUE,-1,-1);
+	    
+	    for(int c=0;c&lt;k;c++) {
+	        int cd = c-1;
+	        if(cd&lt;0) cd = k-1;
+	        
+	        
+	        resetAllPlaces();
+	        newBest = depthFirst(PLACE(0,c), PLACE(0,cd), k);
+	        if(best.maxScore&lt;newBest.maxScore) 
+	        	best = newBest.clone(); 
+	        
+	        
+	        resetAllPlaces();
+	        newBest = depthFirst(PLACE(0,c), PLACE(lr,cd), k);
+	        if(best.maxScore&lt;newBest.maxScore)
+	        	best = newBest.clone();
+
+	        
+	        resetAllPlaces();
+	        newBest = depthFirst(PLACE(lr,c), PLACE(lr,cd), k);
+	        if(best.maxScore&lt;newBest.maxScore)
+	        	best = newBest.clone();
+	    }
+	    
+	    return best;
+	}
+	
+	private static Integer direction(Place start, Place end) {
+		
+		if(start.r == end.r)
+		    return 0;
+		
+		
+		if((start.r + 1) % GRID.size() == end.r)
+		    return -1;
+		
+		
+		return 1;
+	}
+	
+	private static ArrayList&lt;Integer&gt; toFormat(Place best){
+		ArrayList&lt;Integer&gt; formatted = new ArrayList&lt;&gt;();
+		if(best.r == 0)
+			formatted.add(1);
+		else
+			formatted.add(0);
+		formatted.add(best.c);
+		
+		for(int i=1;i&lt;best.maxPath.size();i++)
+			formatted.add(direction(best.maxPath.get(i-1), best.maxPath.get(i)));
+		
+		return formatted;
+	}
+	
+	public static ArrayList&lt;Integer&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid){
+		setGrid(grid);
+		Place best = _solve();
+		return toFormat(best);
+	}
+}
+</PRE>
+
+</BODY>
+</HTML>

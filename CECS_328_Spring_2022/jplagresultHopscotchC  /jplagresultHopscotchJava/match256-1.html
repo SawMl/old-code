@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>624097661</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+import java.lang.Math;
+import java.util.ArrayList;
+
+public class StudentSolver {
+    public static void main(String[] args) {
+        int[] arr = { 9, 4, 1, 2, 9, 6, 6, 1, 8, 9, 7, 4, 5, 4, 3, 9, 9, 5, 5, 9, 8, 3, 2, 6, 8, 7, 2, 9, 6, 4, 1, 9, 9, 9, 9, 8, 1, 9, 9, 9, 9, 1, 1,0, 0, 0, 0, 0, 0, 0 };
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();
+        int i = 0;
+        for (int j = 0; j &lt; 3; j++) {
+            ArrayList&lt;Integer&gt; row = new ArrayList&lt;Integer&gt;();
+            for (int k = 0; k &lt; 10; k++) {
+                row.add(arr[i]);
+                i++;
+            }
+            grid.add(row);
+        }
+        for (ArrayList&lt;Integer&gt; arrayList : grid) {
+            System.out.println(arrayList);
+        }
+<A NAME="1"></A>        
+        System.out.println(solve(grid));
+
+    <FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match256-0.html#1',2,'match256-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>}
+
+    public static ArrayList&lt;Integer&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid) {
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        ArrayList&lt;Integer&gt; solution = new ArrayList&lt;Integer&gt;();
+
+        
+
+        
+        for (int i = 0; i &lt; grid.get(0).size</B></FONT>(); i++) {
+            ArrayList&lt;Integer&gt; tempSolution = new ArrayList&lt;Integer&gt;();
+            tempSolution.add(0); 
+            tempSolution.add(0); 
+            tempSolution.add(i); 
+<A NAME="0"></A>            tempSolution = recursiveSolving(grid, tempSolution, grid.size() - 1, i, null);
+            if (solution.size() == 0 || tempSolution.get(0) &gt; solution.get(0)) {
+                solution = tempSolution;
+            <FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match256-0.html#0',2,'match256-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>}
+        }
+
+        
+        for (int i = 0; i &lt; grid.get(0).size(); i++) {</B></FONT>
+
+            ArrayList&lt;Integer&gt; tempSolution = new ArrayList&lt;Integer&gt;();
+            tempSolution.add(0); 
+            tempSolution.add(1); 
+            tempSolution.add(i); 
+            tempSolution = recursiveSolving(grid, tempSolution, 0, i, null);
+            if (solution.size() == 0 || tempSolution.get(0) &gt; solution.get(0)) {
+                solution = tempSolution;
+            }
+        }
+
+        System.out.println(solution);
+        solution.remove(0);
+        return solution;
+    }
+
+    public static ArrayList&lt;Integer&gt; recursiveSolving(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid,
+            ArrayList&lt;Integer&gt; scoreAndPath, Integer rowPosition, Integer columnPosition, Integer direction) {
+
+        scoreAndPath.set(0, scoreAndPath.get(0) + grid.get(rowPosition).get(columnPosition));
+        if (direction != null) {
+            scoreAndPath.add(direction);
+        }
+        if (scoreAndPath.size() == grid.get(0).size() + 2) { 
+            if (rowPosition != 0 &amp;&amp; rowPosition != grid.size() - 1) {
+                scoreAndPath.set(0, -1); 
+            }
+
+            return scoreAndPath;
+        }
+
+        ArrayList&lt;Integer&gt; maxPlusOne = recursiveSolving(grid, cloneList(scoreAndPath),
+                decrementRow(grid, rowPosition),
+                incrementCol(grid, columnPosition), 1);
+        ArrayList&lt;Integer&gt; maxPlusZero = recursiveSolving(grid, cloneList(scoreAndPath), rowPosition,
+                incrementCol(grid, columnPosition), 0);
+        ArrayList&lt;Integer&gt; maxMinusOne = recursiveSolving(grid, cloneList(scoreAndPath),
+                incrementRow(grid, rowPosition),
+                incrementCol(grid, columnPosition), -1);
+
+        ArrayList&lt;Integer&gt; solution = maxPlusOne;
+        if (maxPlusZero.get(0) &gt; solution.get(0)) {
+            solution = maxPlusZero;
+        }
+        if (maxMinusOne.get(0) &gt; solution.get(0)) {
+            solution = maxMinusOne;
+        }
+        return solution;
+
+    }
+
+    public static Integer incrementRow(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid, Integer rowPosition) {
+        if (rowPosition == grid.size() - 1) {
+            return 0;
+        } else {
+            return rowPosition + 1;
+        }
+    }
+
+    public static Integer decrementRow(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid, Integer rowPosition) {
+        if (rowPosition == 0) {
+            return grid.size() - 1;
+        } else {
+            return rowPosition - 1;
+        }
+    }
+
+    public static Integer incrementCol(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid, Integer colPosition) {
+        if (colPosition == grid.get(0).size() - 1) {
+            return 0;
+        } else {
+            return colPosition + 1;
+        }
+    }
+
+    public static ArrayList&lt;Integer&gt; cloneList(ArrayList&lt;Integer&gt; list) {
+        ArrayList&lt;Integer&gt; clonedList = new ArrayList&lt;Integer&gt;();
+        for (Integer element : list) {
+            clonedList.add(element);
+        }
+        return clonedList;
+    }
+}
+</PRE>
+
+</BODY>
+</HTML>

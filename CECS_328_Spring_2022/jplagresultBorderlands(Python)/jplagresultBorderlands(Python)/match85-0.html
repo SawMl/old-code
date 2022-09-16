@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>832540394</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+
+def solve(bulbs):
+    High = 1
+
+    choices = {}
+    #choicesSort = {}
+
+    for i in range(len(bulbs)):
+        for j in range(len(bulbs[i])):
+            b = bulbs[i][j]
+            if High &lt; abs(b):
+                High = abs(b)
+            if b in choices:
+                choices[b] += 1
+            else:
+                choices[b] = 1
+
+    Blist= [0]* High
+    pos = [0] * High
+    neg = [0] * High
+    &quot;&quot;&quot;print(choices)
+    for i in sorted(choices):
+        choicesSort[i] = choices[i]
+    print(choicesSort)&quot;&quot;&quot;
+    for c in choices:
+        val = choices.get(c)
+<A NAME="0"></A>        if c &lt; 0:
+            neg[abs(c) -1] = val
+        else:
+            pos[c-1] = <FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match85-1.html#0',3,'match85-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>val
+
+    for i in range(High):
+        if pos[i] &gt; neg[i]:
+            Blist[i] = True
+        else:
+            Blist[i] = False
+    r</B></FONT>eturn Blist
+
+    &quot;&quot;&quot; the number in the middle always has will have numbers on
+    the side tht will be anywhere from x to x+5
+
+
+test = [[11, 12, 16], [-6, -4, 5], [-11, -11, -7], [5, -4, 4],
+ [14, -17, -16], [-7, 8, -7], [3, -2, 2], [-13, 18, -15],
+ [-9, -5, -9], [-13, -15, -13], [5, -8, 8], [-15, 13, 14],
+ [-3, -6, -7], [-6, 2, 5], [-11, 8, 13], [-6, 5, 6], [8, 12, 8],
+ [12, -10, -13], [-18, 20, 16], [10, -13, 14], [12, 8, -7], [1, -5, -3],
+ [-12, -13, -14], [-16, -18, 14], [3, 1, -4], [-9, -5, -7],
+ [-13, 13, 10], [3, -3, 5], [-10, 11, 14], [-15, -10, 11], [20, 19, 17],
+ [10, 9, -9], [-17, -18, -18], [16, 16, 13], [-15, -13, -15],
+ [15, -17, 17], [-18, -16, -13], [6, 8, 10], [-10, -9, 13], [5, -4, -6],
+ [-15, 14, -16], [-6, -2, -3], [-11, -13, -9], [-4, -7, -5],
+ [-19, -15, 19], [10, -10, 10], [15, -15, -11], [12, -11, 11],
+ [14, -15, -15], [15, -10, -12], [-14, -15, -15], [-4, -1, 2],
+ [-5, -3, 6], [14, -14, 13], [-4, -8, -6], [-11, -9, -10], [15, 14, -18],
+ [9, 13, -10], [-17, 18, -19], [13, -13, -14], [-2, -5, 1], [-6, 2, 2],
+ [-5, -8, 7], [-13, 14, -11], [6, -8, 8], [-3, 8, -5], [-12, -11, -9],
+ [14, 14, -15], [15, -13, -16], [4, -3, 2], [8, 6, -7], [-13, -11, 16],
+ [8, -8, 10], [6, -5, -5], [-17, -16, 15], [-11, -15, -16], [-4, 3, -5],
+ [-11, 8, 8], [13, -11, -11], [-10, -12, 11], [-12, 13, -9],
+ [-11, -6, 6], [-7, 9, -11], [-6, -10, 7], [-6, -3, -3], [-15, 14, 16],
+ [-5, 7, 3], [-11, 13, 11], [16, -16, 14], [-11, -10, 14], [9, 8, -10],
+ [11, -13, 12], [13, -15, -11], [-13, 12, 16], [-11, 11, 10],
+ [-11, 16, -11], [-5, -7, -4], [-10, 8, -7], [-7, 2, 3], [9, 8, -10]]&quot;&quot;&quot;
+
+</PRE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,300 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>397151272</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+from operator import index
+
+def move(grid,i,j):   
+    pass
+
+def solve(grid):
+    m = len(grid) #rows
+    n = len(grid[0]) #columns
+    topMax = max(grid[0])
+    topIndex = grid[0].index(topMax)
+    botMax = max(grid[m-1])
+    botIndex = grid[m-1].index(botMax)
+    path = []
+    print(grid)
+    print(&quot;m(rows): &quot;, m)
+    print(&quot;n(columns): &quot;, n)
+    print('top max: ', topMax)
+    print('bottom max: ', botMax)
+<A NAME="0"></A>    print('index of topMax:', topIndex)
+    print('index of botMax:', botIndex)
+    
+    i <FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match32-1.html#0',3,'match32-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>= 0
+    j = topIndex
+    current = grid[i][j]
+    negOne = grid[i+1][j+1]
+    zero = grid[i][j+1]
+    one = grid[i-1][</B></FONT>j+1]
+    # topTraverse
+    path.append(1)
+    path.append(topIndex)
+    
+    while len(path)&lt;=n:
+        print(&quot;path: &quot;, path)
+        print('current: ', current)
+        print('negOne: ', negOne)
+        print('zero: ', zero)
+        print('one: ', one)
+        print(&quot;path: &quot;, path)
+        print(&quot;i: &quot;, i)
+        print(&quot;j: &quot;, j)
+<A NAME="1"></A>        print(&quot;m: &quot;, m)
+        print(&quot;n:&quot;, n)
+
+        <FONT color="#f63526"><A HREF="javascript:ZweiFrames('match32-1.html#1',3,'match32-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>if i == m-1:
+            current = grid[i][j]
+            negOne = grid[0][j+1]
+            zero = grid[i][j+1]
+            one = grid[i-1][j+1]
+            nextMove = [negOne</B></FONT>,zero,one]
+            maxMove = nextMove.index(max(nextMove))
+            print(&quot;nextMove: &quot;, nextMove)
+            print(&quot;maxMove&quot;, maxMove)
+            if maxMove == 0:
+                current = negOne
+                i = 0
+                j += 1
+                path.append(-1)
+            elif maxMove == 1:
+                current = zero
+                j += 1
+                path.append(0)
+            else:
+                current = one
+                i -= 1
+                j += 1
+                path.append(1)
+            continue
+<A NAME="2"></A>            
+        if j == n-1:
+            if i == 0:
+                current <FONT color="#77bfc7"><A HREF="javascript:ZweiFrames('match32-1.html#2',3,'match32-top.html#2',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>= grid[i][j]
+                negOne = grid[i+1][0]
+                zero = grid[i][0]
+                one = grid[m-1][0]
+                nextMove = [negOne</B></FONT>,zero,one]
+                maxMove = nextMove.index(max(nextMove))
+                print(&quot;nextMove: &quot;, nextMove)
+                print(&quot;maxMove&quot;, maxMove)
+                if maxMove == 0:
+                    current = negOne
+                    i = 0
+                    j = 0
+                    path.append(-1)
+                elif maxMove == 1:
+                    current = zero
+                    j = 0
+                    path.append(0)
+                else:
+                    current = one
+                    i = m - 1
+                    j = 0
+                    path.append(1)
+<A NAME="3"></A>                continue
+
+            if i == m-1:
+                current <FONT color="#6cc417"><A HREF="javascript:ZweiFrames('match32-1.html#3',3,'match32-top.html#3',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>= grid[i][j]
+                negOne = grid[0][0]
+                zero = grid[i][0]
+                one = grid[i-1][0]
+                nextMove = [negOne</B></FONT>,zero,one]
+                maxMove = nextMove.index(max(nextMove))
+                print(&quot;nextMove: &quot;, nextMove)
+                print(&quot;maxMove&quot;, maxMove)
+                if maxMove == 0:
+                    current = negOne
+                    i = 0
+                    path.append(-1)
+                elif maxMove == 1:
+                    current = zero
+                    j += 1
+                    path.append(0)
+                else:
+                    current = one
+                    i -= 1
+                    j += 1
+<A NAME="4"></A>                    path.append(1)
+                continue
+        current = grid[i][j]
+        negOne <FONT color="#151b8d"><A HREF="javascript:ZweiFrames('match32-1.html#4',3,'match32-top.html#4',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>= grid[i+1][j+1]
+        zero = grid[i][j+1]
+        one = grid[i-1][j+1]      
+        nextMove = [negOne,zero,one]
+        maxMove = nextMove.</B></FONT>index(max(nextMove))
+        print(&quot;nextMove: &quot;, nextMove)
+        print(&quot;maxMove&quot;, maxMove)
+        if maxMove == 0:
+            current = negOne
+            i += 1
+            j += 1
+            path.append(-1)
+        elif maxMove == 1:
+            current = zero
+            j += 1
+            path.append(0)
+        else:
+            current = one
+            i -= 1
+            j += 1
+            path.append(1)
+        continue
+    print(&quot;current:&quot;,current)
+    print(&quot;indexOfCurrent:&quot;, i)
+    print(path)
+    
+    if i &gt; 0 and i &lt; m-1:
+        path.clear()
+<A NAME="5"></A>        #bottomTraverse
+        path.append(0)
+        path.append(botIndex)
+        i <FONT color="#c8c2a7"><A HREF="javascript:ZweiFrames('match32-1.html#5',3,'match32-top.html#5',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>= m-1
+        j = botIndex
+        current = grid[i][j]
+        negOne = grid[0][j+1]
+        zero = grid[i][j+1]
+        one =</B></FONT> grid[i-1][j+1]
+        while len(path)&lt;=n:
+            print(&quot;path: &quot;, path)
+            print('current: ', current)
+            print('negOne: ', negOne)
+            print('zero: ', zero)
+            print('one: ', one)
+            print(&quot;path: &quot;, path)
+            print(&quot;i: &quot;, i)
+            print(&quot;j: &quot;, j)
+            print(&quot;m: &quot;, m)
+            print(&quot;n:&quot;, n)
+            
+            if i == m-1:
+                current = grid[i][j]
+                negOne = grid[0][j+1]
+                zero = grid[i][j+1]
+                one = grid[i-1][j+1]
+                nextMove = [negOne,zero,one]
+                maxMove = nextMove.index(max(nextMove))
+                print(&quot;nextMove: &quot;, nextMove)
+                print(&quot;maxMove&quot;, maxMove)
+                if maxMove == 0:
+                    current = negOne
+                    i = 0
+                    j += 1
+                    path.append(-1)
+                elif maxMove == 1:
+                    current = zero
+                    j += 1
+                    path.append(0)
+                else:
+                    current = one
+                    i -= 1
+                    j += 1
+                    path.append(1)
+                continue
+                
+            if j == n-1:
+                if i == 0:
+                    current = grid[i][j]
+                    negOne = grid[i+1][0]
+                    zero = grid[i][0]
+                    one = grid[m-1][0]
+                    nextMove = [negOne,zero,one]
+                    maxMove = nextMove.index(max(nextMove))
+                    print(&quot;nextMove: &quot;, nextMove)
+                    print(&quot;maxMove&quot;, maxMove)
+                    if maxMove == 0:
+                        current = negOne
+                        i = 0
+                        j = 0
+                        path.append(-1)
+                    elif maxMove == 1:
+                        current = zero
+                        j = 0
+                        path.append(0)
+                    else:
+                        current = one
+                        i = m - 1
+                        j = 0
+                        path.append(1)
+                    continue
+
+                if i == m-1:
+                    current = grid[i][j]
+                    negOne = grid[0][0]
+                    zero = grid[i][0]
+                    one = grid[i-1][0]
+                    nextMove = [negOne,zero,one]
+                    maxMove = nextMove.index(max(nextMove))
+                    print(&quot;nextMove: &quot;, nextMove)
+                    print(&quot;maxMove&quot;, maxMove)
+                    if maxMove == 0:
+                        current = negOne
+                        i = 0
+                        path.append(-1)
+                    elif maxMove == 1:
+                        current = zero
+                        j += 1
+                        path.append(0)
+                    else:
+                        current = one
+                        i -= 1
+                        j += 1
+                        path.append(1)
+                    continue
+            current = grid[i][j]
+            negOne = grid[i+1][j+1]
+            zero = grid[i][j+1]
+            one = grid[i-1][j+1]      
+            nextMove = [negOne,zero,one]
+            maxMove = nextMove.index(max(nextMove))
+            print(&quot;nextMove: &quot;, nextMove)
+            print(&quot;maxMove&quot;, maxMove)
+            if maxMove == 0:
+                current = negOne
+                i += 1
+                j += 1
+                path.append(-1)
+            elif maxMove == 1:
+                current = zero
+                j += 1
+                path.append(0)
+            else:
+                current = one
+                i -= 1
+                j += 1
+                path.append(1)
+            continue
+        print(&quot;current:&quot;,current)
+        print(&quot;indexOfCurrent:&quot;, i)
+        print(path)
+    return path
+
+solve([ [3,4,1,2,8,6],
+        [6,1,8,2,7,4],
+        [5,4,3,9,9,5],
+        [5,9,8,3,2,6],
+        [8,7,2,9,6,4]])
+
+
+        
+</PRE>
+
+</BODY>
+</HTML>

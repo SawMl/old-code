@@ -1,0 +1,301 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>681955206</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+def solve(grid):
+    # print(grid)
+    direction = True
+    output = []
+    inverse_grid = []
+    final_output = []
+    Sum = []
+    for i in range(len(grid)-1, -1,-1):
+        inverse_grid.append(grid[i])
+
+    for q in range(2):
+        if q == 1:
+            grid = inverse_grid
+        for y in range(len(grid[0])):
+            steps_remaining = len(grid[0]) - 1
+            x = 0
+            elements = []
+
+            inner = []
+            if(q == 0):
+                inner.append(1)
+            else:
+                inner.append(0)
+            inner.append(y)
+            
+            current_element = grid[x][y]
+            elements.append(current_element)
+            # Sum = current_element
+
+            while(steps_remaining != 0):
+                if(x &lt; 0):
+                    if(-x &lt; int(len(grid)/2)+1):
+                        steps_for_fr = -x
+                        steps_for_lr = -x - 1
+                    elif(-x &gt; int(len(grid)/2)+1):
+                        steps_for_fr = len(grid) - (-x)
+                        steps_for_lr = len(grid) - (-x) + 1
+                    elif(-x == int(len(grid) / 2)+1):    
+                        if(len(grid) % 2 == 1):
+                            steps_for_fr = -x -1
+                            steps_for_lr = -x -1
+                        elif(len(grid) % 2 == 0):
+                            steps_for_fr = -x + 1
+                            steps_for_lr = -x - 1
+                else:
+                    if(x &lt; int(len(grid)/2)):
+                        steps_for_fr = x
+                        steps_for_lr = x + 1
+                    elif(x &gt; int(len(grid)/2)):
+                        steps_for_fr = len(grid) - x
+                        steps_for_lr = len(grid) - x - 1
+                    elif(x == int(len(grid) / 2)):    
+                        if(len(grid) % 2 == 1):
+                            steps_for_fr = x
+                            steps_for_lr = x
+                        elif(len(grid) % 2 == 0):
+                            steps_for_fr = x
+                            steps_for_lr = x - 1
+                
+                if(x + 1 == len(grid)):
+                    x = 0
+                if(y+1 == len(grid[0])):
+                    y = -1
+                if(x-1 == len(grid)*-1):
+                    x = -1
+
+                if(steps_for_fr &gt; steps_remaining and steps_for_lr &lt; steps_remaining) or ((x &lt; 0 and steps_for_fr == steps_remaining and steps_for_lr &lt; steps_remaining)):
+                    right = grid[x][y+1]
+                    right_down = grid[x+1][y+1]
+                
+<A NAME="0"></A>                    M = max(right,right_down)
+
+                    if(M == right):
+                        current_element <FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match34-1.html#0',3,'match34-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>= right
+                        elements.append(current_element)
+                        y += 1
+                        steps_remaining -= 1
+                        inner.append(0)
+                    else:
+                        x += 1
+                        y += 1
+                        current_element = right_down
+                        elements.append(</B></FONT>current_element)
+                        steps_remaining -= 1
+                        inner.append(-1)
+                        direction =True
+
+                elif(steps_for_fr &gt; steps_remaining and steps_for_lr == steps_remaining):
+                    right_down = grid[x+1][y+1]
+                    x += 1
+                    y += 1
+                    current_element = right_down
+                    elements.append(current_element)
+                    steps_remaining -= 1
+                    inner.append(-1)
+                    direction = True
+                
+                elif(steps_for_fr &lt; steps_remaining and steps_for_lr &gt; steps_remaining) or (((x &gt;= 0 and steps_for_fr &lt; steps_remaining and steps_for_lr == steps_remaining))):
+                    right = grid[x][y+1]
+                    right_up = grid[x-1][y+1]
+                
+<A NAME="1"></A>                    M = max(right,right_up)
+
+                    if(M == right):
+                        current_element <FONT color="#f63526"><A HREF="javascript:ZweiFrames('match34-1.html#1',3,'match34-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>= right
+                        elements.append(current_element)
+                        y += 1
+                        steps_remaining -= 1
+                        inner.append(0)
+                    else:
+                        x -= 1
+                        y += 1
+                        current_element = right_up
+                        elements.append(</B></FONT>current_element)
+                        steps_remaining -= 1
+                        inner.append(1)
+                        direction = False
+
+                elif(steps_for_fr == steps_remaining and steps_for_lr &gt; steps_remaining):
+                    right_up = grid[x-1][y+1]
+                    x -= 1
+                    y += 1
+                    current_element = right_up
+                    elements.append(current_element)
+                    steps_remaining -= 1
+                    inner.append(1)
+                    direction = False
+
+                elif(steps_for_fr == steps_for_lr and steps_for_fr == steps_remaining):
+                    right_down = grid[x+1][y+1]
+                    right_up = grid[x-1][y+1]
+                
+                    M = max(right_down,right_up)
+
+                    if(M == right_down):
+                        current_element = right_down
+                        elements.append(current_element)
+                        x += 1
+                        y += 1
+                        steps_remaining -= 1
+                        inner.append(-1)
+                        direction = True
+                    else:
+                        x -= 1
+                        y += 1
+                        current_element = right_up
+                        elements.append(current_element)
+                        steps_remaining -= 1
+                        inner.append(1)
+                        direction = False
+
+                else:
+                    right = grid[x][y+1]
+                    right_down = grid[x+1][y+1]
+                    right_up = grid[x-1][y+1]
+
+                    M = max(right, right_down, right_up)
+
+                    if(M == right):
+                        right = grid[x][y+1]                                                                   
+                        y = y +1 
+                        current_element = right
+                        elements.append(current_element)
+                        steps_remaining -= 1
+                        inner.append(0)
+                    elif(right_up == right_down):
+                        if(x &lt; 0):
+                            c = x - 1
+                            d = x + 1
+                            if(c &gt; d):
+                                right_up = grid[x-1][y+1]
+                                x = x - 1
+                                y = y + 1
+                                current_element = right_up
+                                elements.append(current_element)
+                                steps_remaining -= 1
+                                inner.append(1)
+                                direction =True
+                                
+                            else:
+                                right_down = grid[x+1][y+1]
+                                x = x + 1
+                                y  = y + 1
+                                current_element = right_down
+                                elements.append(current_element)
+                                steps_remaining -= 1
+                                inner.append(-1)
+                                direction = False
+                        else:
+                            c = x - 1
+                            d = x + 1
+                            if(c &lt; d):
+                                x = x - 1
+                                y = y + 1
+                                current_element = right_up
+                                elements.append(current_element)
+                                steps_remaining -= 1
+                                inner.append(1)
+                                direction = False
+                            else:
+                                x = x + 1
+                                y  = y + 1
+                                current_element = right_down
+                                elements.append(current_element)
+                                steps_remaining -= 1
+                                inner.append(-1)
+                                direction = True
+                    else:
+                        if(M == right_up):
+                            x = x - 1
+                            y = y + 1
+                            current_element = right_up
+                            elements.append(current_element)
+                            steps_remaining -= 1
+                            inner.append(1)
+                            direction = False
+                        elif(M == right_down):
+                            x = x +1
+                            y = y +1
+                            current_element = right_down
+                            elements.append(current_element)
+                            steps_remaining -= 1
+                            inner.append(-1)
+                            direction = True
+
+                # Sum += current_element
+            inner_sum = sum(elements)
+            
+            if(inner_sum &lt; 0):
+                inner_sum = inner_sum * (-1)
+            # inner.append(inner_sum)
+            # inner.append(x)
+            Sum.append(inner_sum)
+
+            # output.append(inner)
+            if(q == 1):
+                for r in range(2,len(inner)):
+                    inner[r] = inner[r]*(-1)
+            if((x == -1) or (x == 0) or (x == len(grid)-1) or (x == len(grid) * -1)):
+                output.append(inner)
+    max_sum = max(Sum)
+    max_index = 0
+    for p in range(len(output)):
+        if(Sum[p] == max_sum):
+            max_index = p
+            final_output.append(output[max_index])
+    # print(Sum)
+    # print(output)
+    return final_output[0]
+
+# grid = [[3, 4, 1, 2, 8, 6],
+#         [6, 1, 8, 2, 7, 4],
+#         [5, 4, 3, 9, 9, 5],
+#         [5, 9, 8, 3, 2, 6],
+#         [8, 7, 2, 9, 6, 4]]
+
+# grid = [[7, 3, 8, 4, 6, 9, 7, 9, 4, 8, 7, 5],
+#         [1, 6, 6, 8, 1, 9, 3, 1, 8, 5, 9, 2],
+#         [2, 9, 8, 1, 1, 2, 7, 5, 8, 4, 4, 6],
+#         [1, 4, 4, 7, 7, 5, 9, 5, 7, 2, 5, 7],
+#         [5, 2, 8, 7, 8, 2, 6, 3, 3, 4, 4, 9],
+#         [9, 1, 7, 9, 1, 7, 7, 3, 3, 1, 2, 3],
+#         [8, 2, 6, 7, 3, 2, 2, 5, 4, 7, 2, 9],
+#         [9, 6, 3, 4, 7, 2, 9, 9, 6, 1, 1, 1]]
+
+# grid = [[6, 2, 9, 2, 3, 1, 4, 9, 2, 3, 8, 1, 2, 7, 9], 
+#         [3, 2, 3, 3, 5, 9, 8, 6, 6, 7, 4, 2, 8, 9, 3], 
+#         [1, 9, 2, 9, 2, 7, 2, 4, 7, 9, 6, 4, 7, 4, 4], 
+#         [4, 4, 4, 6, 6, 5, 5, 2, 3, 5, 7, 2, 8, 8, 8], 
+#         [8, 7, 7, 1, 4, 6, 2, 3, 8, 4, 2, 3, 3, 6, 2], 
+#         [7, 9, 3, 1, 2, 4, 4, 5, 9, 8, 3, 4, 9, 2, 3], 
+#         [2, 2, 5, 9, 3, 8, 9, 9, 7, 3, 6, 7, 6, 5, 3], 
+#         [1, 4, 2, 3, 3, 6, 4, 1, 8, 2, 5, 2, 2, 2, 2], 
+#         [1, 8, 8, 2, 7, 2, 1, 5, 6, 2, 6, 2, 8, 7, 4], 
+#         [6, 5, 4, 4, 7, 3, 8, 6, 6, 7, 8, 8, 1, 7, 6], 
+#         [4, 4, 5, 1, 8, 9, 9, 4, 3, 1, 2, 7, 8, 1, 9]]
+
+# print(solve(grid))
+</PRE>
+
+</BODY>
+</HTML>

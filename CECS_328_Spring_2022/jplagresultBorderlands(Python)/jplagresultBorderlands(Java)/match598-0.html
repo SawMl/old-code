@@ -1,0 +1,214 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>387953164</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+package PA2_Bulbs;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+public class StudentSolver {
+	static Map&lt;Integer,Boolean&gt; hashMap = new HashMap&lt;&gt;();
+	static ArrayList&lt;Boolean&gt; booleans = new ArrayList&lt;&gt;();
+
+	public static void main(String[] args) {
+		
+		ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs = new ArrayList&lt;&gt;();
+		bulbs.add(new ArrayList&lt;Integer&gt;(Arrays.asList(-4,-4,-1)));
+		bulbs.add(new ArrayList&lt;Integer&gt;(Arrays.asList(13,-9,-14)));
+		bulbs.add(new ArrayList&lt;Integer&gt;(Arrays.asList(4,-7,-2)));
+		bulbs.add(new ArrayList&lt;Integer&gt;(Arrays.asList(-2,6,3)));
+		bulbs.add(new ArrayList&lt;Integer&gt;(Arrays.asList(-6,-8,11)));
+		bulbs.add(new ArrayList&lt;Integer&gt;(Arrays.asList(-4,-3,-6)));
+		bulbs.add(new ArrayList&lt;Integer&gt;(Arrays.asList(7,11,-10)));
+		bulbs.add(new ArrayList&lt;Integer&gt;(Arrays.asList(4,-7,6)));
+		bulbs.add(new ArrayList&lt;Integer&gt;(Arrays.asList(5,6,4)));
+		bulbs.add(new ArrayList&lt;Integer&gt;(Arrays.asList(10,14,-9)));
+<A NAME="0"></A>		
+		
+		ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbsTest1 = new ArrayList&lt;&gt;();
+		bulbsTest1.add(new ArrayList&lt;<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match598-1.html#0',3,'match598-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>Integer&gt;(Arrays.asList(-5,5,5)));
+		bulbsTest1.add(new ArrayList&lt;Integer&gt;(Arrays.asList(-7,-7,-8)));
+		bulbsTest1.add(new ArrayList&lt;Integer&gt;(Arrays.asList(6,9,9)));
+		bulbsTest1.add(new ArrayList&lt;Integer&gt;(Arrays.asList(-6,-6,6)));
+		bulbsTest1.add(new ArrayList&lt;Integer&gt;(Arrays.asList(-7,11,-9)));
+		bulbsTest1.add(new ArrayList&lt;Integer&gt;(Arrays.asList(-7,9,-12)));
+		bulbsTest1.add(new ArrayList&lt;Integer&gt;(Arrays.asList(4,-5,6)));
+		bulbsTest1.add(new ArrayList&lt;Integer&gt;(Arrays.asList(7,-8,11)));
+		bulbsTest1.add(new ArrayList&lt;Integer&gt;(Arrays.asList(7,-10,11)));
+		bulbsTest1.add(new ArrayList&lt;Integer&gt;(Arrays.asList(-8,11,11)));
+		bulbsTest1.add(new ArrayList&lt;Integer&gt;(Arrays.asList(-1,-3,6)));
+		bulbsTest1.add(new ArrayList</B></FONT>&lt;Integer&gt;(Arrays.asList(-5,9,5)));
+		bulbsTest1.add(new ArrayList&lt;Integer&gt;(Arrays.asList(2,4,2)));
+		bulbsTest1.add(new ArrayList&lt;Integer&gt;(Arrays.asList(-6,-9,7)));
+		bulbsTest1.add(new ArrayList&lt;Integer&gt;(Arrays.asList(-8,-11,-13)));
+		bulbsTest1.add(new ArrayList&lt;Integer&gt;(Arrays.asList(8,-9,-12)));
+		bulbsTest1.add(new ArrayList&lt;Integer&gt;(Arrays.asList(7,-12,12)));
+		bulbsTest1.add(new ArrayList&lt;Integer&gt;(Arrays.asList(8,12,-12)));
+		bulbsTest1.add(new ArrayList&lt;Integer&gt;(Arrays.asList(-3,-7,8)));
+		bulbsTest1.add(new ArrayList&lt;Integer&gt;(Arrays.asList(-5,-5,10)));
+		bulbsTest1.add(new ArrayList&lt;Integer&gt;(Arrays.asList(1,-1,5)));
+		bulbsTest1.add(new ArrayList&lt;Integer&gt;(Arrays.asList(7,9,10)));
+		bulbsTest1.add(new ArrayList&lt;Integer&gt;(Arrays.asList(6,11,10)));
+		bulbsTest1.add(new ArrayList&lt;Integer&gt;(Arrays.asList(-5,-10,6)));
+		bulbsTest1.add(new ArrayList&lt;Integer&gt;(Arrays.asList(-2,-7,5)));
+		bulbsTest1.add(new ArrayList&lt;Integer&gt;(Arrays.asList(-2,-3,-6)));
+		bulbsTest1.add(new ArrayList&lt;Integer&gt;(Arrays.asList(6,-11,10)));
+		bulbsTest1.add(new ArrayList&lt;Integer&gt;(Arrays.asList(-7,7,12)));
+		bulbsTest1.add(new ArrayList&lt;Integer&gt;(Arrays.asList(-4,5,-4)));
+		bulbsTest1.add(new ArrayList&lt;Integer&gt;(Arrays.asList(-4,-4,8)));
+		bulbsTest1.add(new ArrayList&lt;Integer&gt;(Arrays.asList(-9,12,-14)));
+		bulbsTest1.add(new ArrayList&lt;Integer&gt;(Arrays.asList(-9,11,11)));
+		bulbsTest1.add(new ArrayList&lt;Integer&gt;(Arrays.asList(2,-4,3)));
+		
+		
+		ArrayList&lt;Boolean&gt; solvedBooleans = solve(bulbsTest1);
+		for(boolean bool : solvedBooleans) {
+			System.out.println(bool);
+		}
+		
+		System.out.println(&quot;Successful:&quot; + checkSuccessfulWiring(bulbsTest1));
+		System.out.println(&quot;Successful:&quot; + checkSuccessfulWiring(bulbsTest1));
+	}
+	
+	
+	public static ArrayList&lt;Boolean&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs) {
+		
+		
+		for(ArrayList&lt;Integer&gt; row : bulbs) {
+			for(int element : row) {
+				if(!hashMap.containsKey(Math.abs(element))) {
+					if(element&lt;0) {
+						hashMap.put(Math.abs(element), false);
+					}
+					else {
+						hashMap.put(Math.abs(element), true);
+					}
+				}
+				else if(hashMap.containsKey(Math.abs(element))) {
+					if(element&lt;0 &amp;&amp; hashMap.get(Math.abs(element)) == true) {
+						hashMap.put(Math.abs(element), false);
+					}
+					else if(element&gt;0 &amp;&amp; hashMap.get(Math.abs(element)) == false) {
+						hashMap.put(Math.abs(element), true);
+					}
+				}
+			}
+		}
+		
+		checkSuccessfulWiring(bulbs);
+		
+		int highestAbsoluteInteger = findHighestAbsoluteIntegerBulb(bulbs);
+		
+		
+		for(int i=1; i&lt;highestAbsoluteInteger+1; i++) {
+			if(hashMap.containsKey(i)) {
+				booleans.add(hashMap.get(i));
+			}
+			else if(!hashMap.containsKey(i)) {
+				booleans.add(false);
+			}
+		}
+		
+		return booleans;
+		
+	}
+	
+	
+	
+	
+	public static int findHighestAbsoluteIntegerBulb(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs) {
+		int highest = 0;
+		for(ArrayList&lt;Integer&gt; row : bulbs) {
+<A NAME="1"></A>			for(int element : row) {
+				if(Math.abs(element) &gt; highest) {
+					highest = Math.abs(element);
+				}<FONT color="#f63526"><A HREF="javascript:ZweiFrames('match598-1.html#1',3,'match598-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>
+			}
+		}
+		return highest;
+	}
+	
+	
+	public static boolean checkSuccessfulWiring(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs) {
+		boolean bulbFound = false;</B></FONT>
+		for(ArrayList&lt;Integer&gt; row : bulbs) {
+			bulbFound = false; 
+			for(int element : row) {
+				if(element&lt;0 &amp;&amp; hashMap.get(Math.abs(element)) == false) {
+					
+					bulbFound = true;
+					break;
+				}
+				else if(element&gt;0 &amp;&amp; hashMap.get(Math.abs(element)) == true) {
+					
+					bulbFound = true;
+					break;
+				}
+				else {
+					
+					if(hashMap.get(Math.abs(element))==true) {
+						hashMap.put(Math.abs(element), false);
+					}
+					else if(hashMap.get(Math.abs(element))==false) {
+						hashMap.put(Math.abs(element), true);
+					}
+					bulbFound = true;
+				}
+			}
+			
+			
+			if(!bulbFound) {
+				System.out.println(&quot;Row with no true bulb found at &quot;);
+				for(int element : row) {
+					System.out.print(element + &quot;:&quot; + hashMap.get(Math.abs(element)) + &quot; &quot;);
+				}
+				System.out.println();
+				return false;
+			}
+		}
+		
+		return true;
+	}
+
+}
+</PRE>
+
+</BODY>
+</HTML>

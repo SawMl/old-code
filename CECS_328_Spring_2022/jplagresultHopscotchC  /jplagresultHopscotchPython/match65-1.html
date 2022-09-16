@@ -1,0 +1,195 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>107234467</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+
+def solve(grid):
+    bestPoints = bestPointDict(grid)
+    startPoints = startPositionList(grid)
+    startKeys = list(startPoints.keys())
+    numMoves = len(grid[0]) - 1
+    bestMove = []
+    highestPoints = 0
+
+    # Looping through the possible starting positions
+    for sNum, sPoint in enumerate(startKeys):
+        movesList = []
+        leaveCheck = int(len(grid[0]) / 2)
+
+        if sPoint[0] == 0:
+            movesList.append(1)
+        else:
+            movesList.append(0)
+        
+        movesList.append(sPoint[1])
+
+
+        # Loops for number of available moves, which is length of column - 1
+        for moveNum in range(1, numMoves + 1):
+            movesLeft = numMoves - moveNum
+            if moveNum == 1:
+                curMove = bestPoints[sPoint]
+                prevMove = [sPoint[0], sPoint[1]]
+            else:
+                prevMove = curMove
+                curMove = bestPoints[(curMove[0], curMove[1])]
+                posCheck = [prevMove[0] - 0, (len(grid) - 1) - prevMove[0]]
+                if posCheck[0] == movesLeft:
+                    nextCol = 0 if prevMove[1] + 1 == len(grid[0]) else prevMove[1] + 1
+                    rowUp = len(grid) - 1 if prevMove[0] - 1 == -1 else prevMove[0] - 1
+                    if grid[rowUp][nextCol] &gt; grid[prevMove[0]][nextCol]:
+                        curMove = [rowUp, nextCol]
+                    else:
+                        curMove = [prevMove[0], nextCol]
+                elif posCheck[1] == movesLeft:
+                    nextCol = 0 if prevMove[1] + 1 == len(grid[0]) else prevMove[1] + 1
+                    rowDown = 0 if curMove[0] + 1 == len(grid) else curMove[0] + 1
+                    if grid[rowDown][nextCol] &gt; grid[prevMove[0]][nextCol]:
+                        curMove = [rowDown, nextCol]
+                    else:
+                        curMove = [prevMove[0], nextCol]
+
+
+            moveCheck = prevMove[0] - curMove[0]
+
+            if (moveCheck == 1) or (moveCheck == -1) or (moveCheck == 0):
+                movesList.append(moveCheck)
+            elif moveCheck == len(grid) - 1:
+                movesList.append(-1)
+            else:
+                movesList.append(1)
+            
+            if moveNum &gt;= leaveCheck:
+                posFromExit = [curMove[0] - 0, (len(grid) - 1) - curMove[0]]
+                if (movesLeft == posFromExit[0]) and (movesLeft == posFromExit[1]):
+                    nextCol = 0 if curMove[1] + 1 == len(grid[0]) else curMove[1] + 1
+                    rowUp = len(grid) - 1 if curMove[0] - 1 == -1 else curMove[0] - 1
+                    rowDown = 0 if curMove[0] + 1 == len(grid) else curMove[0] + 1
+
+                    if grid[rowUp][nextCol] &gt; grid[rowDown][nextCol]:
+                        for i in range(movesLeft):
+                            movesList.append(1)
+                    else:
+                        for i in range(movesLeft):
+                            movesList.append(-1)
+                elif movesLeft == posFromExit[0]:
+                    for i in range(movesLeft):
+                        movesList.append(1)
+                elif movesLeft == posFromExit[1]:
+                    for i in range(movesLeft):
+                        movesList.append(-1)
+            
+            if len(movesList) == len(grid[0]) + 1:
+                break
+
+
+        totalPoints = calculatePoints(grid, movesList)
+
+        # Compares and replaces for the highest amount of points and best move list
+        if sNum == 0:
+            highestPoints = totalPoints
+            bestMoves = movesList
+        elif highestPoints &lt; totalPoints:
+            highestPoints = totalPoints
+            bestMoves = movesList
+
+    return bestMoves
+        
+
+# Creates a dictionary showing the best path for the most points for each element
+# Dictionary contains matrix coordinates for the key(current position) and value(next position)
+def bestPointDict(grid):
+<A NAME="0"></A>    bestPoint = {}
+    for row in range(len(grid)):
+        for col in range(len(grid[0])):
+            rowNumHigh <FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match65-0.html#0',2,'match65-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>= row + 1
+            rowNumLow = row - 1
+            colNum = col + 1
+
+            if colNum == len(grid[0]):
+                colNum = 0
+            if rowNumHigh == len(grid):
+                rowNumHigh =</B></FONT> 0
+            if rowNumLow == -1:
+                rowNumLow = len(grid) - 1
+            
+            highestPoint = 0
+            highestPosition = 0
+
+            if grid[rowNumHigh][colNum] &gt;= highestPoint:
+                highestPoint = grid[rowNumHigh][colNum]
+                highestPosition = 0
+            if grid[row][colNum] &gt;= highestPoint:
+                highestPoint = grid[row][colNum]
+                highestPosition = 1
+            if grid[rowNumLow][colNum] &gt;= highestPoint:
+                highestPoint = grid[rowNumLow][colNum]
+                highestPosition = 2
+
+            if highestPosition == 0:
+                bestPoint[row, col] = [rowNumHigh, colNum]
+            elif highestPosition == 1:
+                bestPoint[row, col] = [row, colNum]
+            elif highestPosition == 2:
+                bestPoint[row, col] = [rowNumLow, colNum]
+    
+    return bestPoint
+
+# Creates a dictionary for all the possible starting positions and sorts them from most points to least
+def startPositionList(grid):
+    startPosition = {}
+    for i in range(len(grid[0])):
+        startPosition[0, i] = grid[0][i]
+        startPosition[len(grid) - 1, i] = grid[len(grid) - 1][i]
+
+    startPosition = {i : j for i, j in sorted(startPosition.items(), key=lambda item: item[1], reverse=True)}
+    
+    return startPosition
+
+# Calculating the points given the list of moves
+def calculatePoints(grid, moves):
+    points = 0
+
+    if moves[0] == 1:
+        startPos = [0, moves[1]]
+    else:
+        startPos = [len(grid) - 1, moves[1]]
+    
+    points += grid[startPos[0]][startPos[1]]
+
+    nextPos = startPos
+
+    for move in range(2, len(moves)):
+        nextCol = 0 if (nextPos[1] + 1 == len(grid[0])) else nextPos[1] + 1
+
+        if moves[move] == 0:
+            nextPos = [nextPos[0], nextCol]
+        elif moves[move] == 1:
+            nextRow = len(grid) - 1 if (nextPos[0] - 1 == -1) else nextPos[0] - 1
+            nextPos = [nextRow, nextCol]
+        else:
+            nextRow = 0 if (nextPos[0] + 1 == len(grid)) else nextPos[0] + 1
+            nextPos = [nextRow, nextCol]
+        
+        points += grid[nextPos[0]][nextPos[1]]
+
+    return points
+</PRE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>572216471</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+
+public class StudentSolver {
+
+    
+    
+<A NAME="0"></A>    static int indexConfirm(int objectSize, int currentLocal){
+        if (currentLocal &lt; 0){
+            return objectSize;
+        }else if (currentLocal &gt; objectSize)<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match205-1.html#0',3,'match205-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>{
+            return 0;
+        }
+        return currentLocal;
+    }
+
+    static </B></FONT>int maxFind(ArrayList&lt;Integer&gt; row){
+        int maxValue = -1;
+        for (Integer integer : row) {
+            if (integer &gt; maxValue) {
+                maxValue = integer;
+            }
+        }
+        return maxValue;
+    }
+    public static ArrayList&lt;Integer&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid){
+        
+        int column_num = grid.get(0).size()-1;
+        int row_num = grid.size()-1; 
+        System.out.println(&quot;Row and Column sizes:&quot;+(row_num+1) +&quot; &quot;+(column_num+1));
+        ArrayList&lt;Integer&gt; answer = new ArrayList&lt;&gt;();
+
+        
+        
+        int [] indexPointer = new int[2];
+        int end_point;
+        
+        int topDist= 0;
+        int botDist= 0;
+        if (maxFind(grid.get(0)) &gt;= maxFind(grid.get(row_num))){
+            answer.add(1);
+            
+            indexPointer[1] =grid.get(0).indexOf(maxFind(grid.get(0)));
+            botDist = row_num;
+        }else{
+            answer.add(0);
+            indexPointer[0] = row_num;
+            indexPointer[1] =grid.get(row_num).indexOf(maxFind(grid.get(row_num)));
+            topDist = row_num;
+        }
+        end_point = indexConfirm(column_num ,(indexPointer[1] - 1));
+        answer.add(indexPointer[1]);
+        System.out.print(&quot;first point &quot;+ Arrays.toString(indexPointer) +&quot; &quot;+indexPointer[0] +&quot; &quot; + indexPointer[1]);
+        
+    
+        for(int i = 1; i &lt; column_num+1; i++) {
+<A NAME="1"></A>            
+            
+            indexPointer[1] = indexConfirm(column_num, indexPointer[1] + 1);
+            <FONT color="#f63526"><A HREF="javascript:ZweiFrames('match205-1.html#1',3,'match205-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>int downDirect = grid.get(indexConfirm(row_num, indexPointer[0] - 1)).get(indexPointer[1]);
+            int upDirect = grid.get(indexConfirm(row_num, indexPointer[0] + 1)).get(indexPointer[1]);
+            int straightDirect = grid.get</B></FONT>(indexPointer[0]).get(indexPointer[1]);
+            
+
+            if ((downDirect &gt;= upDirect &amp;&amp; downDirect &gt;= straightDirect)
+                    &amp;&amp; (indexConfirm(row_num, botDist - 1) &lt; column_num - (i - 1)
+                    || indexConfirm(row_num, topDist + 1) &gt; column_num - (i - 1))) 
+            { 
+                answer.add(-1);
+                indexPointer[0] = indexConfirm(row_num, indexPointer[0] - 1);
+                topDist = indexConfirm(row_num, topDist + 1);
+                botDist = indexConfirm(row_num, botDist - 1);
+               
+            } else if ((upDirect &gt;= downDirect &amp;&amp; upDirect &gt;= straightDirect)
+                    &amp;&amp; (indexConfirm(row_num, topDist - 1) &lt; column_num - (i - 1)
+                    || indexConfirm(row_num, botDist + 1) &gt; column_num - (i - 1))) 
+            {
+                answer.add(1);
+                indexPointer[0] = indexConfirm(row_num, indexPointer[0] + 1);
+                topDist = indexConfirm(row_num, topDist - 1);
+                botDist = indexConfirm(row_num, botDist + 1);
+                
+            /*}else if((indexConfirm(row_num, botDist - 1) &lt; (indexConfirm(row_num, topDist - 1)))
+                        &amp;&amp; indexConfirm(row_num, botDist - 1) == column_num-i)
+            {
+                answer.add(-1);
+                indexPointer[0] = indexConfirm(row_num, indexPointer[0] - 1);
+                topDist = indexConfirm(row_num, topDist + 1);
+                botDist = indexConfirm(row_num, botDist - 1);
+                running_total += downDirect;
+            }else if((indexConfirm(row_num, botDist - 1) &gt; (indexConfirm(row_num, topDist - 1)))
+                    &amp;&amp; indexConfirm(row_num, topDist - 1) == column_num-i){
+                answer.add(1);
+                indexPointer[0] = indexConfirm(row_num, indexPointer[0] + 1);
+                topDist = indexConfirm(row_num, topDist - 1);
+                botDist = indexConfirm(row_num, botDist + 1);
+                running_total += downDirect;*/
+            }else{
+                
+                answer.add(0);
+             
+            }
+
+            System.out.print(Arrays.toString(indexPointer));
+        }
+        System.out.println(&quot;&quot;);
+        System.out.println(end_point);
+        
+        
+        
+        return answer;
+    }
+}
+</PRE>
+
+</BODY>
+</HTML>

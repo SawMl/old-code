@@ -1,0 +1,201 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>531501607</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.TreeSet;
+
+public class StudentSolver{
+	private static final int CONDUCTING = 1;
+	private static final int NO_WIRE = 0;
+	private static final int NON_CONDUCTING = -1;
+	
+	private static int randBetween(int min, int max){
+<A NAME="4"></A>	    int r = min + (int)(Math.random()*(max-min)) + 1;
+	    if(Math.random()&gt;0.5)
+	        return -r;
+	    return <FONT color="#151b8d"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match340-0.html#4',2,'match340-top.html#4',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>r;
+	}
+	
+	private static boolean isSolved(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs, ArrayList&lt;Integer&gt; wires) {
+		for(ArrayList&lt;Integer&gt; row: bulbs) {</B></FONT>
+			if(!isGlowing(wires, row))
+<A NAME="1"></A>				return false;
+		}
+		return true;
+	}<FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match340-0.html#1',2,'match340-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>
+	
+	private static ArrayList&lt;ArrayList&lt;Integer&gt;&gt; genBulbs(int row, int m){
+	    ArrayList&lt;Integer&gt; wires = new ArrayList&lt;&gt;();
+	    
+	    for(int i=0;i&lt;m;i++)
+	        wires.add( Math.</B></FONT>random()&gt;0.5 ? CONDUCTING : NON_CONDUCTING);
+	    
+	    int SEP = m&gt;30?15:m;
+	    int mn = 0;
+	    int mx = SEP;
+	    int rf = row/m;
+	    rf = rf != 0?rf:1;
+	    
+	    ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs = new ArrayList&lt;&gt;();
+	    
+	    for(int i=0;i&lt;row;i++){
+	    	
+	        ArrayList&lt;Integer&gt; newRow = null;
+	        while(newRow == null){
+	        	Integer[] r = new Integer[]{ 
+	                randBetween(mn, mx), 
+	                randBetween(mn, mx), 
+	                randBetween(mn, mx)
+	            };
+	            
+	            newRow = new ArrayList&lt;Integer&gt;();
+	            newRow.addAll(Arrays.asList(r));
+	            
+	            if(!isGlowing(wires, newRow)) {
+	            	newRow = null;
+	            	continue;
+	            }
+	            
+	            
+	            int ar0 = Math.abs(r[0]);
+	            int ar1 = Math.abs(r[1]);
+	            int ar2 = Math.abs(r[2]);
+	            
+	            if (Math.abs(ar0-ar1)&gt;5 ||
+	                Math.abs(ar1-ar2)&gt;5 ||
+	                Math.abs(ar0-ar2)&gt;5)
+	                newRow = null;
+	        }
+
+	        if(i%rf == 0 &amp;&amp; i != 0){
+	            mn = Math.min(mn+SEP, m-SEP);
+	            mx = Math.min(mx+SEP, m);
+	        }
+	        
+	        bulbs.add(newRow);
+	    }
+	    
+	    return bulbs;
+	}
+<A NAME="2"></A>	
+	private static int wireState(int i) {
+		return (i &gt; 0 ? CONDUCTING : NON_CONDUCTING);
+	}<FONT color="#77bfc7"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match340-0.html#2',2,'match340-top.html#2',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>
+	
+	private static boolean isGlowing(ArrayList&lt;Integer&gt; wires,ArrayList&lt;Integer&gt; row) {
+	    for(int b: row){
+<A NAME="3"></A>	        int ab = Math.abs(b)-1;
+	        if ((wires.get(ab) == CONDUCTING &amp;&amp; b&gt;0) || 
+	        		(wires.get(ab) == NON_CONDUCTIN</B></FONT>G &amp;&amp; b&lt;0))
+	            return true;<FONT color="#6cc417"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match340-0.html#3',2,'match340-top.html#3',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>
+	    }
+	    return false;
+	}
+	
+	public static ArrayList&lt;Boolean&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs){
+		
+	    int maxWire = -1000_000_000;</B></FONT>
+	    for(ArrayList&lt;Integer&gt; row: bulbs){
+	        for(int r: row){
+	            int ra = Math.abs(r);
+	            if(ra&gt;maxWire)  maxWire = ra;
+	        }
+	    }
+
+	    
+	    ArrayList&lt;Integer&gt; wires = new ArrayList&lt;&gt;();
+	    
+	    
+	    ArrayList&lt;Set&lt;Integer&gt;&gt; indices = new ArrayList&lt;&gt;();
+	    for(int i=0;i&lt;maxWire;i++) {
+	        indices.add(new TreeSet&lt;Integer&gt;());
+	        wires.add(NO_WIRE);
+<A NAME="0"></A>	    }
+
+	    
+	    for(int<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match340-0.html#0',2,'match340-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B> i=0;i&lt;bulbs.size();i++){
+	        ArrayList&lt;Integer&gt; row = bulbs.get(i);
+	        indices.get(Math.abs(row.get(0))-1)</B></FONT>.add(i);
+	        indices.get(Math.abs(row.get(1))-1).add(i);
+	        indices.get(Math.abs(row.get(2))-1).add(i);
+	    }
+
+	    
+	    Set&lt;Integer&gt; remaining = new TreeSet&lt;&gt;();
+	    for(int i=0;i&lt;bulbs.size();i++)
+	        remaining.add(i);
+
+	    int fails = 0;
+	    
+	    while(remaining.size() != 0){
+	    	Iterator&lt;Integer&gt; it = remaining.iterator();
+	    	Integer index = it.next();
+	        remaining.remove(index);
+
+	        ArrayList&lt;Integer&gt; row = bulbs.get(index);
+
+	        if(isGlowing(wires, row)) 
+	        	continue;
+	        
+	        boolean is_solved = false;
+	        for(int i: row){
+	            int ai = Math.abs(i)-1;
+	            if(wires.get(ai) == NO_WIRE){
+	                wires.set(ai, wireState(i));
+	                is_solved = true;
+	                break;
+	            }
+	        }
+	        
+	        if(!is_solved){            
+	            int chng = (int)(Math.random()*100)%3;
+	            
+	            int wi = Math.abs(row.get(chng))-1;
+	            wires.set(wi, wireState(row.get(chng)));
+	            
+	            Set&lt;Integer&gt; append = indices.get(wi);
+	            remaining.addAll(append);
+	            
+	            fails++;
+	        }
+
+	    }
+	    
+	    System.out.println(&quot;Fails: &quot;+fails);
+	    System.out.println(&quot;Solved?: &quot; + isSolved(bulbs, wires));
+	    ArrayList&lt;Boolean&gt; ret = new ArrayList&lt;&gt;();
+	    for(int s: wires)
+	        ret.add(s == CONDUCTING? true: false);
+	    
+	    return ret;
+	}
+	
+	
+
+
+
+
+}
+</PRE>
+
+</BODY>
+</HTML>

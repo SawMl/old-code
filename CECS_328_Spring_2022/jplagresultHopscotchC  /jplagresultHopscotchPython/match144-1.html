@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>493205352</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+def solve(grid):
+
+    def recur(i,j,n,m,now):
+        j=j%m
+        if(j%m==(now-1)%m):
+            if(i==0 or i==n-1):
+                dp[i][j][0]=grid[i][j]
+                return grid[i][j]
+
+            else:
+                return -1
+
+
+        if(dp[i][j][0]&gt;0):
+           return dp[i][j][0]
+        else:
+            a=recur((i+1)%n,j+1,n,m,now)
+            b=recur(i,j+1,n,m,now)
+            c=recur((i-1)%n,j+1,n,m,now)  
+            k=[a,b,c]
+            c=max(k)
+<A NAME="0"></A>            if(c&gt;=1):
+                dp[i][j][0]=c+grid[i][j]
+                if(a==c):
+                    dp<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match144-0.html#0',2,'match144-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>[i][j][1]=1
+                elif(b==c):
+                    dp[i][j][1]=0
+                else:
+                    dp[i][j][1]=</B></FONT>-1
+                return c+grid[i][j]
+            else:
+                return 0
+
+    n=len(grid)
+    m=len(grid[0])
+    
+    tot=[]
+    for i in range(m):
+        dp=[[[0,0] for i in range(m)] for j in range(n)]
+        k=recur(0,i,n,m,i)
+        k=[k]+dp
+        tot.append(k)
+    for i in range(m):
+        dp=[[[0,0] for i in range(m)] for j in range(n)]
+        k=recur(n-1,i,n,m,i)
+        k=[k]+dp
+        tot.append(k)
+    k=0
+    ind=-1
+    for i in range(len(tot)):
+        if(tot[i][0]&gt;k):
+            k=tot[i][0]
+            ind=i
+    printer=[]
+    dp=tot[ind][1:]
+    if(ind&lt;=m):
+        row=0
+        col=ind%m
+        printer=[1,col]
+    else:
+        row=n-1
+        col=ind%m
+        printer=[0,col]
+
+        
+    cou=m-1
+    while(cou):
+        cou-=1
+        printer.append(-dp[row%n][col%m][1])
+        if(dp[row%n][col%m][1]==-1):
+            row-=1
+        if(dp[row%n][col%m][1]==1):
+            row+=1
+        col+=1
+    return printer
+
+grid = [[3, 4, 1, 2, 8, 6],
+        [6, 1, 8, 2, 7, 4],
+        [5, 4, 3, 9, 9, 5],
+        [5, 9, 8, 3, 2, 6],
+        [8, 7, 2, 9, 6, 4]]
+
+
+print(*solve(grid))
+</PRE>
+
+</BODY>
+</HTML>

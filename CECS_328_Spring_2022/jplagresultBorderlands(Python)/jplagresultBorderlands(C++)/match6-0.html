@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>721975853</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>StudentSolver.cpp</CENTER></H3><HR>
+<PRE>
+#include &quot;StudentSolver.h&quot;
+
+
+vector&lt;bool&gt; StudentSolver::solve(vector&lt;vector&lt;int&gt;&gt;bulbs) {
+	
+	
+	int m1 = *max_element(bulbs[0].begin(), bulbs[0].end());;
+	int m2 = *max_element(bulbs[1].begin(), bulbs[1].end());;
+	int m3 = *max_element(bulbs[2].begin(), bulbs[2].end());;
+	int mid;
+	if (m1 &gt; m2) {
+		if (m1 &gt; m3) {
+			mid = m1;
+		}
+		else {
+			mid = m3;
+		}
+	}
+	else {
+		if (m2 &gt; m3) {
+			mid = m2;
+		}
+		else {
+			mid = m3;
+		}
+	}
+	mid = mid / 2;
+
+	for (int a = 0; a &lt; bulbs.size(); a++) {
+		for (int b = 0; b &lt; 3; b++) {
+			if (abs(bulbs[a][b]) == mid) {
+				if (bulbs[a][b] &gt;= 0) {
+					TFList.push_back(true);
+					break;
+				}
+				else {
+					TFList.push_back(false);
+					break;
+				}
+			}
+		}
+		if (bulbs.size() &gt; TFList.size()) {
+			TFList.push_back(true);
+<A NAME="0"></A>		}
+	}
+
+<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match6-1.html#0',3,'match6-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>	int small = mid - 1;
+	for (int a = 0; a &lt; bulbs.size(); a++) {
+		for (int b = 0; b &lt; 3; b++) {
+			if (abs(bulbs[a][b]) == small) {</B></FONT>
+				if (bulbs[a][b] &gt;= 0) {
+					if (TFList[a]) {
+						break;
+					}
+				}
+				else {
+					if (!TFList[a]) {
+						break;
+					}
+				}
+			}
+		}
+		if (bulbs.size() &gt; TFList.size()) {
+			TFList.push_back(true);
+		}
+		small--;
+	}
+
+	int big = mid + 1;
+	for (int a = 0; a &lt; bulbs.size(); a++) {
+		for (int b = 0; b &lt; 3; b++) {
+			if (abs(bulbs[a][b]) == big) {
+				if (bulbs[a][b] &gt;= 0) {
+					if (TFList[a]) {
+						break;
+					}
+				}
+				else {
+					if (!TFList[a]) {
+						break;
+					}
+				}
+			}
+		}
+		if (bulbs.size() &gt; TFList.size()) {
+			TFList.push_back(true);
+		}
+		big++;
+	}
+
+	return TFList;
+}
+</PRE>
+</BODY>
+</HTML>

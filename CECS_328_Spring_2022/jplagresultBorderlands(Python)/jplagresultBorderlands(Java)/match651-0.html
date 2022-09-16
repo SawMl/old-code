@@ -1,0 +1,664 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>268033001</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+import java.util.ArrayList;
+import java.util.Stack;
+import java.math.*;
+
+public class StudentSolver {
+	public static ArrayList&lt;Boolean&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs) {
+		
+		if(bulbs.size() == 0) {
+			return null;
+		}
+		for(int i = 0; i &lt; bulbs.size(); i++) {
+			if(bulbs.get(i).size() != 3) {
+				return null;
+			}
+		}
+		ArrayList&lt;Boolean&gt; answer = createDefaultAnswer(bulbs);
+		ArrayList&lt;Integer&gt; guaranteed = new ArrayList&lt;&gt;();
+		ArrayList&lt;Boolean&gt; bulbDone = new ArrayList&lt;&gt;();
+		for(int i = 0; i &lt; answer.size(); i++) {
+			bulbDone.add(false);
+		}
+		
+		
+		ArrayList&lt;ArrayList&lt;Integer&gt;&gt; belongs = createBelongs(bulbs, answer.size());
+		for(int i = 0; i &lt; belongs.size(); i++) {
+			if(belongs.get(i).size() ==1 ) {
+				
+				
+				if(!guaranteed.contains(belongs.get(i).get(0)))
+				guaranteed.add(belongs.get(i).get(0)); 
+				for(int j = 0; j &lt; 3; j++) {
+					
+					
+					if(Math.abs(bulbs.get(belongs.get(i).get(0)).get(j)) == (i+1)) {
+						
+						if(bulbs.get(belongs.get(i).get(0)).get(j) &gt; 0) {
+							
+							answer.set(i, true);
+							break;
+						}
+						else {
+							
+							answer.set(i, false);
+							break;
+						}
+					}
+				}
+				
+				bulbDone.set(i, true); 
+			}
+			else if(belongs.get(i).size()==0) { 
+				bulbDone.set(i, true);
+			}
+		}
+		int counter = 0;
+		
+		
+		
+		int changes = 1;
+		
+		while(changes == 1) {
+			changes = 0;
+			if(guaranteed.size() == bulbs.size()) {
+				
+			}
+			
+			counter++;
+			for(int i = 0; i &lt; bulbs.size(); i++) {
+				if(!guaranteed.contains(i)) {
+					
+					
+<A NAME="0"></A>				}
+				
+			}
+			Boolean previousNeg =<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match651-1.html#0',3,'match651-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B> false;
+			Boolean previousPos = false;
+			Boolean currentNeg = false;
+			Boolean currentPos = false;
+			Boolean survived = false;
+			
+			int count = 0;
+			for(int i = 0; i &lt; belongs.size(); i++) {
+				count = 0;</B></FONT>
+				if(!bulbDone.get(i)) {
+					
+					for(int j = 0; j &lt; belongs.get(i).size(); j++) {
+						previousPos = currentPos;
+						previousNeg = currentNeg;
+						if(!guaranteed.contains(belongs.get(i).get(j))) {
+							if(bulbs.get(belongs.get(i).get(j)).contains(i+1)) {
+								if(count == 0)
+									previousPos = true;	
+								currentPos = true;
+								
+							}
+							else {
+								currentPos = false;
+								
+
+							}
+							
+							if(bulbs.get(belongs.get(i).get(j)).contains(-1*(i+1))){
+								if(count == 0)
+									previousNeg = true;
+								currentNeg = true;
+								
+
+							}
+							else {
+								currentNeg = false;
+								
+
+							}
+							count++;
+							if(previousPos != currentPos &amp;&amp; previousNeg != currentNeg) {
+								survived = false;
+								break;
+							}
+							else {
+								survived = true;
+							}
+						}
+						
+					}
+					if(survived) {
+						changes = 1;
+						for(int g = 0; g &lt; belongs.get(i).size(); g++) {
+							if(!guaranteed.contains(belongs.get(i).get(g))) {
+							
+							guaranteed.add(belongs.get(i).get(g));
+							}
+						}
+						if(currentPos &amp;&amp; previousPos) {
+							
+							
+							answer.set(i, true);
+							bulbDone.set(i, true);
+							break;
+						}
+						else if(currentNeg &amp;&amp; previousNeg) {
+							
+							answer.set(i, false);
+							bulbDone.set(i, true);
+							break;
+						}
+						else {
+							
+							break;
+						}
+					}
+				}
+			}
+		}
+		System.out.println(&quot;Guaranteed after firrst: &quot; + guaranteed.toString());
+		if(guaranteed.size() == bulbs.size()) {
+			return answer;
+		}
+		
+		ArrayList&lt;Integer&gt; notGuar = new ArrayList&lt;&gt;();
+		ArrayList&lt;Integer&gt; tempAnswer = new ArrayList&lt;&gt;();
+		ArrayList&lt;Integer&gt; tempBulbsDone = new ArrayList&lt;&gt;();
+		
+		ArrayList&lt;Integer&gt; rowResMade = new ArrayList&lt;&gt;();
+		
+		Stack&lt;Integer&gt; guarMade = new Stack&lt;&gt;(); 
+		ArrayList&lt;Integer&gt; restricted = new ArrayList&lt;&gt;(); 
+		
+		for(int i = 0; i &lt; bulbs.size(); i++) {
+			if(!guaranteed.contains(i)) {
+				System.out.println(bulbs.get(i).toString());
+				notGuar.add(i);
+			}
+		}
+		for(int i = 0; i &lt; notGuar.size(); i++) {
+			rowResMade.add(0);
+		}
+		System.out.println(&quot;Row Res: &quot; + rowResMade.toString());
+		
+		
+		
+		
+		
+		
+		
+		int rowIndex = 0;
+		int row = notGuar.get(rowIndex);
+		int rowsChanged = 0;
+		int current = 0;
+		int match = 0;
+		int counted = 0;
+		int badCount = 0;
+		Boolean impFlag = false;
+		
+		
+		
+		
+		while(rowIndex &lt; notGuar.size()) {
+		
+			counted++;
+		
+			
+			
+			if(!guaranteed.contains(row)) {
+				impFlag = false;
+				guarMade.push(rowsChanged);
+				rowsChanged = 0;
+				
+				badCount = 0;
+				for(int i =0; i &lt; 3; i++) {
+					
+					
+
+					current = (bulbs.get(notGuar.get(rowIndex)).get(i)); 
+					
+					if(!tempBulbsDone.contains(Math.abs(current)) &amp;&amp; !restricted.contains(current)) {
+						
+<A NAME="1"></A>							
+						tempAnswer.add(current);
+						
+						tempBulbsDone.add(Math.abs(current));<FONT color="#f63526"><A HREF="javascript:ZweiFrames('match651-1.html#1',3,'match651-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>
+						
+						guaranteed.add(notGuar.get(rowIndex));
+						
+						rowsChanged++;
+						
+						for(int j = 0; j &lt; notGuar.size(); j++) {
+							impFlag = false;</B></FONT>
+							match = 0;
+							if(bulbs.get(notGuar.get(j)).contains(current) &amp;&amp; j != rowIndex &amp;&amp; !guaranteed.contains(notGuar.get(j))) { 
+								
+								guaranteed.add(notGuar.get(j)); 
+								rowsChanged++;
+							}
+							
+							else if((bulbs.get(notGuar.get(j)).contains(-1*current)) &amp;&amp; j != rowIndex &amp;&amp; !guaranteed.contains(notGuar.get(j))) { 
+								
+								for(int k = 0; k &lt; 3; k++) {
+									if(!tempBulbsDone.contains(Math.abs(bulbs.get(notGuar.get(j)).get(k)))) { 
+										match++;
+										
+									}
+									
+								}
+								if(match == 0) { 
+									rowResMade.set(rowIndex, rowResMade.get(rowIndex)+1);
+									restricted.add(current);
+									tempBulbsDone.remove(tempBulbsDone.size()-1);
+									tempAnswer.remove(tempAnswer.size()-1);
+									
+									for(int m = 0; m &lt; rowsChanged; m++) {
+										guaranteed.remove(guaranteed.size()-1); 
+									}
+									rowsChanged = 0;
+									
+									impFlag = true;
+									
+									break;
+								}
+							}
+						}
+						if(!impFlag) { 
+							rowIndex++;
+							if(rowIndex &gt;= notGuar.size()) {
+								break;
+							}
+							row = notGuar.get(rowIndex);
+							
+							
+							break;
+						}
+						else { 
+							if(i == 2) {
+								
+								rowResMade.set(rowIndex, 0);
+								rowIndex--;
+								if(rowIndex &lt; 0) {
+									return answer;
+								}
+								restricted.remove(restricted.size()-1);
+								restricted.remove(restricted.size()-1);
+								restricted.remove(restricted.size()-1);
+								
+								System.out.println( tempBulbsDone.get(tempBulbsDone.size()-1) + &quot; Must have been a bad bulb &quot;);
+								rowResMade.set(rowIndex, rowResMade.get(rowIndex)+1);
+								restricted.add(tempAnswer.get(tempAnswer.size()-1));
+								tempAnswer.remove(tempAnswer.size()-1);
+								tempBulbsDone.remove(tempBulbsDone.size()-1);
+								rowsChanged = guarMade.pop();
+								for(int b = 0; b &lt; rowsChanged; b++) {
+									guaranteed.remove(guaranteed.size()-1);
+								}
+							}
+							
+						}
+					}
+					else {
+						badCount++;
+						if(badCount == 3) {
+							
+							rowIndex--;
+							if(rowIndex &lt; 0) {
+								return answer;
+							}
+							
+							
+						
+							
+							
+							rowResMade.set(rowIndex, rowResMade.get(rowIndex)+1);
+							
+							for(int h = 0; h &lt; rowResMade.get(rowIndex+1); h++) {
+								restricted.remove(restricted.size()-1);
+							}		
+							rowResMade.set(rowIndex+1, 0);
+							restricted.add(tempAnswer.get(tempAnswer.size()-1));
+							tempAnswer.remove(tempAnswer.size()-1);
+							tempBulbsDone.remove(tempBulbsDone.size()-1);
+							rowsChanged = guarMade.pop();
+							for(int b = 0; b &lt; rowsChanged; b++) {
+								guaranteed.remove(guaranteed.size()-1);
+							}
+						}
+					}
+				}
+				
+			}
+			else {
+				
+				
+				rowIndex++;
+				if(rowIndex &gt;= notGuar.size()) {
+					break;
+				}
+				row = notGuar.get(rowIndex);
+			}
+		}
+		
+		for(int i = 0; i &lt; tempAnswer.size(); i++) {
+<A NAME="2"></A>			if(tempAnswer.get(i) &gt; 0) {
+				answer.set(Math.abs(tempAnswer.get(i))-1, true);
+			}
+		}<FONT color="#77bfc7"><A HREF="javascript:ZweiFrames('match651-1.html#2',3,'match651-top.html#2',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>
+		
+		return answer;
+		
+		
+	}
+	public static void main(String[] args) {
+		
+		ArrayList&lt;Boolean&gt; answer = new ArrayList&lt;Boolean&gt;();
+		ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs = new ArrayList&lt;&gt;();
+		/*
+		ArrayList&lt;Integer&gt; row1 = new ArrayList&lt;&gt;();
+		row1.add(-5);
+		row1.add(-3);
+		row1.add(10);
+		ArrayList&lt;Integer&gt; row2 = new ArrayList&lt;&gt;();
+		row2.add(5);
+		row2.add(3);
+		row2.add(-10);
+		bulbs.add(row1);
+		
+		
+		
+		
+		*/
+		ArrayList&lt;Integer&gt; row1 = new ArrayList&lt;&gt;();</B></FONT>
+		ArrayList&lt;Integer&gt; row2 = new ArrayList&lt;&gt;();
+		ArrayList&lt;Integer&gt; row3 = new ArrayList&lt;&gt;();
+		ArrayList&lt;Integer&gt; row4 = new ArrayList&lt;&gt;();
+		ArrayList&lt;Integer&gt; row5 = new ArrayList&lt;&gt;();
+		ArrayList&lt;Integer&gt; row6 = new ArrayList&lt;&gt;();
+		ArrayList&lt;Integer&gt; row7 = new ArrayList&lt;&gt;();
+		ArrayList&lt;Integer&gt; row8 = new ArrayList&lt;&gt;();
+		ArrayList&lt;Integer&gt; row9 = new ArrayList&lt;&gt;();
+		ArrayList&lt;Integer&gt; row10 = new ArrayList&lt;&gt;();
+		ArrayList&lt;Integer&gt; row11 = new ArrayList&lt;&gt;();
+		ArrayList&lt;Integer&gt; row12 = new ArrayList&lt;&gt;();
+		ArrayList&lt;Integer&gt; row13 = new ArrayList&lt;&gt;();
+		ArrayList&lt;Integer&gt; row14 = new ArrayList&lt;&gt;();
+		ArrayList&lt;Integer&gt; row15 = new ArrayList&lt;&gt;();
+		ArrayList&lt;Integer&gt; row16 = new ArrayList&lt;&gt;();
+		ArrayList&lt;Integer&gt; row17 = new ArrayList&lt;&gt;();
+		ArrayList&lt;Integer&gt; row18 = new ArrayList&lt;&gt;();
+		ArrayList&lt;Integer&gt; row19 = new ArrayList&lt;&gt;();
+		ArrayList&lt;Integer&gt; row20 = new ArrayList&lt;&gt;();
+		ArrayList&lt;Integer&gt; row21 = new ArrayList&lt;&gt;();
+		ArrayList&lt;Integer&gt; row22 = new ArrayList&lt;&gt;();
+		ArrayList&lt;Integer&gt; row23 = new ArrayList&lt;&gt;();
+		ArrayList&lt;Integer&gt; row24 = new ArrayList&lt;&gt;();
+		ArrayList&lt;Integer&gt; row25 = new ArrayList&lt;&gt;();
+		ArrayList&lt;Integer&gt; row26 = new ArrayList&lt;&gt;();
+		ArrayList&lt;Integer&gt; row27 = new ArrayList&lt;&gt;();
+		ArrayList&lt;Integer&gt; row28 = new ArrayList&lt;&gt;();
+		ArrayList&lt;Integer&gt; row29 = new ArrayList&lt;&gt;();
+		ArrayList&lt;Integer&gt; row30 = new ArrayList&lt;&gt;();
+		ArrayList&lt;Integer&gt; row31 = new ArrayList&lt;&gt;();
+		ArrayList&lt;Integer&gt; row32 = new ArrayList&lt;&gt;();
+		ArrayList&lt;Integer&gt; row33 = new ArrayList&lt;&gt;();
+		
+		row1.add(-5); row1.add(7); row1.add(-6);
+		row2.add(3); row2.add(3); row2.add(-8);
+		row3.add(-9); row3.add(-12); row3.add(-12);
+		row4.add(-6); row4.add(10); row4.add(-7);
+		row5.add(-2); row5.add(-7); row5.add(5);
+		row6.add(-2); row6.add(3); row6.add(-2);
+		row7.add(7); row7.add(10); row7.add(-12);
+		row8.add(-1); row8.add(1); row8.add(-6);
+		row9.add(3); row9.add(-6); row9.add(-4);
+		row10.add(-6); row10.add(-11); row10.add(11);
+		row11.add(13); row11.add(-13); row11.add(-13);
+		row12.add(-6); row12.add(-7); row12.add(7);
+		row13.add(-6); row13.add(-7); row13.add(11);
+		row14.add(6); row14.add(9); row14.add(7);
+		row15.add(-8); row15.add(11); row15.add(9);
+		row16.add(8); row16.add(9); row16.add(10);
+		row17.add(1); row17.add(6); row17.add(1);
+		row18.add(4); row18.add(-5); row18.add(-7);
+		row19.add(-3); row19.add(-7); row19.add(-5);
+		row20.add(2); row20.add(5); row20.add(-2);
+		row21.add(-1); row21.add(5); row21.add(3);
+		row22.add(6); row22.add(-9); row22.add(6);
+		row23.add(1); row23.add(5); row23.add(5);
+		row24.add(-2); row24.add(-3); row24.add(-7);
+		row25.add(2); row25.add(3); row25.add(6);
+		row26.add(-1); row26.add(5); row26.add(3);
+		row27.add(-1); row27.add(6); row27.add(3);
+		row28.add(-8); row28.add(-8); row28.add(-11);
+		row29.add(9); row29.add(13); row29.add(-10);
+		row30.add(4); row30.add(4); row30.add(5);
+		row31.add(6); row31.add(6); row31.add(-9);
+		row32.add(-5); row32.add(9); row32.add(6);
+		row33.add(4); row33.add(-5); row33.add(6);
+		
+		
+		/*row1.add(-5); row1.add(4); row1.add(-6);
+		row2.add(2); row2.add(3); row2.add(-8);
+		row3.add(-9); row3.add(12); row3.add(-12);
+		row4.add(-6); row4.add(6); row4.add(-7);
+		row5.add(-2); row5.add(-7); row5.add(5);
+		row6.add(2); row6.add(3); row6.add(-2);
+		row7.add(7); row7.add(10); row7.add(-12);
+		row8.add(-1); row8.add(-1); row8.add(-6);
+		row9.add(3); row9.add(-6); row9.add(-4);
+		row10.add(-6); row10.add(-11); row10.add(13);
+		row11.add(13); row11.add(-13); row11.add(-13);
+		row12.add(-6); row12.add(7); row12.add(7);
+		row13.add(-6); row13.add(-7); row13.add(11);
+		row14.add(6); row14.add(9); row14.add(7);
+		row15.add(8); row15.add(11); row15.add(9);
+		row16.add(8); row16.add(9); row16.add(10);
+		row17.add(1); row17.add(2); row17.add(1);
+		row18.add(4); row18.add(-5); row18.add(-7);
+		row19.add(-3); row19.add(-7); row19.add(-5);
+		row20.add(2); row20.add(5); row20.add(-2);
+		row21.add(-1); row21.add(5); row21.add(3);
+		row22.add(2); row22.add(9); row22.add(6);
+		row23.add(1); row23.add(5); row23.add(5);
+		row24.add(-2); row24.add(-3); row24.add(-7);
+		row25.add(2); row25.add(3); row25.add(6);
+		row26.add(-1); row26.add(5); row26.add(3);
+		row27.add(-1); row27.add(6); row27.add(3);
+		row28.add(-8); row28.add(8); row28.add(-11);
+		row29.add(-9); row29.add(13); row29.add(-10);
+		row30.add(4); row30.add(4); row30.add(5);
+		row31.add(6); row31.add(6); row31.add(-9);
+		row32.add(5); row32.add(9); row32.add(4);
+		row33.add(4); row33.add(5); row33.add(6);
+		*/
+		bulbs.add(row1); bulbs.add(row2); bulbs.add(row3);
+		bulbs.add(row4); bulbs.add(row5); bulbs.add(row6); bulbs.add(row7);
+		bulbs.add(row8); bulbs.add(row9); bulbs.add(row10);
+		bulbs.add(row11); bulbs.add(row12); bulbs.add(row13);
+		bulbs.add(row14); bulbs.add(row15); 
+		bulbs.add(row16); bulbs.add(row17);
+		bulbs.add(row18); bulbs.add(row19); bulbs.add(row20);
+		bulbs.add(row21); bulbs.add(row22); bulbs.add(row23);
+		ArrayList&lt;Integer&gt; rowA = new ArrayList&lt;&gt;();
+		ArrayList&lt;Integer&gt; rowB = new ArrayList&lt;&gt;();
+		ArrayList&lt;Integer&gt; rowC = new ArrayList&lt;&gt;();
+		rowA.add(5); rowA.add(-1); rowA.add(-3);
+		rowB.add(5); rowB.add(-1); rowB.add(6);
+		rowC.add(5); rowC.add(-1); rowC.add(4);
+		bulbs.add(rowA); bulbs.add(rowB); bulbs.add(rowC);
+		
+		bulbs.add(row24); 
+		bulbs.add(row25); 
+		bulbs.add(row26); bulbs.add(row27);
+		bulbs.add(row28); bulbs.add(row29); bulbs.add(row30);
+		bulbs.add(row31); bulbs.add(row32); bulbs.add(row33);
+		/*
+		row1.add(-4); row1.add(-4); row1.add(-1);
+		row2.add(13); row2.add(-9); row2.add(-14);
+		row3.add(4); row3.add(-7); row3.add(-2);
+		row4.add(-2); row4.add(6); row4.add(3);
+		row5.add(-6); row5.add(-8); row5.add(11);
+		row6.add(-4); row6.add(-3); row6.add(-6);
+		row7.add(7); row7.add(11); row7.add(-10);
+		row8.add(4); row8.add(-7); row8.add(6);
+		row9.add(5); row9.add(6); row9.add(4);
+		row10.add(10); row10.add(14); row10.add(-9);
+		bulbs.add(row1); bulbs.add(row2); bulbs.add(row3);
+		bulbs.add(row4); bulbs.add(row5); bulbs.add(row6); bulbs.add(row7);
+		bulbs.add(row8); bulbs.add(row9); bulbs.add(row10);
+		*/
+		
+		
+		answer = solve(bulbs);
+		for(int i = 0; i &lt; answer.size(); i++ ) {
+			System.out.print((i+1) +  &quot;: &quot; + answer.get(i) + &quot;\n&quot;);
+		}
+		System.out.println(&quot;\nSize of answer: &quot; + answer.size());
+		
+		/*
+		 * -5 7 -6 
+		3 3 -8 
+		-9 -12 -12 
+		-6 10 -7 
+		-2 -7 5 
+		-2 3 -2 
+		7 10 -12 
+		-1 1 -6 
+		3 -6 -4 
+		-6 -11 11 
+		13 -13 -13 
+		-6 -7 7 
+		-6 -7 11 
+		6 9 7 
+		-8 11 9 
+		8 9 10 
+		1 6 1 
+		4 -5 -7 
+		-3 -7 -5 
+		2 5 -2 
+		-1 5 3 
+		6 -9 6 
+		1 5 5 
+		-2 -3 -7 
+		2 3 6 
+		-1 5 3 
+		-1 6 3 
+		-8 -8 -11 
+		9 13 -10 
+		4 4 5 
+		6 6 -9 
+		-5 9 6 
+		4 -5 6 
+		 
+		 another:
+		 6 -7 10 
+		6 9 9 
+		-1 -5 -4 
+		9 10 11 
+		-1 1 4 
+		2 3 -3 
+		-7 10 -9 
+		-9 12 13 
+		5 -5 -9 
+		9 12 13 
+		-9 -9 11 
+		14 -15 16 
+		3 5 3 
+		-2 5 -6 
+		-8 -13 12 
+		6 11 10 
+		8 8 9 
+		4 -5 5 
+		3 -6 8 
+		-2 7 -6 
+		9 -13 14 
+		-1 -5 2 
+		1 -4 2 
+		1 6 -1 
+		8 11 11 
+		-6 -11 7 
+		7 10 9 
+		-5 5 10 
+		-1 -5 2 
+		7 -12 -9 
+		1 -5 6 
+		8 -11 11 
+		2 7 3 
+<A NAME="3"></A>		*/
+
+	}
+	public static ArrayList&lt;Boolean&gt; createDefaultAnswer(ArrayLi<FONT color="#6cc417"><A HREF="javascript:ZweiFrames('match651-1.html#3',3,'match651-top.html#3',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>st&lt;ArrayList&lt;Integer&gt;&gt; bulbs) {
+		ArrayList&lt;Boolean&gt; answer = new ArrayList&lt;&gt;();
+		
+		int max = 1;
+		int t0,t1,t2;
+		for(int i = 0; i &lt; bulbs.size(); i ++) {</B></FONT>
+			t0 = Math.abs(bulbs.get(i).get(0));
+			t1 = Math.abs(bulbs.get(i).get(1));
+			t2 = Math.abs(bulbs.get(i).get(2));
+			if(t0 &gt; max)
+				max = t0;
+			if(t1 &gt; max)
+				max = t1;
+			if(t2 &gt; max)
+				max = t2;
+		}
+		for(int i = 0; i &lt; max; i++) {
+			answer.add(false);
+		}
+		return answer;
+	}
+	public static ArrayList&lt;ArrayList&lt;Integer&gt;&gt; createBelongs(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs, int answerSize) {
+		ArrayList&lt;ArrayList&lt;Integer&gt;&gt; belongs = new ArrayList&lt;&gt;();
+		for(int i = 0; i &lt; answerSize; i++) {
+			belongs.add(new ArrayList&lt;Integer&gt;());
+		}
+		
+		for(int i = 0; i &lt; bulbs.size(); i++) {
+			int first = Math.abs(bulbs.get(i).get(0));
+			int second = Math.abs(bulbs.get(i).get(1));
+			int third = Math.abs(bulbs.get(i).get(2));
+			belongs.get(first-1).add(i); 
+			if(first != second)
+<A NAME="4"></A>				belongs.get(second-1).add(i);
+			if(third != second &amp;&amp; third != first)
+				belongs.get(third-1).add(i);
+		}<FONT color="#151b8d"><A HREF="javascript:ZweiFrames('match651-1.html#4',3,'match651-top.html#4',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>
+		return belongs;
+	}
+	public static Boolean bulbDone(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; belongs, ArrayList&lt;Boolean&gt; bulbDone, ArrayList&lt;Integer&gt; guaranteed, int check) {</B></FONT>
+		for(int i = 0; i &lt; belongs.get(check).size(); i++) {
+			if(!guaranteed.contains(belongs.get(check).get(i))) {
+				return false;
+			}
+		}
+		return true;
+	}
+	public static Boolean allBulbsDone(ArrayList&lt;Boolean&gt; bulbDone) {
+		for(int i = 0; i &lt; bulbDone.size(); i++) {
+			if(bulbDone.get(i) == false) {
+				return false;
+			}
+		}
+		return true;
+	}
+}
+</PRE>
+
+</BODY>
+</HTML>

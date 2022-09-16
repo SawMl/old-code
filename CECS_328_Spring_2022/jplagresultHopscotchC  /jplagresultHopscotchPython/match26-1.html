@@ -1,0 +1,184 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>389432536</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+def solve(grid):
+
+    #holds the final returned list
+    result = []
+
+    #get the values of m and n (for convenience)
+    n = len(grid[0])
+    m = len(grid)
+
+    #set everything to 0 at default
+    maxDir = 0
+    maxCol = 0
+    maxSum = 0
+
+    #go through rows and see which entrance has the best path
+    for i in range(2 * n):
+
+        #go through all different column entrances
+        if i &gt;= n:
+
+            currentDir = 0
+
+        else:
+
+            currentDir = 1
+
+        thisCol = i % (n - 1)
+
+        if currentDir == 0:
+            startRow = m - 1
+
+        else:
+            startRow = 0
+
+        currentRow = startRow
+
+        #calculate the best sum that this entrance can result in
+        thisSum  = grid[startRow][thisCol]
+
+        for j in range(1, n):
+
+            currentCol = (thisCol + j) % n
+
+            #compare these values and pick the best path
+            upMove = grid[(currentRow - 1) % m][currentCol]
+            sideMove = grid[currentRow][currentCol]
+            downMove = grid[(currentRow + 1) % m][currentCol]
+
+
+            #make sure current row isn't too far from the top/bottom for exit
+            if (m -  1) - currentRow &lt; n - j or (currentRow &lt; n - j):
+
+                if max(upMove, sideMove, downMove) == sideMove:
+
+                    thisSum += sideMove
+
+                elif max(upMove, sideMove, downMove) == upMove:
+
+                    thisSum += upMove
+                    currentRow = (currentRow - 1) % m
+
+                else:
+
+                    thisSum += downMove
+                    currentRow = (currentRow + 1) % m
+
+            else: 
+
+                if (m -  1) - currentRow &gt;= currentRow:
+
+                    thisSum += upMove
+                    currentRow = (currentRow - 1) % m
+
+                else:
+
+                    thisSum += downMove
+                    currentRow = (currentRow + 1) % m
+
+        #if the current run gives a greater sum than those before it, set the maxes to that value
+        if thisSum &gt; maxSum:
+            maxDir = currentDir
+            maxCol = thisCol
+            maxSum = thisSum
+
+    #add those two values to the result to be returned
+    result.append(maxDir)
+    result.append(maxCol)
+
+    # print(enterDir)
+    # print(enterCol)
+
+    #go through from the starting point and create the array with the values given
+    if maxDir == 0:
+        startRow = m - 1
+
+    else:
+        startRow = 0
+<A NAME="0"></A>
+    currentRow = startRow
+
+    <FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match26-0.html#0',2,'match26-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>for i in range(1, n):
+
+        #make sure current row isn't too far from the top/bottom for exit
+        if (m -  1) - currentRow &lt; n - i or (currentRow &lt; n - i):
+
+            currentCol = (maxCol + i) % n
+
+            #compare these values and pick the best path
+            upMove = grid[(currentRow - 1) % m][currentCol]
+            sideMove = grid[currentRow][currentCol]
+            downMove = grid[(currentRow + 1) % m][</B></FONT>currentCol]
+
+            if max(upMove, sideMove, downMove) == sideMove:
+
+                result.append(0)
+
+            elif max(upMove, sideMove, downMove) == upMove:
+
+                result.append(1)
+                currentRow = (currentRow - 1) % m
+
+            else:
+
+                result.append(-1)
+                currentRow = (currentRow + 1) % m
+
+        else: 
+
+            if (m -  1) - currentRow &gt;= currentRow:
+
+                result.append(1)
+                currentRow = (currentRow - 1) % m
+
+            else:
+
+                result.append(-1)
+                currentRow = (currentRow + 1) % m
+
+    return result
+
+# tester=[[3, 4, 1, 2, 8, 6],
+#         [6, 1, 8, 2, 7, 4],
+#         [5, 4, 3, 9, 9, 5],
+#         [5, 9, 8, 3, 2, 6],
+#         [8, 7, 2, 9, 6, 4]]
+
+#answer : [1, 4, 0, 1, 1, 0, -1]
+
+# tester=[[2, 4, 2, 1],
+#         [4, 5, 5, 4],
+#         [9, 7, 7, 2],
+#         [2, 8, 3, 2]]
+
+#Correct answer??? [1, 2, -1, -1, -1]
+#my answer: [0, 2, 0, 1, -1]
+
+#print(solve(tester))
+
+#index 0: 1 for enter top, 0 for enter bottom
+#index 1: column entered at (zero indexed)
+# n - 1 steps after: -1 - right and down; 0 - directly to the right; 1 - right and up
+</PRE>
+
+</BODY>
+</HTML>

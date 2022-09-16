@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>863410454</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+def solve(bulbs):
+  #initalize the list we are going to be returning
+  answer_list = []
+  
+  #determining the sixe of the matrix verticle wize
+  index_V = 0
+  for i in range(len(bulbs)):
+    index_V += 1 #length of the matrix we gonna return verticle wise
+
+  #holds the list containing all their (abs) values
+  bulbs_list_values = []
+  for i in bulbs:
+    for j in i:
+      bulbs_list_values.append(abs(j))
+
+  #value of the highest int in the matrix
+  M = max(bulbs_list_values)
+
+  #holds the list containing all their (true) values
+  bulbs_list = []
+  for i in bulbs:
+    for j in i:
+      bulbs_list.append(j)
+
+  # print(bulbs_list) #print
+  # print(bulbs_list_values) #print
+  # print(index_V) #print
+  # print(M) #print
+  # print(bulbs[0]) #print
+
+  #make a list that holds how many negatives and positives there are for each int
+  negative_list = []
+  positive_list = []
+  for i in range(1, (M+1)):
+    negative_counter = bulbs_list.count(-i)
+    negative_list.append(negative_counter)
+  
+  # print(negative_list) #print
+
+  for i in range(1, (M+1)):
+    positive_counter = bulbs_list.count(i)
+    positive_list.append(positive_counter)
+
+  # print(positive_list) #print
+
+  boobies = 0
+  
+  while(boobies &lt; M):
+<A NAME="0"></A>    if((negative_list[boobies] &gt;= 1) and (negative_list[boobies] &gt;= positive_list[boobies])):
+      answer_list.append(False)
+    elif(positive_list[boobies] &gt; negative_list[boobies] ):
+      answer_list<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match110-1.html#0',3,'match110-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>.append(True)
+    elif((negative_list[boobies] == 1) and (positive_list[boobies] == 0)):
+      answer_list.append(False)
+    elif((positive_list[boobies] == 1) and (negative_list[boobies] == 0)):
+      answer_list.append(True)
+    elif((positive_list[boobies] == 1) and (negative_list[boobies] == 0)):
+      answer_list.append(False)
+    else:
+      answer_list.append(</B></FONT>False)
+
+    boobies += 1
+
+  return(answer_list)
+</PRE>
+
+</BODY>
+</HTML>

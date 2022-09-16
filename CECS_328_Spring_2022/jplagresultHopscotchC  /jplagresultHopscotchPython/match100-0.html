@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>891781188</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+
+
+def printAns(ans):
+    for item in ans:
+        print(item, &quot; &quot;)
+<A NAME="0"></A>    print(&quot;\n&quot;)
+
+def findIndex(l):
+    l_max <FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match100-1.html#0',3,'match100-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>= 0
+    index = 0
+    for i in range(len(l)):
+        if l_max &lt; l[i]:
+            l_max = l[i]
+            index = </B></FONT>i
+    return index
+
+def bestMove(row, index, moves, grid):
+    choices = []
+    choice_max = []
+    for item in moves:
+        choices.append(row - item)
+    for i in range(len(choices)):
+        if choices[i] == -1:
+            choices[i] = len(grid) - 1
+            choice_max.append(grid[len(grid) - 1][index])
+            continue
+        if choices[i] == len(grid) :
+            choices[i] = 0
+            choice_max.append(grid[0][index])
+            continue
+        choice_max.append(grid[choices[i]][index])
+    return choices[findIndex(choice_max)], moves[findIndex(choice_max)], choice_max[findIndex(choice_max)]
+
+
+def solveRecursive(row, index, start, grid, ans, sum, count):
+    moves = [-1, 0, 1]
+    if count == 0:
+        sum += grid[row][index]
+    if index + 1 &gt;= len(grid[0]):
+        index = 0
+        count += 1
+    else:
+        index += 1
+        count += 1
+    if index == start:
+        ans.append(sum)
+        return ans
+    row, best_move, next_num = bestMove(row, index, moves, grid)
+    sum += next_num
+    ans.append(best_move)
+    solveRecursive(row, index, start, grid, ans, sum, count)
+
+
+
+def solve(grid):
+    sum = 0
+    count = 0
+    ans1 = [1, findIndex(grid[0])]
+    solveRecursive(0, ans1[1], ans1[1], grid, ans1, sum, count)
+    printAns(ans1)
+    sum = 0
+    count = 0
+    ans2 =[0, findIndex(grid[len(grid)-1])]
+    solveRecursive(len(grid)-1, ans2[1], ans2[1], grid, ans2, sum, count)
+    printAns(ans2)
+    if ans1[len(ans1)-1] &gt; ans2[len(ans2)-1]:
+        ans1.pop(len(ans1)-1)
+        return ans1
+    else:
+        ans2.pop(len(ans2) - 1)
+        return ans2
+</PRE>
+
+</BODY>
+</HTML>

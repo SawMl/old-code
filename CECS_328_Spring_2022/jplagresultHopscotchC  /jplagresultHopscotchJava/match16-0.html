@@ -1,0 +1,783 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>551915295</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+import java.util.ArrayList;
+
+public class StudentSolver {
+    public static int highestNumber = 0;
+    public static ArrayList&lt;Integer&gt; path = new ArrayList&lt;Integer&gt;();
+    public static ArrayList&lt;Tracker&gt; list = new ArrayList&lt;Tracker&gt;();
+    
+    public static void main(String[] args) {
+        int[][] array = new int[5][5];
+        array[0][0] = 1;
+        array[0][1] = 2;
+        array[0][2] = 3;
+        array[0][3] = 4;
+        array[0][4] = 9;
+        array[1][0] = 4;
+        array[1][1] = 9;
+        array[1][2] = 5;
+        array[1][3] = 9;
+        array[1][4] = 2;
+        array[2][0] = 5;
+        array[2][1] = 4;
+        array[2][2] = 9;
+        array[2][3] = 7;
+        array[2][4] = 9;
+        array[3][0] = 4;
+        array[3][1] = 9;
+        array[3][2] = 8;
+        array[3][3] = 3;
+        array[3][4] = 1;
+        array[4][0] = 9;
+        array[4][1] = 1;
+        array[4][2] = 2;
+        array[4][3] = 3;
+        array[4][4] = 4;
+        StudentSolver.print2DArray(array);
+        Hopscotch h = new Hopscotch(array);
+        path = recursive(convertToDoubleArrayList(array));
+        printPath();
+    }
+    
+    public static ArrayList&lt;Integer&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid){ 
+        
+        return recursive(grid);
+    }
+    
+    public static void solve(int[][] grid) {
+
+        Tracker t = new Tracker();
+        t.setHop(new Hopscotch(grid));
+        
+        
+        for(int i = 0; i &lt; grid[0].length; i++) {
+            
+        }
+        
+        for(int i = 0; i &lt; grid[0].length; i++) {
+            
+        }        
+    }
+    
+    
+    public static void RecursionPath(Tracker t) {
+        
+    }
+ 
+    public static Tracker buildTracker(int skips) {
+       
+        return null;
+    }
+    
+    
+    public static int calculateIndividualPaths(Hopscotch h) {
+<A NAME="0"></A>        return (int) Math.pow(3, h.getGrid()[0].length-1);
+    }
+    
+    public static int calculateTotalPossiblePaths(<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match16-1.html#0',3,'match16-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>Hopscotch h) {
+        return (int) 2 * h.getGrid()[0].length * calculateIndividualPaths(h);
+    }
+    
+    /*public static void recursiveSolve(Tracker t) {
+        System.out.println(t.getHop().getMoves());
+        Tracker copy = t;
+        if(copy.getHop().getMoves() &gt; 0) {
+            for(int i = 0; i &lt; 3; i++) {
+                System.out.println(&quot;List Size: &quot; + list.size());
+                count++;
+                if(i == 0) {
+                    copy.setNumber(copy.getNumber() + copy.getHop().getUpRight());
+                    ArrayList&lt;Integer&gt; tempPath = copy.getPath();
+                    tempPath.add(1);
+                    copy.setPath(tempPath);
+                    copy.getHop().moveUpRight();
+                    recursiveSolve(copy);
+                } else if(i == 1) {
+                    copy.setNumber(copy.getNumber() + copy.getHop().getRight());
+                    ArrayList&lt;Integer&gt; tempPath = copy.getPath();
+                    tempPath.add(0);
+                    copy.setPath(tempPath);
+                    copy.getHop().moveRight();
+                    recursiveSolve(copy);
+                } else {
+                    copy.setNumber(copy.getNumber() + copy.getHop().getDownRight());
+                    ArrayList&lt;Integer&gt; tempPath = copy.getPath();
+                    tempPath.add(-1);
+                    copy.setPath(tempPath);
+                    copy.getHop().moveDownRight();
+                    recursiveSolve(copy);
+                }
+            }
+        } else {
+            list.add(t);
+        }
+    }*/
+    
+    public static void printPath() {
+        for(int i= 0;</B></FONT> i &lt; path.size()-1; i++) {
+            System.out.print(path.get(i) + &quot;, &quot;);
+        }
+        System.out.print(path.get(path.size()-1));
+    }
+    
+    public static ArrayList&lt;Integer&gt; recursive(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid){
+        int[][] array = convertTo2DArray(grid);
+        Hopscotch hop = new Hopscotch(array);
+        ArrayList&lt;Tracker&gt; trackers = new ArrayList&lt;Tracker&gt;();
+        for(int i = 0; i &lt; hop.getGrid()[0].length; i++) {
+            int count = 0;
+            Hopscotch h = new Hopscotch(hop);
+            h.start(i,0);
+            ArrayList&lt;Integer&gt; pathList = new ArrayList&lt;Integer&gt;();
+            pathList.add(1);
+            pathList.add(i);
+            while(h.getMoves() &gt; 0) {
+                boolean moved = false;
+                
+                
+                if(h.getUpRight() &gt; h.getRight() &amp;&amp; 
+                        h.getUpRight() &gt; h.getDownRight()) {
+                    if(h.getDistanceFromTop()-1 &lt; h.getMoves()-1 || 
+                            h.getDistanceFromBottom()+1 &lt; h.getMoves()) {
+                        moved = true;
+                        count += h.getUpRight();
+                        h.moveUpRight();
+                        pathList.add(1);   
+                    }
+                    
+                } else if(h.getRight() &gt; h.getDownRight()) {
+                    if(h.getDistanceFromTop() &lt; h.getMoves()-1 || 
+                            h.getDistanceFromBottom() &lt; h.getMoves()) {
+                        moved = true;
+                        count += h.getRight();
+                        h.moveRight();
+                        pathList.add(0);
+                    }
+                    
+                } else {
+                    if(h.getDistanceFromTop()+1 &lt; h.getMoves()-1 || 
+                            h.getDistanceFromBottom()-1 &lt; h.getMoves()) {
+                        moved = true;
+                        count += h.getDownRight();
+                        h.moveDownRight();
+                        pathList.add(-1);
+                    }
+                }
+                
+                
+                if(!moved) {
+                    
+                    if(h.getDistanceFromTop()-1 &lt; h.getMoves() || 
+                            h.getDistanceFromBottom()+1 &lt; h.getMoves()) {
+                        moved = true;
+                        count += h.getUpRight();
+                        h.moveUpRight();
+                        pathList.add(1);   
+                        
+                    } else if(h.getDistanceFromTop() &lt; h.getMoves() || 
+                            h.getDistanceFromBottom() &lt; h.getMoves()) {
+                        moved = true;
+                        count += h.getRight();
+                        h.moveRight();
+                        pathList.add(0);
+                    } else {
+                        moved = true;
+                        count += h.getDownRight();
+                        h.moveDownRight();
+                        pathList.add(-1);
+                    }
+                }
+            }
+            Tracker t = new Tracker(pathList, count,  h);
+            trackers.add(t);
+        }
+        for(int i = 0; i &lt; hop.getGrid()[0].length; i++) {
+            Hopscotch h = new Hopscotch(hop);
+            h.start(i,h.getGrid().length-1);
+            int count = h.getCurrentPosition();
+            ArrayList&lt;Integer&gt; pathList = new ArrayList&lt;Integer&gt;();
+            pathList.add(0);
+            pathList.add(i);
+            while(h.getMoves() &gt; 0) {
+                boolean moved = false;
+                
+                
+                if(h.getUpRight() &gt; h.getRight() &amp;&amp; 
+                        h.getUpRight() &gt; h.getDownRight()) {
+                    if(h.getDistanceFromTop()-1 &lt; h.getMoves()-1 || 
+                            h.getDistanceFromBottom()+1 &lt; h.getMoves()) {
+                        moved = true;
+                        count += h.getUpRight();
+                        h.moveUpRight();
+                        pathList.add(1);   
+                    }
+                    
+                } else if(h.getRight() &gt; h.getDownRight()) {
+                    if(h.getDistanceFromTop() &lt; h.getMoves()-1 || 
+                            h.getDistanceFromBottom() &lt; h.getMoves()) {
+                        moved = true;
+                        count += h.getRight();
+                        h.moveRight();
+                        pathList.add(0);
+                    }
+                    
+                } else {
+                    if(h.getDistanceFromTop()+1 &lt; h.getMoves()-1 || 
+                            h.getDistanceFromBottom()-1 &lt; h.getMoves()) {
+                        moved = true;
+                        count += h.getDownRight();
+                        h.moveDownRight();
+                        pathList.add(-1);
+                    }
+                }
+                
+                
+                if(!moved) {
+                    
+                    if(h.getDistanceFromTop()-1 &lt; h.getMoves() || 
+                            h.getDistanceFromBottom()+1 &lt; h.getMoves()) {
+                        moved = true;
+                        count += h.getUpRight();
+                        h.moveUpRight();
+                        pathList.add(1);   
+                        
+                    } else if(h.getDistanceFromTop() &lt; h.getMoves() || 
+                            h.getDistanceFromBottom() &lt; h.getMoves()) {
+                        moved = true;
+                        count += h.getRight();
+                        h.moveRight();
+                        pathList.add(0);
+                    } else {
+                        moved = true;
+                        count += h.getDownRight();
+                        h.moveDownRight();
+                        pathList.add(-1);
+                    }
+                }
+            }
+            if(checkAnswerValidity(pathList, h)) {
+                Tracker t = new Tracker(pathList, count,  h);
+                trackers.add(t);
+            }
+        }
+        Tracker t = trackers.get(0);
+        for(int i = 0; i &lt; trackers.size(); i++) {
+            if(t.getNumber() &lt; trackers.get(i).getNumber()) {
+                t = trackers.get(i);
+            }
+        }
+        return t.getPath();
+    }
+    
+    public static ArrayList&lt;Integer&gt; likelySolve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid){
+        int[][] array = convertTo2DArray(grid);
+        Hopscotch hop = new Hopscotch(array);
+        if(hop.getGreatestTopValue() &gt; hop.getGreatestBottomValue()) {
+            path.add(1);
+            int column = -1;
+            for(int i = 0; i &lt; hop.getGrid()[0].length; i++) {
+                if(hop.getGrid()[0][i] == hop.getGreatestTopValue()) {
+                    column = i;
+                    break;
+                }
+            }
+            hop.start(column,0);
+            path.add(column);
+        } else {
+            path.add(0);
+            int column = -1;
+            for(int i = 0; i &lt; hop.getGrid()[hop.getGrid().length-1].length; i++) {
+                if(hop.getGrid()[hop.getGrid().length-1][i] == hop.getGreatestBottomValue()) {
+                    column = i;
+                    break;
+                }
+            }
+            hop.start(column,hop.getGrid().length-1);
+            path.add(column);
+        }
+        while(hop.getMoves() &gt; 0) {
+            boolean moved = false;
+            
+            
+            if(hop.getUpRight() &gt; hop.getRight() &amp;&amp; 
+                    hop.getUpRight() &gt; hop.getDownRight()) {
+                if(hop.getDistanceFromTop()-1 &lt; hop.getMoves()-1 || 
+                        hop.getDistanceFromBottom()+1 &lt; hop.getMoves()) {
+                    moved = true;
+                    hop.moveUpRight();
+                    path.add(1);   
+                }
+                
+            } else if(hop.getRight() &gt; hop.getDownRight()) {
+                if(hop.getDistanceFromTop() &lt; hop.getMoves()-1 || 
+                        hop.getDistanceFromBottom() &lt; hop.getMoves()) {
+                    
+                }
+                
+            } else {
+                if(hop.getDistanceFromTop()+1 &lt; hop.getMoves()-1 || 
+                        hop.getDistanceFromBottom()-1 &lt; hop.getMoves()) {
+                    moved = true;
+                    hop.moveDownRight();
+                    path.add(-1);
+                }
+            }
+            
+            
+            if(!moved) {
+                
+                if(hop.getDistanceFromTop()-1 &lt; hop.getMoves() || 
+                        hop.getDistanceFromBottom()+1 &lt; hop.getMoves()) {
+                    moved = true;
+                    hop.moveUpRight();
+                    path.add(1);   
+                    
+                } else if(hop.getDistanceFromTop() &lt; hop.getMoves() || 
+                        hop.getDistanceFromBottom() &lt; hop.getMoves()) {
+                    moved = true;
+                    hop.moveRight();
+                    path.add(0);
+                } else {
+                    moved = true;
+                    hop.moveDownRight();
+                    path.add(-1);
+                }
+            }
+        }
+        return path;
+    }
+    
+    public static boolean checkAnswerValidity(ArrayList&lt;Integer&gt; list,  Hopscotch h) {
+        
+        int tracker = 0;
+        
+        if(list.get(0) == 0) {
+            for(int i = 0; i &lt; list.size(); i++) {
+                
+                if(i &gt; 1) {
+                    tracker += list.get(i);
+                }
+            }
+            if(tracker % (h.getGrid().length-1) == 0 || tracker %  (h.getGrid().length-1) == -1 ) {
+                return true;
+            }
+            
+        } else {
+            for(int i = 0; i &lt; list.size(); i++) {
+                
+                if(i &gt; 1) {
+                    tracker += list.get(i);
+                }
+            }
+            if(tracker % (h.getGrid().length-1) == 0 || tracker %  (h.getGrid().length-1) == -1 ) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    
+    public static int[][] convertTo2DArray(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid) {
+        int[][] output = new int[grid.size()][grid.get(0).size()];
+        for(int i = 0; i &lt; grid.size(); i++) {
+            for(int j = 0; j &lt; grid.get(0).size(); j++) {
+                output[i][j] = grid.get(i).get(j);
+<A NAME="1"></A>            }
+        }
+        return output;
+    <FONT color="#f63526"><A HREF="javascript:ZweiFrames('match16-1.html#1',3,'match16-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>}
+    
+    
+    public static ArrayList&lt;ArrayList&lt;Integer&gt;&gt; convertToDoubleArrayList(int[][] grid) {
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; output = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();
+        for(int i = 0; i &lt; grid.length; i++) {
+            ArrayList&lt;Integer&gt; temp = new ArrayList&lt;Integer&gt;();
+            for(int j = 0; j &lt; grid[0].length; j++) {
+                temp.add(grid[i][j]);
+            }
+            output.add(temp);
+        }
+        return output;
+    }</B></FONT>
+    
+    
+    public static void print2DArray(int[][] grid) {
+<A NAME="2"></A>        for(int i = 0; i &lt; grid.length; i++) {
+            for(int j = 0; j &lt; grid[0].length; j++) {
+                if(j != grid[0].length-1) {
+                    <FONT color="#77bfc7"><A HREF="javascript:ZweiFrames('match16-1.html#2',3,'match16-top.html#2',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>System.out.print(grid[i][j] + &quot;, &quot;);
+                } else {
+                    System.out.print(grid[i][j]);
+                }
+            }
+            System.out.println();
+        }</B></FONT>
+    }
+    
+    
+    public static void printDoubleArrayList(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid) {
+        for(int i = 0; i &lt; grid.size(); i++) {
+            for(int j = 0; j &lt; grid.get(0).size(); j++) {
+                if(j != grid.get(0).size()-1) {
+                    System.out.print(grid.get(i).get(j) + &quot;, &quot;);
+                } else {
+                    System.out.print(grid.get(i).get(j));
+                }
+            }
+            System.out.println();
+        }
+    }
+    
+    public static  class Tracker{
+        int number;
+        ArrayList&lt;Integer&gt; path;
+        Hopscotch hop;
+        
+        public Tracker() {
+            number =  0;
+<A NAME="3"></A>            path = new ArrayList&lt;Integer&gt;();
+        }
+        
+        <FONT color="#6cc417"><A HREF="javascript:ZweiFrames('match16-1.html#3',3,'match16-top.html#3',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>public Tracker(ArrayList&lt;Integer&gt; path, int num, Hopscotch h) {
+            this.path = path;
+            number = num;
+            hop = h;
+        }
+        
+        
+        Tracker(Tracker track){</B></FONT>
+            this.number = track.number;
+            this.path =  track.path;
+            this.hop = track.hop;
+        }
+        
+        public int getNumber() {
+            return  number;
+        }
+        
+        public Hopscotch getHop() {
+            return hop;
+        }
+        
+        public ArrayList&lt;Integer&gt; getPath(){
+            return  path;
+        }
+        
+        public void setNumber(int num) {
+            number = num;
+        }
+        
+        public void setPath(ArrayList&lt;Integer&gt;  path) {
+            this.path = path;
+        }
+        
+        public void setHop(Hopscotch h) {
+            hop = h;
+        }
+    }
+    
+    public static class Hopscotch{
+        
+        
+        int[][] grid;
+        
+        int x;
+        
+        int y;
+        
+        int startingX;
+        
+        int startingY;
+        
+        int moves;
+        
+        
+        public Hopscotch(int[][] array) {
+            grid = array;
+            this.x = 0;
+            this.y = 0;
+            startingX = 0;
+            startingY = 0;
+            moves = grid[0].length-1;
+        }
+        
+        
+        public Hopscotch(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; array) {
+            grid = StudentSolver.convertTo2DArray(array);
+            this.x = 0;
+            this.y = 0;
+            startingX = 0;
+            startingY = 0;
+            moves = grid[0].length-1;
+        }
+        
+        
+        public Hopscotch(int[][] array, int x, int y) {
+            grid = array;
+            this.x = x;
+            this.y = y;
+            startingX = x;
+            startingY = y;
+            moves = grid[0].length-1;
+        }
+        
+        
+        public Hopscotch(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; array, int x, int y) {
+            grid = StudentSolver.convertTo2DArray(array);
+            this.x = x;
+            this.y = y;
+            startingX = x;
+            startingY = y;
+            moves = grid[0].length-1;
+        }
+        
+        public Hopscotch(Hopscotch h) {
+            grid = h.getGrid();
+            x = h.getX();
+            y = h.getY();
+            startingX = h.getStartingX();
+            startingY = h.getStartingY();
+            moves = grid[0].length-1;
+        }
+        
+        public void start(int x, int y) {
+            startingX = x;
+            startingY = y;
+            this.x = x;
+            this.y = y;
+            moves = grid[0].length-1;
+        }
+        
+<A NAME="4"></A>        
+        public int startRow() {
+            if(startingY == 0) {
+                <FONT color="#151b8d"><A HREF="javascript:ZweiFrames('match16-1.html#4',3,'match16-top.html#4',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>return 1;
+            }
+            return 0;
+        }
+
+        public int startColumn() {
+            return startingX + 1;
+        }
+        
+        
+        
+        public int getUpRight() {</B></FONT>
+            
+            if(y == 0) {
+                
+                if(x == grid[0].length-1) {
+                    return grid[grid.length-1][0];
+                } else {
+                    return grid[grid.length-1][x+1];
+                }
+            } else {
+              
+                if(x == grid[0].length-1) {
+                    return grid[y-1][0];
+                } else {
+                    return grid[y-1][x+1];
+                }
+            }
+        }
+        
+        
+        
+        public int getRight() {
+            
+            if(x == grid[0].length-1) {
+                return grid[y][0];
+            } else {
+                return grid[y][x+1];
+            }
+        }
+        
+        
+        
+        public int getDownRight() {
+            
+            if(y == grid.length-1) {
+                
+                if(x == grid[0].length-1) {
+                    return grid[0][0];
+                } else {
+                    return grid[0][x+1];
+                }
+            } else {
+              
+                if(x == grid[0].length-1) {
+                    return grid[y+1][0];
+                } else {
+                    return grid[y+1][x+1];
+                }
+            }
+        }
+        
+        
+        public int getGreatestTopValue() {
+            int output = 0;
+            for(int i = 0; i &lt; grid[0].length; i++) {
+                if(grid[0][i] &gt; output) {
+                    output = grid[0][i];
+                }
+            }
+            return output;
+        }
+        
+        
+        public int getGreatestBottomValue() {
+            int output = 0;
+            for(int i = 0; i &lt; grid[grid.length-1].length; i++) {
+                if(grid[grid.length-1][i] &gt; output) {
+                    output = grid[grid.length-1][i];
+                }
+            }
+            return output;
+        }
+        
+        
+        
+        public void moveUpRight() {
+          
+            if(y == 0) {
+                
+                if(x == grid[0].length-1) {
+                    x = 0;
+                    y = grid.length-1;
+                } else {
+                    x += 1;
+                    y = grid.length-1;
+                }
+            } else {
+              
+                if(x == grid[0].length-1) {
+                    x = 0;
+                    y -= 1;
+                } else {
+                    x += 1;
+                    y  -= 1;
+                }
+            }
+            moves--;
+        }
+        
+        
+        
+        public void moveRight() {
+          
+            if(x == grid[0].length-1) {
+                x = 0;
+            } else {
+                x += 1;
+            }
+            moves--;
+        }
+        
+        
+        
+        public void moveDownRight() {
+          
+            if(y == grid.length-1) {
+                
+                if(x == grid[0].length-1) {
+                    y = 0;
+                    x = 0;
+                } else {
+                    y = 0;
+                    x += 1;
+                }
+            } else {
+              
+                if(x == grid[0].length-1) {
+                    y += 1;
+                    x = 0;
+                } else {
+                    y += 1;
+                    x += 1;
+                }
+            }
+            moves--;
+        }
+        
+        
+        public int getDistanceFromTop() {
+            return y;
+        }
+        
+        
+        public int getDistanceFromBottom() {
+            return grid.length-1-y;
+        }
+        
+        
+        public int getCurrentPosition() {
+            return grid[y][x];
+        }
+        
+        public int[][] getGrid(){
+            return grid;
+        }
+        
+        public int getX() {
+            return x;
+        }
+        
+        public int getY() {
+            return y;
+        }
+        
+        public int getStartingX() {
+            return startingX;
+        }
+        
+        public int getStartingY() {
+            return startingY;
+        }
+         public int getMoves() {
+             return moves;
+         }
+        
+        
+        public void setGrid(int[][] newGrid) {
+            grid = newGrid;
+        }
+        
+        public void setX(int x) {
+            if(x &gt;= 0 &amp;&amp; x &lt; grid[0].length) {
+                this.x = x;
+            }       
+        }
+        
+        public void setY(int y) {
+            if(y &gt;= 0 &amp;&amp; y &lt; grid.length) {
+                this.y = y;
+            }
+        }
+        
+        public void setMoves(int move) {
+            moves = move;
+        }
+    }
+}
+</PRE>
+
+</BODY>
+</HTML>

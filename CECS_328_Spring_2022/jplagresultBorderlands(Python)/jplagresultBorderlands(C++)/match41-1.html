@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>401224306</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>StudentSolver.cpp</CENTER></H3><HR>
+<PRE>
+#include &quot;StudentSolver.h&quot;
+
+#include &lt;iostream&gt;
+#include &lt;math.h&gt;
+
+using namespace std;
+
+
+typedef pair&lt;int,int&gt; pi;
+#define mp make_pair
+#define getSz(x) ((x).size())
+#define SetLength2(a, n, t) a=((t*) calloc(n, sizeof(t))) + (n)/2
+
+struct TWOSAT{
+    vector &lt;int&gt; *e,*re,ver;
+    int *s,*comp,n,total = 0;
+    bool *used;
+
+    void initialize(int x){
+        n = x;
+        SetLength2(s,2 * n + 11,int);
+        SetLength2(comp,2 * n + 11,int);
+        SetLength2(e,2 * n + 11,vector&lt;int&gt;);
+        SetLength2(re,2 * n + 11,vector&lt;int&gt;);
+        SetLength2(used,2 * n + 11,bool);
+        for(int i = -n; i &lt;= n; ++i) s[i] = comp[i] = used[i] = 0;
+    }
+    void newOr(int x,int y){
+        e[-y].push_back(x);
+        e[-x].push_back(y);
+        re[x].push_back(-y);
+        re[y].push_back(-x);
+    }
+    void newInfer(int x,int y){
+        newOr(-x,y);
+    }
+    void newEqual(int x,int y){
+        newInfer(x,y);
+        newInfer(-x,-y);
+    }
+    void dfs(int u){
+        used[u] = 1;
+        for(int v : e[u]) if(!used[v]) dfs(v);
+        ver.push_back(u);
+    }
+    void dfs2(int u){
+        comp[u] = total;
+        for(int v : re[u]) if(!comp[v]) dfs2(v);
+    }
+    bool find2SAT(){
+        for(int i = 1; i &lt;= n; ++i){
+            if(!used[i]) dfs(i);
+            if(!used[-i]) dfs(-i);
+        }
+        for(int i = ver.size() - 1; i &gt;= 0; --i){
+            int u = ver[i];
+            if(!comp[u]){
+                ++total;
+                dfs2(u);
+            }
+        }
+        for(int i = 1; i &lt;= n; ++i) if(comp[i] == comp[-i]){
+            return false;
+        }
+        return true;
+    }
+} twosat;
+
+std::vector&lt;bool&gt; StudentSolver::solve(std::vector&lt;std::vector&lt;int&gt; &gt; bulbs){
+    std::map &lt;int,int&gt; wireSets;
+<A NAME="0"></A>
+    int n = bulbs.size();
+
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match41-0.html#0',2,'match41-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>    int m = 0;
+
+    for(int row = 0; row &lt; n; ++row){
+        for(int col = 0; col &lt; bulbs[row].size(); ++col){</B></FONT>
+            int x = abs(bulbs[row][col]);
+            if(!wireSets[x]) wireSets[x] = ++m;
+        }
+    }
+
+    
+    
+    
+
+    
+
+    twosat.initialize(3 * n + m);
+
+    for(int row = 0; row &lt; n; ++row){
+        for(int col = 0; col &lt; bulbs[row].size(); ++col){
+            int wireSetId = wireSets[ abs(bulbs[row][col]) ];
+
+            if(bulbs[row][col] &gt; 0){
+                twosat.newInfer( ((n - 1) * 3 + 2 ) + wireSetId + 1, row * 3 + col + 1 );
+            }else{
+                twosat.newInfer( - ( ((n - 1) * 3 + 2 ) + wireSetId + 1), row * 3 + col + 1 );
+            }
+        }
+    }
+
+    for(int row = 0; row &lt; n; ++row){
+        twosat.newOr(row * 3 + 2 + 1, row * 3 + 2 + 1);
+    }
+
+    if(!twosat.find2SAT()) return std::vector &lt;bool&gt; (m, false);
+
+
+
+    std::vector &lt;bool&gt; ans(m, false);
+
+    for(int i = 1; i &lt;= m; ++i){
+        ans[i] = twosat.comp[((n - 1) * 3 + 2) + i + 1] &gt; twosat.comp[- ( ((n - 1) * 3 + 2) + i + 1 )];
+	
+    }
+
+    return ans;
+}
+</PRE>
+</BODY>
+</HTML>

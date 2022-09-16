@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>183511807</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+import java.util.*;
+
+class StudentSolver {
+    public static ArrayList&lt;Boolean&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs) {
+        return findPath(bulbs, new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;(), new HashMap&lt;Integer, Boolean&gt;(), new ArrayList&lt;Boolean&gt;());
+    }
+
+    public static ArrayList&lt;Boolean&gt; findPath(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs, ArrayList&lt;ArrayList&lt;Integer&gt;&gt; pathWay, HashMap&lt;Integer, Boolean&gt; config, ArrayList&lt;Boolean&gt; solution) {
+        HashMap&lt;Integer, ArrayList&lt;Integer&gt;&gt; firstTimeSeen = new HashMap&lt;Integer, ArrayList&lt;Integer&gt;&gt;();
+        int current = 0;
+
+        while (current != bulbs.size()) {
+            if (pathWay.size() - 1 &lt; current) {
+                pathWay.add(new ArrayList&lt;Integer&gt;());
+                int n1 = bulbs.get(current).get(0);
+                int n2 = bulbs.get(current).get(1);
+                int n3 = bulbs.get(current).get(2);
+                
+                ArrayList&lt;Integer&gt; row = pathWay.get(current);
+                for (int n : bulbs.get(current)) {
+                    
+                    if (!config.containsKey(Math.abs(n))) {
+<A NAME="0"></A>                        if (!firstTimeSeen.containsKey(current)) 
+                            firstTimeSeen.put(current, new ArrayList&lt;Integer&gt;());
+
+                        <FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match297-0.html#0',2,'match297-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>firstTimeSeen.get(current).add(Math.abs(n));
+                        row.add(n);
+                    }
+                    else if (config.get(Math.abs(n)) == n &gt; 0) {</B></FONT>
+                        row.add(n);
+                    }
+                }
+                
+
+                while (Math.abs(n1) &gt; solution.size() || Math.abs(n2) &gt; solution.size() || Math.abs(n3) &gt; solution.size()) {
+                    solution.add(false);
+                }
+            }
+
+            ArrayList&lt;Integer&gt; currentRow = pathWay.get(current);
+
+            
+            
+            if(!currentRow.isEmpty()) {
+                int bulb = Math.abs(currentRow.get(0));
+                boolean on = (currentRow.get(0) &gt; 0) ? true: false;
+                currentRow.remove(0);
+
+                config.put(bulb, on);
+                solution.set(bulb - 1, on);
+                current++;
+                
+                
+            } 
+            else {
+                ArrayList&lt;Integer&gt; refreshedRow = new ArrayList&lt;Integer&gt;();
+                refreshedRow.addAll(bulbs.get(current));
+
+                if (firstTimeSeen.containsKey(current)) {
+                    for (int num: firstTimeSeen.get(current)) {
+                        config.remove(num);
+                    }
+                }
+
+                if (firstTimeSeen.containsKey(current - 1)) {
+                    for (int num: firstTimeSeen.get(current - 1)) {
+                        config.remove(num);
+                    }
+                }
+
+                for (int n : bulbs.get(current)) {
+                    
+                    if (!config.containsKey(Math.abs(n))) {
+<A NAME="1"></A>                        if (!firstTimeSeen.containsKey(current)) 
+                            firstTimeSeen.put(current, new ArrayList&lt;Integer&gt;());
+
+                        <FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match297-0.html#1',2,'match297-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>firstTimeSeen.get(current).add(Math.abs(n));
+                        refreshedRow.add(n);
+                    }
+                    else if (config.get(Math.abs(n)) == (n &gt; 0)) {</B></FONT>
+                        refreshedRow.add(n);
+                    }
+                }
+                
+                pathWay.set(current, refreshedRow);
+
+                current--;
+            }
+            
+        }
+        return solution;
+    }
+    
+    public static void main(String[] args) {
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; test = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();
+
+        for (int i = 0; i &lt; 100; i++) {
+            int offset =  (int)(Math.random() * 20 + 1);
+            ArrayList&lt;Integer&gt; row =  new ArrayList&lt;Integer&gt;();
+            row.add((int)(Math.random() * 5 + offset));
+            row.add((int)(Math.random() * 5 + offset));
+            row.add((int)(Math.random() * 5 + offset));
+
+            for (int j = 0; j &lt; 3; j++) {
+                int chance = (int)(Math.random() * 2);
+
+                if (chance == 1) {
+                    row.set(j, row.get(j) * -1);
+                }
+            }
+
+            test.add(row);
+        }
+        
+        System.out.println(solve(test));
+    }
+}
+</PRE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,233 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>416665525</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+# import math
+import random
+
+#
+# def traversed(row, column, traverse):
+#     length = len(traverse)
+#
+#     if row == length:
+#         row = 0
+#
+#     if traverse[row][column] == 2:
+#         answer = -math.inf
+#         return answer
+#
+#     return grid[row][column]
+
+
+def solve(grid):
+
+#     # amount of rows
+#     # m
+#     rows = len(grid)
+#
+#     # amount of items in one element
+#     # n
+#     columns = len(grid[0])
+#
+#     traverse = [[2] * columns for i in range(rows)]
+#     traverse[0][0] = 0
+#     traverse[rows - 1][0] = 0
+#
+#     path = 0
+#
+#
+#     # 0 = right
+#     # 1 = right and up
+#     # -1 = right and down
+#     # first element will be 0 or 1 depending on top or bottom start
+#     # second element is index of entry
+#     # 2 = traversed element
+#
+#     # checking previous step for maximum sum
+#     # for column in range(1, columns):
+#     #     for row in range(1, rows):
+#     #         right = traversed(row, column - 1, traverse)
+#     #         downRight = traversed(row - 1, column - 1, traverse)
+#     #         upRight = traversed(row + 1, column - 1, traverse)
+#     #
+#     #         if downRight == -math.inf and right == -math.inf and upRight == -math.inf:
+#     #             traverse[row][column] = 2
+#     #         elif right &gt; downRight and right &gt; upRight:
+#     #             traverse[row][column] = 0
+#     #             grid[row][column] = grid[row][column] + right
+#     #         elif downRight &gt; right and downRight &gt; right:
+#     #             traverse[row][column] = -1
+#     #             grid[row][column] = grid[row][column] + downRight
+#     #         else:
+#     #             traverse[row][column] = 1
+#     #             grid[row][column] = grid[row][column] + upRight
+#
+#
+#     # max from top
+#     maxTop = max(grid[0])
+#
+#     # max from bottom
+#     maxBottom = max(grid[-1])
+#
+# #     if brancing deciding which to use
+#     if maxTop &gt; maxBottom:
+#
+#         for column in range(1, columns):
+#             for row in range(1, rows):
+#                 right = traversed(row, column - 1, traverse)
+#                 downRight = traversed(row - 1, column - 1, traverse)
+#                 upRight = traversed(row + 1, column - 1, traverse)
+#                 grid
+#
+#     else:
+#
+#         for column in range(0, columns):
+#             for row in range(0, rows):
+#                 right = grid[row][column]
+<A NAME="0"></A>#                 downRight = grid[row+1][column]
+#                 upRight = grid[row-1][column+1]
+
+    rows <FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match149-1.html#0',3,'match149-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>= len(grid)
+    columns = len(grid[0])
+
+    # max from top
+    maxTop = max(grid[0])
+
+    # max from bottom
+    maxBottom = max(grid[-1])
+
+    # amount of steps
+    steps =</B></FONT> columns - 1
+
+    answer = []
+
+    count = 0
+
+    optimalSum = 0
+
+    while count &lt; 1000:
+
+        tempSum = 0
+
+        if maxTop &gt; maxBottom:
+            answer.append(1)
+            secondIndex = grid[0].index(maxTop)
+            answer.append(secondIndex)
+            rowIndex = 0
+            columnIndex = secondIndex
+
+            # 0 = right
+            # 1 = right and up
+            # -1 = right and down
+            for i in range(0, steps):
+
+                randInt = random.randrange(-1, 2)
+
+                if randInt == 0:
+                    if columnIndex == columns - 1:
+                        columnIndex = 0
+                    else:
+                        columnIndex += 1
+
+                elif randInt == 1:
+                    if columnIndex == columns - 1:
+                        columnIndex = 0
+                    else:
+                        columnIndex += 1
+
+                    if rowIndex == 0:
+                        rowIndex = rows - 1
+                    else:
+                        rowIndex -= 1
+
+                elif randInt == -1:
+                    if columnIndex == columns - 1:
+                        columnIndex = 0
+                    else:
+                        columnIndex += 1
+
+                    if rowIndex == rows - 1:
+                        rowIndex = 0
+                    else:
+                        rowIndex += 1
+
+                    tempSum += secondIndex
+                    tempSum += grid[rowIndex][columnIndex]
+
+                    answer.append(randInt)
+            if tempSum &lt; optimalSum:
+                answer.clear()
+
+        else:
+            answer.append(1)
+            secondIndex = grid[0].index(maxTop)
+            answer.append(secondIndex)
+            rowIndex = 0
+            columnIndex = secondIndex
+
+            # 0 = right
+            # 1 = right and up
+            # -1 = right and down
+            for i in range(0, steps):
+
+                randInt = random.randrange(-1, 2)
+
+                if randInt == 0:
+                    if columnIndex == columns - 1:
+                        columnIndex = 0
+                    else:
+                        columnIndex += 1
+
+                elif randInt == 1:
+                    if columnIndex == columns - 1:
+                        columnIndex = 0
+                    else:
+                        columnIndex += 1
+
+                    if rowIndex == 0:
+                        rowIndex = rows - 1
+                    else:
+                        rowIndex -= 1
+
+                elif randInt == -1:
+                    if columnIndex == columns - 1:
+                        columnIndex = 0
+                    else:
+                        columnIndex += 1
+
+                    if rowIndex == rows - 1:
+                        rowIndex = 0
+                    else:
+                        rowIndex += 1
+
+                    tempSum += secondIndex
+                    tempSum += grid[rowIndex][columnIndex]
+
+                    answer.append(randInt)
+            if tempSum &lt; optimalSum:
+                answer.clear()
+        count += 1
+
+    print(answer)
+    return answer
+
+solve([[8, 9, 2, 7], [8, 3, 5, 6], [5, 2, 8, 4], [6, 2, 5, 9], [5, 9, 4, 4]])
+</PRE>
+
+</BODY>
+</HTML>

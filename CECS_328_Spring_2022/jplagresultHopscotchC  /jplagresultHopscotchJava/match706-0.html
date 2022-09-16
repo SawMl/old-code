@@ -1,0 +1,288 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>502308015</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+import java.util.ArrayList;
+import java.util.LinkedList;
+
+public class StudentSolver {
+	private static ArrayList&lt;ArrayList&lt;Node&gt;&gt; GRID;
+	private static LinkedList&lt;Node&gt; stack = new LinkedList&lt;&gt;(); 
+	
+	private static class Node{
+		public final int value;
+		public final int r, c;
+		public ArrayList&lt;Node&gt; bestPath = null;
+		public int weight = Integer.MIN_VALUE;
+		
+		public Node(int value, int r, int c) {
+			this.value = value;
+			this.r = r;
+			this.c = c;
+		}
+		
+		public Node selfPath(int wt) {
+			Node node = new Node(value, r, c);
+			node.bestPath = new ArrayList&lt;&gt;();
+			node.bestPath.add(node);
+			node.weight = wt;
+			return node;
+		}
+		
+		public void reset() {
+			this.weight = Integer.MIN_VALUE;
+			this.bestPath = null;
+		}
+		
+		@Override
+		public boolean equals(Object n) {
+			if(n instanceof Node) {
+				Node node = (Node) n;
+				return (this.r == node.r &amp;&amp; this.c == node.c);
+			}
+			return false;
+		}
+		
+		public String toString() {
+			return &quot;(&quot; + r + &quot;, &quot; + c + &quot;)&quot;;
+		}
+		
+		public Node clone() {
+			Node node = new Node(value, r, c);
+			node.weight = this.weight;
+			node.bestPath = (ArrayList&lt;Node&gt;) this.bestPath.clone();
+			return node;
+		}
+	}
+	
+	private static ArrayList&lt;Node&gt; nextNodes(Node node) {
+		int r = node.r;
+		int c = node.c;
+		
+	    ArrayList&lt;Node&gt; list = new ArrayList&lt;&gt;();
+		c = (c + 1) % GRID.get(0).size();
+	    
+	    
+	    list.add(NODE(r,c));
+	    
+	    
+	    int ru = r-1;
+	    if(ru&lt;0) 
+	    	ru = GRID.size() - 1;
+	    
+	    list.add(NODE(ru,c));
+	    
+	    
+	    int rd = (r + 1) % GRID.size();
+	    list.add(NODE(rd,c));
+	    
+	    return list;
+	}
+	
+	private static Node NODE(int r, int c) {
+		return GRID.get(r).get(c);
+	}
+	
+	private static void printSol() {
+		for(ArrayList&lt;Node&gt; col:GRID) {
+			System.out.print(&quot;[&quot;);
+			for(Node node:col) {
+				if(stack.contains(node)) {
+					int index = stack.indexOf(node);
+					System.out.printf(&quot;%6s,&quot;, &quot;(&quot;+index+&quot;,&quot;+node.value+&quot;)&quot;);
+				}else {
+					System.out.printf(&quot;%6s,&quot;, &quot;&quot;+node.value);
+				}
+			}
+			System.out.println(&quot;],&quot;);
+		}
+		System.out.println(&quot;-----End&quot;);
+	}
+	
+	private static Node depthFirst(Node start, Node end, int k) {
+		stack.add(start);
+		
+		
+		if(start.bestPath != null) {
+			stack.removeLast();
+			return start;
+		}
+		
+		
+		if(k==1) {
+			stack.removeLast();
+			if(start.equals(end)) 
+				return start.selfPath(start.value);
+			
+			return start.selfPath(Integer.MIN_VALUE);
+		}
+		
+		start.bestPath = new ArrayList&lt;&gt;();
+		int maxValue = Integer.MIN_VALUE;
+		
+		
+		for(Node next:nextNodes(start)) {
+			Node nxt = depthFirst(next, end, k-1);
+			
+			if(maxValue&lt;nxt.weight) {
+				maxValue = nxt.weight;
+				start.bestPath = (ArrayList&lt;Node&gt;) nxt.bestPath.clone();
+			}		
+		}
+		
+		
+		
+		start.bestPath.add(0, start);
+		start.weight = start.value + maxValue;
+		stack.removeLast();
+		return start;
+<A NAME="0"></A>	}
+	
+	private static void resetGrid() {
+		for(ArrayList&lt;<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match706-1.html#0',3,'match706-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>Node&gt; column: GRID) {
+			for(Node node: column) {
+				node.reset();
+			}</B></FONT>
+		}
+	}
+	
+	private static void setGrid(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid) {
+		GRID = new ArrayList&lt;&gt;();
+		
+		int r = 0;
+		for(ArrayList&lt;Integer&gt; column: grid) {
+			int c = 0;
+			
+			ArrayList&lt;Node&gt; GRID_COLUMN = new ArrayList&lt;&gt;();
+			for(Integer value: column) {
+				GRID_COLUMN.add(new Node(value, r, c));
+				c++;
+			}
+			
+			GRID.add(GRID_COLUMN);
+			r++;
+		}
+	}
+	
+	private static Node _solve() {
+	    int k = GRID.get(0).size();
+	    int lr = GRID.size()-1;
+	    
+	    Node best = new Node(Integer.MIN_VALUE,-1,-1);
+	    Node newBest = new Node(Integer.MIN_VALUE,-1,-1);
+	    
+	    for(int c=0;c&lt;k;c++) {
+	        int cd = c-1;
+	        if(cd&lt;0) cd = k-1;
+	        
+	        
+	        resetGrid();
+	        newBest = depthFirst(NODE(0,c), NODE(0,cd), k);
+	        if(best.weight&lt;newBest.weight) 
+	        	best = newBest.clone(); 
+	        
+	        
+	        resetGrid();
+	        newBest = depthFirst(NODE(0,c), NODE(lr,cd), k);
+	        if(best.weight&lt;newBest.weight)
+	        	best = newBest.clone();
+
+	        
+	        resetGrid();
+	        newBest = depthFirst(NODE(lr,c), NODE(lr,cd), k);
+	        if(best.weight&lt;newBest.weight)
+	        	best = newBest.clone();
+	    }
+	    
+	    return best;
+	}
+	
+	private static Integer direction(Node start, Node end) {
+		
+		if(start.r == end.r)
+		    return 0;
+		
+		
+		if((start.r + 1) % GRID.size() == end.r)
+		    return -1;
+		
+		
+		return 1;
+	}
+	
+	private static ArrayList&lt;Integer&gt; toFormat(Node best){
+		ArrayList&lt;Integer&gt; formatted = new ArrayList&lt;&gt;();
+		if(best.r == 0)
+			formatted.add(1);
+		else
+			formatted.add(0);
+		formatted.add(best.c);
+		
+		for(int i=1;i&lt;best.bestPath.size();i++)
+			formatted.add(direction(best.bestPath.get(i-1), best.bestPath.get(i)));
+		
+		return formatted;
+	}
+	
+	public static ArrayList&lt;Integer&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid){
+		setGrid(grid);
+		Node best = _solve();
+
+
+
+
+		return toFormat(best);
+	}
+	
+	private static void testDepthFirst(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; grid) {
+		setGrid(grid);
+		depthFirst(NODE(0,4), NODE(4,3), grid.get(0).size());
+		System.out.println(NODE(0,4).bestPath);		
+	}
+	
+	private static ArrayList&lt;ArrayList&lt;Integer&gt;&gt; listToArrayList(int[][] list){
+		ArrayList&lt;ArrayList&lt;Integer&gt;&gt; ret = new ArrayList&lt;&gt;();
+		for(int[] column: list) {
+			ArrayList&lt;Integer&gt; col = new ArrayList&lt;&gt;();
+			for(int v:column) {
+				col.add(v);
+			}
+			ret.add(col);
+		}
+		return ret;
+	}
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+</PRE>
+
+</BODY>
+</HTML>

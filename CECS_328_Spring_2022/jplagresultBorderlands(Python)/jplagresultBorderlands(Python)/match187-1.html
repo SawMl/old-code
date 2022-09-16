@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>208167765</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+def solve(bulbs):
+    _size = max(abs(max([max(element) for element in bulbs])), abs(min([min(element) for element in bulbs]))) #find max of array 2D
+    global ans, row_index, cur_index
+    ans = [0 for i in range(_size + 1)] # init list with _size element
+    row_index = [-1 for i in range(_size + 1)]
+    cur_index = -1
+    if(_size &gt; 30):
+        Try(bulbs, 0, _size)
+        arr = [False for i in range(_size + 1)]  # init list with _size element
+
+        # 1 is True
+        # -1 and 0 is False
+        for i in range(_size + 1):
+            if ans[i] == 1:
+                arr[i] = True
+            else:
+                arr[i] = False
+        return arr[1:]  # sub-list
+    else:
+        bitmask(bulbs, _size)
+        return ans[1:]
+
+
+
+def isPossible(bulbs, mask):
+    for element in bulbs:
+        row_possible = False
+        for num in element:
+            value = abs(num)
+            if num &gt; 0:
+                if ((1 &lt;&lt; value) &amp; mask) != 0:
+<A NAME="0"></A>                    row_possible = True
+            else:
+                if ((1 &lt;&lt; value) &amp; mask) == 0:
+                    row_possible = <FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match187-0.html#0',2,'match187-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>True
+        if row_possible is False:
+            return False
+    return True
+
+def bitmask(bulbs, _size):
+    maxx = 1 &lt;&lt; (_size + 1)
+    for mask in range(</B></FONT>maxx):
+        if(isPossible(bulbs, mask)):
+            for i in range(_size + 1):
+                if ((1 &lt;&lt; i) &amp; mask) != 0:
+                    ans[i] = True
+                else:
+                    ans[i] = False
+
+#call recursion for all row in list 2D
+def Try(bulbs, pos, _size):
+    global cur_index
+
+    if pos == len(bulbs): #if all row are process, this mean i find the answer.
+        return True
+    is_possible = False # return True if i can find the answer and otherwise return False
+    for i in range(3): # for 3 integer in all row
+        if pos &gt; cur_index and cur_index != -1:
+            return False
+        cur_index = -1
+        cur = bulbs[pos][i]
+        if ans[abs(cur)] == 1:
+            if cur &gt; 0: #ans[abs(cur)] = 1 and cur &gt; 0 this mean ans[cur] = True and i dont need set value for it
+                is_possible = Try(bulbs, pos + 1, _size)
+        elif ans[abs(cur)] == -1:
+            if cur &lt; 0: #ans[abs(cur)] = -1 and cur &lt; 0 this mean ans[cur] = False and i dont need set value for it
+                is_possible = Try(bulbs, pos + 1, _size)
+        else: # cur = 0 this mean ans[cur] no value assigned
+            if cur &gt; 0:
+                ans[abs(cur)] = 1 #because i need set ans[cur] = 1 to turn on the light
+            else:
+                ans[abs(cur)] = -1 #because i need set ans[cur] = -1 to turn on the light (the red light)
+            row_index[abs(cur)] = pos
+            is_possible = Try(bulbs, pos + 1, _size)
+            if is_possible is False:
+                row_index[abs(cur)] = -1
+                ans[abs(cur)] = 0
+        if is_possible == True: # if i find the answer, i dont need recursion
+            return True
+
+    for element in bulbs[pos]:
+        cur_index = max(cur_index, row_index[abs(element)])
+    return False
+</PRE>
+
+</BODY>
+</HTML>

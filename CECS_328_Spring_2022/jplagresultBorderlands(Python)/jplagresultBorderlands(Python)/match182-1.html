@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>003377623</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+<A NAME="0"></A><FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match182-0.html#0',2,'match182-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>def solve(bulbs):
+    # Find Wire-set Count
+
+    wireset_count = 0
+    for bulb_set in bulbs:
+        for bulb in bulb_set:
+            if abs(bulb) &gt; wireset_count:
+                wireset_count = abs(bulb)
+    #print(&quot;Wiresets: &quot; + str(wireset_count))
+
+    # Get Bulb set count
+
+    bulbs_row_count =</B></FONT> len(bulbs)
+    solution = [0] * wireset_count
+
+    if bulbs_row_count&gt;150:
+        #too many rows
+        return [False]
+
+    wireset_appearance_count = [0] * wireset_count
+
+    for bulb_row_index in range(bulbs_row_count):
+        for bulb in bulbs[bulb_row_index]:
+            wireset_appearance_count[abs(bulb) - 1] += 1
+            solution[abs(bulb) - 1] = int(bulb / abs(bulb))
+
+    #print('Appearance Count: ')
+    #print(wireset_appearance_count)
+
+    solved_wiresets = []
+    for wireset_index in range(wireset_count):
+        if wireset_appearance_count[wireset_index]&lt;= 1:
+            solved_wiresets.append(wireset_index+1)
+
+    #print(&quot;Solved wiresets with no appearance, or only 1 appearance&quot;)
+    #print(solved_wiresets)
+
+    #Reduce the size of the bulbs array
+    reduced_bulbs_array = []
+    for bulb_row in bulbs:
+        new_bulb_row = []
+        for bulb in bulb_row:
+            if abs(bulb) in solved_wiresets:
+                new_bulb_row = []
+                break
+            if -bulb in solved_wiresets:
+                new_bulb_row = []
+                break
+            if bulb not in new_bulb_row:
+                new_bulb_row.append(bulb)
+        if len(new_bulb_row)&gt;=1:
+            new_bulb_row.sort()
+            reduced_bulbs_array.append(new_bulb_row)
+    reduced_bulbs_array.sort()
+
+    #print(&quot;Reduced Bulbs Array&quot;)
+    #print(reduced_bulbs_array)
+
+    reduced_bulbs_solutions = row_array_index_finder(reduced_bulbs_array)
+
+    for reduced_bulbs_solution in reduced_bulbs_solutions:
+        reduced_solution_index = abs(reduced_bulbs_solution)-1
+        solution[reduced_solution_index] = reduced_bulbs_solution/abs(reduced_bulbs_solution)
+
+    #print(&quot;Solution: &quot;)
+    #print(solution)
+    bool_solutions = []
+    for solution_int in solution:
+        bool_solutions.append(solution_int &gt;= 0)
+
+    return bool_solutions
+
+
+def row_array_index_finder(row_array):
+    row_count = len(row_array)
+
+    correct_index_array = [0] * row_count
+    used_wiresets = []
+
+    solved = False
+    current_index = 0
+    while not solved:
+        if current_index &gt;= row_count:    # if the current index is the row length, then it has reached the end of the array
+            #print(&quot;Solved&quot;)
+            solved = True
+            break
+
+        row = row_array[current_index]
+        row_number_count = len(row)
+
+        if correct_index_array[current_index] &gt;= row_number_count: # if value of the correct number index is equal to the row number count, it reached the end of the array, therefore go back one and increase its value
+            if current_index - 1 &lt; 0:   # if this is the first index then it has iterated through everything and cant be solved
+                #print(&quot;Not Solved&quot;)
+                #print(correct_index_array)
+                #print()
+                break
+            #if its not the first index, go back one, increase its value and start the loop again
+            correct_index_array[current_index-1] += 1
+            correct_index_array[current_index] = 0
+            used_wiresets = []
+            current_index = 0
+            continue
+
+        number = row[correct_index_array[current_index]]
+        if number in used_wiresets: #if number is already solved, move to the next row.
+            current_index += 1
+            #print(&quot;[&quot;+str(current_index)+&quot;]&quot;+&quot;Already Solved&quot;)
+            continue
+        if -number in used_wiresets: #if the opposite number has been used, then this number is invalid, increase the correct_index
+            correct_index_array[current_index] += 1
+            #print(&quot;[&quot;+str(current_index)+&quot;]&quot;+&quot;Opposite found, moving to next number in row&quot;)
+            continue
+        used_wiresets.append(number)
+        current_index += 1
+        continue
+
+    if not solved:
+        correct_index_array = [0] * row_count
+
+    solutions = []
+    for row_index in range(row_count):
+        solutions.append(row_array[row_index][correct_index_array[row_index]])
+
+    return solutions
+
+</PRE>
+
+</BODY>
+</HTML>

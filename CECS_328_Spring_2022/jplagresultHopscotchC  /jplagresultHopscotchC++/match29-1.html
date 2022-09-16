@@ -1,0 +1,324 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>198547969</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>StudentSolver.cpp</CENTER></H3><HR>
+<PRE>
+
+
+
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include&lt;algorithm&gt;
+using namespace std;
+#include &quot;StudentSolver.h&quot;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+int StudentSolver::Index_Getof(vector&lt;int&gt; vector, int n) {
+    for (int i = 0; i &lt; vector.size(); ++i) {
+        if (vector.at(i) == n){
+            return i;
+        }
+    }
+    return 0;
+}
+
+void StudentSolver::right(vector&lt;vector&lt;int&gt;&gt; &amp;vectorr, int &amp;i_value, int &amp;j_value) {
+    if (j_value == (vectorr.at(0).size() - 1)) {
+        j_value = 0;
+    } else {
+        ++j_value;
+    }
+
+
+}
+
+void StudentSolver::up(vector&lt;vector&lt;int&gt;&gt; &amp;vectorr, int &amp;i_value, int &amp;j_value) {
+    if(i_value == 0){
+        i_value = vectorr.size()-1;
+    }else{
+        --i_value;
+    }
+}
+
+void StudentSolver::down(vector&lt;vector&lt;int&gt;&gt; &amp;vectorr, int &amp;i_value, int &amp;j_value) {
+    if(i_value == (vectorr.size()-1)){
+        i_value = 0;
+    }else{
+        ++i_value;
+    }
+}
+
+void StudentSolver::Top_Right(vector&lt;vector&lt;int&gt;&gt; &amp;vectorr, int &amp;i_value, int &amp;j_value) {
+    right(vectorr, i_value, j_value);
+    up(vectorr, i_value, j_value);
+
+}
+
+
+void StudentSolver::bottom_right(vector&lt;vector&lt;int&gt;&gt; &amp;vectorr, int &amp;i_value, int &amp;j_value) {
+    right(vectorr, i_value, j_value);
+    down(vectorr, i_value, j_value);
+
+}
+
+int StudentSolver::ruleofthree(vector&lt;vector&lt;int&gt;&gt; &amp;vectorr, int val1, int val2, int val3) {
+    int sum = val1 + val2 + val3;
+    return sum;
+}
+
+
+
+
+vector&lt;int&gt; StudentSolver::getMax(vector&lt;vector&lt;int&gt;&gt; &amp;vectorr) {
+    vector&lt;int&gt; ans;
+    vector&lt;int&gt; top = vectorr[0];
+    vector&lt;int&gt; bot = vectorr[vectorr.size()-1];
+    vector&lt;int&gt; highestpos;
+    int highest = 0;
+    int number_top = 0;
+    for(int i = 0; i &lt; top.size() ; i++){
+        if (top[i] == highest){
+            number_top++;
+            ans.push_back(0);
+            ans.push_back(i);
+        }else if(top[i] &gt; highest){
+            ans.clear();
+            number_top=0;
+            highest = top[i];
+            ans.push_back(0);
+            ans.push_back(i);
+        }if(bot[i] == highest){
+            number_top++;
+            ans.push_back(vectorr.size()-1);
+            ans.push_back(i);
+        }else if(bot[i] &gt; highest){
+            ans.clear();
+            number_top=0;
+            highest = bot[i];
+            ans.push_back(vectorr.size()-1);
+            ans.push_back(i);
+        }
+    }
+    ans.push_back(highest);
+    ans.push_back(number_top);
+    return ans;
+}
+
+
+
+
+
+
+
+<A NAME="0"></A>
+
+
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match29-0.html#0',2,'match29-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>void StudentSolver::display(vector&lt;vector&lt;int&gt;&gt; vect) {
+    for (int i = 0; i &lt; vect.size(); ++i) {
+        for (int j = 0; j &lt; vect.at(i).size() ; ++j) {
+            cout &lt;&lt; vect[i][j] &lt;&lt; &quot; &quot;;
+        }
+        cout &lt;&lt; endl;
+    }</B></FONT>
+}
+
+void StudentSolver::display_ans(vector&lt;int&gt; vect) {
+    for (int i = 0; i &lt; vect.size(); ++i) {
+        cout &lt;&lt; vect[i] &lt;&lt; &quot; &quot;;
+    }
+}
+
+vector&lt;int&gt; StudentSolver::surrounding_sum(vector&lt;vector&lt;int&gt;&gt; &amp;vectorr) {
+    vector&lt;int&gt; vec = vectorr[0];
+    vector&lt;int&gt; vec2 = vectorr[vectorr.size()-1];
+    vector&lt;int&gt; answer = getMax(vectorr);
+    vector&lt;int&gt; values;
+    vector&lt;int&gt; positions;
+    vector&lt;int&gt; important;
+    int big = 0;
+    int index = 0;
+    for (int i = 0; i &lt; vec.size()-1 ; i++) {
+        if (vec[i] == answer[answer.size() - 2]){
+            int up = vectorr[vectorr.size()-1][i+1] + vectorr[0][i+1] + vectorr[1][i+1];
+            positions.push_back(0);
+            positions.push_back(i);
+            values.push_back(up);
+        }
+    }
+    for (int i = 0; i &lt; vec2.size()-1 ; i++) {
+        if (vec2[i] == answer[answer.size() - 2]){
+            int up = vectorr[vectorr.size()-1][i+1] + vectorr[0][i+1] + vectorr[1][i+1];
+            positions.push_back(vectorr.size()-1);
+            positions.push_back(i);
+            values.push_back(up);
+        }
+    }
+    for (int i = 0; i &lt; values.size()-1; ++i) {
+        if (values[i] &gt; big){
+            big = values[i];
+            index = i;
+        }
+    }
+    if (positions[index*2] == 0){
+        important.push_back(1);
+        important.push_back(positions[(index*2)+1]);
+    }else{
+        important.push_back(0);
+        important.push_back(positions[(index*2)+1]);
+    }
+    return important;
+}
+
+vector&lt;int&gt; StudentSolver::solve(vector&lt;vector&lt;int&gt;&gt; grid) {
+    vector&lt;int&gt; vv = surrounding_sum(grid);
+    vector&lt;int&gt; check = grid.at(0);
+    int sum = 0;
+    int i_value = 0;
+    int j_value = vv[1];
+    if (vv[0] == 0){
+        i_value = grid.size() - 1;
+    }
+    int i_value2 = i_value;
+    int j_value2 = j_value;
+    int i_value3 = i_value;
+    int j_value3 = j_value;
+
+    sum += grid[i_value][j_value];
+    for (int i = 1; i &lt; grid.at(0).size(); ++i) {
+        right(grid, i_value, j_value);
+        Top_Right(grid, i_value2, j_value2);
+        bottom_right(grid, i_value3, j_value3);
+        
+        int i_value2ahead = i_value2;
+        int j_value2ahead = j_value2;
+        
+        int i_value3ahead = i_value3;
+        int j_value3ahead = j_value3;
+
+        int i2_value2ahead = i_value2;
+        int j2_value2ahead = j_value2;
+        
+        int i2_value3ahead = i_value3;
+        int j2_value3ahead = j_value3;
+        
+        if((grid[i_value2][j_value2] == grid[i_value3][j_value3]) &amp;&amp; (grid[i_value2][j_value2] &gt; grid[i_value][j_value])){
+            int val1 = 0;
+            int val2 = 0;
+            right(grid,i_value2ahead, j_value2ahead);
+            Top_Right(grid, i2_value2ahead, j2_value2ahead);
+            right(grid,i_value3ahead, j_value3ahead);
+            Top_Right(grid, i2_value3ahead, j2_value3ahead);
+            val1 = grid[i_value2ahead][j_value2ahead] + grid[i2_value2ahead][j2_value2ahead];
+            val2 = grid[i_value3ahead][j_value3ahead] + grid[i2_value3ahead][j2_value3ahead];
+            if (val1 &gt; val2){
+                vv.push_back(1);
+                i_value = i_value2;
+                j_value = j_value2;
+                i_value3 = i_value2;
+                j_value3 = j_value2;
+                sum += grid[i_value2][j_value2];
+            }else{
+                vv.push_back(-1);
+                i_value = i_value3;
+                j_value = j_value3;
+                i_value2 = i_value3;
+                j_value2 = j_value3;
+                sum += grid[i_value3][j_value3];
+            }
+        }
+        else if((grid[i_value][j_value] &gt;= grid[i_value2][j_value2]) &amp;&amp; (grid[i_value][j_value] &gt;= grid[i_value3][j_value3])){
+            vv.push_back(0);
+            i_value2 = i_value;
+            j_value2 = j_value;
+            i_value3 = i_value;
+            j_value3 = j_value;
+            sum += grid[i_value][j_value];
+        }else if((grid[i_value][j_value] &lt;= grid[i_value2][j_value2]) &amp;&amp; (grid[i_value2][j_value2] &gt;= grid[i_value3][j_value3])){
+            vv.push_back(1);
+            i_value = i_value2;
+            j_value = j_value2;
+            i_value3 = i_value2;
+            j_value3 = j_value2;
+            sum += grid[i_value2][j_value2];
+        }else{
+            vv.push_back(-1);
+            i_value = i_value3;
+            j_value = j_value3;
+            i_value2 = i_value3;
+            j_value2 = j_value3;
+            sum += grid[i_value3][j_value3];
+        }
+    }
+    cout &lt;&lt; sum &lt;&lt; endl;
+    display_ans(vv);
+    cout &lt;&lt; endl;
+    display(grid);
+    return vv;
+}
+</PRE>
+</BODY>
+</HTML>

@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>387032768</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>StudentSolver.cpp</CENTER></H3><HR>
+<PRE>
+
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &quot;StudentSolver.h&quot;
+#include &lt;algorithm&gt; 
+#include &lt;iterator&gt;
+using namespace std;
+
+bool contains(vector&lt;int&gt; arr, int num)
+{
+    for (int i=0; i &lt; arr.size(); i++)
+    {
+        if (arr[i] == num)
+            return true;
+    }
+    return false;
+}
+
+<A NAME="0"></A>vector&lt;bool&gt; StudentSolver::solve(vector&lt;vector&lt;int&gt;&gt; bulbs)
+{
+    int rows = bulbs.size(); 
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match29-0.html#0',2,'match29-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>    int largestNum = 0;
+    
+    for (int i=0; i &lt; rows; i++)
+    {
+        for (int j=0; j &lt; 3; j++)
+        {
+            if (abs(bulbs[i][j]) &gt; largestNum)</B></FONT>
+                largestNum = abs(bulbs[i][j]);  
+        }
+    }
+    
+    vector&lt;bool&gt; answer (largestNum, false);
+
+    
+    vector&lt;int&gt; on (rows, 0);
+
+    
+    for (int i=0; i &lt; largestNum; i++)
+    {
+        for (int j=0; j &lt; rows; j++)
+        {
+            
+            if (on[j])
+                continue;
+            int x = ((i+1)*-1);
+            int y = (i+1);
+
+            
+            if (contains(bulbs[j], y))
+            {
+                answer[i] = true;
+                break;
+            }
+
+            
+            if (contains(bulbs[j], x))
+            {
+                on[j] = 1;
+                answer[i] = false;
+                break;
+            }
+            
+        }
+    }
+
+    return answer;
+}
+</PRE>
+</BODY>
+</HTML>

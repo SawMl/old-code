@@ -1,0 +1,50 @@
+% queries
+?-evolves(pikachu, T). % T = raichu
+?-descendent(charizard, charmander). % true
+?-sibling(jolteon, U). % U = flareon; U = vaporeon
+?-canUseItem(pikachu, V). % V = tm(5)
+
+% new facts
+effective(electric, water).
+ineffective(electric, grass).
+ineffective(electric, electric).
+immune(electric, ground).
+effective(fire, grass).
+ineffective(fire, fire).
+ineffective(fire, water).
+effective(water, fire).
+effective(water, ground).
+ineffective(water, grass).
+ineffective(water, water).
+effective(grass, water).
+effective(grass, grouind).
+ineffective(grass, fire).
+ineffective(grass, grass).
+effective(ground, fire).
+effective(ground, electric).
+ineffective(ground, grass).
+
+% Updated evolves
+evolves(pikachu, raichu, item(thunderStone)).
+evolves(charmander, charmeleon, level(16)).
+evolves(charmeleon, charizard, level(36)).
+evolves(eevee, jolteon, item(thunderStone)).
+evolves(eevee, flareon, item(fireStone)).
+evolves(eevee, vaporeon, item(waterStone)).
+
+% Lecture code
+number(pikachu, 25).
+evolves(pikachu,raichu).
+evolves(charmander, charmeleon).
+evolves(charmeleon, charizard).
+evolves(eevee, jolteon).
+evolves(eevee, flareon).
+evolves(eevee, vaporeon).
+move(thunderbolt, electric, special, 90).
+move(thunderpunch, electric, physical, 75).
+learns(pikachu, thunderbolt, level(36)).
+learns(pikachu, thunderpunch, tm(5)).
+sibling(X, Y) :- evolves(Parent, X), evolves(Parent, Y), X \= Y.
+canUseItem(Pokemon, tm(X)) :- learns(Pokemon, _, tm(X)).
+descendent(X, Y) :- evolves(Y, X).
+descendent(X, Y) :- evolves(Y, Z), descendent(X, Z).

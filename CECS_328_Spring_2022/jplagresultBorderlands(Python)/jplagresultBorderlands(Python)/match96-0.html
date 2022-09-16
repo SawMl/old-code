@@ -1,0 +1,58 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>294102556</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[91]:
+
+
+<A NAME="0"></A>def solve(bulbs):
+    N = 10 
+    M = 14
+    bulb_array <FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match96-1.html#0',3,'match96-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>= [[-4, -4, -1],[13, -9, -14],[4, -7, -2],[-2, 6, 3],[-6, -8, 11],
+       [-4, -3, -6],[7, 11, -10],[4, -7, 6],[5, 6, 4],[10</B></FONT>, 14, -9]]
+    rows = [False for i in range(M)]
+    current_checking = [0 for i in range(N)] 
+    while(i==M):   
+        for j in range(N):
+            if -1 * (i + 1) in bulb_array[j]:
+                rows[i] = False
+                current_checking[j] = 1
+                break                         
+    bulbs = [0 for n in range(N)]
+    for n in range(N):
+        for m in range(3):
+            if bulb_array[n][m] &lt; 0 and rows[abs(bulb_array[n][m]) - 1] == False:
+                bulbs[n] = 1
+            elif bulb_array[n][m] &gt; 0 and rows[bulb_array[n][m] - 1] == True:
+                bulbs[n] = 1
+print(rows)
+print(bulbs)
+
+
+# In[ ]:
+
+
+
+
+</PRE>
+
+</BODY>
+</HTML>

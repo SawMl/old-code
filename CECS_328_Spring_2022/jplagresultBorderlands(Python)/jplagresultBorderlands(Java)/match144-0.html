@@ -1,0 +1,243 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>603953543</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public class StudentSolver {
+		public static void main(String[] args) {
+			ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();
+			bulbs.add(new ArrayList&lt;Integer&gt; (Arrays.asList(-4, -4, -1)));
+			bulbs.add(new ArrayList&lt;Integer&gt; (Arrays.asList(13, -9, -14)));
+			bulbs.add(new ArrayList&lt;Integer&gt; (Arrays.asList(4, -7, -2)));
+			bulbs.add(new ArrayList&lt;Integer&gt; (Arrays.asList(-2, 6, 3)));
+			bulbs.add(new ArrayList&lt;Integer&gt; (Arrays.asList(-6, -8, 11)));
+			bulbs.add(new ArrayList&lt;Integer&gt; (Arrays.asList(-4, -3, -6)));
+			bulbs.add(new ArrayList&lt;Integer&gt; (Arrays.asList(7, 11, -10)));
+			bulbs.add(new ArrayList&lt;Integer&gt; (Arrays.asList(4, -7, 6)));
+			bulbs.add(new ArrayList&lt;Integer&gt; (Arrays.asList(5 , 6, 4)));
+			bulbs.add(new ArrayList&lt;Integer&gt; (Arrays.asList(10, 14, -9)));
+			
+			/*Map&lt;Integer, ArrayList&lt;Integer&gt;&gt; ans = new HashMap&lt;&gt;();
+			
+			ArrayList&lt;Integer&gt; wires = new ArrayList&lt;&gt; ();
+			ArrayList&lt;Integer&gt; rows = new ArrayList&lt;&gt;();
+			
+			
+			wires = foo1(bulbs, 1, GetM(bulbs), bulbs.size(), wires, rows);
+			System.out.println(&quot;The answer is &quot;+ wires);
+			System.out.println(&quot;All done&quot;);*/
+
+			System.out.print(solve(bulbs));
+		}
+		
+		public static ArrayList&lt;Boolean&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs)
+		{
+			ArrayList&lt;ArrayList&lt;Boolean&gt;&gt; ans = new ArrayList&lt;&gt;();
+			int[] array = new int[GetM(bulbs)];
+			
+			ans = recursive(GetM(bulbs), array, 0, ans);
+			
+			return whichCombo(GetM(bulbs), ans, bulbs);
+		}
+		
+		
+		
+		public static ArrayList&lt;Integer&gt; foo1(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs, 
+									int wire, int end, int totalRows,
+									ArrayList&lt;Integer&gt; wiresCombo, ArrayList&lt;Integer&gt; rowsOn)
+		{
+			
+			if(rowsOn.size() == totalRows || wire &gt; end)
+			{
+				return wiresCombo;
+			}
+			System.out.println(&quot;wire: &quot; + wire);
+			wiresCombo.add(wire);
+			System.out.println(wiresCombo);
+			
+			
+			for(int i = 0; i &lt; rowsIfOn(bulbs, wire).size(); i++)
+			{
+				if(!rowsOn.contains(rowsIfOn(bulbs, wire).get(i)))
+				{
+					rowsOn.add(rowsIfOn(bulbs, wire).get(i));
+				}
+			}
+			System.out.println(rowsOn);
+			
+			foo1(bulbs, wire + 1, end, totalRows, wiresCombo, rowsOn);
+			
+			
+			return wiresCombo;
+		}
+		/* what if we make a for loop and add all lines that would be on
+		if each wire is on to a hash map. And then in the recursion, we would just use the
+		entries already in the hash map to concatenate to the array list 
+		dynamic programming does not necessarily need recursion to work
+		*/
+		public static void foo2(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs, int n)
+		{
+			ArrayList&lt;Integer&gt; containerRows = new ArrayList&lt;&gt;();
+			
+			if(n &lt; 1 || n &gt; GetM(bulbs))
+			{
+				return;
+			}
+			
+			
+			
+			
+			System.out.println(&quot;Wire &quot; + n);
+			System.out.println(rowsIfOn(bulbs, n));
+			containerRows.addAll(rowsIfOn(bulbs, n));
+			System.out.println(rowsIfOff(bulbs, n));
+			containerRows.addAll(rowsIfOff(bulbs, n));
+			System.out.println(containerRows);
+
+			foo2(bulbs, n/2);
+			foo2(bulbs, (n/2 + n));
+			
+			
+			return;
+		}
+		
+		public static ArrayList&lt;Boolean&gt; whichCombo(int M, ArrayList&lt;ArrayList&lt;Boolean&gt;&gt; ans, ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs)
+		{
+			ArrayList&lt;Integer&gt; rowsOn = new ArrayList&lt;&gt;();
+			
+			for(int j = 0; j &lt; ans.size(); j++)
+			{
+				
+				
+				for(int k = 1; k &lt;= M; k++)
+				{
+					if(ans.get(j).get(k-1) == true)
+					{
+						for(int i = 0; i &lt; rowsIfOn(bulbs, k).size(); i++)
+						{
+							if(!rowsOn.contains(rowsIfOn(bulbs, k).get(i)))
+							{
+								rowsOn.add(rowsIfOn(bulbs, k).get(i));
+							}
+						}				
+					}
+					
+					else if(ans.get(j).get(k-1) == false)
+					{
+						for(int i = 0; i &lt; rowsIfOff(bulbs, k).size(); i++)
+						{
+							if(!rowsOn.contains(rowsIfOff(bulbs, k).get(i)))
+							{
+								rowsOn.add(rowsIfOff(bulbs, k).get(i));
+							}
+						}				
+					}
+				}
+				if(rowsOn.size() == bulbs.size())
+				{
+					return ans.get(j);
+				}
+			}
+			return null;
+		}
+		
+		public static ArrayList&lt;ArrayList&lt;Boolean&gt;&gt; recursive (int M, int array[], int i, ArrayList&lt;ArrayList&lt;Boolean&gt;&gt; ans)
+		{
+			if(i == M)
+			{
+				ans.add(boolConvert(M, array));
+				return ans;
+			}
+			
+			array[i] = 0;
+			recursive(M, array, i + 1, ans);
+			array[i] = 1;
+			recursive(M, array, i + 1, ans);
+			
+			return ans;
+		}
+		
+		public static ArrayList&lt;Boolean&gt; boolConvert(int M, int array[])
+		{
+			ArrayList&lt;Boolean&gt; ans = new ArrayList&lt;&gt;();
+			for(int i = 0; i &lt; M; i++)
+			{
+				if(array[i] == 0)
+				{
+					ans.add(false);
+				}
+				else if(array[i] == 1)
+				{
+					ans.add(true);
+				}
+			}
+<A NAME="0"></A>			return ans;
+		}
+		
+		public static <FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match144-1.html#0',3,'match144-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>int GetM(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs)
+		{
+			int M = 0;
+			
+<A NAME="1"></A>			for(int i = 0 ; i &lt; bulbs.size(); i++)
+			{
+				for(int j = 0; j &lt;= 2; j++)</B></FONT>
+				{<FONT color="#f63526"><A HREF="javascript:ZweiFrames('match144-1.html#1',3,'match144-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>
+					if(Math.abs(bulbs.get(i).get(j)) &gt;= M)
+					{
+						M = Math.abs(bulbs.get(i).get(j));
+					}
+				}
+			}</B></FONT>
+			
+			return M; 
+		}
+		
+		public static ArrayList&lt;Integer&gt; rowsIfOn(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs, int wire)
+		{
+			ArrayList&lt;Integer&gt; rows = new ArrayList&lt;Integer&gt;();
+			for(int i = 0; i &lt; bulbs.size(); i++)
+			{
+				if(bulbs.get(i).contains(wire))
+				{
+					rows.add(i);
+				}
+			}
+			return rows;
+		}
+		
+		public static ArrayList&lt;Integer&gt; rowsIfOff(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs, int wire)
+		{
+			ArrayList&lt;Integer&gt; rows = new ArrayList&lt;Integer&gt;();
+			for(int i = 0; i &lt; bulbs.size(); i++)
+			{
+				if(bulbs.get(i).contains(0 - wire))
+				{
+					rows.add(i);
+				}
+			}
+			return rows;
+		}
+
+
+}
+</PRE>
+
+</BODY>
+</HTML>

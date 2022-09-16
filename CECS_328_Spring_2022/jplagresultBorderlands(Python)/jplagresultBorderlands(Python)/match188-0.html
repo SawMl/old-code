@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>924895664</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+import random
+
+
+def maxValue(bulbs):
+    maxVal = None
+    minVal = None
+    for lists in bulbs:
+        for values in lists:
+            if maxVal is None or values &gt; maxVal:
+                maxVal = values
+    for lists in bulbs:
+        for values in lists:
+            if minVal is None or values &lt; minVal:
+                minVal = values
+    if abs(minVal) &gt; maxVal:
+        maxVal = abs(minVal)
+    return maxVal
+
+
+def checkIfAllRowsOn(ans, bulbs):
+    for lists in bulbs:
+        switch = False
+        for values in lists:
+            if ans[abs(values) - 1] is None:
+                switch = True
+<A NAME="0"></A>            if values &gt; 0 and ans[abs(values) - 1]:
+                switch = True
+            if values &lt; 0 and not ans[abs(values) - 1]:
+                switch <FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match188-1.html#0',3,'match188-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>= True
+
+        if not switch:
+            return False
+
+    return True
+
+
+def checkIfRowOn(ans, lists):
+    switch = False
+    for</B></FONT> values in lists:
+        if ans[abs(values) - 1] is None:
+            switch = True
+        if values &gt; 0 and ans[abs(values) - 1]:
+            switch = True
+        if values &lt; 0 and not ans[abs(values) - 1]:
+            switch = True
+
+    if not switch:
+        return False
+
+    return True
+
+
+def flipSwitch(ans, lists):
+    for values in lists:
+        if values &lt; 0 and ans[abs(values) - 1] is True:
+            ans[abs(values) - 1] = False
+        if values &gt; 0 and ans[abs(values) - 1] is False:
+            ans[abs(values) - 1] = False
+
+
+def resetAnsArr(ans, bulbs):
+    ans.clear()
+    maxVal = maxValue(bulbs)
+    for index in range(maxVal):
+        ans.append(random.choice([True, False]))
+
+
+def solve(bulbs):
+    ans = []
+    maxVal = maxValue(bulbs)
+    for index in range(maxVal):
+        ans.append(random.choice([True, False]))
+
+    while not checkIfAllRowsOn(ans, bulbs):
+        resetAnsArr(ans, bulbs)
+        for row in range(len(bulbs)):
+            if not checkIfRowOn(ans, bulbs[row]):
+                flipSwitch(ans, bulbs[row])
+                print(ans)
+
+    if checkIfAllRowsOn(ans, bulbs):
+        return ans
+</PRE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,178 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>406027977</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
+public class StudentSolver {
+	
+	private static List&lt;String&gt; numList = new ArrayList&lt;String&gt;();
+	
+	public static void permutation(int n) {
+		permutation(new int[n], 0);
+	}
+	
+	private static void permutation(int[] a, int i) {
+		if (i == a.length) {
+			print(a);
+			return;
+		}
+		a[i] = 0;
+		permutation(a, i + 1);
+		a[i] = 1;
+		permutation(a, i + 1);
+	}
+	
+	private static void print(int[] a) {
+		String s = &quot;&quot;;
+		for (int i = 0; i &lt; a.length; i++) {
+			s = s + a[i];
+		}
+		numList.add(s);
+	}
+
+	public static ArrayList solve(ArrayList&lt;ArrayList&gt; bulbs) {
+		ArrayList list = new ArrayList();
+		boolean whileBoolean = false;
+		int maxNum = 0;
+		for (ArrayList l : bulbs) {
+			for (Object i : l) {
+				if (Math.abs((Integer) i) &gt; maxNum) {
+					maxNum = Math.abs((Integer) i);
+				}
+			}
+		}
+		int i = 1;
+		List&lt;Map&lt;Integer, Boolean&gt;&gt; getNumber = getNumber(maxNum);
+		Map&lt;Map&lt;Integer, Boolean&gt;,Boolean&gt; checkMap =new HashMap&lt;Map&lt;Integer, Boolean&gt;,Boolean&gt;();
+		for(Map&lt;Integer, Boolean&gt; map : getNumber){
+			if (validateAllRows(map, bulbs)) {
+				for (Boolean value : map.values()) {
+					list.add(value);
+				}
+				return list;
+			}
+			if(i==getNumber.size()){
+				for (Boolean value : map.values()) {
+<A NAME="1"></A>					list.add(value);
+				}
+				System.out.println(i);
+				return list;<FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match491-0.html#1',2,'match491-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>
+			}
+			i++;
+		}
+		return list;
+	}
+
+	private static boolean validateAllRows(Map&lt;Integer, Boolean&gt; randomNumber, ArrayList&lt;ArrayList&gt; bulbs) {</B></FONT>
+		for (ArrayList list : bulbs) {
+			if (!validateRows(randomNumber, list)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private static boolean validateRows(Map&lt;Integer, Boolean&gt; randomNumber, ArrayList rows) {
+		int nowNum = 0;
+		boolean nowBoolean = false;
+		for (Object i : rows) {
+			nowNum = (Integer) i;
+			nowBoolean = randomNumber.get(Math.abs(nowNum));
+			if (nowNum != Math.abs(nowNum)) {
+				nowBoolean = !nowBoolean;
+			}
+<A NAME="0"></A>			if (nowBoolean) {
+				return nowBoolean;
+			}
+		}<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match491-0.html#0',2,'match491-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>
+		return nowBoolean;
+	}
+
+	private static Map&lt;Integer, Boolean&gt; initNumber(int numberM) {
+		Map&lt;Integer, Boolean&gt; resultMap = new HashMap&lt;Integer, Boolean&gt;();</B></FONT>
+		Random r = new Random();
+		for (int i = 1; i &lt;= numberM; i++) {
+			resultMap.put(i, r.nextBoolean());
+		}
+		return resultMap;
+	}
+	
+	private static Map&lt;Integer, Boolean&gt; randomNumber(int numberM,Map&lt;Integer,Integer&gt; map) {
+		Map&lt;Integer, Boolean&gt; resultMap = new HashMap&lt;Integer, Boolean&gt;();
+		int maxNum = 0;
+		int maxCount = 0;
+		Random r = new Random();
+		for (int i = 1; i &lt;= numberM; i++) {
+			if(null!=map.get(i)&amp;&amp;map.get(i)&gt;0&amp;&amp;null==map.get(i-2*i)){
+				resultMap.put(i, true);
+				continue;
+			}
+			if(null!=map.get(i-2*i)&amp;&amp;map.get(i-2*i)&gt;0&amp;&amp;null==map.get(i)){
+				resultMap.put(i, false);
+				continue;
+			}
+			resultMap.put(i, r.nextBoolean());
+		}
+		for(Integer i : map.keySet()){
+			if(map.get(i)&gt;maxCount){
+				maxNum = i;
+				maxCount = map.get(i);
+			}
+		}
+		if(maxNum &gt; 0){
+			resultMap.put(maxNum, true);
+		}else{
+			resultMap.put(Math.abs(maxNum), false);
+		}
+		return resultMap;
+	}
+	
+	private static List&lt;Map&lt;Integer, Boolean&gt;&gt; getNumber(int numberM) {
+		numList.clear();
+		permutation(numberM);
+		List&lt;Map&lt;Integer, Boolean&gt;&gt; resultList = new ArrayList&lt;Map&lt;Integer, Boolean&gt;&gt;();
+		Map&lt;Integer, Boolean&gt; resultMap = null;
+		String[] s = null;
+		int i = 1;
+		for (String map : numList) {
+			i = 1;
+			resultMap = new HashMap&lt;Integer, Boolean&gt;();
+			s = map.split(&quot;&quot;);
+			for (String each : s) {
+				if(&quot;0&quot;.equals(each)){
+					resultMap.put(i, true);
+				}else{
+					resultMap.put(i, false);
+				}
+				i++;
+			}
+			resultList.add(resultMap);
+		}
+		return resultList;
+	}
+
+}
+</PRE>
+
+</BODY>
+</HTML>

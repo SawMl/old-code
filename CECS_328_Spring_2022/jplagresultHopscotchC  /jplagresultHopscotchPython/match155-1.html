@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>198010668</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+def solve(grid):
+    answer = [1]
+
+    highest = 0
+    c = 0
+    r = len(grid)
+    for i in range(len(grid[0])):
+        current = grid[0][i]
+        c += 1
+        if current &gt; highest:
+            highest = current
+    x = 0
+    y = grid[0].index(highest)
+    answer.append(grid[0].index(highest))
+    c -= 1
+
+    while c != 0:
+        top = 0
+        bot = 0
+
+        try:
+            top = grid[x - 1][y + 1]
+
+        except:
+            if x == 0 and y == c:
+                top = grid[len(grid)][0]
+
+            elif x == 0 or y == c:
+                try:
+                    top = grid[len(grid)][y + 1]
+
+<A NAME="0"></A>                except:
+                    top = grid[x - 1][0]
+
+        <FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match155-0.html#0',2,'match155-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>try:
+            mid = grid[x][y + 1]
+
+        except:
+            mid = grid[x][0]
+
+        try:
+            bot = grid[x + 1][y + 1]
+
+        e</B></FONT>xcept:
+            if x == r and y == c:
+                bot = grid[0][0]
+
+            elif x == r or y == c:
+                try:
+                    bot = grid[0][y + 1]
+
+                except:
+                    bot = grid[x + 1][0]
+
+        val = 0
+        total = [bot, mid, top]
+        for j in range(3):
+            if total[j] &gt; val:
+                val = total[j]
+        option = total.index(val) - 1
+        if x == len(grid) - 1 and c == 1:
+            option = -1
+        elif x == len(grid) and c == 1:
+            option = 0
+        elif x == 0 and c == 1:
+            option = 0
+        elif x == 1 and c == 1:
+            option = 1
+        answer.append(option)
+
+        if option == 1:
+            try:
+                top = grid[x - 1][y + 1]
+                x -= 1
+                y += 1
+            except:
+                if x == 0 and y == c:
+                    top = grid[len(grid)][0]
+                    x += (len(grid) - x)
+                    y -= y
+                elif x == 0 or y == c:
+                    try:
+                        top = grid[len(grid)][y + 1]
+                        x += (len(grid) - x)
+                        y += 1
+                    except:
+                        top = grid[x - 1][0]
+                        x -= 1
+                        y -= y
+            c -= 1
+
+        elif option == 0:
+            try:
+                mid = grid[x][y + 1]
+                y += 1
+            except:
+                mid = grid[x][0]
+                y -= y
+            c -= 1
+
+        elif option == -1:
+            try:
+                bot = grid[x + 1][y + 1]
+                x += 1
+                y += 1
+            except:
+                if x == r and y == c:
+                    bot = grid[0][0]
+                    x -= x
+                    y -= y
+                elif x == r or y == c:
+                    try:
+                        bot = grid[0][y + 1]
+                        x -= x
+                        y += 1
+                    except:
+                        bot = grid[x + 1][0]
+                        x += 1
+                        y += y
+            c -= 1
+
+    return answer
+
+
+</PRE>
+
+</BODY>
+</HTML>

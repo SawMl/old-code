@@ -1,0 +1,179 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>683046999</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+from operator import indexOf
+
+
+def solve(grid):
+    global ROWS
+    global COLS
+    global STINKY
+    global BOARD
+    
+    BOARD = grid
+    ROWS = len(grid)
+    COLS = len(grid[0])
+    STINKY = moldTheCheese() # maxes
+    startC, startR = starterPokemon()
+    piece = Space(startR, startC)
+    
+    
+    c = startC + 1 % COLS
+    instructions = []
+    
+    if startR == 0:
+        instructions += [1]
+    else: instructions += [0]
+    
+    instructions += [startC]
+    fInster = instructions.copy()
+    sum = piece.getValue()
+    
+<A NAME="0"></A>    bingBong = False
+    
+    while c % COLS != startC:
+        posMoveVals <FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match43-0.html#0',2,'match43-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>= [piece.getNextDown().getValue(), piece.getNextRight().getValue(), piece.getNextUp().getValue(</B></FONT>)]
+        if bingBong:
+            posMoveVals.reverse()
+        move = indexOf(posMoveVals, max(posMoveVals)) - 1
+        instructions += [move]
+        
+        
+        if move == -1:
+            piece = piece.getNextDown()
+        elif move == 0:
+            piece = piece.getNextRight()
+        elif move == 1:
+            piece = piece.getNextUp()
+    
+        c += 1
+        
+        if c % COLS == startC:
+            
+            if piece.getRow() != 0 and piece.getRow() + 1 != ROWS:
+                if bingBong:
+                    print(&quot;I messed up&quot;)
+                    break
+                bingBong = True
+                c = startC + 1 % COLS
+                instructions = fInster
+                
+        
+    
+    
+    
+        
+    
+    
+    
+    
+    
+    
+    
+    return instructions
+
+def starterPokemon():
+    startC = 0
+    startR = 0
+    
+    theLoot = 0 #comparitive number for sart finder
+    for h in range(COLS):
+        if cheemer(h):
+            if cheemer(h) + BOARD[0][(h+1) % COLS] &gt; theLoot:
+                theLoot = cheemer(h) + BOARD[0][(h+1) % COLS]
+                startC = (h + 1)  % COLS
+                startR = 0
+            elif cheemer(h) + BOARD[-1][(h+1) % COLS] &gt; theLoot:
+                theLoot = cheemer(h) + BOARD[-1][(h+1) % COLS]
+                startC = (h + 1)  % COLS
+                startR = -1
+    return startC,startR
+
+def cheemer(x): #COL validator
+    if BOARD[0][x] == STINKY[x]:
+        return BOARD[0][x]
+    elif BOARD[-1][x] == STINKY[x]:
+        return BOARD[-1][x]
+
+    return None
+
+def moldTheCheese():
+    maxMemes = []
+    for m in range(COLS):
+        cheese = set()
+        for k in range(ROWS):
+            cheese.add(BOARD[k][m])
+        maxMemes.append(max(cheese))
+    return maxMemes
+
+def magic(a, b, instructions, sum = 0, memes = []):
+    
+    if memes:
+        print(max(memes))
+    if len(instructions) == COLS + 1:
+        if a != 0 and a != ROWS - 1:
+            return []
+        return [[sum]+instructions]
+    
+    if not instructions:
+        if a == 0:
+            instructions.append(1)
+        else:
+            instructions.append(0)
+        instructions.append(b)
+<A NAME="1"></A>    
+    pos = Space(a, b)
+    
+<A NAME="2"></A>    moves <FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match43-0.html#1',2,'match43-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>= [pos.getNextDown().getValue(), pos.getNextRight().getValue(), pos.getNextUp().getValue(</B></FONT>)]
+    
+    
+    memes =  magic(pos<FONT color="#77bfc7"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match43-0.html#2',2,'match43-top.html#2',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>.getNextDown().getRow(), pos.getNextDown().getCol(), instructions + [-1], sum + moves[0], memes) + magic(pos.getNextRight().getRow(), pos.getNextRight().getCol(</B></FONT>), instructions + [0], sum + moves[1], memes) + magic(pos.getNextUp().getRow(), pos.getNextUp().getCol(), instructions + [1], sum + moves[2], memes)
+
+    return memes
+
+
+class Space:
+    def __init__(self, a = 0, b = 0):
+        self.a = a % ROWS
+        self.b = b % COLS
+       
+        
+         
+    def getRow(self):
+        return self.a
+    
+    def getCol(self):
+        return self.b
+    
+    def getValue(self):
+        return BOARD[self.a][self.b]
+    
+
+    def getNextUp(self):
+        return Space(self.a - 1 , self.b + 1)
+    
+    def getNextRight(self):
+        return Space(self.a, self.b + 1)
+    
+    def getNextDown(self):
+        return Space(self.a + 1 , self.b + 1)
+</PRE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,54 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>023962037</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+import random
+
+<A NAME="0"></A>def solve(bulbs):
+  on_list = [False for i in range(len(bulbs))]
+  max = 0
+  c <FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match64-0.html#0',2,'match64-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>= 0
+  for i in range(len(bulbs)):
+    for j in range(3):
+      if abs(bulbs[i][j]) &gt; max:
+        max = abs(bulbs[i][j])
+  list =</B></FONT> [False for i in range(max)]
+  for j in range(max):
+    c = c + 1
+    max = len(bulbs)
+    for k in range(len(bulbs)):
+      c = len(bulbs)
+      max = c
+      if on_list[k]: # if row is already on, move onto next set
+        c = c - 1
+        continue
+      if (j + 1) in bulbs[k]: # for regular bulbs of this set in the row
+        list[j] = True
+        c = len(bulbs)
+        break
+      if -abs(j + 1) in bulbs[k]: # for red paint bulbs of this set in the row
+        on_list[k] = True
+        c = max
+        max = len(bulbs)
+        list[j] = False
+        break
+  return list
+</PRE>
+
+</BODY>
+</HTML>

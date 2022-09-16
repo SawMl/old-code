@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>148547823</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+<A NAME="0"></A>import java.util.ArrayList;
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match541-0.html#0',2,'match541-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>import java.util.Scanner;
+import java.util.*;
+import java.util.Random;
+
+public class StudentSolver
+{
+
+    public static ArrayList&lt;Boolean&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt;bulbs)
+    {
+        Random rand = new</B></FONT> Random();
+
+        System.out.println(bulbs);
+        ArrayList &lt;Boolean&gt; switches = new ArrayList &lt;Boolean&gt;();
+
+        int numArr1 = bulbs.size();
+        int numArr2 = bulbs.get(0).size();
+
+        int compNum = 0;
+
+        for (int i = 0; i &lt; numArr1; i++)
+        {
+            for (int j = 0; j &lt; numArr2; j++)
+            {
+                System.out.println(&quot;compNum rn is &quot; + compNum);
+                if (bulbs.get(i).get(j) &gt; compNum)
+                {
+                    compNum = bulbs.get(i).get(j);
+                } 
+                else if (bulbs.get(i).get(j) &lt; 0)
+                {
+                    int nonNegative = (bulbs.get(i).get(j)) * (-1);
+                    if (nonNegative &gt; compNum)
+                    {
+                        compNum = nonNegative;
+                    }
+                }
+            }
+        }
+
+        System.out.println(&quot;Final compNum is &quot; + compNum);
+        int numSwitches = compNum;
+
+<A NAME="1"></A>        for (int i = 0; i &lt; numSwitches; i++)
+        {
+            int randInt = rand.nextInt(2);
+            <FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match541-0.html#1',2,'match541-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>System.out.println(randInt);
+            if (randInt == 0)
+            {
+                switches.add(true);
+            }else
+            {
+                switches.add(false);
+            }
+        }</B></FONT>
+
+
+
+        System.out.println(switches);
+
+        return switches;
+    }
+
+    public static void main(String[] args) 
+    {
+        
+
+        
+        
+        
+
+        
+
+        
+
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+
+
+        
+
+        
+        
+        
+
+        
+
+        
+
+    }
+}
+
+
+    
+
+</PRE>
+
+</BODY>
+</HTML>

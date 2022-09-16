@@ -1,0 +1,609 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>938499599</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+import java.util.ArrayList;
+
+public class StudentSolver {
+    
+    public static ArrayList&lt;Boolean&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs){
+        FinalForm form = new FinalForm(bulbs);
+        
+        form.solveByLargestAmount();
+        boolean[] temp = form.getCurrents();
+        ArrayList&lt;Boolean&gt; output = new ArrayList&lt;Boolean&gt;();
+        for(int i = 0; i &lt; temp.length; i++) {
+            output.add(temp[i]);
+        }
+        return output;
+    }  
+
+    public static void main(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs) {
+        FinalForm form = new FinalForm(bulbs);
+        form.solve(true, form.getHighestNumber()/2, 0);
+        if(form.isSolved()) {
+            form.printFinalForm();
+            form.printSolvedCurrents();
+        }
+       /*ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs  =  new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();
+       ArrayList&lt;Integer&gt; row1 = new ArrayList&lt;Integer&gt;();
+       ArrayList&lt;Integer&gt; row2 = new ArrayList&lt;Integer&gt;();
+       ArrayList&lt;Integer&gt; row3 = new ArrayList&lt;Integer&gt;();
+       ArrayList&lt;Integer&gt; row4 = new ArrayList&lt;Integer&gt;();
+       ArrayList&lt;Integer&gt; row5 = new ArrayList&lt;Integer&gt;();
+       ArrayList&lt;Integer&gt; row6 = new ArrayList&lt;Integer&gt;();
+       ArrayList&lt;Integer&gt; row7 = new ArrayList&lt;Integer&gt;();
+       ArrayList&lt;Integer&gt; row8 = new ArrayList&lt;Integer&gt;();
+       ArrayList&lt;Integer&gt; row9 = new ArrayList&lt;Integer&gt;();
+       ArrayList&lt;Integer&gt; row10 = new ArrayList&lt;Integer&gt;();
+       row1.add(-4);
+       row1.add(-4);
+       row1.add(-1);
+       row2.add(13);
+       row2.add(-9);
+       row2.add(-14);
+       row3.add(4);
+       row3.add(-7);
+       row3.add(-2);
+       row4.add(-2);
+       row4.add(6);
+       row4.add(3);
+       row5.add(-6);
+       row5.add(-8);
+       row5.add(11);
+       row6.add(-4);
+       row6.add(-3);
+       row6.add(-6);
+       row7.add(7);
+       row7.add(11);
+       row7.add(-10);
+       row8.add(4);
+       row8.add(-7);
+       row8.add(6);
+       row9.add(5);
+       row9.add(6);
+       row9.add(4);
+       row10.add(10);
+       row10.add(14);
+       row10.add(-9);
+       bulbs.add(row1);
+       bulbs.add(row2);
+       bulbs.add(row3);
+       bulbs.add(row4);
+       bulbs.add(row5);
+       bulbs.add(row6);
+       bulbs.add(row7);
+       bulbs.add(row8);
+       bulbs.add(row9);
+       bulbs.add(row10);
+       FinalForm form = new FinalForm(bulbs);
+       form.solve(true, form.getHighestNumber()/2, 0);
+       form.printFinalForm();
+       form.printSolvedRows();
+       form.printCurrents();
+       form.printSolvedCurrents();
+       form.printSingleTypeBulbs();
+       boolean[] temp = form.getCurrents();
+       ArrayList&lt;Boolean&gt; output = new ArrayList&lt;Boolean&gt;();
+       for(int i = 0; i &lt; temp.length; i++) {
+           output.add(temp[i]);
+       }*/
+
+
+
+        
+        
+        /*ArrayList&lt;Bulb&gt; list = form.getSingleTypeBulbs();
+       for(int i = 0;  i &lt; list.size(); i++) {
+           System.out.println();
+           list.get(i).printBulb();
+       }
+       form.solveSingleTypeRows();
+       System.out.println();
+       form.printCurrents();
+       System.out.println();
+       form.printSolvedCurrents();
+       System.out.println(&quot;Solved Rows Size: &quot; + form.getSolvedRows().length);
+       form.printSolvedRows();*/
+        
+        
+        
+        
+    }
+
+    public static class FinalForm{
+        ArrayList&lt;Row&gt; bulbRows = new ArrayList&lt;Row&gt;();
+        
+        boolean[] currents;
+        
+        
+        boolean[] solvedCurrents;
+        
+        boolean[] solvedRows;
+        int[] whiteBulbs;
+        int[] redBulbs;
+        
+        
+        public FinalForm() {
+            Row row = new Row();
+            bulbRows.add(row);
+            ArrayList&lt;Integer&gt; list = new ArrayList&lt;Integer&gt;();
+            list.add(4);
+            list.add(-5);
+            list.add(6);
+            Row row2 = new Row(list);
+            ArrayList&lt;Integer&gt; list2 = new ArrayList&lt;Integer&gt;();
+            list2.add(-1);
+            list2.add(-4);
+            list2.add(5);
+            Row row3 = new Row(list2);
+            
+            bulbRows.add(row2);
+            bulbRows.add(row3);
+            currents = new boolean[getHighestNumber()];
+            redBulbs = new int[getHighestNumber()];
+            whiteBulbs = new int[getHighestNumber()];
+            solvedCurrents = new boolean[getHighestNumber()];
+            solvedRows = new boolean[bulbRows.size()];
+        }
+
+        
+        public FinalForm(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; list) {
+            Row row;
+            for(int i = 0; i &lt; list.size(); i++) {
+                row = new Row(new ArrayList&lt;Integer&gt;(list.get(i)));
+                bulbRows.add(row);
+            }
+            currents = new boolean[getHighestNumber()];
+            solvedCurrents = new boolean[getHighestNumber()];
+            solvedRows = new boolean[bulbRows.size()];
+            redBulbs = new int[getHighestNumber()];
+            whiteBulbs = new int[getHighestNumber()];
+        }
+
+        
+        public ArrayList&lt;Row&gt; getBulbRows(){
+            return bulbRows;
+        }
+
+        public boolean[] getCurrents(){
+            return currents;
+        }
+
+        public boolean[] getSolvedRows() {
+            return solvedRows;
+        }
+        
+        public boolean[] getSolvedCurrents() {
+            return solvedCurrents;
+        }
+
+        
+        
+        public int getHighestNumber() {
+            int output = 0;
+            for(int i = 0; i &lt; bulbRows.size(); i++) {
+                if(output &lt; bulbRows.get(i).getLargestNumber()) {
+                    output = bulbRows.get(i).getLargestNumber();
+                }
+            }
+            return output;
+        }
+<A NAME="0"></A>        
+        public void countBulbTypes() {
+          
+            for(int i = 1; i &lt; getHighestNumber()+1; i++) <FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match779-1.html#0',3,'match779-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>{
+                
+                boolean red = false;
+                boolean white = false;
+                
+                for(int j = 0; j &lt; bulbRows.size(); j++) {
+                    
+                    for(int k = 0</B></FONT>; k &lt; bulbRows.get(j).getRow().size(); k++) {
+                        
+                        if(bulbRows.get(j).getRow().get(k).getNumber() == i) {
+                            
+                            if(bulbRows.get(j).getRow().get(k).getRed() == true) {
+                                redBulbs[i-1] += 1;
+                            } else {
+                                whiteBulbs[i-1] += 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        public void solveByLargestAmount() {
+            countBulbTypes();
+            for(int i = 0;  i &lt; getHighestNumber(); i++) {
+                if(redBulbs[i] &gt; whiteBulbs[i]) {
+                    currents[i] = false;
+                } else {
+                    currents[i] = true;
+                }
+            }
+        }
+
+        
+        
+        public ArrayList&lt;Bulb&gt; getSingleTypeBulbs(){
+            ArrayList&lt;Bulb&gt; output = new ArrayList&lt;Bulb&gt;();
+            
+            for(int i = 1; i &lt; getHighestNumber()+1; i++) {
+                
+                boolean red = false;
+                boolean white = false;
+                
+                for(int j = 0; j &lt; bulbRows.size(); j++) {
+                    
+                    for(int k = 0; k &lt; bulbRows.get(j).getRow().size(); k++) {
+                        
+                        if(bulbRows.get(j).getRow().get(k).getNumber() == i) {
+                            
+                            if(bulbRows.get(j).getRow().get(k).getRed() == true) {
+                                red = true;
+                            } else {
+                                white = true;
+                            }
+                        }
+                    }
+                }
+                
+                if(red != true || white != true) {
+                    if(red == true) {
+                        output.add(new Bulb(true, i));
+                    } else {
+                        output.add(new Bulb(false, i));
+                    }
+                }
+            }
+            return output;
+        }
+
+        
+        
+        public void solveSingleTypeRows() {
+            ArrayList&lt;Bulb&gt; list = getSingleTypeBulbs();
+            
+            
+            for(int i = 0; i &lt; list.size();  i++) {
+                
+                if(list.get(i).getRed() == false) {
+                    
+                    currents[list.get(i).getNumber()-1] = true;
+                } else {
+                    
+                    currents[list.get(i).getNumber()-1] = false;
+<A NAME="1"></A>                }
+                
+                
+                solvedCurrents[<FONT color="#f63526"><A HREF="javascript:ZweiFrames('match779-1.html#1',3,'match779-top.html#1',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>list.get(i).getNumber()-1] = true;
+            }
+            
+            
+            for(int i = 0; i &lt; bulbRows.size(); i++) {
+                
+                for(int j = 0; j &lt; bulbRows.get(i).getRow</B></FONT>().size(); j++) {
+                    
+                    for(int k = 0; k &lt; list.size(); k++) {
+                        
+                        if(list.get(k).getNumber() == bulbRows.get(i).getRow().get(j).getNumber()) {
+                            solvedRows[i] = true;
+                        }
+                    }
+                }
+            }
+        }
+        
+        
+        public void solveNumber(int number, int skip) {
+            if(solvedCurrents[number-1] == true) {
+                
+                return;
+            } else {
+                
+                for(int i = 0; i &lt; solvedRows.length; i++) {
+                    
+                    if(solvedRows[i] != true) {
+                        
+                        for(int j = 0; j &lt; bulbRows.get(i).getRow().size(); j++) {
+                            
+                            if(!solvedCurrents[number-1]) {
+                                
+                                if(skip == 0) {
+                                    if(bulbRows.get(i).getRow().get(j).getNumber() == number) {
+                                        
+                                        currents[number-1] = !bulbRows.get(i).getRow().get(j).getRed();    
+                                        solvedRows[i] = true;
+                                        solvedCurrents[number-1] = true;
+                                    }
+                                } else {
+                                    skip--;
+                                }
+                            } else {
+                                
+                                if(bulbRows.get(i).getRow().get(j).getNumber() == number) {
+                                    
+                                    if(bulbRows.get(i).getRow().get(j).getRed() != currents[number-1]) {
+                                        solvedRows[i] = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            solvedCurrents[number-1] = true;
+        }
+        
+        
+        public void solve(boolean firstRun, int number, int skip) {
+            
+            if(allCurrentsSolved() &amp;&amp; !isSolved()) {
+                reset();
+                solve(true,number,skip++);
+            }
+            
+            if(isSolved()) {
+                return;
+            }
+            
+            if(firstRun) {
+                solveSingleTypeRows();
+                solveNumber(number, skip);
+            }
+            
+            if(number != 1) {
+                
+                solveNumber(number-1, skip);
+            } 
+            
+            if(number != getHighestNumber()) {
+                
+                solveNumber(number+1, skip);
+            }
+        }
+
+        
+        public void solveCompletely() {
+            solveSingleTypeRows();
+            
+            for(int i = 0; i &lt; solvedRows.length; i++) {
+                
+                if(solvedRows[i] != true) {
+<A NAME="2"></A>                    
+                    for(int j = 0; j &lt; bulbRows.get(i).getRow().size(); j++) {
+                        
+                        if(solvedCurrents[<FONT color="#77bfc7"><A HREF="javascript:ZweiFrames('match779-1.html#2',3,'match779-top.html#2',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>bulbRows.get(i).getRow().get(j).getNumber()-1] == false) {
+                            
+                            if(bulbRows.get(i).getRow().get(j).getRed() == true) {
+                                currents[bulbRows.get(i).getRow().get</B></FONT>(j).getNumber()-1] = false;
+                            } else {
+                                currents[bulbRows.get(i).getRow().get(j).getNumber()-1] = true;
+                            }
+                            solvedCurrents[bulbRows.get(i).getRow().get(j).getNumber()-1] =  true;
+                            solvedRows[i] = true;
+                            j = bulbRows.get(i).getRow().size();
+                        }
+                    }
+                }
+            }
+        }
+
+        public boolean isSolved() {
+            for(int i = 0; i &lt; solvedRows.length; i++) {
+                if(solvedRows[i] == false) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        
+        public boolean allCurrentsSolved() {
+            for(int i = 0; i &lt; solvedCurrents.length; i++) {
+                if(solvedCurrents[i] == false) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        
+        
+        public void reset() {
+            currents = new boolean[getHighestNumber()];
+            solvedCurrents = new boolean[getHighestNumber()];
+            solvedRows = new boolean[bulbRows.size()];
+        }
+        
+        
+        public void printFinalForm() {
+            for(int i = 0; i &lt; bulbRows.size(); i++) {
+                bulbRows.get(i).printRow();
+                System.out.println();
+            }
+        }
+
+        
+        public void printCurrents() {
+            System.out.println(&quot;Currents:&quot;);
+            for(int i = 0; i &lt; currents.length; i++) {
+                System.out.println((i+1) + &quot;: &quot; + currents[i]);
+            }
+        }
+
+        
+        public void printSolvedCurrents() {
+            System.out.println(&quot;Solved Currents:&quot;);
+            for(int i = 0; i &lt; solvedCurrents.length; i++) {
+                System.out.println((i+1) + &quot;: &quot; + solvedCurrents[i]);             
+            }
+        }
+
+        public void printSolvedRows() {
+            System.out.println(&quot;Solved Rows:&quot;);
+            for(int i = 0; i &lt; solvedRows.length; i++) {
+                System.out.println((i+1) + &quot;: &quot; + solvedRows[i]);             
+            }
+        }
+        
+        
+        public void printSingleTypeBulbs() {
+            ArrayList&lt;Bulb&gt; list = getSingleTypeBulbs();
+            System.out.println(&quot;List of Single Type Bulbs:&quot;);
+            for(int i = 0; i &lt; list.size(); i++) {
+                list.get(i).printBulb();
+                System.out.println();
+            }
+        }
+
+    }   
+
+    
+    public static class Row {
+        ArrayList&lt;Bulb&gt; row = new ArrayList&lt;Bulb&gt;();
+        
+        boolean solved = false;
+
+        static final Bulb DEFAULT_BULB1 = new Bulb();
+        static final Bulb DEFAULT_BULB2 = new Bulb(false, 2);
+        static final Bulb DEFAULT_BULB3 = new Bulb(true, 3);
+
+        public Row() {
+            row.add(DEFAULT_BULB1);
+            row.add(DEFAULT_BULB2);
+            row.add(DEFAULT_BULB3);
+        }
+
+        public Row(ArrayList&lt;Integer&gt; list) {
+            for(int i = 0; i &lt; list.size(); i++) {
+                row.add(Bulb.determineBulb(list.get(i)));
+            }
+        }
+
+        
+        public void setRow(ArrayList&lt;Integer&gt; list) {
+            for(int i = 0; i &lt; list.size(); i++) {
+                row.add(Bulb.determineBulb(list.get(i)));
+            }
+        }
+
+        
+        public void setSolved(boolean solve) {
+            solved = solve;
+        }
+
+        
+        
+        public int getLargestNumber() {
+            int output = 0;
+            for(int i = 0; i &lt; row.size(); i++) {
+                if(output &lt; row.get(i).getNumber()) {
+                    output = row.get(i).getNumber();
+                }
+            }
+            return output;
+        }
+
+        public ArrayList&lt;Bulb&gt; getRow(){
+            return row;
+        }
+
+        
+        public boolean getSolved() {
+            return solved;
+        }
+
+        
+        public void printRow() {
+            for(int i = 0; i &lt; row.size(); i++) {
+                row.get(i).printBulb();
+                if(i != row.size()-1) {
+                    System.out.print(&quot;, &quot;);
+                }
+            }
+        }
+    }
+
+    
+    
+    public static class Bulb {
+        
+        boolean red;
+        
+        int number;
+        
+        static final int DEFAULT_NUMBER = 1;
+        static final boolean DEFAULT_RED = false;
+
+        
+        public Bulb() {
+            red = DEFAULT_RED;
+            number = DEFAULT_NUMBER;
+        }
+
+        
+        public Bulb(boolean red, int number) {
+            this.red = red;
+            this.number = number;
+        }
+
+        
+        public int getNumber() {
+            return number;
+        }
+
+        public boolean getRed() {
+            return red;
+        }
+
+        
+        public void setNumber(int number) {
+            this.number = number;
+        }
+
+        public void setRed(boolean red) {
+            this.red = red;
+        }
+
+        
+        public static Bulb determineBulb(int input) {
+            Bulb bulb;
+            if(input &lt; 0) {
+                bulb = new Bulb(true, Math.abs(input));
+            } else {
+                bulb = new Bulb(false, input);
+            }
+            return bulb;
+        }
+
+        
+        public void printBulb() {
+            if(red == false) {
+                System.out.print(number);
+            } else {
+                System.out.print(&quot;-&quot; + number);
+            }
+        }
+    }
+}
+</PRE>
+
+</BODY>
+</HTML>

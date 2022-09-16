@@ -1,0 +1,399 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>024197175</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>StudentSolver.h</CENTER></H3><HR>
+<PRE>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#pragma once
+#ifndef STUDENT_SOLVER_H
+#define STUDENT_SOLVER_H
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+
+using namespace std;
+
+
+namespace StudentSolver
+{
+	
+	struct wireSets
+	{
+		int number;
+		bool onOrOff;
+		inline wireSets(int num)
+		{
+			number = abs(num);
+			onOrOff = false;
+		}
+		friend bool operator==(const wireSets&amp; lhs, const wireSets&amp; rhs) 
+		{
+			return (rhs.number == lhs.number);
+		}
+	};
+	
+	static bool sortHelper(wireSets lhs, wireSets rhs)
+	{
+		return (lhs.number &lt; rhs.number);
+	}
+	
+	static vector&lt;bool&gt; solve(vector&lt;vector&lt;int&gt;&gt; bulbs)
+	{
+		srand(time(NULL));
+		vector&lt;wireSets&gt; board;
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		int biggestNum = 0;
+		for (size_t i = 0; i &lt; bulbs.size(); i++)
+<A NAME="0"></A>		{
+			for (size_t j = 0; j &lt; bulbs[i].size(); j++)
+			{
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match9-0.html#0',2,'match9-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>				if (biggestNum &lt; abs(bulbs[i][j]))
+				{
+					biggestNum = abs(bulbs[i][j]);
+				}
+			}
+
+		}
+		for (int i = 0; i &lt; biggestNum; i++)
+		{
+			wireSets temp(i + 1);
+			board.push_back(temp);
+		}</B></FONT>
+		
+		
+		
+		
+
+		int count = (rand() + 21);
+		for (int i = 0; i &lt; board.size() + 50; i++)
+		{
+			count = (rand() + 21);
+			int index = (rand() % board.size());
+			if (count % 2 == 0)
+			{
+				board[index].onOrOff = false;
+			}
+			else
+			{
+				board[index].onOrOff = true;
+			}
+		}
+		
+		
+		
+		
+		bool atLeastOneOn = false;
+		int faultyWire = 0;
+		int rowCount = 0;
+		int everythingIsOff = 0;
+		while (!atLeastOneOn)
+		{
+			for (size_t i = 0; i &lt; bulbs.size(); i++)
+			{
+				if (everythingIsOff == 3)
+				{
+					everythingIsOff = 0;
+					
+				}
+				for (size_t j = 0; j &lt; bulbs[i].size(); j++)
+				{
+					int numWire = bulbs[i][j];
+
+					if (numWire &lt; 0)
+					{
+						bool opposite = board[abs(numWire) - 1].onOrOff;
+						if (opposite == true)
+						{
+							atLeastOneOn = false;
+							everythingIsOff++;
+							faultyWire = abs(numWire);
+							continue;
+						}
+						else
+						{
+							atLeastOneOn = true;
+							break;
+						}
+					}
+					else
+					{
+						if (board[numWire - 1].onOrOff)
+						{
+							atLeastOneOn = true;
+							break;
+						}
+						else
+						{
+							atLeastOneOn = false;
+							everythingIsOff++;
+							faultyWire = abs(numWire);
+							continue;
+						}
+					}
+				}
+
+				if (atLeastOneOn == true)
+				{
+					everythingIsOff = 0;
+					rowCount++;
+				}
+				else if (everythingIsOff == 3)
+				{
+					board[faultyWire - 1].onOrOff = !(board[faultyWire - 1].onOrOff);
+
+				}
+				
+				
+				
+				
+				
+			}
+		}
+		
+		
+		
+		
+		
+
+
+		
+		vector&lt;bool&gt; answer;
+		
+		
+		
+		
+		for (int i = 0; i &lt; board.size(); i++)
+		{
+			answer.push_back(board[i].onOrOff);
+		}
+		
+		
+		
+		
+
+
+		
+		
+		
+		
+		
+		return answer;
+
+	}
+};
+#endif
+</PRE>
+</BODY>
+</HTML>

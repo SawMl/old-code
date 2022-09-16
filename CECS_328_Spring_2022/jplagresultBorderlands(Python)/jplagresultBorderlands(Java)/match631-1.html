@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>132972251</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.*;
+
+public class StudentSolver {
+
+<A NAME="1"></A>    public static ArrayList&lt;Boolean&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs) {
+
+        
+        <FONT color="#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match631-0.html#1',2,'match631-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>int maxBulbValue = 0;
+        for (ArrayList&lt;Integer&gt; wireSets : bulbs) {
+<A NAME="3"></A>            if (wireSets.get(0).equals(wireSets.get(1)) &amp;&amp; wireSets.get(1).equals(wireSets.get</B></FONT>(2)) ) {
+                int bulbId = Math.abs(wireSets.get(0));
+            }
+            for (Integer i : wireSets) <FONT color="#6cc417"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match631-0.html#3',2,'match631-top.html#3',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>{
+                if (Math.abs(i) &gt; maxBulbValue) { maxBulbValue = Math.abs(i); }
+            }</B></FONT>
+        }
+
+        
+        ArrayList&lt;Boolean&gt; solution = new ArrayList&lt;&gt;();
+        for (int i = 0; i &lt; maxBulbValue; i++) {
+            solution.add(false);
+        }
+
+        while (!checkSolution(bulbs, solution)) {
+            
+            for (ArrayList&lt;Integer&gt; wireSets : bulbs) {
+                boolean oneOn = false;
+                for (Integer i : wireSets) {
+                    oneOn = (i &gt; 0) == solution.get(Math.abs(i) - 1);
+                    if (oneOn) { break; }
+                }
+                while (!oneOn) {
+                    int indexRand = (int) (Math.random() * 3);
+                    int bulb = wireSets.get(indexRand);
+                    int bulbId = Math.abs(bulb);
+                    solution.set(bulbId-1, !solution.get(bulbId-1));
+<A NAME="2"></A>                    oneOn = true;
+                }
+            }
+        <FONT color="#77bfc7"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match631-0.html#2',2,'match631-top.html#2',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>}
+
+        return solution;
+
+    }
+
+    /**
+     * Verify the solution provided is actually valid.
+     * @param bulbs Rows of Bulbs
+     * @param solution Provided booleans as ArrayList
+     * @return True if valid solution, false otherwise.
+     */
+    public static boolean checkSolution(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs, ArrayList&lt;Boolean&gt; solution) {</B></FONT>
+
+        for (ArrayList&lt;Integer&gt; rows : bulbs) {
+            boolean oneOn = false;
+            for (Integer i : rows) {
+                boolean active = solution.get(Math.abs(i)-1);
+                oneOn = (i &gt; 0) == active;
+                if (oneOn) { break; }
+            }
+            if (!oneOn) { return false; }
+        }
+<A NAME="0"></A>
+        return true;
+
+    <FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match631-0.html#0',2,'match631-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>}
+
+    public static ArrayList&lt;ArrayList&lt;Integer&gt;&gt; generateBulbsFromFile(String fileName) {
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; returnBulbs = new ArrayList&lt;&gt;();
+        File file;
+        Scanner scnr</B></FONT>;
+        try {
+            file = new File(fileName);
+            scnr = new Scanner(file);
+        } catch (FileNotFoundException e) { System.out.println(&quot;File not found...&quot;); return null; }
+
+        while (scnr.hasNextLine()) {
+            ArrayList&lt;Integer&gt; wireSet = new ArrayList&lt;&gt;();
+            String[] line = scnr.nextLine().split(&quot; &quot;);
+            for (String s : line) {
+                wireSet.add(Integer.valueOf(s));
+            }
+            returnBulbs.add(wireSet);
+        }
+        return returnBulbs;
+    }
+
+    public static void main(String[] args) {
+
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; inputBulbs = generateBulbsFromFile(&quot;input1.txt&quot;);
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; inputBulbs5 = generateBulbsFromFile(&quot;input5.txt&quot;);
+
+        System.out.println(inputBulbs);
+        ArrayList&lt;Boolean&gt; solution = solve(inputBulbs);
+        System.out.println(&quot;Generated Solution (inputBulbs): &quot; + solve(inputBulbs));
+        System.out.println(&quot;Check Generated Solution (inputBulbs): &quot; + checkSolution(inputBulbs, solution));
+
+        System.out.println(&quot;\n&quot;+inputBulbs5);
+        ArrayList&lt;Boolean&gt; solution5 = solve(inputBulbs5);
+        System.out.println(&quot;Generated Solution (inputBulbs5): &quot; + solution5);
+        System.out.println(&quot;Check Generated Solution (inputBulbs5): &quot; + checkSolution(inputBulbs5, solution5));
+
+    }
+
+}
+</PRE>
+
+</BODY>
+</HTML>

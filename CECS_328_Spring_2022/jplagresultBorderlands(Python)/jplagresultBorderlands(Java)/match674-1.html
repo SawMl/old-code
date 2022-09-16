@@ -1,0 +1,444 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>679507332</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+
+/*import java.util.ArrayList;
+
+public class StudentSolver {
+	
+	
+	public static ArrayList&lt;Boolean&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs) {
+      
+		ArrayList&lt;Boolean&gt; set = new ArrayList&lt;Boolean&gt;();
+		ArrayList&lt;Integer&gt; temp = new ArrayList&lt;Integer&gt;();
+		int count = 0;
+		int max = 0;
+		boolean flag = true;
+		
+		for(int i = 0; i &lt; bulbs.size(); i++)
+		{
+			for(int j = 0; j &lt; 3; j++) {
+				if(max &lt; Math.abs(bulbs.get(i).get(j))) {
+					max = Math.abs(Math.abs(bulbs.get(i).get(j)));
+				}
+			}
+		}
+		
+		for(int i = 1; i &lt; max+1; i++) {
+				set.add(flag);
+			for(int  j = 0; j &lt; bulbs.size(); j++) {
+				count = 0;
+				for(int k = 0; k &lt; 3; k++) {
+				
+					if(i == Math.abs(bulbs.get(j).get(k))) { 
+						if(k == 0) {
+							if(bulbs.get(j).get(k) &lt; 0 &amp;&amp; bulbs.get(j).get(k+1) &lt; 0 &amp;&amp; bulbs.get(j).get(k+2) &lt; 0) {
+									if(Math.abs(bulbs.get(j).get(k)) == Math.abs(bulbs.get(j).get(k+1)) || Math.abs(bulbs.get(j).get(k)) == Math.abs(bulbs.get(j).get(k+2))) {
+										for(int l = 0; l &lt; temp.size(); l++) {
+											if(Math.abs(bulbs.get(j).get(k)) == temp.get(l)) {
+												flag = false;
+											}
+										}
+										if(flag == true) {
+											temp.add(i);
+										}
+									}
+							}
+						}
+						else if(k == 1) {
+							if(bulbs.get(j).get(k) &lt; 0 &amp;&amp; bulbs.get(j).get(k+1) &lt; 0 &amp;&amp; bulbs.get(j).get(k-1) &lt; 0) {
+								if(Math.abs(bulbs.get(j).get(k)) == Math.abs(bulbs.get(j).get(k+1)) || Math.abs(bulbs.get(j).get(k)) == Math.abs(bulbs.get(j).get(k-1))) {
+									for(int l = 0; l &lt; temp.size(); l++) {
+										if(Math.abs(bulbs.get(j).get(k)) == temp.get(l)) {
+											flag = false;
+										}
+									}
+									if(flag == true) {
+										temp.add(i);
+									}
+								}
+							}
+							
+						}
+						else if(k == 2) {
+							if(bulbs.get(j).get(k) &lt; 0 &amp;&amp; bulbs.get(j).get(k-1) &lt; 0 &amp;&amp; bulbs.get(j).get(k-2) &lt; 0) {
+								if(Math.abs(bulbs.get(j).get(k)) == Math.abs(bulbs.get(j).get(k-1)) || Math.abs(bulbs.get(j).get(k)) == Math.abs(bulbs.get(j).get(k-2))) {
+									for(int l = 0; l &lt; temp.size(); l++) {
+										if(Math.abs(bulbs.get(j).get(k)) == temp.get(l)) {
+											flag = false;
+										}
+									}
+									if(flag == true) {
+										temp.add(i);
+									}
+								}
+							}
+						}
+					}
+					
+				}
+				
+			}
+			
+		}
+		
+		return set;
+		
+		}
+}*/
+import java.util.ArrayList;
+
+<A NAME="0"></A>public class StudentSolver {
+	
+	
+	public <FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match674-0.html#0',2,'match674-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>static ArrayList&lt;Boolean&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs) {
+      
+		ArrayList&lt;Boolean&gt; set = new ArrayList&lt;Boolean&gt;();
+		ArrayList&lt;Integer&gt; temp = new ArrayList&lt;Integer&gt;();
+		int count = 0;
+		int max = 0;</B></FONT>
+		boolean flag = true;
+		
+		for(int i = 0; i &lt; bulbs.size(); i++)
+		{
+			for(int j = 0; j &lt; 3; j++) {
+				if(max &lt; Math.abs(bulbs.get(i).get(j))) {
+					max = Math.abs(Math.abs(bulbs.get(i).get(j)));
+				}
+			}
+		}
+		
+		for(int i = 1; i &lt; max+1; i++) {
+				set.add(flag);
+				flag = true;
+			for(int  j = 0; j &lt; bulbs.size(); j++) {
+				count = 0;
+				for(int k = 0; k &lt; 3; k++) {
+				
+<A NAME="2"></A><A NAME="1"></A>					if(i == Math.abs(bulbs.get(j).get(k))) { 
+						if(k == 0) { 
+							if(bulbs.get(j).get(k) &lt; 0 &amp;&amp; bulbs.get(j).get(k+1) &lt; 0 &amp;&amp; bulbs.get(j).get(k+2) &lt; 0) { 
+									if(Math.abs(bulbs.get(j).get(k)) == Math.abs(bulbs.get(j).get(k<FONT color="#77bfc7"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match674-0.html#2',2,'match674-top.html#2',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>+1)) || Math.abs(bulbs.get(j).get(k)) == Math.abs(bulbs.get(j).get(k+2))) { <FONT color="</B></FONT>#f63526"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match674-0.html#1',2,'match674-top.html#1',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>
+										for(int l = 0; l &lt; temp.size(); l++) {
+											if(Math.abs(bulbs.get(j).get(k)) == temp.get(l)) { </B></FONT>
+												flag = false;
+											}
+										}
+										if(flag == true) {
+											temp.add(i);
+										}
+									}
+									else 
+										for(int l = 0; l &lt; temp.size(); l++) {
+											if(Math.abs(bulbs.get(j).get(k)) == temp.get(l)) { 
+												flag = false;
+											}
+										}
+										if(flag == true) {
+											temp.add(i);
+										}
+							}
+						}
+						else if(k == 1) {
+							if(bulbs.get(j).get(k) &lt; 0 &amp;&amp; bulbs.get(j).get(k+1) &lt; 0 &amp;&amp; bulbs.get(j).get(k-1) &lt; 0) {
+								if(Math.abs(bulbs.get(j).get(k)) == Math.abs(bulbs.get(j).get(k+1)) || Math.abs(bulbs.get(j).get(k)) == Math.abs(bulbs.get(j).get(k-1))) {
+									for(int l = 0; l &lt; temp.size(); l++) {
+										if(Math.abs(bulbs.get(j).get(k)) == temp.get(l)) {
+											flag = false;
+										}
+									}
+									if(flag == true) {
+										temp.add(i);
+									}
+								}
+								else 
+									for(int l = 0; l &lt; temp.size(); l++) {
+										if(Math.abs(bulbs.get(j).get(k)) == temp.get(l)) { 
+											flag = false;
+										}
+									}
+									if(flag == true) {
+										temp.add(i);
+									}
+							}
+							
+						}
+						else if(k == 2) {
+							if(bulbs.get(j).get(k) &lt; 0 &amp;&amp; bulbs.get(j).get(k-1) &lt; 0 &amp;&amp; bulbs.get(j).get(k-2) &lt; 0) {
+								if(Math.abs(bulbs.get(j).get(k)) == Math.abs(bulbs.get(j).get(k-1)) || Math.abs(bulbs.get(j).get(k)) == Math.abs(bulbs.get(j).get(k-2))) {
+									for(int l = 0; l &lt; temp.size(); l++) {
+										if(Math.abs(bulbs.get(j).get(k)) == temp.get(l)) {
+											flag = false;
+										}
+									}
+									if(flag == true) {
+										temp.add(i);
+									}
+								}
+								else 
+									for(int l = 0; l &lt; temp.size(); l++) {
+										if(Math.abs(bulbs.get(j).get(k)) == temp.get(l)) { 
+											flag = false;
+										}
+									}
+									if(flag == true) {
+										temp.add(i);
+									}
+							}
+						}
+					}
+					
+				}
+				
+			}
+			
+		}
+		
+	return set;
+		
+	}
+
+}	
+
+/*	public static void main(String[] args) {
+		ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulb = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();
+		ArrayList&lt;Integer&gt; one = new ArrayList&lt;Integer&gt;();
+		ArrayList&lt;Integer&gt; two = new ArrayList&lt;Integer&gt;();
+		ArrayList&lt;Integer&gt; three = new ArrayList&lt;Integer&gt;();
+		ArrayList&lt;Integer&gt; four = new ArrayList&lt;Integer&gt;();
+		ArrayList&lt;Integer&gt; five = new ArrayList&lt;Integer&gt;();
+		ArrayList&lt;Integer&gt; six = new ArrayList&lt;Integer&gt;();
+		ArrayList&lt;Integer&gt; seven = new ArrayList&lt;Integer&gt;();
+		ArrayList&lt;Integer&gt; eight = new ArrayList&lt;Integer&gt;();
+		ArrayList&lt;Integer&gt; nine = new ArrayList&lt;Integer&gt;();
+		ArrayList&lt;Integer&gt; ten = new ArrayList&lt;Integer&gt;();
+		ArrayList&lt;Integer&gt; eleven = new ArrayList&lt;Integer&gt;();
+		ArrayList&lt;Integer&gt; twelve = new ArrayList&lt;Integer&gt;();
+		ArrayList&lt;Integer&gt; thirteen = new ArrayList&lt;Integer&gt;();
+		ArrayList&lt;Integer&gt; fourteen = new ArrayList&lt;Integer&gt;();
+		ArrayList&lt;Integer&gt; fifteen = new ArrayList&lt;Integer&gt;();
+		ArrayList&lt;Integer&gt; sixteen = new ArrayList&lt;Integer&gt;();
+		ArrayList&lt;Integer&gt; seventeen = new ArrayList&lt;Integer&gt;();
+		ArrayList&lt;Integer&gt; eighteen = new ArrayList&lt;Integer&gt;();
+		ArrayList&lt;Integer&gt; nineteen = new ArrayList&lt;Integer&gt;();
+		ArrayList&lt;Integer&gt; twenty = new ArrayList&lt;Integer&gt;();
+		ArrayList&lt;Integer&gt; twentyOne = new ArrayList&lt;Integer&gt;();
+		ArrayList&lt;Integer&gt; twentyTwo = new ArrayList&lt;Integer&gt;();
+		ArrayList&lt;Integer&gt; twentyThree = new ArrayList&lt;Integer&gt;();
+		ArrayList&lt;Integer&gt; twentyFour = new ArrayList&lt;Integer&gt;();
+		ArrayList&lt;Integer&gt; twentyFive = new ArrayList&lt;Integer&gt;();
+		ArrayList&lt;Integer&gt; twentySix = new ArrayList&lt;Integer&gt;();
+		ArrayList&lt;Integer&gt; twentySeven = new ArrayList&lt;Integer&gt;();
+		ArrayList&lt;Integer&gt; twentyEight = new ArrayList&lt;Integer&gt;();
+		ArrayList&lt;Integer&gt; twentyNine = new ArrayList&lt;Integer&gt;();
+		ArrayList&lt;Integer&gt; thirty = new ArrayList&lt;Integer&gt;();
+		ArrayList&lt;Integer&gt; thirtyOne = new ArrayList&lt;Integer&gt;();
+		ArrayList&lt;Integer&gt; thirtyTwo = new ArrayList&lt;Integer&gt;();
+		ArrayList&lt;Integer&gt; thirtyThree = new ArrayList&lt;Integer&gt;();
+	
+		
+		one.add(-6);
+		one.add(-9);
+		one.add(6);
+		two.add(-5);
+		two.add(8);
+		two.add(-7);
+		three.add(-3);
+		three.add(-4);
+		three.add(4);
+		four.add(-2);
+		four.add(5);
+		four.add(4);
+		five.add(-8);
+		five.add(13);
+		five.add(13);
+		six.add(-9);
+		six.add(13);
+		six.add(-9);
+		seven.add(-9);
+		seven.add(12);
+		seven.add(9);
+		eight.add(5);
+		eight.add(8);
+		eight.add(-10);
+		nine.add(9);
+		nine.add(-11);
+		nine.add(-10);
+		ten.add(4);
+		ten.add(8);
+		ten.add(5);
+		eleven.add(9);
+		eleven.add(11);
+		eleven.add(-14);
+		twelve.add(1);
+		twelve.add(1);
+		twelve.add(-1);
+		thirteen.add(1);
+		thirteen.add(-3);
+		thirteen.add(3);
+		fourteen.add(9);
+		fourteen.add(11);
+		fourteen.add(-10);
+		fifteen.add(-1);
+		fifteen.add(-5);
+		fifteen.add(-6);
+		sixteen.add(8);
+		sixteen.add(10);
+		sixteen.add(8);
+		seventeen.add(-4);
+		seventeen.add(9);
+		seventeen.add(8);
+		eighteen.add(2);
+		eighteen.add(6);
+		eighteen.add(-4);
+		nineteen.add(-5);
+		nineteen.add(9);
+		nineteen.add(6);
+		twenty.add(-4);
+		twenty.add(8);
+		twenty.add(-8);
+		twentyOne.add(-6);
+		twentyOne.add(6);
+		twentyOne.add(10);
+		twentyTwo.add(-2);
+		twentyTwo.add(3);
+		twentyTwo.add(-7);
+		twentyThree.add(-4);
+		twentyThree.add(-8);
+		twentyThree.add(-5);
+		twentyFour.add(6);
+		twentyFour.add(6);
+		twentyFour.add(6);
+		twentyFive.add(5);
+		twentyFive.add(-9);
+		twentyFive.add(6);
+		twentySix.add(3);
+		twentySix.add(-3);
+		twentySix.add(3);
+		twentySeven.add(6);
+		twentySeven.add(6);
+		twentySeven.add(-11);
+		twentyEight.add(-3);
+		twentyEight.add(-5);
+		twentyEight.add(-8);
+		twentyNine.add(8);
+		twentyNine.add(12);
+		twentyNine.add(11);
+		thirty.add(-5);
+		thirty.add(-8);
+		thirty.add(-5);
+		thirtyOne.add(6);
+		thirtyOne.add(-6);
+		thirtyOne.add(7);
+		thirtyTwo.add(8);
+		thirtyTwo.add(9);
+		thirtyTwo.add(13);
+		thirtyThree.add(5);
+		thirtyThree.add(-8);
+		thirtyThree.add(-5);
+		
+		
+		
+		
+		bulb.add(0, one);
+		bulb.add(1, two);
+		bulb.add(2, three);
+		bulb.add(3, four);
+		bulb.add(4, five);
+		bulb.add(5, six);
+		bulb.add(6, seven);
+		bulb.add(7, eight);
+		bulb.add(8, nine);
+		bulb.add(9, ten);
+		bulb.add(10, eleven);
+		bulb.add(11, twelve);
+		bulb.add(12, thirteen);
+		bulb.add(13, fourteen);
+		bulb.add(14, fifteen);
+		bulb.add(15, sixteen);
+		bulb.add(16, seventeen);
+		bulb.add(17, eighteen);
+		bulb.add(18, nineteen);
+		bulb.add(19, twenty);
+		bulb.add(20, twentyOne);
+		bulb.add(21, twentyTwo);
+		bulb.add(22, twentyThree);
+		bulb.add(23, twentyFour);
+		bulb.add(24, twentyFive);
+		bulb.add(25, twentySix);
+		bulb.add(26, twentySeven);
+		bulb.add(27, twentyEight);
+		bulb.add(28, twentyNine);
+		bulb.add(29, thirty);
+		bulb.add(30, thirtyOne);
+		bulb.add(31, thirtyTwo);
+		bulb.add(32, thirtyThree);
+		
+	
+		
+		System.out.println(solve(bulb));
+	
+	}
+	
+}
+	
+	/*	if(bulbs.get(j).get(k) &lt; 0) 
+					{
+						count++;
+					}
+					if(count == 3) 
+					{
+							if(bulbs.get(j).get(k-1) == bulbs.get(j).get(k) &amp;&amp; bulbs.get(j).get(k-2) == bulbs.get(j).get(k-1)) {
+								for(int l = 0; l &lt; temp.size(); l++)
+								{
+									if(bulbs.get(j).get(k) == temp.get(l)) {
+										flag = true;
+									}
+									else flag = false;	
+								}
+								if(flag == true) {
+								temp.add(Math.abs(bulbs.get(j).get(k)));
+								set.add(false);	
+								}
+							}
+							else if (bulbs.get(j).get(k-1) != bulbs.get(j).get(k) &amp;&amp; bulbs.get(j).get(k-2) != bulbs.get(j).get(k)) {
+								for(int l = 0; l &lt; temp.size(); l++)
+								{
+									if(bulbs.get(j).get(k) == temp.get(l)) {
+										flag = true;
+									}
+									else flag = false;	
+								}
+								if(flag == true) {
+								temp.add(Math.abs(bulbs.get(j).get(k)));
+								set.add(false);	
+								}
+							}
+							
+					}
+				if(k == 2 &amp;&amp; count == 0) {
+					set.add(true);
+				}
+			*/
+
+
+</PRE>
+
+</BODY>
+</HTML>

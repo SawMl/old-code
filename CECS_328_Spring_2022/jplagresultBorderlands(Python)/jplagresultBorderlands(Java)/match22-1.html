@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>229598174</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+import java.util.ArrayList;
+
+public class StudentSolver{
+    public static ArrayList&lt;Boolean&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs){
+        
+        System.out.println(&quot;Input has &quot; + bulbs.size() + &quot; wiresets&quot;);
+
+
+
+        
+        int gr34t45t = 0;
+        int t3st3r = 0;
+<A NAME="0"></A>        
+        for(int i = 0; i &lt; bulbs.size(); i++){
+            
+            for(int j = 0; j &lt; <FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match22-0.html#0',2,'match22-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>bulbs.get(i).size(); j++){
+                if(bulbs.get(i).get(j) &lt; 0){
+                    t3st3r = (bulbs.get(i).get(j))*-1;
+                }</B></FONT>else{
+                    t3st3r = bulbs.get(i).get(j);
+                }
+                
+                if(t3st3r &gt; gr34t45t){
+                    gr34t45t = t3st3r;
+                }
+            }
+        }
+        
+        
+        ArrayList&lt;Boolean&gt; an5w3rL15t = new ArrayList&lt;Boolean&gt;();
+        for(int i = 0; i &lt; gr34t45t; i++){
+            an5w3rL15t.add(true);
+        }
+
+        System.out.println(&quot;Answer is size &quot; + an5w3rL15t.size());
+
+        for(int i = 0; i &lt; bulbs.size(); i++){
+            
+            for(int j = 0; j &lt; bulbs.get(i).size(); j++){
+                if(bulbs.get(i).get(j) &lt; 0){
+                    an5w3rL15t.set((bulbs.get(i).get(j)*-1) - 1, false);
+                }
+            }
+        }
+        
+        /*for(int i = 0; i &lt; bulbs.size(); i++){
+            
+            for(int j = 0; j &lt; bulbs.get(i).size(); j++){
+                
+                if(bulbs.get(i).get(j) &gt;= 0){
+                    break;
+                }
+                
+                else if((j == bulbs.get(i).size() - 1)){
+                    an5w3rL15t.set((bulbs.get(i).get(j)*-1) - 1, false);
+                    break;
+                }
+            }
+        }*/
+
+        /*for(int i = 0; i &lt; bulbs.size(); i++){
+            
+            for(int j = 0; j &lt; bulbs.get(i).size(); j++){
+
+            }
+        }*/
+
+        System.out.println(&quot;Results are:&quot;);
+        System.out.println(an5w3rL15t);
+        return an5w3rL15t;
+    }
+}
+</PRE>
+
+</BODY>
+</HTML>

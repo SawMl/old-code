@@ -1,0 +1,182 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>591556707</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+
+
+import java.util.ArrayList;
+
+public class StudentSolver {
+    
+    private static ArrayList&lt;Boolean&gt; finalCircuitPanel;
+
+    
+    private static ArrayList&lt;ArrayList&lt;Integer&gt;&gt; listOfBulbs;
+
+    
+    private static int numberOfCircuits;
+
+    
+    private static boolean done = false;
+
+    
+    public static void main(String[] args) {
+        
+        int n = 25;
+        int m = 20;
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbList = new ArrayList&lt;&gt;();
+
+        
+        for (int i = 0; i &lt; n; i++) {
+            bulbList.add(new ArrayList&lt;&gt;());
+            for (int j = 0; j &lt; 3; j++) {
+                int rand = (int) (Math.random() * 2*m - m);
+
+                
+                if (rand == 0) {
+                    rand = 1;
+                }
+
+                
+                bulbList.get(i).add(rand);
+            }
+        }
+
+        
+        System.out.println(bulbList);
+
+        
+        ArrayList&lt;Boolean&gt; answer = solve(bulbList);
+
+        
+        System.out.println(answer);
+    }
+
+    
+    public static ArrayList&lt;Boolean&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs) {
+        return borderlands(bulbs);
+    }
+
+    
+    public static ArrayList&lt;Boolean&gt; borderlands(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs) {
+        
+        listOfBulbs = bulbs;
+
+        
+        numberOfCircuits = findNumberOfCircuits(listOfBulbs);
+
+        
+        ArrayList&lt;Boolean&gt; circuitPanel = new ArrayList&lt;&gt;();
+
+<A NAME="0"></A>        
+        for (int a = 0; a &lt; numberOfCircuits; a++) {
+            circuitPanel.add(false);
+        <FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match504-1.html#0',3,'match504-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>}
+
+        
+        generateCircuitPanel(circuitPanel, 0);
+
+        
+        return finalCircuitPanel;
+    }
+
+    
+    public static int findNumberOfCircuits(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; bulbs) {
+        
+        int numberOfCircuits = -1</B></FONT>;
+
+        
+        for (int i = 0; i &lt; bulbs.size(); i++) {
+            for (int j = 0; j &lt; 3; j++) {
+                
+                if (numberOfCircuits &lt; Math.abs(bulbs.get(i).get(j))) {
+                    numberOfCircuits = Math.abs(bulbs.get(i).get(j));
+                }
+            }
+        }
+        
+        return numberOfCircuits;
+    }
+
+    
+    public static void generateCircuitPanel(ArrayList&lt;Boolean&gt; circuitPanel, int index) {
+        
+        if (index &lt; numberOfCircuits) {
+            generateCircuitPanel(circuitPanel, index + 1);
+
+            
+            if (done) {
+                return;
+            }
+
+            
+            circuitPanel.set(index, true);
+            generateCircuitPanel(circuitPanel, index + 1);
+        }
+
+        
+        if (done) {
+            return;
+        }
+
+        
+        if (validateCircuitPanel(circuitPanel)) {
+            finalCircuitPanel = circuitPanel;
+            done = true;
+        }
+    }
+
+    
+    public static boolean validateCircuitPanel(ArrayList&lt;Boolean&gt; circuitP) {
+        
+        boolean validity;
+
+        
+        for (int k = 0; k &lt; listOfBulbs.size(); k++) {
+            
+            validity = false;
+
+            
+            for (int j = 0; j &lt; 3; j++) {
+                
+                if (listOfBulbs.get(k).get(j) &lt; 0 &amp;&amp; !circuitP.get(Math.abs(listOfBulbs.get(k).get(j)) - 1)) {
+                    validity = true;
+
+                
+                } else if (listOfBulbs.get(k).get(j) &gt; 0 &amp;&amp; circuitP.get(Math.abs(listOfBulbs.get(k).get(j) - 1))) {
+                    validity = true;
+                }
+
+                
+            }
+
+            
+            if (!validity) {
+                return false;
+            }
+        }
+
+        
+        return true;
+    }
+
+}
+</PRE>
+
+</BODY>
+</HTML>

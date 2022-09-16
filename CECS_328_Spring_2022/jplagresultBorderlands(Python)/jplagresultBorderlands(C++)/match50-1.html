@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>324951115</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>StudentSolver.cpp</CENTER></H3><HR>
+<PRE>
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &quot;StudentSolver.h&quot;
+#include &lt;algorithm&gt;
+using namespace std;
+
+vector&lt;bool&gt; StudentSolver::solve(vector&lt;vector&lt;int&gt;&gt; bulbs) {
+  
+  vector&lt;bool&gt; currentFlow;
+  
+  
+  int max = 0;
+  for (int i = 0; i &lt; bulbs.size(); i++) {
+    vector&lt;int&gt; row = bulbs[i];
+    for (int j = 0; j &lt; row.size(); j++) {
+      if (abs(row[j]) &gt; max) {
+        max = abs(row[j]);
+      }
+    }
+  }
+  /*vector&lt;int&gt; maxes;
+    for (vector&lt;int&gt; wireSet : bulbs) {
+        int m = *max_element(wireSet.begin(), wireSet.end());
+        maxes.push_back(m);
+    }
+    int max = *max_element(maxes.begin(), maxes.end());*/
+  
+  for (int i = 0; i &lt; max; i++) {
+    currentFlow.push_back(false);
+  }
+  
+  
+    
+    int counter = 0;
+    
+    vector&lt;int&gt; alreadyChanged;
+    
+    for (int i = 0; i &lt; bulbs.size(); i++) {
+      
+      bool checkSet = false;
+      
+      vector&lt;int&gt; wireSet = bulbs[i];
+      for (int i = 0; i &lt; wireSet.size(); i++) {
+        
+        if (wireSet[i] &lt; 0) {
+          int x = -wireSet[i] - 1;
+          if (currentFlow[x] == false) {
+            checkSet = true;
+            
+          }
+        }
+        
+        else {
+          int x = wireSet[i] - 1;
+          if (currentFlow[x] == true) {
+            checkSet == true;
+            
+          }
+<A NAME="0"></A>        }
+      }
+      
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match50-0.html#0',2,'match50-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>      if (checkSet == false) {
+          
+          
+        
+        for (int i = 0; i &lt; wireSet.size(); i++) {
+          /*if (wireSet[i] &lt; 0) {
+            z = -wireSet[i] - 1;
+          }
+          else {
+            z = wireSet[i] - 1;
+          }*/
+          int z = abs(wireSet[i]) - 1;
+          if (count(alreadyChanged.begin(), alreadyChanged.end(), z)) {
+          }
+          else {</B></FONT>
+            if (currentFlow[z] == true) {
+              currentFlow[z] = false;
+            }
+            else {
+              currentFlow[z] = true;
+            }
+            alreadyChanged.push_back(z);
+            break;
+          }
+        }
+      }
+      
+    /*  else {
+        counter++;
+      }
+    }
+    
+    if (counter == bulbs.size()) {
+      solved = true;
+    }*/
+  }
+  return currentFlow;
+}
+</PRE>
+</BODY>
+</HTML>

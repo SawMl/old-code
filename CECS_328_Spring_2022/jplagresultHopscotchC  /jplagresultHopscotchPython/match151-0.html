@@ -1,0 +1,203 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>769442125</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<HR>
+<H3><CENTER>studentsolver.py</CENTER></H3><HR>
+<PRE>
+import random
+
+# ======================================== CREATING TESTS ======================================================
+# test = [[3, 4, 1, 2, 8, 6],
+#         [6, 1, 8, 2, 7, 4],
+#         [5, 4, 3, 9, 9, 5],
+#         [5, 9, 8, 3, 2, 6],
+#         [8, 7, 2, 9, 6, 4]]
+
+# test2 = []
+
+# for i in range(0,25):
+#     new_line = []
+#     for i in range(0,30):
+#         new_line.append(random.randint(1,9))
+#     test2.append(new_line)
+
+# ==============================================================================================================
+
+#Function to return the coordinates of the move that is up and to the right ------------------------------------------------------------------
+
+def get_up_right_move(grid, grid_position):
+    posx = grid_position[1]
+    posy = grid_position[0]
+    if posy == 0:
+        posy += (len(grid) - 1)
+    else:
+        posy -= 1
+    if posx == len(grid[0]) - 1:
+        posx -= (len(grid[0]) - 1)
+    else:
+        posx += 1
+    return [posy, posx, grid[posy][posx]]
+
+#Function to return the coordinates of the move that is to the immediate right --------------------------------------------------------------
+
+def get_right_move(grid, grid_position):
+    posx = grid_position[1]
+    posy = grid_position[0]
+    if posx == len(grid[0]) - 1:
+        posx -= (len(grid[0]) - 1)
+    else:
+        posx += 1
+    return [posy, posx, grid[posy][posx]]
+
+#Function to return the coordinates of the move that is down and to the right ---------------------------------------------------------------
+
+def get_down_right_move(grid, grid_position):
+    posx = grid_position[1]
+    posy = grid_position[0]
+    if posy == len(grid) - 1:
+        posy -= (len(grid) - 1)
+    else:
+        posy += 1
+    if posx == len(grid[0]) - 1:
+        posx -= (len(grid[0]) - 1)
+    else:
+        posx += 1
+    return [posy, posx, grid[posy][posx]]
+
+# Function to return an array displaying the most optimal moves -----------------------------------------------------------------------------
+
+def get_moves_of_highest_value(grid, grid_position):
+    highest_moves = [0, 0, 0]
+<A NAME="0"></A>    pos1 = get_up_right_move(grid, grid_position)
+    pos2 = get_right_move(grid, grid_position)
+    pos3 = get_down_right_move(grid, grid_position)
+    max_val = max(pos1[2], pos2[2], pos3<FONT color="#0000ff"><A HREF="javascript:ZweiFrames('match151-1.html#0',3,'match151-top.html#0',1)"><IMG SRC="forward.gif" ALT="other" BORDER="0" ALIGN="right"></A><B>[2])
+    if pos1[2] == max_val:
+        highest_moves[0] += 1
+    if pos2[2] == max_val:
+        highest_moves[1] += 1
+    if pos3[2] == max_val:
+        highest_moves[2] += 1
+    return [highest_moves</B></FONT>, pos1, pos2, pos3]
+
+# Recursive function to generate all of the highest value pathways starting at any given coordinate -----------------------------------------
+def generate_pathways(grid, grid_position, path, score, all_paths):
+
+    #Append first 2 required stats (starting at top or bottom, horizontal position)
+    if len(path) == 0:
+        if grid_position[0] == 0:
+            path.append(1)
+        else:
+            path.append(0)
+    if len(path) == 1:
+        path.append(grid_position[1])
+
+    #Base return case
+    if len(path) == len(grid[0]) + 1:
+        path.append(score)
+        all_paths.append(path)
+        return
+    
+    #Get all highest value moves
+    moves = get_moves_of_highest_value(grid, grid_position)
+
+    #Decision to move up-right
+    if moves[0][0] == 1:
+        pos = moves[1]
+        new_path = path.copy()
+        new_path.append(1)
+        new_score = score + pos[2]
+        generate_pathways(grid, [pos[0], pos[1]], new_path, new_score, all_paths)
+    
+    #Decision to move right
+    if moves[0][1] == 1:
+        pos = moves[2]
+        new_path = path.copy()
+        new_path.append(0)
+        new_score = score + pos[2]
+        generate_pathways(grid, [pos[0], pos[1]], new_path, new_score, all_paths)
+    
+    #Decision to move down-right
+    if moves[0][2] == 1:
+        pos = moves[3]
+        new_path = path.copy()
+        new_path.append(-1)
+        new_score = score + pos[2]
+        generate_pathways(grid, [pos[0], pos[1]], new_path, new_score, all_paths)
+
+# Function to constrain the final list of all the highest value pathways to those that start on top and finish on bottom and vice versa --------------------------
+
+def constrain(rows, all_paths):
+    correct_paths = []
+    for i in range(0, len(all_paths)):
+        if all_paths[i][0] == 1:
+            pos = 0
+        else:
+            pos = rows - 1
+        for j in range(2, len(all_paths[i]) - 1):
+            if all_paths[i][j] == 1:
+                if pos == 0:
+                    pos += rows - 1
+                else:
+                    pos -= 1
+            elif all_paths[i][j] == -1:
+                if pos == rows - 1:
+                    pos -= rows - 1
+                else:
+                    pos += 1
+        if (all_paths[i][0] == 1 and pos == rows - 1) or (all_paths[i][0] == 0 and pos == 0):
+            correct_paths.append(all_paths[i])
+    return correct_paths
+
+# Main function that utilizes all other functions to find the most optimal pathway a player can take through a given grid
+
+def solve(grid):
+    rows = len(grid)
+    all_paths = []
+    optimal_path = []
+
+    for i in range(0, len(grid[0])):
+        path = []
+        generate_pathways(grid, [0, i], path, grid[0][i], all_paths)
+        path = []
+        generate_pathways(grid, [len(grid) - 1, i], path, grid[len(grid) - 1][i], all_paths)
+
+    all_paths = constrain(rows, all_paths)
+    max_val = 0
+    for i in range(0, len(all_paths)):
+        if all_paths[i][-1] &gt; max_val:
+            max_val = all_paths[i][-1]
+            optimal_path = all_paths[i]
+    if len(optimal_path) == 0:
+        return optimal_path
+    optimal_path.pop()
+    print(optimal_path)
+    return optimal_path
+
+# ======================================= APPLYING TESTS ===============================================
+
+# for i in test:
+#     print(i)
+# solve(test)
+# for i in test2:
+#     print(i)
+# solve(test2)
+
+# ======================================================================================================
+</PRE>
+
+</BODY>
+</HTML>

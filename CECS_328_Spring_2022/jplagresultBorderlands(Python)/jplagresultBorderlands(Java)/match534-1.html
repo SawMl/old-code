@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>844946966</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>StudentSolver.java</CENTER></H3><HR>
+<PRE>
+import java.util.ArrayList;
+import java.util.Collections;
+
+class StudentSolver {
+  public static ArrayList&lt;Boolean&gt; solve(ArrayList&lt;ArrayList&lt;Integer&gt;&gt;
+bulbs) {
+    int M = 0;
+    int N = bulbs.size(); 
+    int z = 0;
+    for (int i = 0; i &lt; N; i++) {
+      if (Collections.max(bulbs.get(i)) &gt; M) {
+        M = Collections.max(bulbs.get(i)); 
+<A NAME="0"></A>      }
+    }
+    
+    <FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match534-0.html#0',2,'match534-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>ArrayList &lt;Boolean&gt; list = new ArrayList &lt;Boolean&gt;();
+    for (int i = 0; i &lt; M; i++) {
+      list.add(false);
+      z++;
+    }
+
+    ArrayList &lt;Boolean&gt; list2 = new ArrayList &lt;Boolean&gt;();
+    for (int i = 0; i &lt; M; i++) {
+      list2.add(true);
+      z += M/2;
+    }
+
+    ArrayList &lt;Boolean&gt; list3 = new ArrayList &lt;Boolean&gt;</B></FONT>();
+    for (int i = 0; i &lt; M/2; i++) {
+      list3.add(false);
+      z--;
+      list3.add(true);
+    }
+
+    ArrayList &lt;Boolean&gt; list4 = new ArrayList &lt;Boolean&gt;();
+    for (int i = 0; i &lt; M/2; i++) {
+      list4.add(true);
+      list4.add(false);
+    }
+
+    ArrayList &lt;Boolean&gt; list5 = new ArrayList &lt;Boolean&gt;();
+    for (int i = 0; i &lt; M; i++) {
+      int something = (int) (Math.random() * (2 - 1 + 1));
+      if (something == 1) {
+        list5.add(true);
+        z = z + 2;
+      }
+      else {
+        list5.add(false);
+      }
+    }
+    
+    for (int i = 0; i &lt; M; i ++) {
+      for (int j = 0; j &lt; N; j++) {
+        break;
+      }
+      continue;
+    }
+
+    int random = (int) (Math.random() * (3 - 1 + 1));
+    if (random == 0) {
+      return list2;
+    }
+    else if (random == 1) {
+      return list5;
+    }
+    return list;
+  }
+}
+</PRE>
+
+</BODY>
+</HTML>

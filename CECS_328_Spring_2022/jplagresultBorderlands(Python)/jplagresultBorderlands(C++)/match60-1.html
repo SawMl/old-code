@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+ <TITLE>224393897</TITLE>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript">
+  <!--
+   function ZweiFrames(URL1,F1,URL2,F2)
+   {
+    parent.frames[F1].location.href=URL1;
+    parent.frames[F2].location.href=URL2;
+   }
+  //-->
+  </script>
+</HEAD>
+<BODY BGCOLOR="#ffffff" style="margin-left:25">
+<HR>
+<H3><CENTER>StudentSolver.cpp</CENTER></H3><HR>
+<PRE>
+#include &quot;StudentSolver.h&quot;
+
+std::vector&lt;bool&gt; int_to_bool(int num, int top_m, int bottom_m) {
+	std::vector&lt;bool&gt; possible_answer(top_m - bottom_m + 1, false);
+	while (num &gt; 0) {
+		possible_answer[top_m - bottom_m++] = num % 2;
+		num = num / 2;
+	}
+	return possible_answer;
+}
+
+bool workable_possibility(std::vector&lt;std::vector&lt;int&gt;&gt; bulbs, std::vector&lt;bool&gt; wire_set, int bottom_m) {
+	bool workable = true;
+	for (std::vector&lt;int&gt; row : bulbs) {
+		bool all_off_flag = true;
+		for (int bulb : row) {
+			bool light_status = wire_set[abs(bulb) - bottom_m];
+			if (bulb &lt; 0)
+				light_status = !light_status;
+			if (light_status == true) {
+				all_off_flag = false;
+				break;
+			}
+		}
+		if (all_off_flag) {
+			workable = false;
+			break;
+		}
+	}
+	return workable;
+}
+
+std::vector&lt;std::vector&lt;bool&gt;&gt; split_m(int bottom_m, int top_m, std::vector&lt;std::vector&lt;int&gt;&gt; bulbs) {
+	int middle_m = top_m - ((top_m - bottom_m + 1) / 2);
+	std::vector&lt;std::vector&lt;bool&gt;&gt; filtered_possible_answer;
+	if (top_m - bottom_m &gt; 10) {
+		std::vector&lt;std::vector&lt;int&gt;&gt; left_m_bulbs;
+		std::vector&lt;std::vector&lt;int&gt;&gt; right_m_bulbs;
+		for (std::vector&lt;int&gt; row : bulbs) {
+			bool left_flag = false, right_flag = false, wrong_flag = false;
+			for (int bulb : row) {
+				if (abs(bulb) &lt;= middle_m &amp;&amp; abs(bulb) &gt;= bottom_m)
+					left_flag = true;
+				else if (abs(bulb) &gt;= middle_m + 1 &amp;&amp; abs(bulb) &lt;= top_m)
+					right_flag = true;
+				else
+					wrong_flag = true;
+				if (wrong_flag || (left_flag &amp;&amp; right_flag))
+					break;
+			}
+			if (wrong_flag || (left_flag &amp;&amp; right_flag))
+				continue;
+			else if (!wrong_flag &amp;&amp; left_flag)
+				left_m_bulbs.push_back(row);
+			else if (!wrong_flag &amp;&amp; right_flag)
+				right_m_bulbs.push_back(row);
+		}
+		std::vector&lt;std::vector&lt;bool&gt;&gt; left_possible_bools = split_m(bottom_m, middle_m, left_m_bulbs);
+		std::vector&lt;std::vector&lt;bool&gt;&gt; right_possible_bools = split_m(middle_m + 1, top_m, right_m_bulbs);
+		std::vector&lt;bool&gt; test;
+		for (std::vector&lt;bool&gt; left_bools : left_possible_bools) {
+			for (std::vector&lt;bool&gt; right_bools : right_possible_bools) {
+				test.clear();
+				test.insert(test.begin(), left_bools.begin(), left_bools.end());
+				test.insert(test.end(), right_bools.begin(), right_bools.end());
+				if (workable_possibility(bulbs, test, bottom_m))
+					filtered_possible_answer.push_back(test);
+			}
+		}
+	}
+	else {
+		for (int i = 0; i &lt; (std::pow(2, top_m - bottom_m + 1)); i++) {
+<A NAME="0"></A>			std::vector&lt;bool&gt; possiblility = int_to_bool(i, top_m, bottom_m);
+			if (workable_possibility(bulbs, possiblility, bottom_m))
+				filtered_possible_answer.push_back(possiblility);
+<FONT color="#0000ff"><div style="position:absolute;left:0"><A HREF="javascript:ZweiFrames('match60-0.html#0',2,'match60-top.html#0',1)"><IMG SRC="back.gif" ALT="other" BORDER="0" ALIGN="left"></A></div><B>		}
+	}
+	return filtered_possible_answer;
+}
+
+std::vector&lt;bool&gt; StudentSolver::solve(std::vector&lt;std::vector&lt;int&gt;&gt; bulbs) {
+	int m = 0;</B></FONT>
+	for (std::vector&lt;int&gt; row : bulbs)
+		for (int bulb : row)
+			if (abs(bulb) &gt; m) m = abs(bulb);
+	return split_m(1, m, bulbs)[0];
+}
+</PRE>
+</BODY>
+</HTML>
