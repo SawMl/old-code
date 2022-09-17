@@ -8,22 +8,16 @@ class Matrix:
 	# [1 2 3 ]
 	# [2 3 6 ]
     def __init__(self, mat):
-		# ALREADY DONE FOR YOU! DO NOT TOUCH
+		
         self.m = mat 				# the matrix
         self.rows = len(mat)		# number of rows
         self.cols = len(mat[0])		# number of columns
 
 	# get's the element of the matrix in row i, column j
     def get_element(self, i, j):
-		# ALREADY DONE FOR YOU! DO NOT TOUCH
+		
         return self.m[i][j]
 
-	# Part3
-	# TODO: implement matrix addition
-	# inputs: self, other
-	# output: if matrix addition is possible, return the sum Matrix
-	#		  DO NOT RETURN A 2D LIST! YOU WILL GET IT WRONG!
-	# 		  if matrix addition is not possible, return None
     def __add__(self, other):
         if self.rows != other.rows:
             return None
@@ -37,12 +31,6 @@ class Matrix:
             mat.append(r)
         return Matrix(mat)
 
-	# Part4
-	# TODO: implement matrix subtraction
-	# inputs: self, other
-	# output: if matrix subtraction is possible, return the difference Matrix
-	#		  DO NOT RETURN A 2D LIST! YOU WILL GET IT WRONG!
-	# 		  if matrix subtraction is not possible, return None
     def __sub__(self, other):
         if self.rows != other.rows:
             return None
@@ -73,10 +61,6 @@ class Matrix:
                     
         return Matrix(mat)
         
-        
-
-
-	# DO NOT TOUCH! For debugging purposes
     def __str__(self):
         string = ""
         for r in self.m:
