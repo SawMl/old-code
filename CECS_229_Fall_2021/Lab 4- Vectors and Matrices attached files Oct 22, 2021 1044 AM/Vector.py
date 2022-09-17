@@ -34,13 +34,6 @@ class Vector:
             sum.append(self.get_ith_element(i) - other.get_ith_element(i))
         return Vector(sum)
 
-
-
-	# Part2
-	# TODO: implement dot product
-	# inputs: self, other
-	# output: if dot product is possible, return the dot product
-	# 		  if dot product is not possible, return None
     def __mul__(self, other):
         if self.size != other.size:
             return None
@@ -49,10 +42,6 @@ class Vector:
             sum = sum + self.get_ith_element(i) * other.get_ith_element(i)
         return sum
 
-
-
-
-	# DO NOT TOUCH! For debugging purposes
     def __str__(self):
         return str(self.v)
 
